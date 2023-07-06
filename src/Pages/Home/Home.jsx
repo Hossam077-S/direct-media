@@ -35,10 +35,13 @@ import useStyles from "./styles";
 
 import Slider from "react-slick";
 
+import NewsTypeSliderItem from "./newsTypeSliderItem";
+
 const Home = () => {
   const classes = useStyles();
 
   const [newsData, setNewsData] = useState([]);
+  const [groupedData, setGrouppedData] = useState({});
   const [currentItem, setCurrentItem] = useState(0);
   const [currentItem2, setCurrentItem2] = useState(0);
   const [currentItem3, setCurrentItem3] = useState(0);
@@ -75,10 +78,8 @@ const Home = () => {
     dots: false,
     infinite: true,
     speed: 800,
-    slidesToShow: 5,
-    slidesToScroll: 5,
-    vertical: true,
-    verticalSwiping: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
     autoplay: false,
     arrows: true,
     prevArrow: (
@@ -199,8 +200,39 @@ const Home = () => {
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "News"), (snapshot) => {
-      const newsData = snapshot.docs.map((doc) => doc.data());
-      setNewsData(newsData);
+      const result = snapshot.docs.map((doc) => doc.data());
+
+      const pressNews = result.filter((m) => m.Category === "صحافة");
+      const localNews = result.filter((m) => m.Category === "محلي");
+      const internationalNews = result.filter((m) => m.Category === "دولي");
+
+      const numberOfItems = 5;
+
+      const groupedPressNews = [];
+      while (pressNews.length > 0) {
+        groupedPressNews.push(pressNews.splice(0, numberOfItems));
+      }
+
+      const groupedLocalNews = [];
+      while (localNews.length > 0) {
+        groupedLocalNews.push(localNews.splice(0, numberOfItems));
+      }
+
+      const groupedInternationalNews = [];
+      while (internationalNews.length > 0) {
+        groupedInternationalNews.push(
+          internationalNews.splice(0, numberOfItems)
+        );
+      }
+
+      setGrouppedData({
+        press: groupedPressNews,
+        local: groupedLocalNews,
+        inter: groupedInternationalNews,
+      });
+      console.info("Groupped Data: ", groupedPressNews);
+
+      setNewsData(result);
     });
 
     return () => {
@@ -486,39 +518,10 @@ const Home = () => {
                 <Typography className={classes.globalText}>دولي</Typography>
               </div>
               <div className={classes.newsTypeSlider}>
-                {newsData.length > 0 ? (
+                {groupedData.length > 0 ? (
                   <Slider {...newsTypesSliderSettings}>
-                    {newsData.map((newsItem, index) => (
-                      <div key={index} className={classes.newsTypeSliderItems}>
-                        <div className={classes.newsTypeSliderItem}>
-                          <div>
-                            <Typography className={classes.newsTypeSliderText}>
-                              {newsItem.Title}
-                            </Typography>
-
-                            <Typography className={classes.newsTypeSliderDate}>
-                              <span className={classes.newsTypeSliderDateWord}>
-                                قسم التحرير -
-                              </span>{" "}
-                              <span className={classes.newsTypeSliderDateText}>
-                                {newsItem.PublishDate.toDate().toLocaleDateString(
-                                  "ar",
-                                  {
-                                    month: "long",
-                                    day: "numeric",
-                                    year: "numeric",
-                                  }
-                                )}
-                              </span>
-                            </Typography>
-                          </div>
-                          <img
-                            src={newsItem.ImageURL}
-                            alt={newsItem.Title}
-                            className={classes.newsTypeSliderImage}
-                          />
-                        </div>
-                      </div>
+                    {groupedData.inter.map((newsItem, index) => (
+                      <NewsTypeSliderItem Item={newsItem} ItemIndex={index} />
                     ))}
                   </Slider>
                 ) : (
@@ -540,37 +543,8 @@ const Home = () => {
               <div className={classes.newsTypeSlider}>
                 {newsData.length > 0 ? (
                   <Slider {...newsTypesSliderSettings}>
-                    {newsData.map((newsItem, index) => (
-                      <div key={index} className={classes.newsTypeSliderItems}>
-                        <div className={classes.newsTypeSliderItem}>
-                          <div>
-                            <Typography className={classes.newsTypeSliderText}>
-                              {newsItem.Title}
-                            </Typography>
-
-                            <Typography className={classes.newsTypeSliderDate}>
-                              <span className={classes.newsTypeSliderDateWord}>
-                                قسم التحرير -
-                              </span>{" "}
-                              <span className={classes.newsTypeSliderDateText}>
-                                {newsItem.PublishDate.toDate().toLocaleDateString(
-                                  "ar",
-                                  {
-                                    month: "long",
-                                    day: "numeric",
-                                    year: "numeric",
-                                  }
-                                )}
-                              </span>
-                            </Typography>
-                          </div>
-                          <img
-                            src={newsItem.ImageURL}
-                            alt={newsItem.Title}
-                            className={classes.newsTypeSliderImage}
-                          />
-                        </div>
-                      </div>
+                    {groupedData.press.map((newsItem, index) => (
+                      <NewsTypeSliderItem Item={newsItem} ItemIndex={index} />
                     ))}
                   </Slider>
                 ) : (
@@ -592,37 +566,8 @@ const Home = () => {
               <div className={classes.newsTypeSlider}>
                 {newsData.length > 0 ? (
                   <Slider {...newsTypesSliderSettings}>
-                    {newsData.map((newsItem, index) => (
-                      <div key={index} className={classes.newsTypeSliderItems}>
-                        <div className={classes.newsTypeSliderItem}>
-                          <div>
-                            <Typography className={classes.newsTypeSliderText}>
-                              {newsItem.Title}
-                            </Typography>
-
-                            <Typography className={classes.newsTypeSliderDate}>
-                              <span className={classes.newsTypeSliderDateWord}>
-                                قسم التحرير -
-                              </span>{" "}
-                              <span className={classes.newsTypeSliderDateText}>
-                                {newsItem.PublishDate.toDate().toLocaleDateString(
-                                  "ar",
-                                  {
-                                    month: "long",
-                                    day: "numeric",
-                                    year: "numeric",
-                                  }
-                                )}
-                              </span>
-                            </Typography>
-                          </div>
-                          <img
-                            src={newsItem.ImageURL}
-                            alt={newsItem.Title}
-                            className={classes.newsTypeSliderImage}
-                          />
-                        </div>
-                      </div>
+                    {groupedData.local.map((newsItem, index) => (
+                      <NewsTypeSliderItem Item={newsItem} ItemIndex={index} />
                     ))}
                   </Slider>
                 ) : (

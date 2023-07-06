@@ -285,6 +285,10 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: 'column',
     marginTop: '37px',
 
+    "& .slick-list": {
+      width: '228px'
+    },
+
     "& .slick-next": {
       position: 'relative',
       top: '20px',
@@ -306,6 +310,10 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'start',
     justifyContent: 'right',
     paddingBottom: "3.4px",
+  },
+  newsTypeSliderItems: {
+    display: 'flex',
+    flexDirection: 'column',
   },
   newsTypeSliderText: {
     paddingTop: '10px',
