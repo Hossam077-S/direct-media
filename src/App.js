@@ -1,25 +1,45 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { Suspense, lazy } from 'react';
+import { Routes, Route } from 'react-router-dom';
 
-function App() {
+// import { Header, Footer, NewsDetails } from './Components';
+// import { Home, News, Admin } from './Pages';
+
+// const Header = lazy(() => import('./Components/Header/Header'));
+// const Footer = lazy(() => import('./Components/Footer/Footer'));
+// const NewsDetails = lazy(() => import('./Components/NewsDetails/NewsDetails'));
+
+const [Header, Footer, NewsDetails] = [
+  'Header',
+  'Footer',
+  'NewsDetails',
+].map((component) =>
+  lazy(() => import(`./Components/${component}/${component}`))
+);
+
+const [Home, News, Admin] = [
+  'Home',
+  'News',
+  'Admin',
+].map((page) =>
+  lazy(() => import(`./Pages/${page}/${page}`))
+);
+
+const App = () => {
+  // const user = JSON.parse(localStorage.getItem('profile'));
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Suspense fallback={<div>Loading...</div>}>
+      <Header />
+      <Routes>
+        <Route exact path="/" element={<Home />} />
+        <Route path="/news" element={<News />} />
+        <Route path="/admin" element={<Admin />} />
+        <Route path="/news/:id" element={<NewsDetails />} />
+      </Routes>
+      <Footer />
+      </Suspense>
     </div>
   );
-}
+};
 
 export default App;
