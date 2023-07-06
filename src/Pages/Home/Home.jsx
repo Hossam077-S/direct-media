@@ -308,70 +308,67 @@ const Home = () => {
   return (
     <>
       <Container className={classes.container}>
-        <>
-          {/* Part_1 */}
-
-          <div className={classes.slicerDiv}>
-            <Stack direction="row" alignItems="center">
-              <div className={classes.arrowDiv}>
-                <IconButton
-                  onClick={() => handlePrevious(setCurrentItem)}
-                  disabled={newsData.length === 0}
-                  className={classes.upButton}
-                >
-                  <BsArrowUpCircleFill style={{ fontSize: "18px" }} />
-                </IconButton>
-                <IconButton
-                  onClick={() => handleNext(setCurrentItem)}
-                  disabled={newsData.length === 0}
-                  className={classes.downButton}
-                >
-                  <BsArrowDownCircleFill style={{ fontSize: "18px" }} />
-                </IconButton>
-              </div>
-              {newsData.length > 0 ? (
-                newsData.map((newsItem, index) =>
-                  index === currentItem ? (
-                    <div key={index} className={classes.newsDiv}>
-                      <Slide
-                        in={true}
-                        style={{ transformOrigin: "0 0 0" }}
-                        {...(true ? { timeout: 1500 } : {})}
-                      >
-                        <Typography className={classes.typoTitle}>
-                          ... {newsItem.Title} -{" "}
-                          {truncateDescription(newsItem.Description, 50)}
-                        </Typography>
-                      </Slide>
-                    </div>
-                  ) : null
-                )
-              ) : (
-                <div className={classes.newsDiv}>
-                  <Skeleton
-                    variant="text"
-                    sx={{
-                      fontSize: "25px",
-                      marginLeft: "10%",
-                      marginRight: "1%",
-                    }}
-                  />
-                </div>
-              )}
-              <div className={classes.imageDiv}>
-                <Typography className={classes.imageTitle}>
-                  آخرالأخبار
-                </Typography>
-                <img
-                  src={rectangleShape}
-                  alt="rect-shap"
-                  width="157px"
-                  height="43px"
+        {/* Latest News */}
+        <div className={classes.slicerDiv}>
+          <Stack direction="row" alignItems="center">
+            <div className={classes.arrowDiv}>
+              <IconButton
+                onClick={() => handlePrevious(setCurrentItem)}
+                disabled={newsData.length === 0}
+                className={classes.upButton}
+              >
+                <BsArrowUpCircleFill style={{ fontSize: "18px" }} />
+              </IconButton>
+              <IconButton
+                onClick={() => handleNext(setCurrentItem)}
+                disabled={newsData.length === 0}
+                className={classes.downButton}
+              >
+                <BsArrowDownCircleFill style={{ fontSize: "18px" }} />
+              </IconButton>
+            </div>
+            {newsData.length > 0 ? (
+              newsData.map((newsItem, index) =>
+                index === currentItem ? (
+                  <div key={index} className={classes.newsDiv}>
+                    <Slide
+                      in={true}
+                      style={{ transformOrigin: "0 0 0" }}
+                      {...(true ? { timeout: 1500 } : {})}
+                    >
+                      <Typography className={classes.typoTitle}>
+                        ... {newsItem.Title} -{" "}
+                        {truncateDescription(newsItem.Description, 50)}
+                      </Typography>
+                    </Slide>
+                  </div>
+                ) : null
+              )
+            ) : (
+              <div className={classes.newsDiv}>
+                <Skeleton
+                  variant="text"
+                  sx={{
+                    fontSize: "25px",
+                    marginLeft: "10%",
+                    marginRight: "1%",
+                  }}
                 />
               </div>
-            </Stack>
-          </div>
-        </>
+            )}
+            <div className={classes.imageDiv}>
+              <Typography className={classes.imageTitle}>آخرالأخبار</Typography>
+              <img
+                src={rectangleShape}
+                alt="rect-shap"
+                width="157px"
+                height="43px"
+              />
+            </div>
+          </Stack>
+        </div>
+
+        {/* First Slider + Video */}
         <Stack
           direction="row"
           spacing={3.2}
@@ -470,14 +467,14 @@ const Home = () => {
           )}
         </Stack>
 
-        {/* Part_3 */}
+        {/* Ads */}
         <div className={classes.adsContainer}>
           <Typography className={classes.adsText}>
             إعــــــــــــــــــــــلان
           </Typography>
         </div>
 
-        {/* Part_4 */}
+        {/* Programs */}
         <div className={classes.programContainer}>
           <div className={classes.programHeader}>
             <Divider
@@ -580,6 +577,8 @@ const Home = () => {
           </div>
         </div>
       </Container>
+
+      {/* News Type Sliders */}
       <div className={classes.containerDiv2}>
         <Container className={classes.container2}>
           <Stack
