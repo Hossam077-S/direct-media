@@ -14,7 +14,7 @@ import {
   Container,
 } from "@mui/material";
 
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 import { Search as SearchIcon } from "@material-ui/icons";
 import { BsFacebook, BsYoutube } from "react-icons/bs";
@@ -149,7 +149,9 @@ const Header = () => {
               flexItem
               className={classes.divider}
             />
-            <img src={logo} alt="Logo" width="225px" height="50px" />
+            <Link to="/">
+              <img src={logo} alt="Logo" width="225px" height="50px" />
+            </Link>
           </Grid>
         </Grid>
       </Container>
