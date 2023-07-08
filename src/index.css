@@ -8,26 +8,26 @@
 
   @font-face {
     font-family: 'GE_SS_B';
-    src: url('./fonts/GE\ SS\ Text\ Bold.otf') format('truetype');
+    src: url('./fonts/GE SS Text Bold.otf') format('truetype');
   }
 
   @font-face {
     font-family: 'GE_SS_L';
-    src: url('./fonts/GE\ SS\ Text\ Light.otf') format('truetype');
+    src: url('./fonts/GE SS Text Light.otf') format('truetype');
   }
 
   @font-face {
     font-family: 'GE_SS_M';
-    src: url('./fonts/GE\ SS\ Text\ Medium.otf') format('truetype');
+    src: url('./fonts/GE SS Text Medium.otf') format('truetype');
   }
 
   @font-face {
     font-family: 'GE_SS_Two_L';
-    src: url('./fonts/GE\ SS\ Two\ Light\ copy.otf') format('truetype');
+    src: url('./fonts/GE SS Two Light copy.otf') format('truetype');
   }
   @font-face {
     font-family: 'GE_SS_Two_B';
-    src: url('./fonts/GE\ SS\ Text\ Bold.otf') format('truetype');
+    src: url('./fonts/GE SS Text Bold.otf') format('truetype');
   }
   @font-face {
     font-family: 'GE_SS_Two_Li';

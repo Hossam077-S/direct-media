@@ -9,13 +9,9 @@ import {
   Container,
   Stack,
   Typography,
-  IconButton,
   Skeleton,
-  Slide,
   ListItemAvatar,
 } from "@mui/material";
-
-import { BsArrowUpCircleFill, BsArrowDownCircleFill } from "react-icons/bs";
 
 import { Avatar, Divider, List, ListItem } from "@material-ui/core";
 
@@ -24,6 +20,8 @@ import URLParse from "url-parse";
 
 import rectangleShape from "../../assests/rect-tri.gif";
 import rectangle2Shape from "../../assests/reactangle.gif";
+import arrowINup from "../../assests/arrowINup.gif";
+import arrowINdown from "../../assests/arrowINdown.gif";
 import arrowLeft from "../../assests/arrowLeft.gif";
 import arrowRight from "../../assests/arrowRight.gif";
 import arrowThreeLeft from "../../assests/arrowThreeLeft.gif";
@@ -36,22 +34,75 @@ import useStyles from "./styles";
 import Slider from "react-slick";
 
 import NewsTypeSliderItem from "./newsTypeSliderItem";
+import ThreeSliderComponentItem from "./ThreeSliderComponentItem";
 
 const Home = () => {
   const classes = useStyles();
 
   const [newsData, setNewsData] = useState([]);
+  const [programsData, setProgramsData] = useState([]);
+
   const [groupedData, setGrouppedData] = useState({});
-  const [currentItem, setCurrentItem] = useState(0);
-  const [currentItem2, setCurrentItem2] = useState(0);
-  const [currentItem3, setCurrentItem3] = useState(0);
-  const [currentItem4, setCurrentItem4] = useState(0);
-  const [currentItem5, setCurrentItem5] = useState(0);
-  const [currentItem6, setCurrentItem6] = useState(0);
+  const [groupedProgramsData, setGrouppedProgramsData] = useState({});
+
   const [videoId, setVideoId] = useState(null);
   const [hoverIndex, setHoverIndex] = useState(-1);
 
-  const settings = {
+  const importantNew = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    vertical: true,
+    verticalSwiping: true,
+    autoplay: true,
+    autoplaySpeed: 6000,
+    arrows: true,
+    prevArrow: <img src={arrowINup} alt={"arrowLeft"} />,
+    nextArrow: <img src={arrowINdown} alt={"arrowLeft"} />,
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  };
+  const allNewsSlider = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 8000,
+    arrows: true,
+    prevArrow: <img src={arrowLeft} alt={"arrowLeft"} />,
+    nextArrow: <img src={arrowRight} alt={"arrowLeft"} />,
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 3,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  };
+  const programSettings = {
     dots: false,
     infinite: true,
     speed: 500,
@@ -77,10 +128,8 @@ const Home = () => {
   const newsTypesSliderSettings = {
     dots: false,
     infinite: true,
-    speed: 800,
     slidesToShow: 1,
     slidesToScroll: 1,
-    autoplay: false,
     arrows: true,
     prevArrow: (
       <img
@@ -115,31 +164,15 @@ const Home = () => {
       },
     ],
   };
-  const settings3 = {
+  const threeTypeSlider = {
     dots: false,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
     arrows: true,
-    prevArrow: (
-      <img
-        src={arrowThreeLeft}
-        alt={"arrowThreeLeft"}
-        width="14px"
-        height="14px"
-      />
-    ),
-    nextArrow: (
-      <img
-        src={arrowThreeRight}
-        alt={"arrowThreeRight"}
-        width="14px"
-        height="14px"
-      />
-    ),
+    prevArrow: <img src={arrowThreeLeft} alt={"arrowLeft"} />,
+    nextArrow: <img src={arrowThreeRight} alt={"arrowLeft"} />,
     responsive: [
       {
         breakpoint: 768,
@@ -198,15 +231,21 @@ const Home = () => {
     ],
   };
 
+  // Getting Data from firebase
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "News"), (snapshot) => {
+    const unsubscribeNews = onSnapshot(collection(db, "News"), (snapshot) => {
       const result = snapshot.docs.map((doc) => doc.data());
 
+      const ImportantNews = result.filter((m) => m.Category === "خبر عاجل");
       const pressNews = result.filter((m) => m.Category === "صحافة");
       const localNews = result.filter((m) => m.Category === "محلي");
       const internationalNews = result.filter((m) => m.Category === "دولي");
 
       const numberOfItems = 5;
+
+      const groupedImportantNews = [...ImportantNews];
+
+      const groupedPressNews2 = [...pressNews];
 
       const groupedPressNews = [];
       while (pressNews.length > 0) {
@@ -227,43 +266,56 @@ const Home = () => {
 
       setGrouppedData({
         press: groupedPressNews,
+        press2: groupedPressNews2,
         local: groupedLocalNews,
         inter: groupedInternationalNews,
+        important: groupedImportantNews,
       });
-      console.info("Groupped Data: ", groupedPressNews);
 
       setNewsData(result);
     });
 
+    const unsubscribeProgrames = onSnapshot(
+      collection(db, "Programs"),
+      (snapshot) => {
+        const result = snapshot.docs.map((doc) => doc.data());
+
+        const CaseInOne = result.filter((m) => m.Title === "قضية بدقيقة");
+
+        const groupedCaseProgrames = [...CaseInOne];
+
+        setGrouppedProgramsData({
+          programs: groupedCaseProgrames,
+        });
+
+        setProgramsData(result);
+      }
+    );
+
     return () => {
-      // Unsubscribe from the snapshot listener when the component unmounts
-      unsubscribe();
+      // UnsubscribeNews from the snapshot listener when the component unmounts
+      unsubscribeNews();
+      unsubscribeProgrames();
     };
   }, []);
 
-  // useEffect(() => {
-  //   let interval, interval3;
-  //   if (newsData.length > 0) {
-  //     const latestNewsIndex = newsData.length - 1;
-  //     setCurrentItem2(latestNewsIndex);
-
-  //     interval = setInterval(() => {
-  //       setCurrentItem((prevItem) => (prevItem + 1) % newsData.length);
-  //     }, 8000);
-
-  //     interval3 = setInterval(() => {
-  //       setCurrentItem3((prevItem) => (prevItem + 1) % newsData.length);
-  //     }, 8000);
-  //   }
-
-  //   return () => {
-  //     clearInterval(interval);
-  //     clearInterval(interval3);
-  //   };
-  // }, [newsData]);
-
+  // Getting latest video url for the programes
   useEffect(() => {
-    const videoUrl = newsData[currentItem2]?.YoutubeLink;
+    if (!groupedProgramsData || !groupedProgramsData.programs) {
+      return;
+    }
+
+    const sortedPrograms = [...groupedProgramsData.programs].sort((a, b) => {
+      return new Date(b.PublishDate) - new Date(a.PublishDate);
+    });
+
+    const latestProgram = sortedPrograms[0];
+    let videoUrl = null;
+
+    if (latestProgram) {
+      videoUrl = latestProgram.YoutubeUrl;
+    }
+
     if (videoUrl) {
       const url = new URLParse(videoUrl, true);
       const id = url.query.v;
@@ -271,28 +323,7 @@ const Home = () => {
     } else {
       setVideoId(null);
     }
-  }, [newsData, currentItem2]);
-
-  const handleNext = (setter) => {
-    const maxIndex = newsData.length - 1;
-    setter((prevIndex) => (prevIndex === maxIndex ? 0 : prevIndex + 1));
-  };
-
-  const handlePrevious = (setter) => {
-    const maxIndex = newsData.length - 1;
-    setter((prevIndex) => (prevIndex === 0 ? maxIndex : prevIndex - 1));
-  };
-
-  const truncateDescription = (description, maxLength) => {
-    if (description.length <= maxLength) {
-      return description;
-    }
-
-    const truncatedText = description.slice(0, maxLength);
-    const lastSpaceIndex = truncatedText.lastIndexOf(" ");
-
-    return `${truncatedText.slice(0, lastSpaceIndex)}`;
-  };
+  }, [groupedProgramsData]);
 
   const handleMouseEnter = (index) => {
     setHoverIndex(index);
@@ -302,50 +333,29 @@ const Home = () => {
     setHoverIndex(-1);
   };
 
-  const localNews = newsData.filter((newsItem) => newsItem.Category === "محلي");
-  const currentNewsItem = localNews[currentItem4];
-
   return (
     <>
       <Container className={classes.container}>
         {/* Latest News */}
         <div className={classes.slicerDiv}>
           <Stack direction="row" alignItems="center">
-            <div className={classes.arrowDiv}>
-              <IconButton
-                onClick={() => handlePrevious(setCurrentItem)}
-                disabled={newsData.length === 0}
-                className={classes.upButton}
-              >
-                <BsArrowUpCircleFill style={{ fontSize: "18px" }} />
-              </IconButton>
-              <IconButton
-                onClick={() => handleNext(setCurrentItem)}
-                disabled={newsData.length === 0}
-                className={classes.downButton}
-              >
-                <BsArrowDownCircleFill style={{ fontSize: "18px" }} />
-              </IconButton>
-            </div>
-            {newsData.length > 0 ? (
-              newsData.map((newsItem, index) =>
-                index === currentItem ? (
-                  <div key={index} className={classes.newsDiv}>
-                    <Slide
-                      in={true}
-                      style={{ transformOrigin: "0 0 0" }}
-                      {...(true ? { timeout: 1500 } : {})}
+            {Object.keys(groupedData).length > 0 ? (
+              <div className={classes.importantNewsDiv}>
+                <Slider {...importantNew}>
+                  {groupedData.important.map((newsItem, index) => (
+                    <div
+                      key={index}
+                      className={classes.importantNewsSliderItem}
                     >
-                      <Typography className={classes.typoTitle}>
-                        ... {newsItem.Title} -{" "}
-                        {truncateDescription(newsItem.Description, 50)}
+                      <Typography key={index} className={classes.typoTitle}>
+                        {newsItem.Title}
                       </Typography>
-                    </Slide>
-                  </div>
-                ) : null
-              )
+                    </div>
+                  ))}
+                </Slider>
+              </div>
             ) : (
-              <div className={classes.newsDiv}>
+              <div className={classes.importantNewSkeleton}>
                 <Skeleton
                   variant="text"
                   sx={{
@@ -374,8 +384,6 @@ const Home = () => {
           spacing={3.2}
           className={classes.gridSlidersContainer}
         >
-          {/* Part_2 */}
-
           <Stack direction="column" spacing={2}>
             {/* Render the image slider */}
             <div className={classes.imageDiv2}>
@@ -389,8 +397,9 @@ const Home = () => {
                 height="44px"
               />
             </div>
+
             {/* Render the news Videos slider */}
-            {newsData.length > 0 ? (
+            {Object.keys(groupedProgramsData).length > 0 ? (
               <div className={classes.newsDiv}>
                 <YouTube videoId={videoId} className={classes.youtubeVideo} />
               </div>
@@ -402,63 +411,45 @@ const Home = () => {
           </Stack>
 
           {/* Render the News images slider */}
-
-          {/* Error here need to fix all slider in the website */}
           {newsData.length > 0 ? (
             <div className={classes.newsImageDiv}>
-              <IconButton
-                onClick={() => handlePrevious(setCurrentItem3)}
-                disabled={newsData.length === 0}
-                className={classes.arrowLeft}
-              >
-                <img src={arrowLeft} alt="arrowLeft" />
-              </IconButton>
-              <Slider {...settings3}>
-                {newsData.map((newsItem, index) =>
-                  index === currentItem3 ? (
-                    <div key={index} className={classes.sliderItem}>
-                      <>
-                        <img
-                          src={newsItem.ImageURL}
-                          alt={newsItem.Title}
-                          width="642px"
-                          height="425px"
-                          className={classes.newsImage}
+              <Slider {...allNewsSlider}>
+                {newsData.map((newsItem, index) => (
+                  <div key={index} className={classes.sliderItem}>
+                    <>
+                      <img
+                        src={newsItem.ImageURL}
+                        alt={newsItem.Title}
+                        width="642px"
+                        height="425px"
+                        className={classes.newsImage}
+                      />
+                      <div className={classes.sliderDetailsDiv}>
+                        <div className={classes.sliderContent}>
+                          <Typography
+                            gutterBottom
+                            className={classes.sliderNewsTitle}
+                          >
+                            {newsItem.Title}
+                          </Typography>
+                          <Typography
+                            variant="body1"
+                            gutterBottom
+                            className={classes.sliderNewsDescription}
+                          >
+                            {newsItem.Description}
+                          </Typography>
+                        </div>
+                        <Divider
+                          orientation="vertical"
+                          flexItem
+                          className={classes.SliderDivider}
                         />
-                        <>
-                          <Divider
-                            orientation="vertical"
-                            flexItem
-                            className={classes.SliderDivider}
-                          />
-                          <div className={classes.sliderContent}>
-                            <Typography
-                              gutterBottom
-                              className={classes.sliderNewsTitle}
-                            >
-                              {newsItem.Title}
-                            </Typography>
-                            <Typography
-                              variant="body1"
-                              gutterBottom
-                              className={classes.sliderNewsDescription}
-                            >
-                              {newsItem.Description}
-                            </Typography>
-                          </div>
-                        </>
-                      </>
-                    </div>
-                  ) : null
-                )}
+                      </div>
+                    </>
+                  </div>
+                ))}
               </Slider>
-              <IconButton
-                onClick={() => handleNext(setCurrentItem3)}
-                disabled={newsData.length === 0}
-                className={classes.arrowRight}
-              >
-                <img src={arrowRight} alt="arrowRight" />
-              </IconButton>
             </div>
           ) : (
             <div className={classes.newsDiv}>
@@ -485,13 +476,13 @@ const Home = () => {
             <Typography className={classes.programText}>البرامج</Typography>
           </div>
           <div className={classes.programSlider}>
-            {newsData.length > 0 ? (
+            {programsData.length > 0 ? (
               <div className={classes.programItems}>
-                <Slider {...settings}>
-                  {newsData.map((newsItem, index) => (
+                <Slider {...programSettings}>
+                  {programsData.map((newsItem, index) => (
                     <img
                       key={index}
-                      src={newsItem.ImageURL}
+                      src={newsItem["Image URL"]}
                       alt={newsItem.Title}
                       className={classes.programImage}
                     />
@@ -515,10 +506,12 @@ const Home = () => {
                 <Typography className={classes.globalText}>دولي</Typography>
               </div>
               <div className={classes.newsTypeSlider}>
-                {groupedData.length > 0 ? (
+                {newsData.length > 0 ? (
                   <Slider {...newsTypesSliderSettings}>
                     {groupedData.inter.map((newsItem, index) => (
-                      <NewsTypeSliderItem Item={newsItem} ItemIndex={index} />
+                      <div>
+                        <NewsTypeSliderItem Item={newsItem} ItemIndex={index} />
+                      </div>
                     ))}
                   </Slider>
                 ) : (
@@ -581,11 +574,7 @@ const Home = () => {
       {/* News Type Sliders */}
       <div className={classes.containerDiv2}>
         <Container className={classes.container2}>
-          <Stack
-            direction="row"
-            spacing={4}
-            // className={classes.gridSlidersContainer2}
-          >
+          <Stack direction="row" spacing={4}>
             <Stack
               direction="column"
               spacing={2}
@@ -599,6 +588,7 @@ const Home = () => {
                   كتّاب المنصّة
                 </Typography>
               </div>
+              {/* Need fix the background */}
               {newsData.length > 0 ? (
                 <div className={classes.articlContentDiv}>
                   <div className={classes.articlImage_Divider}>
@@ -664,16 +654,10 @@ const Home = () => {
             {newsData.length > 0 ? (
               <div>
                 <div className={classes.articlImageDiv}>
-                  <IconButton
-                    onClick={() => handlePrevious(setCurrentItem3)}
-                    disabled={newsData.length === 0}
-                    className={classes.arrowLeft}
-                  >
-                    <img src={arrowLeft} alt="arrowLeft" />
-                  </IconButton>
-                  {newsData.map((newsItem, index) =>
-                    index === currentItem3 ? (
-                      <div key={index}>
+                  {/* Need Just filter */}
+                  <Slider {...allNewsSlider}>
+                    {newsData.map((newsItem, index) => (
+                      <div key={index} className={classes.sliderItem}>
                         <>
                           <img
                             src={newsItem.ImageURL}
@@ -682,13 +666,15 @@ const Home = () => {
                             height="319px"
                             className={classes.newsImage}
                           />
-                          <div className={classes.title_dividerArticl}>
-                            <Typography
-                              gutterBottom
-                              className={classes.sliderArticlTitle}
-                            >
-                              {newsItem.Title}
-                            </Typography>
+                          <div className={classes.sliderDetailsDiv2}>
+                            <div className={classes.title_dividerArticl}>
+                              <Typography
+                                gutterBottom
+                                className={classes.sliderArticlTitle}
+                              >
+                                {newsItem.Title}
+                              </Typography>
+                            </div>
                             <Divider
                               orientation="vertical"
                               flexItem
@@ -697,177 +683,40 @@ const Home = () => {
                           </div>
                         </>
                       </div>
-                    ) : null
-                  )}
-                  <IconButton
-                    onClick={() => handleNext(setCurrentItem3)}
-                    disabled={newsData.length === 0}
-                    className={classes.arrowRight}
-                  >
-                    <img src={arrowRight} alt="arrowRight" />
-                  </IconButton>
+                    ))}
+                  </Slider>
                 </div>
                 <div className={classes.threeNewsContainer}>
                   <div className={classes.newsThreeSlider}>
-                    {currentNewsItem && (
-                      <div className={classes.threeSlidersContainer}>
-                        <div className={classes.ThreeSlider}>
-                          <img
-                            src={currentNewsItem.ImageURL}
-                            alt={currentNewsItem.Title}
-                            width="160px"
-                            height="121px"
-                            className={classes.newsImage}
-                          />
-                          <div
-                            className={classes.title_description_threeSlider}
-                          >
-                            <Typography
-                              gutterBottom
-                              className={classes.sliderThreeTitle}
-                            >
-                              {currentNewsItem.Title}
-                            </Typography>
-                            <Typography
-                              gutterBottom
-                              className={classes.sliderThreeDescription}
-                            >
-                              {currentNewsItem.Description}
-                            </Typography>
-                          </div>
-                          <IconButton
-                            onClick={() => handlePrevious(setCurrentItem4)}
-                            disabled={newsData.length === 0}
-                            className={classes.arrowThreeLeft}
-                          >
-                            <img
-                              src={arrowThreeLeft}
-                              alt={currentNewsItem.Title}
-                              width="20px"
-                              height="20px"
-                            />
-                          </IconButton>
-                          <IconButton
-                            onClick={() => handleNext(setCurrentItem4)}
-                            disabled={newsData.length === 0}
-                            className={classes.arrowThreeRight}
-                          >
-                            <img
-                              src={arrowThreeRight}
-                              alt={currentNewsItem.Title}
-                              width="20px"
-                              height="20px"
-                            />
-                          </IconButton>
-                        </div>
-                      </div>
-                    )}
-                    {newsData.map((newsItem, index) =>
-                      index === currentItem5 ? (
-                        <div key={index} className={classes.ThreeSlider}>
-                          <img
-                            src={newsItem.ImageURL}
-                            alt={newsItem.Title}
-                            width="160px"
-                            height="121px"
-                            className={classes.newsImage}
-                          />
-                          <div
-                            className={classes.title_description_threeSlider}
-                          >
-                            <Typography
-                              gutterBottom
-                              className={classes.sliderThreeTitle}
-                            >
-                              {newsItem.Title}
-                            </Typography>
-                            <Typography
-                              gutterBottom
-                              className={classes.sliderThreeDescription}
-                            >
-                              {newsItem.Description}
-                            </Typography>
-                          </div>
-                          <IconButton
-                            onClick={() => handlePrevious(setCurrentItem5)}
-                            disabled={newsData.length === 0}
-                            className={classes.arrowThreeLeft}
-                          >
-                            <img
-                              src={arrowThreeLeft}
-                              alt={newsItem.Title}
-                              width="20px"
-                              height="20px"
-                            />
-                          </IconButton>
-                          <IconButton
-                            onClick={() => handleNext(setCurrentItem5)}
-                            disabled={newsData.length === 0}
-                            className={classes.arrowThreeRight}
-                          >
-                            <img
-                              src={arrowThreeRight}
-                              alt={newsItem.Title}
-                              width="20px"
-                              height="20px"
-                            />
-                          </IconButton>
-                        </div>
-                      ) : null
-                    )}
-                    {newsData.map((newsItem, index) =>
-                      index === currentItem6 ? (
-                        <div className={classes.ThreeSlider}>
-                          <img
-                            src={newsItem.ImageURL}
-                            alt={newsItem.Title}
-                            width="160px"
-                            height="121px"
-                            className={classes.newsImage}
-                          />
-                          <div
-                            className={classes.title_description_threeSlider}
-                          >
-                            <Typography
-                              gutterBottom
-                              className={classes.sliderThreeTitle}
-                            >
-                              {newsItem.Title}
-                            </Typography>
-                            <Typography
-                              gutterBottom
-                              className={classes.sliderThreeDescription}
-                            >
-                              {newsItem.Description}
-                            </Typography>
-                          </div>
-                          <IconButton
-                            onClick={() => handlePrevious(setCurrentItem6)}
-                            disabled={newsData.length === 0}
-                            className={classes.arrowThreeLeft}
-                          >
-                            <img
-                              src={arrowThreeLeft}
-                              alt={newsItem.Title}
-                              width="20px"
-                              height="20px"
-                            />
-                          </IconButton>
-                          <IconButton
-                            onClick={() => handleNext(setCurrentItem6)}
-                            disabled={newsData.length === 0}
-                            className={classes.arrowThreeRight}
-                          >
-                            <img
-                              src={arrowThreeRight}
-                              alt={newsItem.Title}
-                              width="20px"
-                              height="20px"
-                            />
-                          </IconButton>
-                        </div>
-                      ) : null
-                    )}
+                    {/* Need Filter also */}
+                    <Slider {...threeTypeSlider}>
+                      {groupedData.press2.map((newsItem, index) => (
+                        <ThreeSliderComponentItem
+                          index={index}
+                          item={newsItem}
+                        />
+                      ))}
+                    </Slider>
+                  </div>
+                  <div className={classes.newsThreeSlider}>
+                    <Slider {...threeTypeSlider}>
+                      {newsData.map((newsItem, index) => (
+                        <ThreeSliderComponentItem
+                          index={index}
+                          item={newsItem}
+                        />
+                      ))}
+                    </Slider>
+                  </div>
+                  <div className={classes.newsThreeSlider}>
+                    <Slider {...threeTypeSlider}>
+                      {newsData.map((newsItem, index) => (
+                        <ThreeSliderComponentItem
+                          index={index}
+                          item={newsItem}
+                        />
+                      ))}
+                    </Slider>
                   </div>
                 </div>
               </div>

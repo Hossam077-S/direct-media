@@ -4,11 +4,10 @@ import React from "react";
 import useStyles from "./styles";
 
 const NewsTypeSliderItem = ({ Item, ItemIndex }) => {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
   const classes = useStyles();
 
   return (
-    <div>
+    <>
       {Item.map((newsItem, index) => (
         <div
           key={ItemIndex * 5 + index}
@@ -41,7 +40,7 @@ const NewsTypeSliderItem = ({ Item, ItemIndex }) => {
           </div>
         </div>
       ))}
-    </div>
+    </>
   );
 };
 

@@ -38,6 +38,16 @@ import {
 const Admin = () => {
   const classes = useStyles();
 
+  const categories = [
+    { value: "خبر عاجل", label: "خبر عاجل" },
+    { value: "محلي", label: "محلي" },
+    { value: "صحافة", label: "صحافة" },
+    { value: "دولي", label: "دولي" },
+    { value: "برامج المنصة", label: "برامج المنصة" },
+    { value: "بودكاست", label: "بودكاست" },
+    { value: "رصد مباشر", label: "رصد مباشر" },
+  ];
+
   const theme = createTheme({
     direction: "rtl", // Both here and <body dir="rtl">
   });
@@ -248,12 +258,14 @@ const Admin = () => {
                           // ref={formCategoryRef} // Add ref to the Select component
                           className={classes.textFieldSelect}
                         >
-                          <MenuItem value="محلي">محلي</MenuItem>
-                          <MenuItem value="صحافة">صحافة</MenuItem>
-                          <MenuItem value="دولي">دولي</MenuItem>
-                          <MenuItem value="برامج المنصة">برامج المنصة</MenuItem>
-                          <MenuItem value="بودكاست">بودكاست</MenuItem>
-                          <MenuItem value="رصد مباشر">رصد مباشر</MenuItem>
+                          {categories.map((category) => (
+                            <MenuItem
+                              key={category.value}
+                              value={category.value}
+                            >
+                              {category.label}
+                            </MenuItem>
+                          ))}
                         </Select>
                       </FormControl>
                     </div>

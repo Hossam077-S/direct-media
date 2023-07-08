@@ -13,44 +13,62 @@ const useStyles = makeStyles((theme) => ({
     overflow: "hidden",
     border: "1px solid",
     borderColor: "#2E3190",
+
+    "& .MuiStack-root.css-1d9cypr-MuiStack-root": {
+      alignItems: 'flex-start'
+    },
+
   },
-  newsDiv: {
-    flexGrow: 1,
-    transition: "all ease-in-out 2s !important",
-  },
-  arrowDiv: {
+  importantNewsDiv: {
     display: 'flex',
-    justifyContent:'center',
-    paddingLeft: '10px'
+    flexDirection: 'column',
+    width: '716px',
+    
+    "& .slick-next": {
+      position: 'absolute',
+      top: "40%", 
+      left: "40px",
+      opacity: "0.4",
+      zIndex: 1,  
+      width: '14px',
+      height: '14px',
+    },
+    "& .slick-prev": {
+      position: "absolute",
+      top: "40%", 
+      left: "20px",
+      opacity: "0.4",
+      zIndex: 1,
+      width: '14px',
+      height: '14px',
+    },
   },
-  upButton: {
-    marginRight: '2px !important',
-    padding: '0px !important',
-  },
-  downButton: {
-    padding: '0px !important',
+  importantNewsSliderItem: {
+    position: 'relative',
+    height: '43px',
   },
   typoTitle: {
-    textAlign: "right",
+    textAlign: 'end',
     marginRight: "15px !important",
+    marginTop: '1% !important',
     fontFamily: "GE_SS_Two_M !important",
-    fontSize: "17.33",
+    fontSize: "17.33px !important",
   },
   imageDiv: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center",
-    position: "relative",
+    justifyContent: "end",
   },
   imageTitle: {
     position: "absolute",
-    top: "50%",
-    left: "54%",
-    transform: "translate(-50%, -50%)",
-    textAlign: "right",
+    paddingRight: '2%',
     color: "white",
     fontFamily: "GE_SS_Two_M !important",
     fontSize: "17.33px !important",
+  },
+  importantNewSkeleton: {
+    width: "100%",
+    paddingTop: '5px'
   },
   gridSlidersContainer: {
     marginTop: '38px'
@@ -81,20 +99,25 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
+    width: '642px',
 
     "& .slick-next": {
-      position: 'relative',
-      top: '20px',
-      left: '213px',
-      backgroundColor: '#DCDCDC !important',
-      padding: '1px',
+      position: 'absolute',
+      top: "50% !important", 
+      right: "4% !important",
+      opacity: "0.4",
+      zIndex: 1,  
+      width: '19px',
+      height: '39px',
     },
     "& .slick-prev": {
-      position: 'relative',
-      top: "100%",
-      left: "82%",
-      backgroundColor: '#DCDCDC !important',
-      padding: '1px',
+      position: "absolute",
+      top: "50% !important", 
+      left: "4% !important",
+      opacity: "0.4",
+      zIndex: 1,
+      width: '19px',
+      height: '39px',
     },
   },
   arrowRight: {
@@ -115,25 +138,32 @@ const useStyles = makeStyles((theme) => ({
     animation: "$slideInImage 1.2s ease-in-out",
   },
   sliderItem: {  
+    position: 'relative', 
+  },
+  sliderDetailsDiv: {
+    position: "absolute",
+    top: "68%",
+    right: "0",
+    
+    backgroundColor:" rgba(0,0,0,.5)",
+
     display: 'flex',
-    flexDirection: 'column',
+    justifyContent: 'end',
+
+    width: '100%',
+    height: '32%',
   },
   sliderContent: {
-    marginTop: 'auto',
+   paddingTop: '28px',
+   paddingRight: '23px',
+   paddingLeft: '100px'
   },
   SliderDivider: {
-    position: "absolute !important",
-    top: "67.4% !important",
-    right: "0 !important",
-    backgroundColor: "#F9AE3B !important",
-    width: "13px !important",
-    height: "136px !important",
+    backgroundColor: "#F9AE3B",
+    width: "13px",
+    height: "136px",
   },
   sliderNewsTitle : {
-    position: "absolute !important",
-    top: "70% !important",
-    right: "6% !important",
-
     color: 'white',
     fontFamily: 'GE_SS_Two_B !important',
     fontSize: '22px !important',
@@ -142,13 +172,9 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: '1.2 !important',
     
     animation: "$slideInTitle 2s ease-in-out",
+    marginBottom: '0px !important'
   },
   sliderNewsDescription: {
-    position: "absolute !important",
-    top: "82% !important",
-    right: "6% !important",
-    paddingLeft: '6% !important',
-
     color: 'white',
     
     fontFamily: 'GE_SS_Two_L !important',
@@ -239,12 +265,12 @@ const useStyles = makeStyles((theme) => ({
   },
   programItems: {
     marginTop: '27px',
-    backgroundColor: '#E9E9E9',
+    width: '100%'
   },
   programImage: {
     width: "170px !important",
     height: "94.2px !important",
-    paddingLeft: '6px !important'
+
   },
   newsTypesHeader: {
     display: 'flex',
@@ -352,8 +378,8 @@ const useStyles = makeStyles((theme) => ({
   },
   articlStack: {
     backgroundColor: '#2E3190',
-    height: '609px',
-    width: '315px',
+    minWidth: '315px',
+    overflow: 'hidden',
   },
   articlDivTitle: {
     display: 'flex',
@@ -380,9 +406,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
   },
   newsList: {
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'flex-start',
     width: '315px',
     height: '125px',
   },
@@ -390,17 +413,24 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2.4, 0),
     transition: 'background-color 0.3s ease',
     cursor: 'pointer',
-    paddingLeft: '12px',
+    paddingLeft: '25px',
+    height: '125px',
+    overflow: 'hidden',
+    position:'relative',
+
+    "&:nth-child(odd)": {
+      backgroundColor: '#1B1464'
+    }
   },
   newsAvatar: {
     width: '84.8px',
     height: '84.8px',
   },
   activeListItem: {
-    backgroundColor: '#1B1464',
     width: '315px',
     height: '125px',
-    padding: '0',
+    paddingLeft: '25px',
+    padding: 0
   },
   newsItemContent: {
     display: 'flex',
@@ -429,6 +459,12 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#000000',
     marginRight: '18px',
     opacity: 0,
+    position:'absolute',
+    left: 0,
+    width: '13px',
+    top: 0,
+    bottom: 0,
+    minHeight: '100%'
   },
   activeDivider: {
     backgroundColor: "#F9AE3B !important",
@@ -443,28 +479,54 @@ const useStyles = makeStyles((theme) => ({
 
   },
   articlImageDiv: {
-    position: 'relative !important',
+    position: 'relative',
+    display: 'flex',
+    flexDirection: 'column',
     width: '527px',
-    height: '319px',
+    
+
+    "& .slick-next": {
+      position: 'absolute',
+      top: "50% !important", 
+      right: "4% !important",
+      opacity: "0.4",
+      zIndex: 1,  
+      width: '19px',
+      height: '39px',
+    },
+    "& .slick-prev": {
+      position: "absolute",
+      top: "50% !important", 
+      left: "4% !important",
+      opacity: "0.4",
+      zIndex: 1,
+      width: '19px',
+      height: '39px',
+    },
   },
-  title_dividerArticl: {
-    position: "absolute !important",
-    top: "75% !important",
-    right: "0 !important",
-    backgroundColor: '#2E3190 !important',
+  sliderDetailsDiv2: {
+    position: "absolute",
+    top: "75%",
+    right: "0",
+    
+    backgroundColor: '#2E3190',
+
     display: 'flex',
     justifyContent: 'end',
+
     width: '100%',
-    zIndex: 1,
+  },
+  title_dividerArticl: {
+    paddingTop: '20px',
+    paddingRight: '22px',
+    paddingLeft: '22px'
   },
   articlSliderDivider: {
-    backgroundColor: "#F9AE3B !important",
-    width: "14px !important",
-    height: "80px !important",
+    backgroundColor: "#F9AE3B",
+    width: "14px",
+    height: "80px",
   },
   sliderArticlTitle: {
-    paddingRight: '22px',
-    paddingTop: '20px',
     color: 'white',
     fontFamily: 'GE_SS_Two_M !important',
     fontSize: '15px !important',
@@ -475,7 +537,30 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '32px',
   },
   newsThreeSlider: {
+    position: 'relative',
     display: 'flex',
+    paddingRight: '23px',
+
+    "& .slick-slider.slick-initialized":{
+      width: '160px',
+      height: '258px',
+    },
+    "& .slick-next": {
+      position: 'absolute',
+      top: "100%", 
+      right: "0%",
+      zIndex: 1,  
+      padding: '0px',
+      marginTop: '15px',
+    },
+    "& .slick-prev": {
+      position: "absolute",
+      top: "100%", 
+      left: "75%",
+      zIndex: 1,
+      padding: '0px',
+      marginTop: '15px',
+    },
   },
   threeSlidersContainer: {
     display: 'flex',
@@ -483,9 +568,6 @@ const useStyles = makeStyles((theme) => ({
   },
   ThreeSlider: {
     position: 'relative',
-    width: '160px',
-    height: '258px',
-    marginRight: '23px',
     backgroundColor: 'white',
   },
   title_description_threeSlider: {
@@ -493,6 +575,8 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: '15px',
     paddingLeft: '19px',
     paddingTop: '14px',
+    display: 'flex',
+    flexDirection: 'column',
   },
   sliderThreeTitle: {
     fontSize: '10px !important',
@@ -504,22 +588,8 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '8px !important',
     fontFamily: 'GE_SS_Two_L !important',
     textAlign: 'right',
-  },
-  arrowThreeRight: {
-    position: "absolute !important",
-    top: "100% !important", 
-    right: "0% !important",
-    zIndex: 1,
-    padding: '0px !important',
-    marginTop: '4px !important',
-  },
-  arrowThreeLeft: {
-    position: "absolute !important",
-    top: "100% !important", 
-    right: "12% !important",
-    zIndex: 1,
-    padding: '0px !important',
-    marginTop: '4px !important',
+    flexGrow: 1,
+    lineHeight: 1.5
   },
   containerDiv3: {
     height: '89px',
