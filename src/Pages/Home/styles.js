@@ -27,12 +27,13 @@ const useStyles = makeStyles((theme) => ({
     "& .slick-next": {
       position: 'absolute',
       top: "40%", 
-      left: "40px",
+      right: "92% !important",
       opacity: "0.4",
       zIndex: 1,  
       width: '14px',
       height: '14px',
     },
+    
     "& .slick-prev": {
       position: "absolute",
       top: "40%", 
@@ -48,7 +49,6 @@ const useStyles = makeStyles((theme) => ({
     height: '43px',
   },
   typoTitle: {
-    textAlign: 'end',
     marginRight: "15px !important",
     marginTop: '1% !important',
     fontFamily: "GE_SS_Two_M !important",
@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
   imageDiv: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "end",
+    justifyContent: "start",
   },
   imageTitle: {
     position: "absolute",
@@ -70,8 +70,14 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     paddingTop: '5px'
   },
+  
   gridSlidersContainer: {
-    marginTop: '38px'
+    marginTop: '38px',
+
+    "& .MuiStack-root.css-1p5q5e5-MuiStack-root": {
+      marginRight: '25.6px',
+      marginLeft: '0px !important'
+    }
   },
   youtubeVideo: {
     width: '205px',
@@ -95,11 +101,17 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "23px !important",
     fontFamily: "GE_SS_Two_M !important",
   },
+  // error need to fix here
   newsImageDiv: {
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     width: '642px',
+
+    "& .slick-track": {
+      transform: 'translate3d(4494px, 0px, 0px) !important'
+
+    },
 
     "& .slick-next": {
       position: 'absolute',
@@ -120,20 +132,7 @@ const useStyles = makeStyles((theme) => ({
       height: '39px',
     },
   },
-  arrowRight: {
-    position: "absolute !important",
-    top: "50% !important", 
-    right: "4% !important",
-    opacity: "0.4",
-    zIndex: 1,
-  },
-  arrowLeft: {
-    position: "absolute !important",
-    top: "50% !important", 
-    left: "4% !important",
-    opacity: "0.4",
-    zIndex: 1,
-  },
+
   newsImage: {
     animation: "$slideInImage 1.2s ease-in-out",
   },
@@ -143,12 +142,12 @@ const useStyles = makeStyles((theme) => ({
   sliderDetailsDiv: {
     position: "absolute",
     top: "68%",
-    right: "0",
+    right: "0px",
     
     backgroundColor:" rgba(0,0,0,.5)",
 
     display: 'flex',
-    justifyContent: 'end',
+    justifyContent: 'start',
 
     width: '100%',
     height: '32%',
@@ -204,7 +203,6 @@ const useStyles = makeStyles((theme) => ({
       transform: "translateX(0)",
     },
   },
-
   "@keyframes slideInTitle": {
     "0%": {
       opacity: 0,
@@ -225,7 +223,7 @@ const useStyles = makeStyles((theme) => ({
       transform: "translateX(0)",
     },
   },
-
+  
   adsContainer: {
     display: 'flex',
     backgroundColor: "#F1F1F1",
@@ -537,6 +535,14 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '15px !important',
     animation: "$slideInTitle 2s ease-in-out",
   },
+  sliderArticlDate: {
+    color: 'white',
+    fontFamily: 'GE_SS_Two_L !important',
+    fontSize: '10px !important',
+    animation: "$slideInTitle 2s ease-in-out",
+    textAlign: 'right',
+    direction: 'rtl',
+  },
   threeNewsContainer: {
     display: 'flex',
     marginTop: '32px',
@@ -656,6 +662,7 @@ const useStyles = makeStyles((theme) => ({
     color: '#2E3190',
     fontSize: "17.3px !important",
     fontFamily: "GE_SS_Two_L !important",
+    marginLeft: '38px !important',
   },
   containerDiv5: {
     marginTop: '50px',

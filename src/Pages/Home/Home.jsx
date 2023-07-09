@@ -193,7 +193,7 @@ const Home = () => {
       },
     ],
   };
-  const settings4 = {
+  const writersSettings = {
     dots: false,
     infinite: true,
     speed: 500,
@@ -244,7 +244,6 @@ const Home = () => {
         x.id = doc.id;
         return x;
       });
-      console.info("All Date : ", result);
 
       const ImportantNews = result.filter((m) => m.Category === "خبر عاجل");
       const pressNews = result.filter((m) => m.Category === "صحافة");
@@ -371,6 +370,15 @@ const Home = () => {
         {/* Latest News */}
         <div className={classes.slicerDiv}>
           <Stack direction="row" alignItems="center">
+            <div className={classes.imageDiv}>
+              <Typography className={classes.imageTitle}>آخرالأخبار</Typography>
+              <img
+                src={rectangleShape}
+                alt="rect-shap"
+                width="157px"
+                height="43px"
+              />
+            </div>
             {Object.keys(groupedData).length > 0 ? (
               <div className={classes.importantNewsDiv}>
                 <Slider {...importantNew}>
@@ -398,15 +406,6 @@ const Home = () => {
                 />
               </div>
             )}
-            <div className={classes.imageDiv}>
-              <Typography className={classes.imageTitle}>آخرالأخبار</Typography>
-              <img
-                src={rectangleShape}
-                alt="rect-shap"
-                width="157px"
-                height="43px"
-              />
-            </div>
           </Stack>
         </div>
 
@@ -416,6 +415,83 @@ const Home = () => {
           spacing={3.2}
           className={classes.gridSlidersContainer}
         >
+          {/* Render the News images slider */}
+          {newsData.length > 0 ? (
+            <div className={classes.newsImageDiv}>
+              <Slider {...allNewsSlider}>
+                {newsData.map((newsItem, index) => (
+                  <div key={index} className={classes.sliderItem}>
+                    <>
+                      <img
+                        src={newsItem.ImageURL}
+                        alt={newsItem.Title}
+                        width="642px"
+                        height="425px"
+                        className={classes.newsImage}
+                      />
+                      <div className={classes.sliderDetailsDiv}>
+                        <Divider
+                          orientation="vertical"
+                          flexItem
+                          className={classes.SliderDivider}
+                        />
+                        <div className={classes.sliderContent}>
+                          <Link to={"news/" + newsItem.id}>
+                            <Typography
+                              gutterBottom
+                              className={classes.sliderNewsTitle}
+                            >
+                              {newsItem.Title}
+                            </Typography>
+                          </Link>
+                          <Typography
+                            variant="body1"
+                            gutterBottom
+                            className={classes.sliderNewsDescription}
+                          >
+                            <Truncate
+                              lines={2}
+                              ellipsis={
+                                <span
+                                  style={{
+                                    fontSize: "15px",
+                                  }}
+                                >
+                                  ... <a href="/link/to/article">المزيد</a>
+                                </span>
+                              }
+                            >
+                              {newsItem.Description}
+                            </Truncate>
+                          </Typography>
+                          <Typography className={classes.sliderArticlDate}>
+                            {newsItem.PublishDate instanceof Date
+                              ? newsItem.PublishDate.toLocaleDateString("ar", {
+                                  day: "numeric",
+                                  month: "numeric",
+                                  year: "numeric",
+                                })
+                              : newsItem.PublishDate.toDate().toLocaleDateString(
+                                  "ar",
+                                  {
+                                    day: "numeric",
+                                    month: "numeric",
+                                    year: "numeric",
+                                  }
+                                )}
+                          </Typography>
+                        </div>
+                      </div>
+                    </>
+                  </div>
+                ))}
+              </Slider>
+            </div>
+          ) : (
+            <div className={classes.newsDiv}>
+              <Skeleton variant="rectangular" height="425px" />
+            </div>
+          )}
           <Stack direction="column" spacing={2}>
             {/* Render the image slider */}
             <div className={classes.imageDiv2}>
@@ -441,65 +517,6 @@ const Home = () => {
               </div>
             )}
           </Stack>
-
-          {/* Render the News images slider */}
-          {newsData.length > 0 ? (
-            <div className={classes.newsImageDiv}>
-              <Slider {...allNewsSlider}>
-                {newsData.map((newsItem, index) => (
-                  <div key={index} className={classes.sliderItem}>
-                    <>
-                      <img
-                        src={newsItem.ImageURL}
-                        alt={newsItem.Title}
-                        width="642px"
-                        height="425px"
-                        className={classes.newsImage}
-                      />
-                      <div className={classes.sliderDetailsDiv}>
-                        <div className={classes.sliderContent}>
-                          <Link to={"news/" + newsItem.id}>
-                            <Typography
-                              gutterBottom
-                              className={classes.sliderNewsTitle}
-                            >
-                              {newsItem.Title}
-                            </Typography>
-                          </Link>
-                          <Typography
-                            variant="body1"
-                            gutterBottom
-                            className={classes.sliderNewsDescription}
-                          >
-                            <Truncate
-                              lines={2}
-                              ellipsis={
-                                <span>
-                                  ...{" "}
-                                  <a href="/link/to/article">قراءة المزيد</a>
-                                </span>
-                              }
-                            >
-                              {newsItem.Description}
-                            </Truncate>
-                          </Typography>
-                        </div>
-                        <Divider
-                          orientation="vertical"
-                          flexItem
-                          className={classes.SliderDivider}
-                        />
-                      </div>
-                    </>
-                  </div>
-                ))}
-              </Slider>
-            </div>
-          ) : (
-            <div className={classes.newsDiv}>
-              <Skeleton variant="rectangular" height="425px" />
-            </div>
-          )}
         </Stack>
 
         {/* Ads */}
@@ -632,7 +649,6 @@ const Home = () => {
                   كتّاب المنصّة
                 </Typography>
               </div>
-              {/* Need fix the background */}
               {newsData.length > 0 ? (
                 <div className={classes.articlContentDiv}>
                   <div className={classes.articlImage_Divider}>
@@ -741,11 +757,27 @@ const Home = () => {
                           />
                           <div className={classes.sliderDetailsDiv2}>
                             <div className={classes.title_dividerArticl}>
-                              <Typography
-                                gutterBottom
-                                className={classes.sliderArticlTitle}
-                              >
+                              <Typography className={classes.sliderArticlTitle}>
                                 {newsItem.Title}
+                              </Typography>
+                              <Typography className={classes.sliderArticlDate}>
+                                {newsItem.PublishDate instanceof Date
+                                  ? newsItem.PublishDate.toLocaleDateString(
+                                      "ar",
+                                      {
+                                        day: "numeric",
+                                        month: "numeric",
+                                        year: "numeric",
+                                      }
+                                    )
+                                  : newsItem.PublishDate.toDate().toLocaleDateString(
+                                      "ar",
+                                      {
+                                        day: "numeric",
+                                        month: "numeric",
+                                        year: "numeric",
+                                      }
+                                    )}
                               </Typography>
                             </div>
                             <Divider
@@ -761,7 +793,6 @@ const Home = () => {
                 </div>
                 <div className={classes.threeNewsContainer}>
                   <div className={classes.newsThreeSlider}>
-                    {/* Need Filter also */}
                     <Slider {...threeTypeSlider}>
                       {groupedData.press2.map((newsItem, index) => (
                         <ThreeSliderComponentItem
@@ -821,13 +852,13 @@ const Home = () => {
           </div>
 
           <div className={classes.writerDetails}>
-            {newsData.length > 0 ? (
+            {writersData.length > 0 ? (
               <div className={classes.writerItems}>
-                <Slider {...settings4}>
-                  {newsData.map((newsItem, index) => (
+                <Slider {...writersSettings}>
+                  {writersData.map((newsItem, index) => (
                     <div key={index}>
                       <img
-                        src={newsItem.ImageURL}
+                        src={newsItem.ProfileImage}
                         alt={newsItem.Title}
                         className={classes.writerImage}
                       />
@@ -835,7 +866,7 @@ const Home = () => {
                         variant="body1"
                         className={classes.writerTitle}
                       >
-                        {newsItem.Title}
+                        {newsItem.Name}
                       </Typography>
                     </div>
                   ))}

@@ -29,13 +29,13 @@ import useStyles from "./styles";
 
 const Header = () => {
   const menuItems = [
-    { name: "رصد مباشر", href: "/t" },
-    { name: "بودكاست", href: "/w" },
-    { name: "برامج المنصة", href: "/q" },
-    { name: "دولي", href: "/r" },
-    { name: "صحافة", href: "/s" },
-    { name: "محلي", href: "/news" },
     { name: "كل الأخبار", href: "/" },
+    { name: "محلي", href: "/news" },
+    { name: "صحافة", href: "/s" },
+    { name: "دولي", href: "/r" },
+    { name: "برامج المنصة", href: "/q" },
+    { name: "بودكاست", href: "/w" },
+    { name: "رصد مباشر", href: "/t" },
   ];
 
   const currentDate = new Date().toLocaleDateString("ar", {
@@ -62,16 +62,11 @@ const Header = () => {
         {/* <Grid> */}
         <Container className={classes.widthContainer}>
           <Toolbar className={classes.toolbar}>
-            {/* Left Header */}
-            <Box className={classes.leftheader}>
-              {/* Search Box */}
-              <Box className={classes.searchbox} component="div">
-                {/* Search Icon */}
-                <IconButton>
-                  <SearchIcon className={classes.searchicon} />
-                </IconButton>
-                <InputBase className={classes.inputbase} placeholder="بحث" />
-              </Box>
+            {/* Date */}
+            <Box className={classes.todaydatebox}>
+              <Typography className={classes.todaydatetext} variant="body2">
+                {currentDate}
+              </Typography>
             </Box>
 
             {/* Social Media Icons */}
@@ -93,11 +88,16 @@ const Header = () => {
               </IconButton>
             </Box>
 
-            {/* Date */}
-            <Box className={classes.todaydatebox}>
-              <Typography className={classes.todaydatetext} variant="body2">
-                {currentDate}
-              </Typography>
+            {/* Left Header */}
+            <Box className={classes.leftheader}>
+              {/* Search Box */}
+              <Box className={classes.searchbox} component="div">
+                {/* Search Icon */}
+                <IconButton>
+                  <SearchIcon className={classes.searchicon} />
+                </IconButton>
+                <InputBase className={classes.inputbase} placeholder="بحث" />
+              </Box>
             </Box>
           </Toolbar>
         </Container>
@@ -108,6 +108,14 @@ const Header = () => {
       <Container className={classes.widthContainer}>
         <Grid container spacing={2} className={classes.gridContainer}>
           <Grid item className={classes.gridMenu}>
+            <Link to="/">
+              <img src={logo} alt="Logo" width="225px" height="50px" />
+            </Link>
+            <Divider
+              orientation="vertical"
+              flexItem
+              className={classes.divider}
+            />
             <Hidden mdDown>
               {menuItems.map((item) => (
                 <NavLink
@@ -143,15 +151,6 @@ const Header = () => {
                 </MenuItem>
               ))}
             </Menu>
-
-            <Divider
-              orientation="vertical"
-              flexItem
-              className={classes.divider}
-            />
-            <Link to="/">
-              <img src={logo} alt="Logo" width="225px" height="50px" />
-            </Link>
           </Grid>
         </Grid>
       </Container>

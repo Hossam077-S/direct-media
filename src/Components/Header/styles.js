@@ -20,7 +20,6 @@ export default makeStyles((theme) => ({
     paddingLeft: '0 !important',
     paddingRight: '0 !important',
     paddingBottom: '14px'
-    
   },
   leftheader: {
     [theme.breakpoints.down('sm')]: {
@@ -37,7 +36,6 @@ export default makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
     height: '22.4px',
-    flexShrink: 0,
     marginRight: '12px',
   },
   searchicon: {
@@ -46,8 +44,8 @@ export default makeStyles((theme) => ({
     height: '20px'
   },
   inputbase: {
-    paddingLeft: '10px',
-    paddingRight: '5px',
+    paddingLeft: '5px',
+    paddingRight: '10px',
     width: '80px',
     fontSize: "12px !important",
     fontFamily: "GE_SS_Two_M !important",
@@ -58,10 +56,10 @@ export default makeStyles((theme) => ({
   },
   socialmediaiconbox: {
     flexGrow: 1,
+    textAlign: 'left',
   },
   todaydatebox: {
-    display: 'flex',
-    
+    display: 'flex',  
   },
   todaydatetext: {
     fontFamily: "GE_SS_Two_L !important",
@@ -69,12 +67,12 @@ export default makeStyles((theme) => ({
   },
   //Social Media Icon
   fButton:{
-    marginRight: "4px !important",
+    marginLeft: "4px !important",
   },
   IButton:{
     backgroundColor: "white !important",
     padding: "4px !important",
-    marginRight: "2px !important",
+    marginleft: "2px !important",
   },
   TButton:{
     backgroundColor: "white !important",
@@ -82,7 +80,7 @@ export default makeStyles((theme) => ({
   },
   YButton:{
     backgroundColor: "white !important",
-    marginLeft: "11px !important",
+    marginRight: "11px !important",
     padding: "4px !important",
   },
   fIcon:{
@@ -96,7 +94,7 @@ export default makeStyles((theme) => ({
   TWIcon:{
     fontSize: "24px !important",
     color: "white !important",
-    marginRight: "2px !important",
+    marginLeft: "2px !important",
   },
   TIcon:{
     color: "#2E3190 !important", 
@@ -108,10 +106,9 @@ export default makeStyles((theme) => ({
   },
   //Menu
   gridContainer:{
-    justifyContent: "flex-end",
+    justifyContent: "flex-start",
     marginTop: '27px !important',
     marginBottom: '5px !important',
-
   },
   gridMenu: {  
     display: 'flex',
@@ -134,14 +131,15 @@ export default makeStyles((theme) => ({
     paddingLeft: "19px !important",
     transition: "transform 0.2s ease-in-out", // Add a transition effect for the transform property
     whiteSpace: 'nowrap', // Add this property to prevent wrapping
+
     "&.active": { // Use the .active class selector
       textDecoration: "underline",
       textDecorationColor: "#F9AE3B",
       transition: "opacity 0.2s",
       textDecorationThickness: "2px",
       textUnderlineOffset: "15px",
-
     },
+    
     "&:hover": {
       textDecoration: "underline",
       textDecorationColor: "#F9AE3B",
