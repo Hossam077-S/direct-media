@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
+import Truncate from "react-truncate";
+
 import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "../../Utils/firebase";
 
@@ -35,12 +37,15 @@ import Slider from "react-slick";
 
 import NewsTypeSliderItem from "./newsTypeSliderItem";
 import ThreeSliderComponentItem from "./ThreeSliderComponentItem";
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const classes = useStyles();
 
   const [newsData, setNewsData] = useState([]);
   const [programsData, setProgramsData] = useState([]);
+  const [writersData, setWritersData] = useState([]);
+  const [articlesData, setArticlesData] = useState([]);
 
   const [groupedData, setGrouppedData] = useState({});
   const [groupedProgramsData, setGrouppedProgramsData] = useState({});
@@ -234,7 +239,12 @@ const Home = () => {
   // Getting Data from firebase
   useEffect(() => {
     const unsubscribeNews = onSnapshot(collection(db, "News"), (snapshot) => {
-      const result = snapshot.docs.map((doc) => doc.data());
+      const result = snapshot.docs.map((doc) => {
+        const x = doc.data();
+        x.id = doc.id;
+        return x;
+      });
+      console.info("All Date : ", result);
 
       const ImportantNews = result.filter((m) => m.Category === "خبر عاجل");
       const pressNews = result.filter((m) => m.Category === "صحافة");
@@ -246,6 +256,10 @@ const Home = () => {
       const groupedImportantNews = [...ImportantNews];
 
       const groupedPressNews2 = [...pressNews];
+
+      const groupedLocalNews2 = [...localNews];
+
+      const groupedInternationalNews2 = [...internationalNews];
 
       const groupedPressNews = [];
       while (pressNews.length > 0) {
@@ -268,13 +282,14 @@ const Home = () => {
         press: groupedPressNews,
         press2: groupedPressNews2,
         local: groupedLocalNews,
+        local2: groupedLocalNews2,
         inter: groupedInternationalNews,
+        inter2: groupedInternationalNews2,
         important: groupedImportantNews,
       });
 
       setNewsData(result);
     });
-
     const unsubscribeProgrames = onSnapshot(
       collection(db, "Programs"),
       (snapshot) => {
@@ -291,11 +306,28 @@ const Home = () => {
         setProgramsData(result);
       }
     );
+    const unsubscribeWriters = onSnapshot(
+      collection(db, "Writers"),
+      (snapshot) => {
+        const result = snapshot.docs.map((doc) => doc.data());
 
+        setWritersData(result);
+      }
+    );
+    const unsubscribeArticles = onSnapshot(
+      collection(db, "Articles"),
+      (snapshot) => {
+        const result = snapshot.docs.map((doc) => doc.data());
+
+        setArticlesData(result);
+      }
+    );
     return () => {
       // UnsubscribeNews from the snapshot listener when the component unmounts
       unsubscribeNews();
       unsubscribeProgrames();
+      unsubscribeWriters();
+      unsubscribeArticles();
     };
   }, []);
 
@@ -426,18 +458,30 @@ const Home = () => {
                       />
                       <div className={classes.sliderDetailsDiv}>
                         <div className={classes.sliderContent}>
-                          <Typography
-                            gutterBottom
-                            className={classes.sliderNewsTitle}
-                          >
-                            {newsItem.Title}
-                          </Typography>
+                          <Link to={"news/" + newsItem.id}>
+                            <Typography
+                              gutterBottom
+                              className={classes.sliderNewsTitle}
+                            >
+                              {newsItem.Title}
+                            </Typography>
+                          </Link>
                           <Typography
                             variant="body1"
                             gutterBottom
                             className={classes.sliderNewsDescription}
                           >
-                            {newsItem.Description}
+                            <Truncate
+                              lines={2}
+                              ellipsis={
+                                <span>
+                                  ...{" "}
+                                  <a href="/link/to/article">قراءة المزيد</a>
+                                </span>
+                              }
+                            >
+                              {newsItem.Description}
+                            </Truncate>
                           </Typography>
                         </div>
                         <Divider
@@ -593,7 +637,7 @@ const Home = () => {
                 <div className={classes.articlContentDiv}>
                   <div className={classes.articlImage_Divider}>
                     <List className={classes.newsList}>
-                      {newsData.slice(0, 4).map((newsItem, index) => (
+                      {writersData.slice(0, 4).map((writerItem, index) => (
                         <React.Fragment key={index}>
                           <ListItem
                             className={`${classes.newsListItem} ${
@@ -616,17 +660,47 @@ const Home = () => {
                               )}
                               <ListItemAvatar>
                                 <Avatar
-                                  alt={newsItem.Title}
-                                  src={newsItem.ImageURL}
+                                  alt={writerItem.Title}
+                                  src={writerItem.ProfileImage}
                                   className={classes.newsAvatar}
                                 />
                               </ListItemAvatar>
                               <div className={classes.descriptionContent}>
                                 <div className={classes.newsItemTitle}>
-                                  {newsItem.Title}
+                                  {articlesData.map((articleItem, index) => {
+                                    const articleID =
+                                      writerItem.ArticleID[
+                                        writerItem.ArticleID.length - 1
+                                      ];
+                                    if (articleItem.ArticleID === articleID) {
+                                      return (
+                                        <Typography
+                                          key={index}
+                                          className={classes.articleContent}
+                                        >
+                                          <Truncate
+                                            lines={3}
+                                            ellipsis={
+                                              <span
+                                                style={{ fontSize: "10px" }}
+                                              >
+                                                ...{" "}
+                                                <a href="/link/to/article">
+                                                  قراءة المزيد
+                                                </a>
+                                              </span>
+                                            }
+                                          >
+                                            {articleItem.Content}
+                                          </Truncate>
+                                        </Typography>
+                                      );
+                                    }
+                                    return null;
+                                  })}
                                 </div>
                                 <div className={classes.newsItemDescription}>
-                                  <span>حسام</span>
+                                  <span>{writerItem.Name}</span>
                                   <span
                                     style={{
                                       fontSize: "30px",
@@ -643,7 +717,6 @@ const Home = () => {
                       ))}
                     </List>
                   </div>
-                  {/* <div className={classes.articlDescription_Name}></div> */}
                 </div>
               ) : (
                 <div>
@@ -700,7 +773,7 @@ const Home = () => {
                   </div>
                   <div className={classes.newsThreeSlider}>
                     <Slider {...threeTypeSlider}>
-                      {newsData.map((newsItem, index) => (
+                      {groupedData.local2.map((newsItem, index) => (
                         <ThreeSliderComponentItem
                           index={index}
                           item={newsItem}
@@ -710,7 +783,7 @@ const Home = () => {
                   </div>
                   <div className={classes.newsThreeSlider}>
                     <Slider {...threeTypeSlider}>
-                      {newsData.map((newsItem, index) => (
+                      {groupedData.inter2.map((newsItem, index) => (
                         <ThreeSliderComponentItem
                           index={index}
                           item={newsItem}

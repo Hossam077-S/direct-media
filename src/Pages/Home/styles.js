@@ -156,7 +156,7 @@ const useStyles = makeStyles((theme) => ({
   sliderContent: {
    paddingTop: '28px',
    paddingRight: '23px',
-   paddingLeft: '100px'
+   paddingLeft: '23px'
   },
   SliderDivider: {
     backgroundColor: "#F9AE3B",
@@ -172,7 +172,9 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: '1.2 !important',
     
     animation: "$slideInTitle 2s ease-in-out",
-    marginBottom: '0px !important'
+    marginBottom: '0px !important',
+    
+    direction: "rtl",
   },
   sliderNewsDescription: {
     color: 'white',
@@ -182,13 +184,13 @@ const useStyles = makeStyles((theme) => ({
 
     animation: "$slideInDescription 2s ease-in-out",
 
-    display: "-webkit-box",
-    WebkitLineClamp: 2,
-    WebkitBoxOrient: "vertical",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    lineHeight: "1.5",
-    textAlign: "justify",
+    // display: "-webkit-box",
+    // WebkitLineClamp: 2,
+    // WebkitBoxOrient: "vertical",
+    // overflow: "hidden",
+    // textOverflow: "ellipsis",
+    // lineHeight: "1.5",
+    // textAlign: "justify",
     direction: "rtl",
     
   },
@@ -444,10 +446,13 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: '12px',
   },
   newsItemTitle: {
-    marginLeft: '21px !important',
+    marginLeft: '10px !important',
+  },
+  articleContent: {
     color: 'white',
     fontSize: '12px !important',
     fontFamily: 'GE_SS_Two_B !important',
+    textAlign: 'right'
   },
   newsItemDescription: {
     marginLeft: '21px !important',
@@ -590,6 +595,12 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'right',
     flexGrow: 1,
     lineHeight: 1.5
+  },
+  sliderThreeTypeAndDate: {
+    fontSize: '7px !important',
+    fontFamily: 'GE_SS_Two_M !important',
+    color: '#CACACA',
+    direction: 'rtl'
   },
   containerDiv3: {
     height: '89px',

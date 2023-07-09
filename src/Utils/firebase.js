@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, getDocs, onSnapshot } from "firebase/firestore";
+import { getFirestore, collection, addDoc, getDocs, getDoc, onSnapshot, documentId, query, where, doc } from "firebase/firestore";
 import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 // Add your Firebase configuration object here
@@ -23,4 +23,4 @@ const db = getFirestore(app);
 const storage = getStorage(app);
 
 // Other exports
-export { storage, db, collection, addDoc, ref, uploadBytesResumable, getDownloadURL, getDocs, onSnapshot };
+export { storage, db, collection, addDoc, ref, uploadBytesResumable, getDownloadURL, getDocs, onSnapshot, documentId, query, where, doc, getDoc };

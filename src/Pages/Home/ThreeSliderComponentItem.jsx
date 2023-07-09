@@ -1,6 +1,8 @@
 import { Typography } from "@mui/material";
 import React from "react";
 
+import Truncate from "react-truncate";
+
 import useStyles from "./styles";
 
 const ThreeSliderComponentItem = ({ index, item }) => {
@@ -20,10 +22,30 @@ const ThreeSliderComponentItem = ({ index, item }) => {
           {item.Title}
         </Typography>
         <Typography gutterBottom className={classes.sliderThreeDescription}>
-          {item.Description}
+          <Truncate
+            lines={3}
+            ellipsis={
+              <span>
+                ... <a href="/link/to/article">قراءة المزيد</a>
+              </span>
+            }
+          >
+            {item.Description}
+          </Truncate>
         </Typography>
         <Typography gutterBottom className={classes.sliderThreeTypeAndDate}>
-          {item.Category} - 2022-01-01
+          {item.Category} -{" "}
+          {item.PublishDate instanceof Date
+            ? item.PublishDate.toLocaleDateString("ar", {
+                day: "numeric",
+                month: "numeric",
+                year: "numeric",
+              })
+            : item.PublishDate.toDate().toLocaleDateString("ar", {
+                day: "numeric",
+                month: "numeric",
+                year: "numeric",
+              })}
         </Typography>
       </div>
     </div>
