@@ -14,6 +14,11 @@ const NewsTypeSliderItem = ({ Item, ItemIndex }) => {
           className={classes.newsTypeSliderItems}
         >
           <div className={classes.newsTypeSliderItem}>
+            <img
+              src={newsItem.ImageURL}
+              alt={newsItem.Title}
+              className={classes.newsTypeSliderImage}
+            />
             <div>
               <Typography className={classes.newsTypeSliderText}>
                 {newsItem.Title}
@@ -32,11 +37,6 @@ const NewsTypeSliderItem = ({ Item, ItemIndex }) => {
                 </span>
               </Typography>
             </div>
-            <img
-              src={newsItem.ImageURL}
-              alt={newsItem.Title}
-              className={classes.newsTypeSliderImage}
-            />
           </div>
         </div>
       ))}

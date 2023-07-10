@@ -107,12 +107,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     width: '642px',
-
-    "& .slick-track": {
-      transform: 'translate3d(4494px, 0px, 0px) !important'
-
-    },
-
+    
     "& .slick-next": {
       position: 'absolute',
       top: "50% !important", 
@@ -238,6 +233,7 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "GE_SS_Two_M !important",
     color: '#2E3190',
   },
+  
   programContainer: {
     marginTop: '38px',
   },
@@ -270,8 +266,8 @@ const useStyles = makeStyles((theme) => ({
   programImage: {
     width: "170px !important",
     height: "94.2px !important",
-
   },
+
   newsTypesHeader: {
     display: 'flex',
     marginTop: '42px',
@@ -279,8 +275,7 @@ const useStyles = makeStyles((theme) => ({
   headerDiv: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'end',
-    marginRight: '89px',
+    marginLeft: '89px',
   },
   globalHeaderDiv: {
     display: 'flex',
@@ -289,12 +284,12 @@ const useStyles = makeStyles((theme) => ({
   },
   globalDivider: {
     backgroundColor: "#F9AE3B !important",
-    width: '164px',
+    width: '98%',
     height: "5px !important",
   },
   globalDivider2: {
     backgroundColor: "#F9AE3B !important",
-    width: '149px',
+    width: '98%',
     height: "5px !important",
   },
   globalText: {
@@ -304,6 +299,8 @@ const useStyles = makeStyles((theme) => ({
     color: '#2E3190',
     fontSize: '23px !important',
     fontFamily: 'GE_SS_Two_M !important',
+    backgroundColor: "white",
+    paddingLeft: '10px'
   },
   newsTypeSlider: {
     position: 'relative',
@@ -346,12 +343,10 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: '10px',
     fontSize: '10px !important',
     fontFamily: 'GE_SS_Two_M !important',
-    textAlign: 'end',
   },
   newsTypeSliderDate: {
     paddingRight: '10px',
     marginTop: '10px',
-    textAlign: 'end',
   },
   newsTypeSliderDateWord: {
     fontSize: '8px !important',
@@ -380,6 +375,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#2E3190',
     minWidth: '315px',
     overflow: 'hidden',
+    marginRight: "32px !important",
+    marginLeft: '0px !important'
   },
   articlDivTitle: {
     display: 'flex',
@@ -413,10 +410,11 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2.4, 0),
     transition: 'background-color 0.3s ease',
     cursor: 'pointer',
-    paddingLeft: '25px',
+    paddingLeft: '30px',
     height: '125px',
     overflow: 'hidden',
     position:'relative',
+    justifyContent: 'flex-end',
 
     "&:nth-child(odd)": {
       backgroundColor: '#1B1464'
@@ -429,7 +427,7 @@ const useStyles = makeStyles((theme) => ({
   activeListItem: {
     width: '315px',
     height: '125px',
-    paddingLeft: '25px',
+    paddingLeft: '30px',
     padding: 0
   },
   newsItemContent: {
@@ -438,7 +436,7 @@ const useStyles = makeStyles((theme) => ({
   },
   descriptionContent: {
     display: 'flex',
-    alignItems: 'end',
+    alignItems: 'start',
     flexDirection: 'column',
     width: '186px',
     paddingRight: '12px',
@@ -662,7 +660,7 @@ const useStyles = makeStyles((theme) => ({
     color: '#2E3190',
     fontSize: "17.3px !important",
     fontFamily: "GE_SS_Two_L !important",
-    marginLeft: '38px !important',
+    marginRight: '38px !important',
   },
   containerDiv5: {
     marginTop: '50px',

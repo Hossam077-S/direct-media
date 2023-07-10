@@ -416,6 +416,7 @@ const Home = () => {
           className={classes.gridSlidersContainer}
         >
           {/* Render the News images slider */}
+          {/* error */}
           {newsData.length > 0 ? (
             <div className={classes.newsImageDiv}>
               <Slider {...allNewsSlider}>
@@ -564,15 +565,13 @@ const Home = () => {
                   flexItem
                   className={classes.globalDivider}
                 />
-                <Typography className={classes.globalText}>دولي</Typography>
+                <Typography className={classes.globalText}>محلي</Typography>
               </div>
               <div className={classes.newsTypeSlider}>
                 {newsData.length > 0 ? (
                   <Slider {...newsTypesSliderSettings}>
-                    {groupedData.inter.map((newsItem, index) => (
-                      <div>
-                        <NewsTypeSliderItem Item={newsItem} ItemIndex={index} />
-                      </div>
+                    {groupedData.local.map((newsItem, index) => (
+                      <NewsTypeSliderItem Item={newsItem} ItemIndex={index} />
                     ))}
                   </Slider>
                 ) : (
@@ -584,12 +583,12 @@ const Home = () => {
             </div>
             <div className={classes.headerDiv}>
               <div className={classes.globalHeaderDiv}>
+                <Typography className={classes.globalText}>صحافة</Typography>
                 <Divider
                   orientation="horizontal"
                   flexItem
                   className={classes.globalDivider2}
                 />
-                <Typography className={classes.globalText}>صحافة</Typography>
               </div>
               <div className={classes.newsTypeSlider}>
                 {newsData.length > 0 ? (
@@ -607,18 +606,20 @@ const Home = () => {
             </div>
             <div className={classes.headerDiv}>
               <div className={classes.globalHeaderDiv}>
+                <Typography className={classes.globalText}>دولي</Typography>
                 <Divider
                   orientation="horizontal"
                   flexItem
                   className={classes.globalDivider}
                 />
-                <Typography className={classes.globalText}>محلي</Typography>
               </div>
               <div className={classes.newsTypeSlider}>
                 {newsData.length > 0 ? (
                   <Slider {...newsTypesSliderSettings}>
-                    {groupedData.local.map((newsItem, index) => (
-                      <NewsTypeSliderItem Item={newsItem} ItemIndex={index} />
+                    {groupedData.inter.map((newsItem, index) => (
+                      <div>
+                        <NewsTypeSliderItem Item={newsItem} ItemIndex={index} />
+                      </div>
                     ))}
                   </Slider>
                 ) : (
@@ -636,110 +637,6 @@ const Home = () => {
       <div className={classes.containerDiv2}>
         <Container className={classes.container2}>
           <Stack direction="row" spacing={4}>
-            <Stack
-              direction="column"
-              spacing={2}
-              className={classes.articlStack}
-            >
-              <div className={classes.articlDivTitle}>
-                <Typography className={classes.articlTitleHeader}>
-                  مقالات وتحقيقات
-                </Typography>
-                <Typography className={classes.articlTitleParg}>
-                  كتّاب المنصّة
-                </Typography>
-              </div>
-              {newsData.length > 0 ? (
-                <div className={classes.articlContentDiv}>
-                  <div className={classes.articlImage_Divider}>
-                    <List className={classes.newsList}>
-                      {writersData.slice(0, 4).map((writerItem, index) => (
-                        <React.Fragment key={index}>
-                          <ListItem
-                            className={`${classes.newsListItem} ${
-                              index === hoverIndex ? classes.activeListItem : ""
-                            }`}
-                            onMouseEnter={() => handleMouseEnter(index)}
-                            onMouseLeave={handleMouseLeave}
-                          >
-                            <div className={classes.newsItemContent}>
-                              {index >= 0 && (
-                                <Divider
-                                  orientation="vertical"
-                                  flexItem
-                                  className={`${classes.articlDivider} ${
-                                    index === hoverIndex
-                                      ? classes.activeDivider
-                                      : ""
-                                  }`}
-                                />
-                              )}
-                              <ListItemAvatar>
-                                <Avatar
-                                  alt={writerItem.Title}
-                                  src={writerItem.ProfileImage}
-                                  className={classes.newsAvatar}
-                                />
-                              </ListItemAvatar>
-                              <div className={classes.descriptionContent}>
-                                <div className={classes.newsItemTitle}>
-                                  {articlesData.map((articleItem, index) => {
-                                    const articleID =
-                                      writerItem.ArticleID[
-                                        writerItem.ArticleID.length - 1
-                                      ];
-                                    if (articleItem.ArticleID === articleID) {
-                                      return (
-                                        <Typography
-                                          key={index}
-                                          className={classes.articleContent}
-                                        >
-                                          <Truncate
-                                            lines={3}
-                                            ellipsis={
-                                              <span
-                                                style={{ fontSize: "10px" }}
-                                              >
-                                                ...{" "}
-                                                <a href="/link/to/article">
-                                                  قراءة المزيد
-                                                </a>
-                                              </span>
-                                            }
-                                          >
-                                            {articleItem.Content}
-                                          </Truncate>
-                                        </Typography>
-                                      );
-                                    }
-                                    return null;
-                                  })}
-                                </div>
-                                <div className={classes.newsItemDescription}>
-                                  <span>{writerItem.Name}</span>
-                                  <span
-                                    style={{
-                                      fontSize: "30px",
-                                      paddingLeft: "  5px",
-                                    }}
-                                  >
-                                    ,,
-                                  </span>
-                                </div>
-                              </div>
-                            </div>
-                          </ListItem>
-                        </React.Fragment>
-                      ))}
-                    </List>
-                  </div>
-                </div>
-              ) : (
-                <div>
-                  <Skeleton variant="rectangular" height="364px" />
-                </div>
-              )}
-            </Stack>
             {newsData.length > 0 ? (
               <div>
                 <div className={classes.articlImageDiv}>
@@ -829,6 +726,110 @@ const Home = () => {
                 <Skeleton variant="rectangular" height="633px" />
               </div>
             )}
+            <Stack
+              direction="column"
+              spacing={2}
+              className={classes.articlStack}
+            >
+              <div className={classes.articlDivTitle}>
+                <Typography className={classes.articlTitleHeader}>
+                  مقالات وتحقيقات
+                </Typography>
+                <Typography className={classes.articlTitleParg}>
+                  كتّاب المنصّة
+                </Typography>
+              </div>
+              {newsData.length > 0 ? (
+                <div className={classes.articlContentDiv}>
+                  <div className={classes.articlImage_Divider}>
+                    <List className={classes.newsList}>
+                      {writersData.slice(0, 4).map((writerItem, index) => (
+                        <React.Fragment key={index}>
+                          <ListItem
+                            className={`${classes.newsListItem} ${
+                              index === hoverIndex ? classes.activeListItem : ""
+                            }`}
+                            onMouseEnter={() => handleMouseEnter(index)}
+                            onMouseLeave={handleMouseLeave}
+                          >
+                            <div className={classes.newsItemContent}>
+                              {index >= 0 && (
+                                <Divider
+                                  orientation="vertical"
+                                  flexItem
+                                  className={`${classes.articlDivider} ${
+                                    index === hoverIndex
+                                      ? classes.activeDivider
+                                      : ""
+                                  }`}
+                                />
+                              )}
+                              <div className={classes.descriptionContent}>
+                                <div className={classes.newsItemTitle}>
+                                  {articlesData.map((articleItem, index) => {
+                                    const articleID =
+                                      writerItem.ArticleID[
+                                        writerItem.ArticleID.length - 1
+                                      ];
+                                    if (articleItem.ArticleID === articleID) {
+                                      return (
+                                        <Typography
+                                          key={index}
+                                          className={classes.articleContent}
+                                        >
+                                          <Truncate
+                                            lines={3}
+                                            ellipsis={
+                                              <span
+                                                style={{ fontSize: "10px" }}
+                                              >
+                                                ...{" "}
+                                                <a href="/link/to/article">
+                                                  قراءة المزيد
+                                                </a>
+                                              </span>
+                                            }
+                                          >
+                                            {articleItem.Content}
+                                          </Truncate>
+                                        </Typography>
+                                      );
+                                    }
+                                    return null;
+                                  })}
+                                </div>
+                                <div className={classes.newsItemDescription}>
+                                  <span
+                                    style={{
+                                      fontSize: "30px",
+                                      paddingLeft: "  5px",
+                                    }}
+                                  >
+                                    ,,
+                                  </span>
+                                  <span>{writerItem.Name}</span>
+                                </div>
+                              </div>
+                              <ListItemAvatar>
+                                <Avatar
+                                  alt={writerItem.Title}
+                                  src={writerItem.ProfileImage}
+                                  className={classes.newsAvatar}
+                                />
+                              </ListItemAvatar>
+                            </div>
+                          </ListItem>
+                        </React.Fragment>
+                      ))}
+                    </List>
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <Skeleton variant="rectangular" height="364px" />
+                </div>
+              )}
+            </Stack>
           </Stack>
         </Container>
       </div>

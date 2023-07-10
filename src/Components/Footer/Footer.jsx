@@ -53,6 +53,11 @@ const Footer = () => {
           />
         </>
         <div className={classes.menuDetails}>
+          <Divider
+            orientation="vertical"
+            flexItem
+            className={classes.menuDivider}
+          />
           <div className={classes.menuContent}>
             <Typography gutterBottom className={classes.menuTitle}>
               إكتشف الإعلام المباشر
@@ -74,14 +79,33 @@ const Footer = () => {
               ))}
             </Typography>
           </div>
-          <Divider
-            orientation="vertical"
-            flexItem
-            className={classes.menuDivider}
-          />
         </div>
         <div className={classes.botFooter}>
+          <div className={classes.rightsDiv}>
+            <Typography
+              variant="body1"
+              gutterBottom
+              className={classes.rightsText}
+            >
+              جميع الحقوق محفوظة لموقع الإعلام المباشر
+            </Typography>
+            <Typography
+              variant="body1"
+              gutterBottom
+              className={classes.rightsText}
+            >
+              All Rights Reserved for Direct Media Website{" "}
+            </Typography>
+          </div>
           <div className={classes.logoContentDiv}>
+            <div className={classes.logoDiv}>
+              <img src={logo} alt="Logo" width="157px" height="35.4px" />
+            </div>
+            <Divider
+              orientation="vertical"
+              flexItem
+              className={classes.logoContentDivider}
+            />
             <div className={classes.socialMediaDiv}>
               {" "}
               <Box className={classes.socialmediaiconbox}>
@@ -105,30 +129,6 @@ const Footer = () => {
                 </IconButton>
               </Box>
             </div>
-            <Divider
-              orientation="vertical"
-              flexItem
-              className={classes.logoContentDivider}
-            />
-            <div className={classes.logoDiv}>
-              <img src={logo} alt="Logo" width="157px" height="35.4px" />
-            </div>
-          </div>
-          <div className={classes.rightsDiv}>
-            <Typography
-              variant="body1"
-              gutterBottom
-              className={classes.rightsText}
-            >
-              جميع الحقوق محفوظة لموقع الإعلام المباشر
-            </Typography>
-            <Typography
-              variant="body1"
-              gutterBottom
-              className={classes.rightsText}
-            >
-              All Rights Reserved for Direct Media Website{" "}
-            </Typography>
           </div>
         </div>
       </div>

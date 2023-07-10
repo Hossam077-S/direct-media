@@ -18,9 +18,8 @@ const useStyles = makeStyles((theme) => ({
     },
     menuDetails: {
         display: 'flex',
-        justifyContent: 'end',
         paddingTop: '32px',
-        paddingRight: '48px',
+        paddingLeft: '48px',
     },
     menuDivider: {
         backgroundColor: "#F9AE3B !important",
@@ -32,14 +31,12 @@ const useStyles = makeStyles((theme) => ({
         color: 'white',
     },
     menuTitle: {
-        textAlign: 'right',
         fontSize: "31.2px !important",
         fontFamily: "GE_SS_Two_B !important",
         marginBottom: '8px !important',
         marginTop: '-7px !important',
     },
     menuDescription: {
-        textAlign: 'right',
         fontSize: "17.3px !important",
         fontFamily: "GE_SS_Two_L !important",
     },
@@ -68,12 +65,12 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: '10px',
     },
     fButton:{
-        marginRight: "1px !important",
+        marginLeft: "1px !important",
     },
     IButton:{
         backgroundColor: "white !important",
         padding: "3.2px !important",
-        marginRight: "0px !important",
+        marginLeft: "0px !important",
     },
     TButton:{
         backgroundColor: "white !important",
@@ -81,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
     },
     YButton:{
         backgroundColor: "white !important",
-        marginLeft: "9px !important",
+        marginRight: "9px !important",
         padding: "3.2px !important",
     },
     fIcon:{
@@ -95,7 +92,7 @@ const useStyles = makeStyles((theme) => ({
     TWIcon:{
         fontSize: "17px !important",
         color: "white !important",
-        marginRight: "0px !important",
+        marginLeft: "0px !important",
     },
     TIcon:{
         color: "#2E3190 !important", 
@@ -116,10 +113,9 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: '15px',
     },
     rightsDiv: {
-        paddingRight: '65px',
+        paddingLeft: '65px',
     },
     rightsText: {
-        textAlign: 'right',
         fontSize: "14.9px !important",
         fontFamily: "GE_SS_Two_L !important",
         color: 'white',
