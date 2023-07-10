@@ -157,7 +157,7 @@ const ArticlesEntry = ({ categories }) => {
             <div dir="rtl" className={classes.TextFieldDiv}>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  label="عنوان الخبر"
+                  label="عنوان المقال"
                   name="Title"
                   type="text"
                   variant="outlined"
@@ -165,7 +165,7 @@ const ArticlesEntry = ({ categories }) => {
                   required
                 />
                 <TextField
-                  label="نص الخبر"
+                  label="نص المقال"
                   name="Description"
                   type="text"
                   variant="outlined"

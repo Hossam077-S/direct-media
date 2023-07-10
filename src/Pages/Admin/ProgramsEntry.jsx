@@ -43,20 +43,15 @@ const ProgramsEntry = ({ categories }) => {
   });
 
   const [formValues, setFormValues] = useState({
-    Title: "",
+    ProgramName: "",
     Description: "",
-    NewsType: "",
-    Category: "",
     YoutubeLink: "",
     ImageURL: "",
-    Hashtag: "",
-    Tadmin: [],
     PublishDate: new Date(),
   });
 
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [selectedNews, setSelectedNews] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [progress, setProgress] = useState(0);
 
@@ -90,24 +85,18 @@ const ProgramsEntry = ({ categories }) => {
           const downloadURL = await getDownloadURL(snapshot.ref);
           return addDoc(collection(db, "News"), {
             ...formValues,
-            Tadmin: [...selectedNews.map((news) => news.value)],
             ImageURL: downloadURL,
           });
         })
         .then((docRef) => {
           console.log("Document written with ID: ", docRef.id);
           setFormValues({
-            Title: "",
+            ProgramName: "",
             Description: "",
-            NewsType: "",
-            Category: "",
             YoutubeLink: "",
             ImageURL: "",
-            Hashtag: "",
-            Tadmin: [],
             PublishDate: new Date(),
           });
-          setSelectedNews([]);
           setSelectedImage(null);
           setLoading(false);
           setShowPopup(false);
@@ -125,12 +114,9 @@ const ProgramsEntry = ({ categories }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     setFormValues({
-      Title: form.current.Title.value,
+      ProgramName: form.current.ProgramName.value,
       Description: form.current.Description.value,
-      NewsType: form.current.NewsType.value,
-      Category: form.current.Category.value,
       YoutubeLink: form.current.YoutubeLink.value,
-      Hashtag: form.current.Hashtag.value,
     });
     setShowPopup(true);
   };
@@ -163,15 +149,15 @@ const ProgramsEntry = ({ categories }) => {
                 <div className={classes.fieldContainer}>
                   <FormControl fullWidth required>
                     <InputLabel
-                      id="category-label"
+                      id="programName-label"
                       className={classes.labelText}
                     >
-                      تصنيف الخبر
+                      إسم البرنامج
                     </InputLabel>
                     <Select
-                      labelId="category-label"
+                      labelId="programName-label"
                       type="select"
-                      name="Category"
+                      name="ProgramName"
                       defaultValue={formValues.Category}
                       // ref={formCategoryRef} // Add ref to the Select component
                       className={classes.textFieldSelect}
@@ -185,7 +171,7 @@ const ProgramsEntry = ({ categories }) => {
                   </FormControl>
                 </div>
                 <TextField
-                  label="نص الخبر"
+                  label="نص البرنامج"
                   name="Description"
                   type="text"
                   variant="outlined"
@@ -239,18 +225,18 @@ const ProgramsEntry = ({ categories }) => {
                       />
                     )}
                     <div className={classes.previewContent}>
+                      {formValues.ProgramName && (
+                        <p className={classes.previewItem}>
+                          <span className={classes.previewLabel}>
+                            إسم البرنامج:{" "}
+                          </span>
+                          {formValues.NewsType}
+                        </p>
+                      )}
                       {formValues.Description && (
                         <p className={classes.previewItem}>
                           <span className={classes.previewLabel}>الوصف: </span>
                           {formValues.Description}
-                        </p>
-                      )}
-                      {formValues.NewsType && (
-                        <p className={classes.previewItem}>
-                          <span className={classes.previewLabel}>
-                            نوع الخبر:{" "}
-                          </span>
-                          {formValues.NewsType}
                         </p>
                       )}
                       {formValues.YoutubeLink && (

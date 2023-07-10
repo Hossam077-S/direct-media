@@ -19,7 +19,6 @@ import useStyles from "./styles";
 
 import {
   Button,
-  Grid,
   TextField,
   ThemeProvider,
   createTheme,
@@ -41,18 +40,13 @@ const PodcastEntry = ({ categories, relatedNewsOptions }) => {
   const [formValues, setFormValues] = useState({
     Title: "",
     Description: "",
-    NewsType: "",
-    Category: "",
     YoutubeLink: "",
     ImageURL: "",
-    Hashtag: "",
-    Tadmin: [],
     PublishDate: new Date(),
   });
 
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [selectedNews, setSelectedNews] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [progress, setProgress] = useState(0);
 
@@ -84,9 +78,8 @@ const PodcastEntry = ({ categories, relatedNewsOptions }) => {
           setProgress(newProgress);
 
           const downloadURL = await getDownloadURL(snapshot.ref);
-          return addDoc(collection(db, "News"), {
+          return addDoc(collection(db, "Podcast"), {
             ...formValues,
-            Tadmin: [...selectedNews.map((news) => news.value)],
             ImageURL: downloadURL,
           });
         })
@@ -95,15 +88,10 @@ const PodcastEntry = ({ categories, relatedNewsOptions }) => {
           setFormValues({
             Title: "",
             Description: "",
-            NewsType: "",
-            Category: "",
             YoutubeLink: "",
             ImageURL: "",
-            Hashtag: "",
-            Tadmin: [],
             PublishDate: new Date(),
           });
-          setSelectedNews([]);
           setSelectedImage(null);
           setLoading(false);
           setShowPopup(false);
@@ -123,10 +111,7 @@ const PodcastEntry = ({ categories, relatedNewsOptions }) => {
     setFormValues({
       Title: form.current.Title.value,
       Description: form.current.Description.value,
-      NewsType: form.current.NewsType.value,
-      Category: form.current.Category.value,
       YoutubeLink: form.current.YoutubeLink.value,
-      Hashtag: form.current.Hashtag.value,
     });
     setShowPopup(true);
   };
@@ -155,49 +140,46 @@ const PodcastEntry = ({ categories, relatedNewsOptions }) => {
         <CacheProvider value={cacheRtl}>
           <ThemeProvider theme={theme}>
             <div className={classes.TextFieldDiv}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  label="عنوان الخبر"
-                  name="Title"
-                  type="text"
-                  variant="outlined"
-                  className={classes.textField}
-                  required
+              <TextField
+                label="العنوان"
+                name="Title"
+                type="text"
+                variant="outlined"
+                className={classes.textField}
+                required
+              />
+              <TextField
+                label="النص"
+                name="Description"
+                type="text"
+                variant="outlined"
+                className={classes.textField}
+                multiline
+              />
+              <TextField
+                label="رابط الفيديو"
+                name="YoutubeLink"
+                type="text"
+                variant="outlined"
+                style={{ width: "95%", paddingBottom: "15px" }}
+              />
+              <div className={classes.imageFieldContainer}>
+                <label
+                  htmlFor="image-upload"
+                  className={classes.imageFieldLabel}
+                >
+                  حمل الصورة
+                </label>
+                <input
+                  id="image-upload"
+                  type="file"
+                  name="ImageURL"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className={classes.imageField}
                 />
-                <TextField
-                  label="نص الخبر"
-                  name="Description"
-                  type="text"
-                  variant="outlined"
-                  className={classes.textField}
-                  multiline
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  label="رابط الفيديو"
-                  name="YoutubeLink"
-                  type="text"
-                  variant="outlined"
-                  className={classes.textField}
-                />
-                <div className={classes.imageFieldContainer}>
-                  <label
-                    htmlFor="image-upload"
-                    className={classes.imageFieldLabel}
-                  >
-                    حمل الصورة
-                  </label>
-                  <input
-                    id="image-upload"
-                    type="file"
-                    name="ImageURL"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className={classes.imageField}
-                  />
-                </div>
-              </Grid>
+              </div>
+
               <div>
                 <Button
                   variant="contained"

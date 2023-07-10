@@ -7,7 +7,9 @@ const useStyles = makeStyles((theme) => ({
 
     width: "970px !important", 
     padding: "0px !important", 
-    marginTop: "50px !important"
+    marginTop: "50px !important",
+
+    flexgrow: 1,
   },
   containerDiv: {
     display: 'flex',
@@ -70,6 +72,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "flex-start",
     width: "100%",
   },
+
   TextFieldDiv: {
     width: "100%",
   },
@@ -198,6 +201,10 @@ const useStyles = makeStyles((theme) => ({
   Tabs: {
     paddingTop: '30px',
     paddingBottom: '30px',
+
+    "& .MuiTabs-flexContainer" : {
+      justifyContent: 'center'
+    }
   },
   Tab: {
     fontSize: '20px !important',
