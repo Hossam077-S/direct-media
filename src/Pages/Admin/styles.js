@@ -83,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "15px !important",
     flexWrap: "wrap",
     marginLeft: "5% !important",
-    width: "90%",
+  
   },
   labelText:{
     backgroundColor: 'white',
@@ -194,6 +194,14 @@ const useStyles = makeStyles((theme) => ({
     "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
       borderColor: "red",
     },
+  },
+  Tabs: {
+    paddingTop: '30px',
+    paddingBottom: '30px',
+  },
+  Tab: {
+    fontSize: '20px !important',
+    fontFamily: 'GE_SS_Two_L !important',
   },
 
 }));
