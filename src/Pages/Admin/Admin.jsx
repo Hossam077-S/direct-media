@@ -23,17 +23,46 @@ const Admin = () => {
 
   const [activeTab, setActiveTab] = useState(0);
   const [relatedNewsOptions, setRelatedNewsOptions] = useState([]);
+  const [distinctProgramTitles, setDistinctProgramTitles] = useState([]);
+  const [distinctWritersName, setDistinctWritersName] = useState([]);
+  const [distinctNewsCategory, setDistinctNewsCategory] = useState([]);
 
   // Getting RealtedNews
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "News"), (snapshot) => {
       const relatedNewsOptions = snapshot.docs.map((doc) => doc.data().Title);
       setRelatedNewsOptions(relatedNewsOptions);
+
+      const NewsCategory = new Set(
+        snapshot.docs.map((doc) => doc.data().Category)
+      );
+      setDistinctNewsCategory(Array.from(NewsCategory));
     });
+    const unsubscribeProgram = onSnapshot(
+      collection(db, "Programs"),
+      (snapshot) => {
+        const ProgramTitles = new Set(
+          snapshot.docs.map((doc) => doc.data().Title)
+        );
+        setDistinctProgramTitles(Array.from(ProgramTitles));
+      }
+    );
+    const unsubscribeWriters = onSnapshot(
+      collection(db, "Writers"),
+      (snapshot) => {
+        const writersData = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          name: doc.data().Name,
+        }));
+        setDistinctWritersName(writersData);
+      }
+    );
 
     return () => {
       // Unsubscribe from the snapshot listener when the component unmounts
       unsubscribe();
+      unsubscribeProgram();
+      unsubscribeWriters();
     };
   }, []);
 
@@ -54,18 +83,18 @@ const Admin = () => {
       </Tabs>
       {activeTab === 0 && (
         <NewsEntry
-          categories={categories}
+          distinctNewsCategory={distinctNewsCategory}
           relatedNewsOptions={relatedNewsOptions}
+          categories={categories}
         />
       )}
-      {activeTab === 1 && <ArticlesEntry categories={categories} />}
-      {activeTab === 2 && <ProgramsEntry categories={categories} />}
-      {activeTab === 3 && (
-        <PodcastEntry
-          categories={categories}
-          relatedNewsOptions={relatedNewsOptions}
-        />
+      {activeTab === 1 && (
+        <ArticlesEntry distinctWritersName={distinctWritersName} />
       )}
+      {activeTab === 2 && (
+        <ProgramsEntry distinctProgramTitles={distinctProgramTitles} />
+      )}
+      {activeTab === 3 && <PodcastEntry />}
     </Container>
   );
 };

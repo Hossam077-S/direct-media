@@ -30,7 +30,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 
-const ProgramsEntry = ({ categories }) => {
+const ProgramsEntry = ({ distinctProgramTitles }) => {
   const classes = useStyles();
 
   const theme = createTheme({
@@ -43,7 +43,7 @@ const ProgramsEntry = ({ categories }) => {
   });
 
   const [formValues, setFormValues] = useState({
-    ProgramName: "",
+    Title: "",
     Description: "",
     YoutubeLink: "",
     ImageURL: "",
@@ -74,7 +74,6 @@ const ProgramsEntry = ({ categories }) => {
         `news_images/${timestamp}` // Append the timestamp to the image name
       );
       const uploadTask = uploadBytesResumable(storageRef, selectedImage);
-
       uploadTask
         .then(async (snapshot) => {
           const newProgress = Math.round(
@@ -83,7 +82,7 @@ const ProgramsEntry = ({ categories }) => {
           setProgress(newProgress);
 
           const downloadURL = await getDownloadURL(snapshot.ref);
-          return addDoc(collection(db, "News"), {
+          return addDoc(collection(db, "Programs"), {
             ...formValues,
             ImageURL: downloadURL,
           });
@@ -91,7 +90,7 @@ const ProgramsEntry = ({ categories }) => {
         .then((docRef) => {
           console.log("Document written with ID: ", docRef.id);
           setFormValues({
-            ProgramName: "",
+            Title: "",
             Description: "",
             YoutubeLink: "",
             ImageURL: "",
@@ -114,9 +113,10 @@ const ProgramsEntry = ({ categories }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     setFormValues({
-      ProgramName: form.current.ProgramName.value,
+      Title: form.current.Title.value,
       Description: form.current.Description.value,
       YoutubeLink: form.current.YoutubeLink.value,
+      PublishDate: new Date(),
     });
     setShowPopup(true);
   };
@@ -156,15 +156,13 @@ const ProgramsEntry = ({ categories }) => {
                     </InputLabel>
                     <Select
                       labelId="programName-label"
-                      type="select"
-                      name="ProgramName"
-                      defaultValue={formValues.Category}
-                      // ref={formCategoryRef} // Add ref to the Select component
+                      name="Title"
+                      defaultValue="قضية بدقيقة"
                       className={classes.textFieldSelect}
                     >
-                      {categories.map((category) => (
-                        <MenuItem key={category.value} value={category.value}>
-                          {category.label}
+                      {distinctProgramTitles.map((title, index) => (
+                        <MenuItem key={index} value={title}>
+                          {title}
                         </MenuItem>
                       ))}
                     </Select>
@@ -225,12 +223,12 @@ const ProgramsEntry = ({ categories }) => {
                       />
                     )}
                     <div className={classes.previewContent}>
-                      {formValues.ProgramName && (
+                      {formValues.Title && (
                         <p className={classes.previewItem}>
                           <span className={classes.previewLabel}>
                             إسم البرنامج:{" "}
                           </span>
-                          {formValues.NewsType}
+                          {formValues.Title}
                         </p>
                       )}
                       {formValues.Description && (

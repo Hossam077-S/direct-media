@@ -32,7 +32,11 @@ import {
   CircularProgress,
 } from "@mui/material";
 
-const NewsEntry = ({ categories, relatedNewsOptions }) => {
+const NewsEntry = ({
+  distinctNewsCategory,
+  categories,
+  relatedNewsOptions,
+}) => {
   const classes = useStyles();
 
   const theme = createTheme({
@@ -159,6 +163,7 @@ const NewsEntry = ({ categories, relatedNewsOptions }) => {
       Category: form.current.Category.value,
       YoutubeLink: form.current.YoutubeLink.value,
       Hashtag: form.current.Hashtag.value,
+      PublishDate: new Date(),
     });
     setShowPopup(true);
   };
@@ -201,14 +206,22 @@ const NewsEntry = ({ categories, relatedNewsOptions }) => {
                       type="select"
                       name="Category"
                       defaultValue={formValues.Category}
-                      // ref={formCategoryRef} // Add ref to the Select component
                       className={classes.textFieldSelect}
                     >
-                      {categories.map((category) => (
-                        <MenuItem key={category.value} value={category.value}>
-                          {category.label}
-                        </MenuItem>
-                      ))}
+                      {distinctNewsCategory.length > 0
+                        ? distinctNewsCategory.map((category) => (
+                            <MenuItem key={category} value={category}>
+                              {category}
+                            </MenuItem>
+                          ))
+                        : categories.map((category) => (
+                            <MenuItem
+                              key={category.value}
+                              value={category.value}
+                            >
+                              {category.label}
+                            </MenuItem>
+                          ))}
                     </Select>
                   </FormControl>
                 </div>

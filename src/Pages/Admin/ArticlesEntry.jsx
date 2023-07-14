@@ -8,6 +8,9 @@ import {
   ref,
   uploadBytesResumable,
   getDownloadURL,
+  doc,
+  updateDoc,
+  arrayUnion,
 } from "../../Utils/firebase";
 
 import { CacheProvider } from "@emotion/react";
@@ -24,9 +27,13 @@ import {
   ThemeProvider,
   createTheme,
   CircularProgress,
+  Select,
+  InputLabel,
+  FormControl,
+  MenuItem,
 } from "@mui/material";
 
-const ArticlesEntry = ({ categories }) => {
+const ArticlesEntry = ({ distinctWritersName }) => {
   const classes = useStyles();
 
   const theme = createTheme({
@@ -39,20 +46,17 @@ const ArticlesEntry = ({ categories }) => {
   });
 
   const [formValues, setFormValues] = useState({
-    Title: "",
-    Description: "",
-    NewsType: "",
-    Category: "",
-    YoutubeLink: "",
+    WriterID: "",
+    ArticleID: "",
+    Text: "",
+    Content: "",
     ImageURL: "",
     Hashtag: "",
-    Tadmin: [],
     PublishDate: new Date(),
   });
 
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
-  const [selectedNews, setSelectedNews] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [progress, setProgress] = useState(0);
 
@@ -76,42 +80,45 @@ const ArticlesEntry = ({ categories }) => {
       );
       const uploadTask = uploadBytesResumable(storageRef, selectedImage);
 
-      uploadTask
-        .then(async (snapshot) => {
-          const newProgress = Math.round(
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          );
-          setProgress(newProgress);
+      uploadTask.then(async (snapshot) => {
+        const newProgress = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setProgress(newProgress);
 
-          const downloadURL = await getDownloadURL(snapshot.ref);
-          return addDoc(collection(db, "News"), {
-            ...formValues,
-            Tadmin: [...selectedNews.map((news) => news.value)],
-            ImageURL: downloadURL,
-          });
-        })
-        .then((docRef) => {
-          console.log("Document written with ID: ", docRef.id);
-          setFormValues({
-            Title: "",
-            Description: "",
-            NewsType: "",
-            Category: "",
-            YoutubeLink: "",
-            ImageURL: "",
-            Hashtag: "",
-            Tadmin: [],
-            PublishDate: new Date(),
-          });
-          setSelectedNews([]);
-          setSelectedImage(null);
-          setLoading(false);
-          setShowPopup(false);
-        })
-        .catch((error) => {
-          console.error("Error adding document: ", error);
-          setLoading(false);
+        const downloadURL = await getDownloadURL(snapshot.ref);
+
+        const docRef = await addDoc(collection(db, "Articles"), {
+          ...formValues,
+          ImageURL: downloadURL,
         });
+
+        // Update the document with the ArticleID field
+        await updateDoc(doc(db, "Articles", docRef.id), {
+          ArticleID: docRef.id,
+        });
+
+        console.log("Document written with ID: ", docRef.id);
+
+        await updateDoc(doc(db, "Writers", formValues.WriterID), {
+          ArticleID: arrayUnion(docRef.id),
+        });
+
+        console.log("Writer Updated ID: ", formValues.WriterID);
+
+        setFormValues({
+          WriterID: "",
+          ArticleID: "",
+          Text: "",
+          Content: "",
+          ImageURL: "",
+          Hashtag: "",
+          PublishDate: new Date(),
+        });
+        setSelectedImage(null);
+        setLoading(false);
+        setShowPopup(false);
+      });
     } catch (error) {
       console.error("Error uploading image: ", error);
       setLoading(false);
@@ -121,12 +128,11 @@ const ArticlesEntry = ({ categories }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     setFormValues({
-      Title: form.current.Title.value,
-      Description: form.current.Description.value,
-      NewsType: form.current.NewsType.value,
-      Category: form.current.Category.value,
-      YoutubeLink: form.current.YoutubeLink.value,
+      WriterID: form.current.WriterID.value,
+      Text: form.current.Text.value,
+      Content: form.current.Content.value,
       Hashtag: form.current.Hashtag.value,
+      PublishDate: new Date(),
     });
     setShowPopup(true);
   };
@@ -156,9 +162,31 @@ const ArticlesEntry = ({ categories }) => {
           <ThemeProvider theme={theme}>
             <div dir="rtl" className={classes.TextFieldDiv}>
               <Grid item xs={12} sm={6}>
+                <div className={classes.fieldContainer}>
+                  <FormControl fullWidth required>
+                    <InputLabel
+                      id="programName-label"
+                      className={classes.labelText}
+                    >
+                      إسم الكاتب
+                    </InputLabel>
+                    <Select
+                      labelId="programName-label"
+                      name="WriterID"
+                      defaultValue="N3L3ytluKU4BZTu7k3rg"
+                      className={classes.textFieldSelect}
+                    >
+                      {distinctWritersName.map((writer, index) => (
+                        <MenuItem key={index} value={writer.id}>
+                          {writer.name}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </div>
                 <TextField
                   label="عنوان المقال"
-                  name="Title"
+                  name="Text"
                   type="text"
                   variant="outlined"
                   className={classes.textField}
@@ -166,7 +194,7 @@ const ArticlesEntry = ({ categories }) => {
                 />
                 <TextField
                   label="نص المقال"
-                  name="Description"
+                  name="Content"
                   type="text"
                   variant="outlined"
                   className={classes.textField}
@@ -175,18 +203,11 @@ const ArticlesEntry = ({ categories }) => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  label="رابط الفيديو"
-                  name="YoutubeLink"
-                  type="text"
-                  variant="outlined"
-                  className={classes.textField}
-                />
-                <TextField
                   label="الهاشتاغ"
                   name="Hashtag"
                   type="text"
                   variant="outlined"
-                  className={classes.textField}
+                  style={{ width: "95%", paddingBottom: "15px" }}
                 />
                 <div className={classes.imageFieldContainer}>
                   <label
@@ -204,7 +225,7 @@ const ArticlesEntry = ({ categories }) => {
                     className={classes.imageField}
                   />
                 </div>
-                <div>إضافة كاتب</div>
+                {/* <div>إضافة كاتب</div> */}
               </Grid>
               <div>
                 <Button
@@ -227,26 +248,18 @@ const ArticlesEntry = ({ categories }) => {
                       />
                     )}
                     <div className={classes.previewContent}>
-                      {formValues.Title && (
+                      {formValues.Text && (
                         <p className={classes.previewItem}>
                           <span className={classes.previewLabel}>
                             العنوان:{" "}
                           </span>
-                          {formValues.Title}
+                          {formValues.Text}
                         </p>
                       )}
-                      {formValues.Description && (
+                      {formValues.Content && (
                         <p className={classes.previewItem}>
                           <span className={classes.previewLabel}>الوصف: </span>
-                          {formValues.Description}
-                        </p>
-                      )}
-                      {formValues.YoutubeLink && (
-                        <p className={classes.previewItem}>
-                          <span className={classes.previewLabel}>
-                            رابط الفيديو:{" "}
-                          </span>
-                          {formValues.YoutubeLink}
+                          {formValues.Content}
                         </p>
                       )}
                       {formValues.Hashtag && (

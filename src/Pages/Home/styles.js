@@ -47,6 +47,7 @@ const useStyles = makeStyles((theme) => ({
   importantNewsSliderItem: {
     position: 'relative',
     height: '43px',
+    direction: 'rtl'
   },
   typoTitle: {
     marginRight: "15px !important",

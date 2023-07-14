@@ -62,6 +62,7 @@ const Home = () => {
     vertical: true,
     verticalSwiping: true,
     autoplay: true,
+    rtl: true,
     autoplaySpeed: 6000,
     arrows: true,
     prevArrow: <img src={arrowINup} alt={"arrowLeft"} />,
@@ -88,6 +89,7 @@ const Home = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
+    rtl: true,
     autoplaySpeed: 8000,
     arrows: true,
     prevArrow: <img src={arrowLeft} alt={"arrowLeft"} />,
@@ -114,6 +116,7 @@ const Home = () => {
     slidesToShow: 5,
     slidesToScroll: 1,
     autoplay: true,
+    rtl: true,
     autoplaySpeed: 3000,
     responsive: [
       {
@@ -136,6 +139,7 @@ const Home = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: true,
+    rtl: true,
     prevArrow: (
       <img
         src={arrowThreeLeft}
@@ -176,6 +180,7 @@ const Home = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: true,
+    rtl: true,
     prevArrow: <img src={arrowThreeLeft} alt={"arrowLeft"} />,
     nextArrow: <img src={arrowThreeRight} alt={"arrowLeft"} />,
     responsive: [
@@ -199,6 +204,7 @@ const Home = () => {
     speed: 500,
     slidesToShow: 4,
     slidesToScroll: 1,
+    rtl: true,
     responsive: [
       {
         breakpoint: 768,
@@ -214,12 +220,13 @@ const Home = () => {
       },
     ],
   };
-  const settings5 = {
+  const podcastSettings = {
     dots: false,
     infinite: true,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
+    rtl: true,
     responsive: [
       {
         breakpoint: 768,
@@ -901,7 +908,7 @@ const Home = () => {
           <div className={classes.podcastMediaHeader}>
             {newsData.length > 0 ? (
               <div className={classes.podcastMediaItems}>
-                <Slider {...settings5}>
+                <Slider {...podcastSettings}>
                   {newsData.map((newsItem, index) => (
                     <img
                       key={index}

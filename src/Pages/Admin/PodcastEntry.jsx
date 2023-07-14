@@ -25,7 +25,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 
-const PodcastEntry = ({ categories, relatedNewsOptions }) => {
+const PodcastEntry = () => {
   const classes = useStyles();
 
   const theme = createTheme({
@@ -112,6 +112,7 @@ const PodcastEntry = ({ categories, relatedNewsOptions }) => {
       Title: form.current.Title.value,
       Description: form.current.Description.value,
       YoutubeLink: form.current.YoutubeLink.value,
+      PublishDate: new Date(),
     });
     setShowPopup(true);
   };
