@@ -107,7 +107,7 @@ const Home = () => {
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 1,
         },
       },
       {
@@ -131,7 +131,7 @@ const Home = () => {
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 1,
         },
       },
       {
@@ -171,7 +171,7 @@ const Home = () => {
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 1,
         },
       },
       {
@@ -411,8 +411,7 @@ const Home = () => {
               <img
                 src={rectangleShape}
                 alt="rect-shap"
-                width="157px"
-                height="43px"
+                className={classes.ImportantNewsImage}
               />
             </div>
             {Object.keys(groupedData).length > 0 ? (
@@ -431,14 +430,10 @@ const Home = () => {
                 </Slider>
               </div>
             ) : (
-              <div className={classes.importantNewSkeleton}>
+              <div className={classes.importantNewSkeletonDiv}>
                 <Skeleton
                   variant="text"
-                  sx={{
-                    fontSize: "25px",
-                    marginLeft: "10%",
-                    marginRight: "1%",
-                  }}
+                  className={classes.importantNewSkeleton}
                 />
               </div>
             )}
@@ -461,9 +456,7 @@ const Home = () => {
                       <img
                         src={newsItem.ImageURL}
                         alt={newsItem.Title}
-                        width="642px"
-                        height="425px"
-                        className={classes.newsImage}
+                        className={classes.allnewsImage}
                       />
                       <div className={classes.sliderDetailsDiv}>
                         <Divider
@@ -525,7 +518,10 @@ const Home = () => {
             </div>
           ) : (
             <div>
-              <Skeleton variant="rectangular" height="425px" width="642px" />
+              <Skeleton
+                className={classes.skeletonSlider}
+                variant="rectangular"
+              />
             </div>
           )}
           <Stack direction="column" spacing={2}>
@@ -562,7 +558,7 @@ const Home = () => {
           </Typography>
         </div>
 
-        {/* Programs */}
+        {/* Programs & ThreeSlider */}
         <div id="programs" className={classes.programContainer}>
           <div className={classes.programHeader}>
             <Divider
@@ -683,9 +679,7 @@ const Home = () => {
                           <img
                             src={newsItem.ImageURL}
                             alt={newsItem.Title}
-                            width="527px"
-                            height="319px"
-                            className={classes.newsImage}
+                            className={classes.articleContentnewsImage}
                           />
                           <div className={classes.sliderDetailsDiv2}>
                             <div className={classes.title_dividerArticl}>
