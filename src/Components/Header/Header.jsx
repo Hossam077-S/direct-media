@@ -14,7 +14,7 @@ import {
   Container,
 } from "@mui/material";
 
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import { Search as SearchIcon } from "@material-ui/icons";
 import { BsFacebook, BsYoutube } from "react-icons/bs";
@@ -109,7 +109,7 @@ const Header = () => {
         <Grid container spacing={2} className={classes.gridContainer}>
           <Grid item className={classes.gridMenu}>
             <Link to="/">
-              <img src={logo} alt="Logo" width="225px" height="50px" />
+              <img src={logo} alt="Logo" className={classes.logoHeader} />
             </Link>
             <Divider
               orientation="vertical"
@@ -144,13 +144,16 @@ const Header = () => {
             >
               {menuItems.map((item) => (
                 <MenuItem key={item.name} onClick={handleMenuClose}>
-                  <NavLink
+                  <a className={classes.linkMenu} href={item.href}>
+                    {item.name}
+                  </a>
+                  {/* <NavLink
                     className={classes.linkMenu}
                     to={item.href}
                     color="inherit"
                   >
                     {item.name}
-                  </NavLink>
+                  </NavLink> */}
                 </MenuItem>
               ))}
             </Menu>

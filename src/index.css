@@ -4,11 +4,27 @@
     margin: 0;
     scroll-behavior: smooth;
   }
+  
+  @media (max-width: 768px) {
+    /* Styles for screens with a maximum width of 768px (phones) */
+    body, html {
+      overflow-x: hidden;
+    }
+  }
 
   html {
     direction: rtl;
   }
 
+  .MuiPaper-root.MuiMenu-paper.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation8.MuiPopover-paper.css-1ka5eyc-MuiPaper-root-MuiMenu-paper-MuiPopover-paper {
+    position: fixed;
+    top: 0 !important;
+    bottom: 0;
+    right: 0;
+    width: 70vw;
+    max-height: 100%;
+  }
+  
   @font-face {
     font-family: 'GE_SS_B';
     src: url('./fonts/GE SS Text Bold.otf') format('truetype');

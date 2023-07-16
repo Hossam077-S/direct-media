@@ -16,24 +16,38 @@ export default makeStyles((theme) => ({
     backgroundColor: "#2E3190 !important",
     
     "@media (max-width: 768px)": {
-      
+      height: '40vw',
+      justifyContent: 'center',
     }
   },
   widthContainer:{
     width: "874px !important",
-    padding: "0px !important"
+    padding: "0px !important",
+
+    "@media (max-width: 768px)": {
+      width: '60vw !important',
+    }
   },
   toolbar: {
     display: 'flex',
     paddingLeft: '0 !important',
     paddingRight: '0 !important',
-    paddingBottom: '14px'
+    paddingBottom: '14px',
+
+    "@media (max-width: 768px)": {
+      flexDirection: "column",
+    }
   },
   leftheader: {
-    [theme.breakpoints.down('sm')]: {
-      width: 'auto',
-      justifyContent: 'center',
-    },
+    // [theme.breakpoints.down('sm')]: {
+    //   width: '100vw',
+    //   justifyContent: 'start',
+    // },
+
+    "@media (max-width: 768px)": {
+      paddingTop : '1vw',
+      width: '50vw',
+    }
   },
   searchbox: {
     display: 'flex',
@@ -45,6 +59,10 @@ export default makeStyles((theme) => ({
     alignItems: 'center',
     height: '22.4px',
     marginRight: '12px',
+
+    "@media (max-width: 768px)": {
+
+    }
   },
   searchicon: {
     color: '#2E3190',
@@ -65,13 +83,25 @@ export default makeStyles((theme) => ({
   socialmediaiconbox: {
     flexGrow: 1,
     textAlign: 'left',
+
+    "@media (max-width: 768px)": {
+
+    }
   },
   todaydatebox: {
-    display: 'flex',  
+    display: 'flex',
+
+    "@media (max-width: 768px)": {
+
+    }
   },
   todaydatetext: {
     fontFamily: "GE_SS_Two_L !important",
     fontSize: '16.83px !important',
+
+    "@media (max-width: 768px)": {
+      fontSize: '18px !important',
+    }
   },
   //Social Media Icon
   fButton:{
@@ -117,11 +147,15 @@ export default makeStyles((theme) => ({
     justifyContent: "flex-start",
     marginTop: '27px !important',
     marginBottom: '5px !important',
+    
+    "@media (max-width: 768px)": {
+      justifyContent: "center",
+    }
   },
   gridMenu: {  
     display: 'flex',
     alignItems: 'center',
-    padding: '0px !important'
+    padding: '0px !important',
   },
   divider: {
     backgroundColor: "#F9AE3B !important",
@@ -129,6 +163,19 @@ export default makeStyles((theme) => ({
     height: "72px !important",
     marginRight: "30px !important",
     marginLeft: "30px !important",
+
+    "@media (max-width: 768px)": {
+      height: "60px !important",
+    }
+  },
+  logoHeader: {
+    width: "225px",
+    height: "50px",
+
+    "@media (max-width: 768px)": {
+      width: "150px",
+      height: "40px",
+    }
   },
   linkMenu: {
     color: "#2E3190",
