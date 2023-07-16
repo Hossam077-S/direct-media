@@ -40,6 +40,7 @@ const menuItems = [
     url: "/user-suggestions",
   },
 ];
+
 const Footer = () => {
   const classes = useStyles();
   return (

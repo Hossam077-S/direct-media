@@ -7,6 +7,11 @@ const useStyles = makeStyles((theme) => ({
     width: "874px !important", 
     padding: "0px !important", 
     marginTop: "23px !important",
+
+    "@media (max-width: 768px)": {
+      
+    }
+    
   },
   slicerDiv: {
     height: "43px",

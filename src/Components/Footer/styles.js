@@ -7,6 +7,10 @@ const useStyles = makeStyles((theme) => ({
         marginTop: '100px',
         height: '251px',
         backgroundColor: '#2E3190',
+
+        "@media (max-width: 768px)": {
+            height: '60vw',
+        }
     },
     divFooter: {
         // 
@@ -20,6 +24,10 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         paddingTop: '32px',
         paddingLeft: '48px',
+
+        "@media (max-width: 768px)": {
+            display: 'none'
+          }
     },
     menuDivider: {
         backgroundColor: "#F9AE3B !important",
@@ -34,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
         fontSize: "31.2px !important",
         fontFamily: "GE_SS_Two_B !important",
         marginBottom: '8px !important',
-        marginTop: '-7px !important',
+        marginTop: '-7px !important',  
     },
     menuDescription: {
         fontSize: "17.3px !important",
@@ -54,15 +62,27 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'start',
         flexDirection: 'row',
         paddingTop: '51px',
+
+        "@media (max-width: 768px)": {
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }
     },
     logoContentDiv: {
         display: 'flex',
-        paddingLeft: '56px'
+        paddingLeft: '56px',
+
+        "@media (max-width: 768px)": {
+            paddingTop: '3vw',
+            paddingLeft: '0px',
+          }
     },
     socialMediaDiv: {
         display: 'flex',
         alignItems: 'center',
         paddingRight: '10px',
+        
     },
     fButton:{
         marginLeft: "1px !important",
@@ -111,9 +131,14 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         alignItems: 'center',
         marginLeft: '15px',
+        
     },
     rightsDiv: {
         paddingLeft: '65px',
+
+        "@media (max-width: 768px)": {
+            paddingLeft: '0px',
+          }
     },
     rightsText: {
         fontSize: "14.9px !important",
