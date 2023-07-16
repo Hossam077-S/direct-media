@@ -102,7 +102,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "23px !important",
     fontFamily: "GE_SS_Two_M !important",
   },
-  // error need to fix here
   newsImageDiv: {
     position: 'relative',
     display: 'flex',
@@ -139,6 +138,7 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     top: "68%",
     right: "0px",
+    direction: 'rtl',
     
     backgroundColor:" rgba(0,0,0,.5)",
 
@@ -236,7 +236,7 @@ const useStyles = makeStyles((theme) => ({
   },
   
   programContainer: {
-    marginTop: '38px',
+    paddingTop: '38px',
   },
   programHeader: {
     position: 'relative',
@@ -271,7 +271,7 @@ const useStyles = makeStyles((theme) => ({
 
   newsTypesHeader: {
     display: 'flex',
-    marginTop: '42px',
+    paddingTop: '42px',
   },
   headerDiv: {
     display: 'flex',
@@ -376,8 +376,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: '#2E3190',
     minWidth: '315px',
     overflow: 'hidden',
-    marginRight: "32px !important",
-    marginLeft: '0px !important'
+    marginLeft: '0px !important',
+    marginRight: '10px !important',
   },
   articlDivTitle: {
     display: 'flex',
@@ -485,8 +485,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     width: '527px',
-    
 
+    
     "& .slick-next": {
       position: 'absolute',
       top: "50% !important", 
@@ -549,7 +549,7 @@ const useStyles = makeStyles((theme) => ({
   newsThreeSlider: {
     position: 'relative',
     display: 'flex',
-    paddingRight: '23px',
+    paddingLeft: '23px',
 
     "& .slick-slider.slick-initialized":{
       width: '160px',
@@ -664,7 +664,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: '38px !important',
   },
   containerDiv5: {
-    marginTop: '50px',
+    paddingTop: '50px',
   },
   podcastDiv: {
     display: 'flex',
@@ -702,13 +702,29 @@ const useStyles = makeStyles((theme) => ({
   },
   podcastMediaItems: {
     width: '946px',
+   
+    "& .slick-track": {
+      direction: 'rtl'
+    }
+  },
+  podcastContent: {
+    position: 'relative',
   },
   podcastMediaImage: {
     width: "242px !important",
     height: "242px !important",
-    
   },
-  
+  playButton: {
+    position: 'absolute !important',
+    bottom: 0,
+  },
+  playButtonIcon: {
+    fontSize: "50px !important",
+    color: 'white',
+    backgroundColor: '#F9AE3B',
+    borderRadius: '100%',
+
+  },
 }));
 
 export default useStyles;

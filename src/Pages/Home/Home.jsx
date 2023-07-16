@@ -13,7 +13,11 @@ import {
   Typography,
   Skeleton,
   ListItemAvatar,
+  IconButton,
 } from "@mui/material";
+
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import PauseIcon from "@mui/icons-material/Pause";
 
 import { Avatar, Divider, List, ListItem } from "@material-ui/core";
 
@@ -39,6 +43,8 @@ import NewsTypeSliderItem from "./newsTypeSliderItem";
 import ThreeSliderComponentItem from "./ThreeSliderComponentItem";
 import { Link } from "react-router-dom";
 
+import ReactPlayer from "react-player";
+
 const Home = () => {
   const classes = useStyles();
 
@@ -46,12 +52,15 @@ const Home = () => {
   const [programsData, setProgramsData] = useState([]);
   const [writersData, setWritersData] = useState([]);
   const [articlesData, setArticlesData] = useState([]);
+  const [podcastData, setPodcastData] = useState([]);
 
   const [groupedData, setGrouppedData] = useState({});
   const [groupedProgramsData, setGrouppedProgramsData] = useState({});
 
   const [videoId, setVideoId] = useState(null);
   const [hoverIndex, setHoverIndex] = useState(-1);
+
+  const [currentPlayingIndex, setCurrentPlayingIndex] = useState(null);
 
   const importantNew = {
     dots: false,
@@ -328,12 +337,22 @@ const Home = () => {
         setArticlesData(result);
       }
     );
+    const unsubscribePodcast = onSnapshot(
+      collection(db, "Podcast"),
+      (snapshot) => {
+        const result = snapshot.docs.map((doc) => doc.data());
+
+        setPodcastData(result);
+      }
+    );
+
     return () => {
       // UnsubscribeNews from the snapshot listener when the component unmounts
       unsubscribeNews();
       unsubscribeProgrames();
       unsubscribeWriters();
       unsubscribeArticles();
+      unsubscribePodcast();
     };
   }, []);
 
@@ -371,11 +390,21 @@ const Home = () => {
     setHoverIndex(-1);
   };
 
+  const handlePlay = (index) => {
+    if (currentPlayingIndex === index) {
+      // Clicked on the currently playing video, pause it
+      setCurrentPlayingIndex(null);
+    } else {
+      // Clicked on a new video, stop the currently playing video and play the new one
+      setCurrentPlayingIndex(index);
+    }
+  };
+
   return (
     <>
       <Container className={classes.container}>
         {/* Latest News */}
-        <div className={classes.slicerDiv}>
+        <div id="latest-news" className={classes.slicerDiv}>
           <Stack direction="row" alignItems="center">
             <div className={classes.imageDiv}>
               <Typography className={classes.imageTitle}>آخرالأخبار</Typography>
@@ -416,14 +445,13 @@ const Home = () => {
           </Stack>
         </div>
 
-        {/* First Slider + Video */}
+        {/* First Slider */}
         <Stack
           direction="row"
           spacing={3.2}
           className={classes.gridSlidersContainer}
         >
           {/* Render the News images slider */}
-          {/* error */}
           {newsData.length > 0 ? (
             <div className={classes.newsImageDiv}>
               <Slider {...allNewsSlider}>
@@ -496,12 +524,12 @@ const Home = () => {
               </Slider>
             </div>
           ) : (
-            <div className={classes.newsDiv}>
-              <Skeleton variant="rectangular" height="425px" />
+            <div>
+              <Skeleton variant="rectangular" height="425px" width="642px" />
             </div>
           )}
           <Stack direction="column" spacing={2}>
-            {/* Render the image slider */}
+            {/* Render Video */}
             <div className={classes.imageDiv2}>
               <Typography className={classes.imageTitle2}>
                 قضية بدقيقة
@@ -516,11 +544,11 @@ const Home = () => {
 
             {/* Render the news Videos slider */}
             {Object.keys(groupedProgramsData).length > 0 ? (
-              <div className={classes.newsDiv}>
+              <div>
                 <YouTube videoId={videoId} className={classes.youtubeVideo} />
               </div>
             ) : (
-              <div className={classes.newsDiv}>
+              <div>
                 <Skeleton variant="rectangular" height="364px" />
               </div>
             )}
@@ -535,7 +563,7 @@ const Home = () => {
         </div>
 
         {/* Programs */}
-        <div className={classes.programContainer}>
+        <div id="programs" className={classes.programContainer}>
           <div className={classes.programHeader}>
             <Divider
               orientation="horizontal"
@@ -564,7 +592,7 @@ const Home = () => {
               </Typography>
             )}
           </div>
-          <div className={classes.newsTypesHeader}>
+          <div id="news" className={classes.newsTypesHeader}>
             <div className={classes.headerDiv}>
               <div className={classes.globalHeaderDiv}>
                 <Divider
@@ -640,7 +668,7 @@ const Home = () => {
         </div>
       </Container>
 
-      {/* News Type Sliders */}
+      {/* News Type Sliders & Articles*/}
       <div className={classes.containerDiv2}>
         <Container className={classes.container2}>
           <Stack direction="row" spacing={4}>
@@ -746,7 +774,7 @@ const Home = () => {
                   كتّاب المنصّة
                 </Typography>
               </div>
-              {newsData.length > 0 ? (
+              {Object.keys(writersData).length > 0 ? (
                 <div className={classes.articlContentDiv}>
                   <div className={classes.articlImage_Divider}>
                     <List className={classes.newsList}>
@@ -889,7 +917,7 @@ const Home = () => {
         </div>
       </Container>
 
-      <Container className={classes.containerDiv5}>
+      <Container id="podcast" className={classes.containerDiv5}>
         <div className={classes.podcastDiv}>
           <img src={PodcastBackground} alt="Video" />
         </div>
@@ -906,16 +934,38 @@ const Home = () => {
             <Typography className={classes.podcastText}>بودكاست</Typography>
           </div>
           <div className={classes.podcastMediaHeader}>
-            {newsData.length > 0 ? (
+            {Object.keys(podcastData).length > 0 ? (
               <div className={classes.podcastMediaItems}>
                 <Slider {...podcastSettings}>
-                  {newsData.map((newsItem, index) => (
-                    <img
-                      key={index}
-                      src={newsItem.ImageURL}
-                      alt={newsItem.Title}
-                      className={classes.podcastMediaImage}
-                    />
+                  {podcastData.map((podcast, index) => (
+                    <div className={classes.podcastContent}>
+                      <img
+                        key={index}
+                        src={podcast.ImageUrl}
+                        alt={podcast.Title}
+                        className={classes.podcastMediaImage}
+                      />
+                      <IconButton
+                        className={classes.playButton}
+                        onClick={() => handlePlay(index)}
+                      >
+                        {currentPlayingIndex === index ? (
+                          <PauseIcon className={classes.playButtonIcon} />
+                        ) : (
+                          <PlayArrowIcon className={classes.playButtonIcon} />
+                        )}
+                      </IconButton>
+                      {currentPlayingIndex === index && (
+                        <ReactPlayer
+                          url={podcast["YouTube URL"]}
+                          playing={true}
+                          controls={true}
+                          width={640}
+                          height={360}
+                          style={{ display: "none" }}
+                        />
+                      )}
+                    </div>
                   ))}
                 </Slider>
               </div>

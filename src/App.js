@@ -27,7 +27,6 @@ const [Home, News, Admin] = [
 const App = () => {
   // const user = JSON.parse(localStorage.getItem('profile'));
   return (
-    <div>
       <Suspense fallback={<div>Loading...</div>}>
       <Header />
       <Routes>
@@ -38,7 +37,6 @@ const App = () => {
       </Routes>
       <Footer />
       </Suspense>
-    </div>
   );
 };
 

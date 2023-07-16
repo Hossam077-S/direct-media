@@ -29,13 +29,13 @@ import useStyles from "./styles";
 
 const Header = () => {
   const menuItems = [
-    { name: "كل الأخبار", href: "/" },
-    { name: "محلي", href: "/news" },
-    { name: "صحافة", href: "/s" },
-    { name: "دولي", href: "/r" },
-    { name: "برامج المنصة", href: "/q" },
-    { name: "بودكاست", href: "/w" },
-    { name: "رصد مباشر", href: "/t" },
+    { name: "كل الأخبار", href: "/#latest-news" },
+    { name: "محلي", href: "/#news" },
+    { name: "صحافة", href: "/#news" },
+    { name: "دولي", href: "/#news" },
+    { name: "برامج المنصة", href: "/#programs" },
+    { name: "بودكاست", href: "/#podcast" },
+    { name: "رصد مباشر", href: "/#rasd" },
   ];
 
   const currentDate = new Date().toLocaleDateString("ar", {
@@ -118,14 +118,17 @@ const Header = () => {
             />
             <Hidden mdDown>
               {menuItems.map((item) => (
-                <NavLink
-                  key={item.name}
-                  className={classes.linkMenu}
-                  to={item.href}
-                  color="inherit"
-                >
+                <a className={classes.linkMenu} href={item.href}>
                   {item.name}
-                </NavLink>
+                </a>
+                // <NavLink
+                //   key={item.name}
+                //   className={classes.linkMenu}
+                //   to={item.href}
+                //   color="inherit"
+                // >
+                //   {item.name}
+                // </NavLink>
               ))}
             </Hidden>
             <Hidden mdUp>
