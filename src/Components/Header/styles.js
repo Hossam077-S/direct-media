@@ -5,11 +5,19 @@ export default makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     overflow: 'hidden',
+
+    "@media (max-width: 768px)": {
+      
+    }
   },
   appBar: {
     display: 'flex',
     height: '50px',
     backgroundColor: "#2E3190 !important",
+    
+    "@media (max-width: 768px)": {
+      
+    }
   },
   widthContainer:{
     width: "874px !important",
