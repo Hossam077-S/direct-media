@@ -8,6 +8,10 @@ export default makeStyles((theme) => ({
 
     "@media (max-width: 768px)": {
       
+    },
+
+    "@media screen and (min-width: 768px) and (max-width: 1024px)": {
+      width: '1000px !important',
     }
   },
   appBar: {
@@ -18,7 +22,11 @@ export default makeStyles((theme) => ({
     "@media (max-width: 768px)": {
       height: '40vw',
       justifyContent: 'center',
-    }
+    },
+
+    "@media screen and (min-width: 768px) and (max-width: 1024px)": {
+      
+    },
   },
   widthContainer:{
     width: "874px !important",
@@ -26,7 +34,8 @@ export default makeStyles((theme) => ({
 
     "@media (max-width: 768px)": {
       width: '60vw !important',
-    }
+    },
+
   },
   toolbar: {
     display: 'flex',
@@ -150,7 +159,7 @@ export default makeStyles((theme) => ({
     
     "@media (max-width: 768px)": {
       justifyContent: "center",
-    }
+    },
   },
   gridMenu: {  
     display: 'flex',

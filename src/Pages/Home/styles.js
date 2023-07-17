@@ -10,8 +10,11 @@ const useStyles = makeStyles((theme) => ({
 
     "@media (max-width: 768px)": {
       width: "90vw !important",
-    }
+    },
 
+    "@media screen and (min-width: 768px) and (max-width: 1024px)": {
+      width: "100% !important",
+    },
   },
   slicerDiv: {
     height: "43px",
@@ -760,7 +763,7 @@ const useStyles = makeStyles((theme) => ({
 
       "@media (max-width: 768px)": {
         width: '90vw',
-        height: '110vw',
+        height: '25rem',
       },
     },
 
@@ -804,8 +807,8 @@ const useStyles = makeStyles((theme) => ({
     height: "121px",
     
     "@media (max-width: 768px)": {
-      width: '320px',
-      height: '200px',
+      width: '100%',
+      height: '100%',
     },
 
   },
