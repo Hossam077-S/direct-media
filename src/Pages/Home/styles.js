@@ -504,6 +504,11 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: '50px',
     marginTop: '24px',
     height: '720px',
+    
+    "@media (max-width: 768px)": {
+      height: '100%',
+      paddingBottom: '10vw'      
+    },
   },
   container2: {
     padding: "0px !important", 
@@ -515,18 +520,25 @@ const useStyles = makeStyles((theme) => ({
       },
     }
   },
+  
   articlStack: {
     backgroundColor: '#2E3190',
     minWidth: '315px',
     overflow: 'hidden',
     marginLeft: '0px !important',
     marginRight: '10px !important',
+
+    "@media (max-width: 768px)": {
+      height: '38.2rem',
+      width: '90vw',
+      marginRight: '19px !important',
+    },
   },
   articlDivTitle: {
     display: 'flex',
     justifyContent: 'center',
     flexDirection: 'column',
-    paddingTop: '10px'
+    paddingTop: '10px',
   },
   articlTitleHeader: {
     fontSize: '32.9px !important',
@@ -549,6 +561,10 @@ const useStyles = makeStyles((theme) => ({
   newsList: {
     width: '315px',
     height: '125px',
+
+    "@media (max-width: 768px)": {
+      width: '90vw',
+    },
   },
   newsListItem: {
     padding: theme.spacing(2.4, 0),
@@ -563,6 +579,7 @@ const useStyles = makeStyles((theme) => ({
     "&:nth-child(odd)": {
       backgroundColor: '#1B1464'
     }
+
   },
   newsAvatar: {
     width: '84.8px',
@@ -572,7 +589,11 @@ const useStyles = makeStyles((theme) => ({
     width: '315px',
     height: '125px',
     paddingLeft: '30px',
-    padding: 0
+    padding: 0,
+    
+    "@media (max-width: 768px)": {
+      width: '90vw',
+    },
   },
   newsItemContent: {
     display: 'flex',
@@ -667,6 +688,10 @@ const useStyles = makeStyles((theme) => ({
 
     width: '100%',
 
+    "@media (max-width: 768px)": {
+      top: "80%",
+    },
+
   },
   articleContentnewsImage: {
     width: "527px",
@@ -713,20 +738,32 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'right',
     direction: 'rtl',
   },
-  
+
   threeNewsContainer: {
     display: 'flex',
     marginTop: '32px',
+
+    "@media (max-width: 768px)": {
+      marginRight: '4vw',
+      paddingBottom: '10vw',
+      flexDirection: 'column',
+    },
   },
   newsThreeSlider: {
     position: 'relative',
     display: 'flex',
     paddingLeft: '23px',
-
+    
     "& .slick-slider.slick-initialized":{
       width: '160px',
       height: '258px',
+
+      "@media (max-width: 768px)": {
+        width: '90vw',
+        height: '110vw',
+      },
     },
+
     "& .slick-next": {
       position: 'absolute',
       top: "100%", 
@@ -734,6 +771,11 @@ const useStyles = makeStyles((theme) => ({
       zIndex: 1,  
       padding: '0px',
       marginTop: '15px',
+
+      "@media (max-width: 768px)": {
+        top: "86%", 
+      },
+
     },
     "& .slick-prev": {
       position: "absolute",
@@ -742,6 +784,11 @@ const useStyles = makeStyles((theme) => ({
       zIndex: 1,
       padding: '0px',
       marginTop: '15px',
+
+      "@media (max-width: 768px)": {
+        left: "86%",
+        top: "86%", 
+      },
     },
   },
   threeSlidersContainer: {
@@ -752,6 +799,16 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     backgroundColor: 'white',
   },
+  threenewsImage: {
+    width: "160px",
+    height: "121px",
+    
+    "@media (max-width: 768px)": {
+      width: '320px',
+      height: '200px',
+    },
+
+  },
   title_description_threeSlider: {
     height: '137px',
     paddingRight: '15px',
@@ -759,12 +816,16 @@ const useStyles = makeStyles((theme) => ({
     paddingTop: '14px',
     display: 'flex',
     flexDirection: 'column',
+
+    "@media (max-width: 768px)": {
+      paddingRight: '10px',
+      paddingLeft: '10px',
+    },
   },
   sliderThreeTitle: {
     fontSize: '10px !important',
     fontFamily: 'GE_SS_Two_M !important',
     textAlign: 'right',
-
   },
   sliderThreeDescription: {
     fontSize: '8px !important',
@@ -784,11 +845,24 @@ const useStyles = makeStyles((theme) => ({
     height: '89px',
     width: '1000px !important',
     backgroundColor: '#F0F0F0',
+
+    
+    "@media (max-width: 768px)": {
+      width: '90vw !important',
+    },
   },
   videoImageDiv: {
     display: 'flex',
     justifyContent: 'center',
   },
+  videoImage: {
+
+    "@media (max-width: 768px)": {
+      width: '90vw',
+      height: '10vh'
+    },
+  },
+
   containerDiv4: {
     display: 'flex !important',
     justifyContent: 'center',
@@ -796,6 +870,10 @@ const useStyles = makeStyles((theme) => ({
   },
   writerContainer: {
     width: '874px !important',
+
+    "@media (max-width: 768px)": {
+      width: '90vw !important',
+    },
   },
   writerHeader: {
     position: 'relative',
@@ -814,16 +892,27 @@ const useStyles = makeStyles((theme) => ({
     color: '#2E3190',
     fontSize: "23px !important",
     fontFamily: "GE_SS_Two_M !important",
+
+    "@media (max-width: 768px)": {
+      right: "34vw",
+    },
   },
   writerDetails: {
     marginTop: '32px',
   },
-  writerSlider: {
-    width: '100%',
-  },
   writerItems: {
     marginTop: '27px',
-    width: '942px'
+    width: '942px',
+
+    "@media (max-width: 768px)": {
+      width: '90vw',
+    },
+    "& .slick-initialized .slick-slide": {
+      "@media (max-width: 768px)": {
+        display: 'flex',
+        justifyContent: 'center',
+      },
+    },
   },
   writerImage: {
     width: "166px !important",
@@ -835,6 +924,11 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "17.3px !important",
     fontFamily: "GE_SS_Two_L !important",
     marginRight: '38px !important',
+
+    "@media (max-width: 768px)": {
+      marginRight: '0px !important',
+      textAlign: 'center',
+    },
   },
 
   containerDiv5: {
@@ -845,6 +939,12 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     height: '193.3px',
   },
+  podcastImage: {
+    "@media (max-width: 768px)": {
+      width: '90vw',
+      height: '40vw',
+    },
+  },
 
   containerDiv6: {
     marginTop: '53px',
@@ -853,6 +953,10 @@ const useStyles = makeStyles((theme) => ({
   },
   podcastContainer: {
     width: '874px !important',
+
+    "@media (max-width: 768px)": {
+      width: '90vw !important',
+    },
   },
   podcastHeader: {
     position: 'relative',
@@ -871,15 +975,30 @@ const useStyles = makeStyles((theme) => ({
     color: '#2E3190',
     fontSize: "23px !important",
     fontFamily: "GE_SS_Two_M !important",
+
+    "@media (max-width: 768px)": {
+      right: "30vw",
+    },
   },
   podcastMediaHeader: {
     marginTop: '47px',
   },
   podcastMediaItems: {
     width: '946px',
+
+    "@media (max-width: 768px)": {
+      width: '90vw'
+    },
    
     "& .slick-track": {
       direction: 'rtl'
+    },
+
+    "& .slick-initialized .slick-slide": {
+      "@media (max-width: 768px)": {
+        display: 'flex',
+        justifyContent: 'center',
+      },
     }
   },
   podcastContent: {

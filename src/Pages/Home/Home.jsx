@@ -866,7 +866,7 @@ const Home = () => {
       <Container className={classes.containerDiv3}>
         {" "}
         <div className={classes.videoImageDiv}>
-          <img src={VideImage} alt="Video" />
+          <img src={VideImage} alt="Video" className={classes.videoImage} />
         </div>
       </Container>
 
@@ -913,7 +913,11 @@ const Home = () => {
 
       <Container id="podcast" className={classes.containerDiv5}>
         <div className={classes.podcastDiv}>
-          <img src={PodcastBackground} alt="Video" />
+          <img
+            src={PodcastBackground}
+            alt="Video"
+            className={classes.podcastImage}
+          />
         </div>
       </Container>
 

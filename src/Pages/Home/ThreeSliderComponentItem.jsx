@@ -13,9 +13,7 @@ const ThreeSliderComponentItem = ({ index, item }) => {
       <img
         src={item.ImageURL}
         alt={item.Title}
-        width="160px"
-        height="121px"
-        className={classes.newsImage}
+        className={classes.threenewsImage}
       />
       <div className={classes.title_description_threeSlider}>
         <Typography gutterBottom className={classes.sliderThreeTitle}>
