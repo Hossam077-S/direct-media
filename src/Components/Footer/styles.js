@@ -10,6 +10,9 @@ const useStyles = makeStyles((theme) => ({
 
         "@media (max-width: 768px)": {
             height: '60vw',
+        },
+        "@media screen and (min-width: 768px) and (max-width: 1024px)": {
+            width: '1000px !important',
         }
     },
     divFooter: {

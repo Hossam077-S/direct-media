@@ -308,7 +308,12 @@ const Home = () => {
     const unsubscribeProgrames = onSnapshot(
       collection(db, "Programs"),
       (snapshot) => {
-        const result = snapshot.docs.map((doc) => doc.data());
+        const result = snapshot.docs.map((doc) => {
+          const x = doc.data();
+          x.id = doc.id;
+          return x;
+        });
+        // const result = snapshot.docs.map((doc) => doc.data());
 
         const CaseInOne = result.filter((m) => m.Title === "قضية بدقيقة");
 
@@ -573,12 +578,14 @@ const Home = () => {
               <div className={classes.programItems}>
                 <Slider {...programSettings}>
                   {programsData.map((newsItem, index) => (
-                    <img
-                      key={index}
-                      src={newsItem["Image URL"]}
-                      alt={newsItem.Title}
-                      className={classes.programImage}
-                    />
+                    <Link to={"programs/" + newsItem.id}>
+                      <img
+                        key={index}
+                        src={newsItem["Image URL"]}
+                        alt={newsItem.Title}
+                        className={classes.programImage}
+                      />
+                    </Link>
                   ))}
                 </Slider>
               </div>

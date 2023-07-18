@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     },
 
     "@media screen and (min-width: 768px) and (max-width: 1024px)": {
-      width: "100% !important",
+      justifyContent: 'center',
     },
   },
   slicerDiv: {
@@ -46,8 +46,10 @@ const useStyles = makeStyles((theme) => ({
 
       "@media (max-width: 768px)": {
         top: "55%", 
-      }
-
+      },
+      "@media screen and (min-width: 768px) and (max-width: 1024px)": {
+        right: "100% !important",
+      },
     },
     
     "& .slick-prev": {
@@ -61,7 +63,11 @@ const useStyles = makeStyles((theme) => ({
 
       "@media (max-width: 768px)": {
         top: "55%", 
-      }
+      },
+
+      "@media screen and (min-width: 768px) and (max-width: 1024px)": {
+        right: "100% !important",
+      },
     },
 
     "@media (max-width: 768px)": {
@@ -128,11 +134,16 @@ const useStyles = makeStyles((theme) => ({
         height: "12vw !important",
       }
   },
+
   gridSlidersContainer: {
     marginTop: '38px',
 
     "@media (max-width: 768px)": {
       flexDirection: 'column !important',
+    },
+
+    "@media screen and (min-width: 768px) and (max-width: 1024px)": {
+      justifyContent: 'center',
     },
 
     "& .MuiStack-root.css-1p5q5e5-MuiStack-root": {
@@ -142,7 +153,7 @@ const useStyles = makeStyles((theme) => ({
       "@media (max-width: 768px)": {
         marginRight: '0px'
       },
-    }
+    },
   },
 
   youtubeVideo: {
