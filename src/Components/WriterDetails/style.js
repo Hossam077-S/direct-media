@@ -13,16 +13,10 @@ const useStyles = makeStyles((theme) => ({
     Title: {
         fontSize: '24px',
         fontFamily: "GE_SS_Two_B",
-        paddingBottom: '5px',
-    },
-    Date: {
-        fontFamily: "GE_SS_Two_L",
-        fontSize: "15px",
-        paddingBottom: "10px",
-
+        paddingBottom: '10px',
     },
     newsDetailsImage: {
-        width: '640px',
+        width: '200px',
         height: 'auto',
 
         "@media (max-width: 768px)": {
@@ -52,6 +46,7 @@ const useStyles = makeStyles((theme) => ({
        height: '186px',
       },
     },
+
 }));
 
 export default useStyles;

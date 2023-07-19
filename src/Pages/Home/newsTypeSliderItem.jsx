@@ -2,6 +2,7 @@ import { Typography } from "@mui/material";
 import React from "react";
 
 import useStyles from "./styles";
+import { Link } from "react-router-dom";
 
 const NewsTypeSliderItem = ({ Item, ItemIndex }) => {
   const classes = useStyles();
@@ -14,11 +15,13 @@ const NewsTypeSliderItem = ({ Item, ItemIndex }) => {
           className={classes.newsTypeSliderItems}
         >
           <div className={classes.newsTypeSliderItem}>
-            <img
-              src={newsItem.ImageURL}
-              alt={newsItem.Title}
-              className={classes.newsTypeSliderImage}
-            />
+            <Link to={"news/" + newsItem.id}>
+              <img
+                src={newsItem.ImageURL}
+                alt={newsItem.Title}
+                className={classes.newsTypeSliderImage}
+              />
+            </Link>
             <div>
               <Typography className={classes.newsTypeSliderText}>
                 {newsItem.Title}

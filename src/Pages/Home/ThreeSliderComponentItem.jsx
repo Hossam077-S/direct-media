@@ -4,17 +4,20 @@ import React from "react";
 import Truncate from "react-truncate";
 
 import useStyles from "./styles";
+import { Link } from "react-router-dom";
 
-const ThreeSliderComponentItem = ({ index, item }) => {
+const ThreeSliderComponentItem = ({ index, item, id }) => {
   const classes = useStyles();
 
   return (
     <div key={index} className={classes.ThreeSlider}>
-      <img
-        src={item.ImageURL}
-        alt={item.Title}
-        className={classes.threenewsImage}
-      />
+      <Link to={"news/" + id}>
+        <img
+          src={item.ImageURL}
+          alt={item.Title}
+          className={classes.threenewsImage}
+        />
+      </Link>
       <div className={classes.title_description_threeSlider}>
         <Typography gutterBottom className={classes.sliderThreeTitle}>
           {item.Title}

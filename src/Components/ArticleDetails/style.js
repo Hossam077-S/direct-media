@@ -36,22 +36,6 @@ const useStyles = makeStyles((theme) => ({
         fontFamily: "GE_SS_Two_L",
         paddingTop: '10px',
     },
-    VideoDiv: {
-      paddingTop: '10px',  
-    },
-    youtubeVideo: {
-       width: '640px',
-       height: '360px',
-      "& iframe": {
-       width: "100%",
-       height: '100%',
-      },
-    
-      "@media (max-width: 768px)": {
-       width: '90vw',
-       height: '186px',
-      },
-    },
 }));
 
 export default useStyles;

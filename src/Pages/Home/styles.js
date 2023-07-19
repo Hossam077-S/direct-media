@@ -453,7 +453,11 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     display: 'flex',
     flexDirection: 'column',
-    marginTop: '37px',
+    marginTop: '16px',
+
+    "@media (max-width: 768px)": {
+      paddingBottom: '20px',
+    },
 
     "& .slick-list": {
       width: '228px',
@@ -469,6 +473,13 @@ const useStyles = makeStyles((theme) => ({
       left: '213px',
       backgroundColor: '#DCDCDC !important',
       padding: '1px',
+
+      "@media (max-width: 768px)": {
+        position: 'absolute',
+        top: '105%',
+        left: '94%',
+      },
+
     },
     "& .slick-prev": {
       position: 'relative',
@@ -476,14 +487,22 @@ const useStyles = makeStyles((theme) => ({
       left: "82%",
       backgroundColor: '#DCDCDC !important',
       padding: '1px',
+
+      "@media (max-width: 768px)": {
+        position: 'absolute',
+        top: '105%',
+        left: '85%',
+      },
+
     },
   },
   newsTypeSliderItem: {
     display: 'flex',
     flexDirection: 'row',
     alignItems: 'start',
-    justifyContent: 'right',
+    justifyContent: 'flex-start',
     paddingBottom: "3.4px",
+    direction: 'rtl',
   },
   newsTypeSliderItems: {
     display: 'flex',

@@ -8,11 +8,14 @@ import { Routes, Route } from 'react-router-dom';
 // const Footer = lazy(() => import('./Components/Footer/Footer'));
 // const NewsDetails = lazy(() => import('./Components/NewsDetails/NewsDetails'));
 
-const [Header, Footer, NewsDetails, ProgramDetails] = [
+const [Header, Footer, NewsDetails, ProgramDetails, WriterDetails, ArticleDetails, PodcastDetails ] = [
   'Header',
   'Footer',
   'NewsDetails',
   'ProgramDetails',
+  'WriterDetails',
+  'ArticleDetails',
+  'PodcastDetails',
 ].map((component) =>
   lazy(() => import(`./Components/${component}/${component}`))
 );
@@ -36,6 +39,9 @@ const App = () => {
         <Route path="/admin" element={<Admin />} />
         <Route path="/news/:id" element={<NewsDetails />} />
         <Route path="/programs/:id" element={<ProgramDetails />} />
+        <Route path="/writer/:id" element={<WriterDetails />} />
+        <Route path="/article/:id" element={<ArticleDetails />} />
+        <Route path="/podcast/:id" element={<PodcastDetails />} />
       </Routes>
       <Footer />
       </Suspense>

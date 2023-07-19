@@ -53,13 +53,8 @@ const NewsDetails = () => {
   return (
     <>
       <div className={classes.container}>
-        <div className={classes.Title}>
-          {newsItem?.Title}{" "}
-          <span style={{ fontFamily: "GE_SS_Two_L", fontSize: "15px" }}>
-            {" "}
-            - {formattedDate}
-          </span>
-        </div>
+        <div className={classes.Title}>{newsItem?.Title} </div>
+        <div className={classes.Date}>{formattedDate}</div>
         <div className={classes.Content}>
           <div className={classes.ImageDiv}>
             <img

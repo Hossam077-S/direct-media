@@ -329,7 +329,11 @@ const Home = () => {
     const unsubscribeWriters = onSnapshot(
       collection(db, "Writers"),
       (snapshot) => {
-        const result = snapshot.docs.map((doc) => doc.data());
+        const result = snapshot.docs.map((doc) => {
+          const x = doc.data();
+          x.id = doc.id;
+          return x;
+        });
 
         setWritersData(result);
       }
@@ -337,16 +341,22 @@ const Home = () => {
     const unsubscribeArticles = onSnapshot(
       collection(db, "Articles"),
       (snapshot) => {
-        const result = snapshot.docs.map((doc) => doc.data());
-
+        const result = snapshot.docs.map((doc) => {
+          const x = doc.data();
+          x.id = doc.id;
+          return x;
+        });
         setArticlesData(result);
       }
     );
     const unsubscribePodcast = onSnapshot(
       collection(db, "Podcast"),
       (snapshot) => {
-        const result = snapshot.docs.map((doc) => doc.data());
-
+        const result = snapshot.docs.map((doc) => {
+          const x = doc.data();
+          x.id = doc.id;
+          return x;
+        });
         setPodcastData(result);
       }
     );
@@ -458,11 +468,13 @@ const Home = () => {
                 {newsData.map((newsItem, index) => (
                   <div key={index} className={classes.sliderItem}>
                     <>
-                      <img
-                        src={newsItem.ImageURL}
-                        alt={newsItem.Title}
-                        className={classes.allnewsImage}
-                      />
+                      <Link to={"news/" + newsItem.id}>
+                        <img
+                          src={newsItem.ImageURL}
+                          alt={newsItem.Title}
+                          className={classes.allnewsImage}
+                        />
+                      </Link>
                       <div className={classes.sliderDetailsDiv}>
                         <Divider
                           orientation="vertical"
@@ -470,14 +482,12 @@ const Home = () => {
                           className={classes.SliderDivider}
                         />
                         <div className={classes.sliderContent}>
-                          <Link to={"news/" + newsItem.id}>
-                            <Typography
-                              gutterBottom
-                              className={classes.sliderNewsTitle}
-                            >
-                              {newsItem.Title}
-                            </Typography>
-                          </Link>
+                          <Typography
+                            gutterBottom
+                            className={classes.sliderNewsTitle}
+                          >
+                            {newsItem.Title}
+                          </Typography>
                           <Typography
                             variant="body1"
                             gutterBottom
@@ -683,11 +693,13 @@ const Home = () => {
                     {newsData.map((newsItem, index) => (
                       <div key={index} className={classes.sliderItem}>
                         <>
-                          <img
-                            src={newsItem.ImageURL}
-                            alt={newsItem.Title}
-                            className={classes.articleContentnewsImage}
-                          />
+                          <Link to={"news/" + newsItem.id}>
+                            <img
+                              src={newsItem.ImageURL}
+                              alt={newsItem.Title}
+                              className={classes.articleContentnewsImage}
+                            />
+                          </Link>
                           <div className={classes.sliderDetailsDiv2}>
                             <div className={classes.title_dividerArticl}>
                               <Typography className={classes.sliderArticlTitle}>
@@ -731,6 +743,7 @@ const Home = () => {
                         <ThreeSliderComponentItem
                           index={index}
                           item={newsItem}
+                          id={newsItem.id}
                         />
                       ))}
                     </Slider>
@@ -741,6 +754,7 @@ const Home = () => {
                         <ThreeSliderComponentItem
                           index={index}
                           item={newsItem}
+                          id={newsItem.id}
                         />
                       ))}
                     </Slider>
@@ -751,6 +765,7 @@ const Home = () => {
                         <ThreeSliderComponentItem
                           index={index}
                           item={newsItem}
+                          id={newsItem.id}
                         />
                       ))}
                     </Slider>
@@ -800,6 +815,7 @@ const Home = () => {
                                   }`}
                                 />
                               )}
+
                               <div className={classes.descriptionContent}>
                                 <div className={classes.newsItemTitle}>
                                   {articlesData.map((articleItem, index) => {
@@ -809,26 +825,28 @@ const Home = () => {
                                       ];
                                     if (articleItem.ArticleID === articleID) {
                                       return (
-                                        <Typography
-                                          key={index}
-                                          className={classes.articleContent}
-                                        >
-                                          <Truncate
-                                            lines={3}
-                                            ellipsis={
-                                              <span
-                                                style={{ fontSize: "10px" }}
-                                              >
-                                                ...{" "}
-                                                <a href="/link/to/article">
-                                                  قراءة المزيد
-                                                </a>
-                                              </span>
-                                            }
+                                        <Link to={"article/" + articleItem.id}>
+                                          <Typography
+                                            key={index}
+                                            className={classes.articleContent}
                                           >
-                                            {articleItem.Content}
-                                          </Truncate>
-                                        </Typography>
+                                            <Truncate
+                                              lines={3}
+                                              ellipsis={
+                                                <span
+                                                  style={{ fontSize: "10px" }}
+                                                >
+                                                  ...{" "}
+                                                  <a href="/link/to/article">
+                                                    قراءة المزيد
+                                                  </a>
+                                                </span>
+                                              }
+                                            >
+                                              {articleItem.Content}
+                                            </Truncate>
+                                          </Typography>
+                                        </Link>
                                       );
                                     }
                                     return null;
@@ -846,6 +864,7 @@ const Home = () => {
                                   <span>{writerItem.Name}</span>
                                 </div>
                               </div>
+
                               <ListItemAvatar>
                                 <Avatar
                                   alt={writerItem.Title}
@@ -894,11 +913,13 @@ const Home = () => {
                 <Slider {...writersSettings}>
                   {writersData.map((newsItem, index) => (
                     <div key={index}>
-                      <img
-                        src={newsItem.ProfileImage}
-                        alt={newsItem.Title}
-                        className={classes.writerImage}
-                      />
+                      <Link to={"writer/" + newsItem.id}>
+                        <img
+                          src={newsItem.ProfileImage}
+                          alt={newsItem.Title}
+                          className={classes.writerImage}
+                        />
+                      </Link>
                       <Typography
                         variant="body1"
                         className={classes.writerTitle}
@@ -944,12 +965,14 @@ const Home = () => {
                 <Slider {...podcastSettings}>
                   {podcastData.map((podcast, index) => (
                     <div className={classes.podcastContent}>
-                      <img
-                        key={index}
-                        src={podcast.ImageUrl}
-                        alt={podcast.Title}
-                        className={classes.podcastMediaImage}
-                      />
+                      <Link to={"podcast/" + podcast.id}>
+                        <img
+                          key={index}
+                          src={podcast.ImageUrl}
+                          alt={podcast.Title}
+                          className={classes.podcastMediaImage}
+                        />
+                      </Link>
                       <IconButton
                         className={classes.playButton}
                         onClick={() => handlePlay(index)}
