@@ -71,7 +71,8 @@ const useStyles = makeStyles((theme) => ({
     },
 
     "@media (max-width: 768px)": {
-      width: '100%',
+      width: 'auto',
+      flexGrow: 1,
     }
   },
   importantNewsSliderItem: {
@@ -91,7 +92,7 @@ const useStyles = makeStyles((theme) => ({
 
     "@media (max-width: 768px)": {
       fontSize: "12px !important",
-      marginTop: '5% !important',
+      // marginTop: '5% !important',
       marginRight: "10px !important",
     }
   },
@@ -235,7 +236,7 @@ const useStyles = makeStyles((theme) => ({
   },
   sliderDetailsDiv: {
     position: "absolute",
-    top: "68%",
+    bottom: "0",
     right: "0px",
     direction: 'rtl',
     
@@ -245,7 +246,10 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'start',
 
     width: '100%',
-    height: '32%',
+
+    minHeight: '150px'
+    // May be needed on laptop size.
+    // height: '32%',
   },
   sliderContent: {
    paddingTop: '28px',
@@ -261,7 +265,7 @@ const useStyles = makeStyles((theme) => ({
   SliderDivider: {
     backgroundColor: "#F9AE3B",
     width: "13px",
-    height: "136px",
+    // height: "136px",
   },
   sliderNewsTitle : {
     color: 'white',
@@ -722,7 +726,8 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
 
     "@media (max-width: 768px)": {
-      top: "80%",
+      bottom: "0",
+      top: "unset"
     },
 
   },

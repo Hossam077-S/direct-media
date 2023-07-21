@@ -78,15 +78,27 @@ const Home = () => {
     nextArrow: <img src={arrowINdown} alt={"arrowLeft"} />,
     responsive: [
       {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          prevArrow: <></>,
+          nextArrow: <></>
+        },
+      },
+      {
         breakpoint: 768,
         settings: {
           slidesToShow: 3,
+          prevArrow: <></>,
+          nextArrow: <></>
         },
       },
       {
         breakpoint: 480,
         settings: {
           slidesToShow: 1,
+          prevArrow: <></>,
+          nextArrow: <></>
         },
       },
     ],
