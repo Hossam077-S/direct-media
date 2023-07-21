@@ -2,8 +2,15 @@ import React, { useEffect, useState } from "react";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 
-import { doc, getDoc } from "firebase/firestore";
-import { useParams } from "react-router-dom";
+import {
+  collection,
+  doc,
+  getDoc,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
+import { Link, useParams } from "react-router-dom";
 import { db } from "../../Utils/firebase";
 
 import useStyles from "./style";
@@ -16,6 +23,7 @@ const NewsDetails = () => {
 
   const { id } = useParams();
   const [newsItem, setNewsItem] = useState({});
+  const [relatedNews, setRelatedNews] = useState([]);
 
   const [videoId, setVideoId] = useState(null);
 
@@ -27,6 +35,28 @@ const NewsDetails = () => {
       setNewsItem(docSnap.data());
     });
   }, [id]);
+
+  useEffect(() => {
+    if (newsItem.Category) {
+      const q = query(
+        collection(db, "News"),
+        where("Category", "==", newsItem.Category)
+      );
+
+      const unsubscribeRelatedNews = onSnapshot(q, (snapshot) => {
+        const result = snapshot.docs.map((doc) => {
+          const x = doc.data();
+          x.id = doc.id;
+          return x;
+        });
+
+        setRelatedNews(result);
+
+        console.log(result);
+      });
+      return () => unsubscribeRelatedNews();
+    }
+  }, [newsItem.Category]);
 
   useEffect(() => {
     let videoUrl = null;
@@ -73,6 +103,44 @@ const NewsDetails = () => {
           <div className={classes.VideoDiv}>
             <YouTube videoId={videoId} className={classes.youtubeVideo} />
           </div>
+
+          {/* Display the related news section */}
+          {relatedNews.length > 0 && (
+            <div className={classes.relatedNewsDiv}>
+              <h2>الأخبار المرتبطة</h2>
+              <ul>
+                {relatedNews.map((relatedNewsItem) => (
+                  <li
+                    key={relatedNewsItem.id}
+                    className={classes.relatedNewsLi}
+                  >
+                    <Link
+                      to={`/news/${relatedNewsItem.id}`}
+                      style={{ textDecoration: "none", color: "black" }}
+                    >
+                      <h3 className={classes.relatedTitle}>
+                        {relatedNewsItem.Title}
+                      </h3>
+                    </Link>
+                    <p className={classes.relatedDescription}>
+                      {relatedNewsItem.Description}
+                    </p>
+                    <p className={classes.relatedDate}>
+                      {relatedNewsItem.PublishDate.toDate().toLocaleDateString(
+                        "ar",
+                        {
+                          weekday: "long",
+                          day: "numeric",
+                          month: "long",
+                          year: "numeric",
+                        }
+                      )}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </div>
     </>

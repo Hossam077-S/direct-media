@@ -52,6 +52,28 @@ const useStyles = makeStyles((theme) => ({
        height: '186px',
       },
     },
+
+    relatedNewsDiv: {
+        paddingTop: "15px",
+    },
+    relatedNewsLi: {
+        paddingBottom: "10px",
+    },
+    relatedTitle: {
+        fontSize: '18px',
+        fontFamily: "GE_SS_Two_L",
+        paddingBottom: '5px',
+    },
+    relatedDescription: {
+        fontSize: '12px',
+        fontFamily: "GE_SS_M",
+        paddingBottom: '5px',
+    },
+    relatedDate: {
+        fontSize: '10px',
+        fontFamily: "GE_SS_L",
+        paddingBottom: '5px',
+    },
 }));
 
 export default useStyles;

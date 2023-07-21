@@ -773,8 +773,11 @@ const Home = () => {
                 </div>
               </div>
             ) : (
-              <div className={classes.newsDiv}>
-                <Skeleton variant="rectangular" height="633px" />
+              <div>
+                <Skeleton
+                  variant="rectangular"
+                  className={classes.SkeletonNews2}
+                />
               </div>
             )}
             <Stack

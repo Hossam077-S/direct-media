@@ -873,7 +873,10 @@ const useStyles = makeStyles((theme) => ({
     color: '#CACACA',
     direction: 'rtl'
   },
-
+  SkeletonNews2: {
+    height: "633px !important",
+    width: '527px',
+  },
   containerDiv3: {
     height: '89px',
     width: '1000px !important',
