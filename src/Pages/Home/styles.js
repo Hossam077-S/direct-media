@@ -480,8 +480,10 @@ const useStyles = makeStyles((theme) => ({
 
       "@media (max-width: 768px)": {
         position: 'absolute',
-        top: '105%',
-        left: '94%',
+        top: 'unset',
+        left: 'unset',
+        bottom: '-10%',
+        right: '0%',
       },
 
     },
@@ -494,8 +496,10 @@ const useStyles = makeStyles((theme) => ({
 
       "@media (max-width: 768px)": {
         position: 'absolute',
-        top: '105%',
-        left: '85%',
+        top: 'unset',
+        left: 'unset',
+        bottom: '-10%',
+        right: '4%',
       },
 
     },
@@ -776,7 +780,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'right',
     direction: 'rtl',
   },
-
+  
   threeNewsContainer: {
     display: 'flex',
     marginTop: '32px',
@@ -792,13 +796,26 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     paddingLeft: '23px',
     
+    "@media (max-width: 768px)": {
+      paddingLeft: '0px',
+      paddingBottom: '4%'
+    },
+
     "& .slick-slider.slick-initialized":{
       width: '160px',
       height: '258px',
 
+      "@media  (max-width: 320px)": {
+        height: '110vw !important',
+      },
+
       "@media (max-width: 768px)": {
         width: '90vw',
-        height: '25rem',
+        height: '100vw',
+      },
+      "@media screen and (min-width: 768px) and (max-width: 1024px)": {
+        width: '90vw',
+        height: '75vw',
       },
     },
 
@@ -811,7 +828,8 @@ const useStyles = makeStyles((theme) => ({
       marginTop: '15px',
 
       "@media (max-width: 768px)": {
-        top: "86%", 
+        top: "unset", 
+        bottom: "0%",
       },
 
     },
@@ -824,8 +842,13 @@ const useStyles = makeStyles((theme) => ({
       marginTop: '15px',
 
       "@media (max-width: 768px)": {
-        left: "86%",
-        top: "86%", 
+        left: "unset",
+        top: "unset", 
+        bottom: "0%",
+        right: '10%',
+      },
+      "@media screen and (min-width: 768px) and (max-width: 1024px)": {
+        right: '4%',
       },
     },
   },
@@ -870,7 +893,8 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: 'GE_SS_Two_L !important',
     textAlign: 'right',
     flexGrow: 1,
-    lineHeight: 1.5
+    lineHeight: 1.5,
+    direction: 'rtl',
   },
   sliderThreeTypeAndDate: {
     fontSize: '7px !important',
@@ -1060,6 +1084,14 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: '100%',
 
   },
+
+  LinkInnerPages: {
+    "text-decoration": 'none',
+
+    "&:hover": {
+      "text-decoration": 'underline',
+    }
+  }
 }));
 
 export default useStyles;

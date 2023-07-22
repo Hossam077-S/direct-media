@@ -21,7 +21,7 @@ const ProgramDetails = () => {
 
   // Getting Data from firebase
   useEffect(() => {
-    const q = doc(db, "Programs", id);
+    const q = doc(db, "ProgramsEpisodes", id);
 
     getDoc(q).then((docSnap) => {
       setNewsItem(docSnap.data());
@@ -30,7 +30,7 @@ const ProgramDetails = () => {
 
   useEffect(() => {
     let videoUrl = null;
-    videoUrl = programItem.YoutubeUrl;
+    videoUrl = programItem.YouTubeURL;
     if (videoUrl) {
       const url = new URLParse(videoUrl, true);
       const id = url.query.v;
@@ -40,14 +40,15 @@ const ProgramDetails = () => {
     }
   }, [programItem]);
 
-  const formattedDate = programItem?.["Publish Date"]
-    ?.toDate()
-    ?.toLocaleDateString("ar", {
+  const formattedDate = programItem?.PublishDate?.toDate()?.toLocaleDateString(
+    "ar",
+    {
       weekday: "long",
       day: "numeric",
       month: "long",
       year: "numeric",
-    });
+    }
+  );
 
   return (
     <>

@@ -23,14 +23,7 @@ const ThreeSliderComponentItem = ({ index, item, id }) => {
           {item.Title}
         </Typography>
         <Typography gutterBottom className={classes.sliderThreeDescription}>
-          <Truncate
-            lines={3}
-            ellipsis={
-              <span>
-                ... <a href="/link/to/article">قراءة المزيد</a>
-              </span>
-            }
-          >
+          <Truncate lines={3} ellipsis={<span>...</span>}>
             {item.Description}
           </Truncate>
         </Typography>

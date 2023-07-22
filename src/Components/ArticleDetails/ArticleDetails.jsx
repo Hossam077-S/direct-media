@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
-import "slick-carousel/slick/slick-theme.css";
-import "slick-carousel/slick/slick.css";
+import { useLocation, useParams } from "react-router-dom";
 
-import { doc, getDoc } from "firebase/firestore";
-import { useParams } from "react-router-dom";
-import { db } from "../../Utils/firebase";
+import { db, getDoc, doc } from "../../Utils/firebase";
 
 import useStyles from "./style";
 
 const ArticleDetails = () => {
+  const location = useLocation();
+  const writerItem = location.state;
+
   const classes = useStyles();
 
   const { id } = useParams();
@@ -36,7 +36,9 @@ const ArticleDetails = () => {
   return (
     <>
       <div className={classes.container}>
-        <div className={classes.Title}>{newsItem?.Text} </div>
+        <div className={classes.Title}>
+          {writerItem?.Name} - {newsItem?.Text}{" "}
+        </div>
         <div className={classes.Date}>{formattedDate}</div>
         <div className={classes.Content}>
           <div className={classes.ImageDiv}>

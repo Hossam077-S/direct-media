@@ -82,7 +82,7 @@ const Home = () => {
         settings: {
           slidesToShow: 3,
           prevArrow: <></>,
-          nextArrow: <></>
+          nextArrow: <></>,
         },
       },
       {
@@ -90,7 +90,7 @@ const Home = () => {
         settings: {
           slidesToShow: 3,
           prevArrow: <></>,
-          nextArrow: <></>
+          nextArrow: <></>,
         },
       },
       {
@@ -98,7 +98,7 @@ const Home = () => {
         settings: {
           slidesToShow: 1,
           prevArrow: <></>,
-          nextArrow: <></>
+          nextArrow: <></>,
         },
       },
     ],
@@ -208,7 +208,7 @@ const Home = () => {
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 1,
         },
       },
       {
@@ -325,7 +325,6 @@ const Home = () => {
           x.id = doc.id;
           return x;
         });
-        // const result = snapshot.docs.map((doc) => doc.data());
 
         const CaseInOne = result.filter((m) => m.Title === "قضية بدقيقة");
 
@@ -449,9 +448,14 @@ const Home = () => {
                       key={index}
                       className={classes.importantNewsSliderItem}
                     >
-                      <Typography key={index} className={classes.typoTitle}>
-                        {newsItem.Title}
-                      </Typography>
+                      <Link
+                        to={"news/" + newsItem.id}
+                        className={classes.LinkInnerPages}
+                      >
+                        <Typography key={index} className={classes.typoTitle}>
+                          {newsItem.Title}
+                        </Typography>
+                      </Link>
                     </div>
                   ))}
                 </Slider>
@@ -480,13 +484,11 @@ const Home = () => {
                 {newsData.map((newsItem, index) => (
                   <div key={index} className={classes.sliderItem}>
                     <>
-                      <Link to={"news/" + newsItem.id}>
-                        <img
-                          src={newsItem.ImageURL}
-                          alt={newsItem.Title}
-                          className={classes.allnewsImage}
-                        />
-                      </Link>
+                      <img
+                        src={newsItem.ImageURL}
+                        alt={newsItem.Title}
+                        className={classes.allnewsImage}
+                      />
                       <div className={classes.sliderDetailsDiv}>
                         <Divider
                           orientation="vertical"
@@ -494,12 +496,17 @@ const Home = () => {
                           className={classes.SliderDivider}
                         />
                         <div className={classes.sliderContent}>
-                          <Typography
-                            gutterBottom
-                            className={classes.sliderNewsTitle}
+                          <Link
+                            to={"news/" + newsItem.id}
+                            className={classes.LinkInnerPages}
                           >
-                            {newsItem.Title}
-                          </Typography>
+                            <Typography
+                              gutterBottom
+                              className={classes.sliderNewsTitle}
+                            >
+                              {newsItem.Title}
+                            </Typography>
+                          </Link>
                           <Typography
                             variant="body1"
                             gutterBottom
@@ -513,7 +520,7 @@ const Home = () => {
                                     fontSize: "15px",
                                   }}
                                 >
-                                  ... <a href="/link/to/article">المزيد</a>
+                                  ...
                                 </span>
                               }
                             >
@@ -600,7 +607,14 @@ const Home = () => {
               <div className={classes.programItems}>
                 <Slider {...programSettings}>
                   {programsData.map((newsItem, index) => (
-                    <Link to={"programs/" + newsItem.id}>
+                    <Link
+                      to={{
+                        pathname: `/programs`,
+                      }}
+                      state={newsItem}
+                      className={classes.LinkInnerPages}
+                      key={index}
+                    >
                       <img
                         key={index}
                         src={newsItem["Image URL"]}
@@ -705,18 +719,23 @@ const Home = () => {
                     {newsData.map((newsItem, index) => (
                       <div key={index} className={classes.sliderItem}>
                         <>
-                          <Link to={"news/" + newsItem.id}>
-                            <img
-                              src={newsItem.ImageURL}
-                              alt={newsItem.Title}
-                              className={classes.articleContentnewsImage}
-                            />
-                          </Link>
+                          <img
+                            src={newsItem.ImageURL}
+                            alt={newsItem.Title}
+                            className={classes.articleContentnewsImage}
+                          />
                           <div className={classes.sliderDetailsDiv2}>
                             <div className={classes.title_dividerArticl}>
-                              <Typography className={classes.sliderArticlTitle}>
-                                {newsItem.Title}
-                              </Typography>
+                              <Link
+                                to={"news/" + newsItem.id}
+                                className={classes.LinkInnerPages}
+                              >
+                                <Typography
+                                  className={classes.sliderArticlTitle}
+                                >
+                                  {newsItem.Title}
+                                </Typography>
+                              </Link>
                               <Typography className={classes.sliderArticlDate}>
                                 {newsItem.PublishDate instanceof Date
                                   ? newsItem.PublishDate.toLocaleDateString(
@@ -840,7 +859,11 @@ const Home = () => {
                                       ];
                                     if (articleItem.ArticleID === articleID) {
                                       return (
-                                        <Link to={"article/" + articleItem.id}>
+                                        <Link
+                                          to={"article/" + articleItem.id}
+                                          state={writerItem}
+                                          className={classes.LinkInnerPages}
+                                        >
                                           <Typography
                                             key={index}
                                             className={classes.articleContent}
@@ -852,9 +875,6 @@ const Home = () => {
                                                   style={{ fontSize: "10px" }}
                                                 >
                                                   ...{" "}
-                                                  <a href="/link/to/article">
-                                                    قراءة المزيد
-                                                  </a>
                                                 </span>
                                               }
                                             >
@@ -928,19 +948,22 @@ const Home = () => {
                 <Slider {...writersSettings}>
                   {writersData.map((newsItem, index) => (
                     <div key={index}>
-                      <Link to={"writer/" + newsItem.id}>
-                        <img
-                          src={newsItem.ProfileImage}
-                          alt={newsItem.Title}
-                          className={classes.writerImage}
-                        />
-                      </Link>
-                      <Typography
-                        variant="body1"
-                        className={classes.writerTitle}
+                      <img
+                        src={newsItem.ProfileImage}
+                        alt={newsItem.Title}
+                        className={classes.writerImage}
+                      />
+                      <Link
+                        to={"writer/" + newsItem.id}
+                        className={classes.LinkInnerPages}
                       >
-                        {newsItem.Name}
-                      </Typography>
+                        <Typography
+                          variant="body1"
+                          className={classes.writerTitle}
+                        >
+                          {newsItem.Name}
+                        </Typography>
+                      </Link>
                     </div>
                   ))}
                 </Slider>
@@ -980,10 +1003,17 @@ const Home = () => {
                 <Slider {...podcastSettings}>
                   {podcastData.map((podcast, index) => (
                     <div className={classes.podcastContent}>
-                      <Link to={"podcast/" + podcast.id}>
+                      <Link
+                        // to={"podcast/" + podcast.id}
+                        to={{
+                          pathname: `/podcast`,
+                        }}
+                        state={podcast}
+                        className={classes.LinkInnerPages}
+                      >
                         <img
                           key={index}
-                          src={podcast.ImageUrl}
+                          src={podcast.ImageURL}
                           alt={podcast.Title}
                           className={classes.podcastMediaImage}
                         />
