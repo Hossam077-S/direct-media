@@ -58,9 +58,12 @@ const ArticlesEntry = ({ distinctWritersName }) => {
   const [loading, setLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
+  const [showPopupWriter, setShowPopupWriter] = useState(false);
   const [progress, setProgress] = useState(0);
 
   const form = useRef();
+
+  const nameRef = useRef(null);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -139,6 +142,61 @@ const ArticlesEntry = ({ distinctWritersName }) => {
 
   const handleCancel = () => {
     setShowPopup(false);
+    setShowPopupWriter(false);
+  };
+
+  const handleAddNewWriter = () => {
+    setShowPopupWriter(true);
+  };
+
+  const handleSaveWriter = (event) => {
+    event.preventDefault();
+
+    // Get values from the refs
+    const writerName = nameRef.current.value;
+
+    try {
+      setLoading(true);
+
+      const timestamp = Date.now(); // Get the current timestamp
+      const storageRef = ref(
+        storage,
+        `Writers_Porfile_Images/${timestamp}` // Append the timestamp to the image name
+      );
+      const uploadTask = uploadBytesResumable(storageRef, selectedImage);
+
+      uploadTask.then(async (snapshot) => {
+        const newProgress = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setProgress(newProgress);
+
+        const downloadURL = await getDownloadURL(snapshot.ref);
+
+        const docRef = await addDoc(collection(db, "Writers"), {
+          ProfileImage: downloadURL,
+          Name: writerName,
+          ArticleID: [],
+        });
+
+        // Update the document with the WriterID field
+        await updateDoc(doc(db, "Writers", docRef.id), {
+          WriterID: docRef.id,
+        });
+
+        console.log("Document written with ID: ", docRef.id);
+
+        setSelectedImage(null);
+        setLoading(false);
+        setShowPopupWriter(false);
+      });
+    } catch (error) {
+      console.error("Error uploading image: ", error);
+      setLoading(false);
+    }
+
+    // Close the popup form after saving
+    setShowPopupWriter(false);
   };
 
   if (loading) {
@@ -225,7 +283,12 @@ const ArticlesEntry = ({ distinctWritersName }) => {
                     className={classes.imageField}
                   />
                 </div>
-                {/* <div>إضافة كاتب</div> */}
+                <Button
+                  onClick={handleAddNewWriter}
+                  style={{ paddingBottom: "15px" }}
+                >
+                  إضافة كاتب
+                </Button>
               </Grid>
               <div>
                 <Button
@@ -276,6 +339,54 @@ const ArticlesEntry = ({ distinctWritersName }) => {
                     <Button
                       variant="contained"
                       onClick={handleSave}
+                      className={classes.saveButton}
+                    >
+                      Save
+                    </Button>
+                    <Button
+                      variant="outlined"
+                      onClick={handleCancel}
+                      sx={{
+                        backgroundColor: "transparent",
+                        color: "#2E3190",
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                </div>
+              )}
+              {showPopupWriter && (
+                <div className={classes.popup}>
+                  <div className={classes.writerItem}>
+                    {/* Writer Name */}
+                    <input
+                      type="text"
+                      ref={nameRef}
+                      placeholder="إسم الكاتب"
+                      className={classes.inputField}
+                    />
+
+                    {/* Profile Image */}
+                    <label
+                      htmlFor="image-upload"
+                      className={classes.imageFieldLabel}
+                    >
+                      الصورة الشخصية
+                    </label>
+                    <input
+                      id="image-upload"
+                      type="file"
+                      name="ImageURL"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className={classes.imageField}
+                    />
+                  </div>
+                  <div className={classes.popupButtonContainer}>
+                    <Button
+                      variant="contained"
+                      onClick={handleSaveWriter}
                       className={classes.saveButton}
                     >
                       Save

@@ -211,6 +211,16 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: 'GE_SS_Two_L !important',
   },
 
+  writerItem: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  inputField: {
+    marginBottom: '15px',
+    fontSize: '15px',
+    fontFamily: 'GE_SS_Two_L',
+  }
+
 }));
 
 export default useStyles;

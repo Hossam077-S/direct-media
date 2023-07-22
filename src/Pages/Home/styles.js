@@ -962,12 +962,13 @@ const useStyles = makeStyles((theme) => ({
       right: "34vw",
     },
   },
+
   writerDetails: {
     marginTop: '32px',
   },
   writerItems: {
     marginTop: '27px',
-    width: '942px',
+    textAlign: 'start',
 
     "@media (max-width: 768px)": {
       width: '90vw',
@@ -980,8 +981,8 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   writerImage: {
-    width: "166px !important",
-    height: "166px !important",
+    width: "166px",
+    height: "166px",
   },
   writerTitle: {
     paddingTop: '12px',
