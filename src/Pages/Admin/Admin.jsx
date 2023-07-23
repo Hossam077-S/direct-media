@@ -23,7 +23,7 @@ const Admin = () => {
 
   const [activeTab, setActiveTab] = useState(0);
   const [relatedNewsOptions, setRelatedNewsOptions] = useState([]);
-  const [distinctProgramTitles, setDistinctProgramTitles] = useState([]);
+  const [distinctProgram, setDistinctPrograms] = useState([]);
   const [distinctWritersName, setDistinctWritersName] = useState([]);
   const [distinctNewsCategory, setDistinctNewsCategory] = useState([]);
 
@@ -38,15 +38,21 @@ const Admin = () => {
       );
       setDistinctNewsCategory(Array.from(NewsCategory));
     });
+
     const unsubscribeProgram = onSnapshot(
       collection(db, "Programs"),
       (snapshot) => {
-        const ProgramTitles = new Set(
-          snapshot.docs.map((doc) => doc.data().Title)
-        );
-        setDistinctProgramTitles(Array.from(ProgramTitles));
+        const programs = snapshot.docs.map((doc) => {
+          const data = doc.data();
+          return {
+            id: doc.id, // The document ID (program ID)
+            title: data.Title, // The program title
+          };
+        });
+        setDistinctPrograms(programs);
       }
     );
+
     const unsubscribeWriters = onSnapshot(
       collection(db, "Writers"),
       (snapshot) => {
@@ -91,9 +97,7 @@ const Admin = () => {
       {activeTab === 1 && (
         <ArticlesEntry distinctWritersName={distinctWritersName} />
       )}
-      {activeTab === 2 && (
-        <ProgramsEntry distinctProgramTitles={distinctProgramTitles} />
-      )}
+      {activeTab === 2 && <ProgramsEntry distinctProgram={distinctProgram} />}
       {activeTab === 3 && <PodcastEntry />}
     </Container>
   );

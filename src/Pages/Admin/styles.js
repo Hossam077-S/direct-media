@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
   textField: {
     marginBottom: "15px !important",
     flexWrap: "wrap",
-    width: "45%",
+    width: "95%",
     marginLeft: "5% !important",
   },
   textFieldSelect: {
