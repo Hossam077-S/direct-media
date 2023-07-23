@@ -4,7 +4,13 @@ import "slick-carousel/slick/slick-theme.css";
 
 import Truncate from "react-truncate";
 
-import { collection, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  onSnapshot,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "../../Utils/firebase";
 
 import {
@@ -13,11 +19,10 @@ import {
   Typography,
   Skeleton,
   ListItemAvatar,
-  IconButton,
 } from "@mui/material";
 
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import PauseIcon from "@mui/icons-material/Pause";
+// import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+// import PauseIcon from "@mui/icons-material/Pause";
 
 import { Avatar, Divider, List, ListItem } from "@material-ui/core";
 
@@ -43,7 +48,7 @@ import NewsTypeSliderItem from "./newsTypeSliderItem";
 import ThreeSliderComponentItem from "./ThreeSliderComponentItem";
 import { Link } from "react-router-dom";
 
-import ReactPlayer from "react-player";
+// import ReactPlayer from "react-player";
 
 const Home = () => {
   const classes = useStyles();
@@ -58,9 +63,10 @@ const Home = () => {
   const [groupedProgramsData, setGrouppedProgramsData] = useState({});
 
   const [videoId, setVideoId] = useState(null);
+  const [podcastVideoIds, setPodcastVideoIds] = useState(null);
   const [hoverIndex, setHoverIndex] = useState(-1);
 
-  const [currentPlayingIndex, setCurrentPlayingIndex] = useState(null);
+  // const [currentPlayingIndex, setCurrentPlayingIndex] = useState(null);
 
   const importantNew = {
     dots: false,
@@ -317,24 +323,41 @@ const Home = () => {
 
       setNewsData(result);
     });
+
     const unsubscribeProgrames = onSnapshot(
       collection(db, "Programs"),
-      (snapshot) => {
-        const result = snapshot.docs.map((doc) => {
-          const x = doc.data();
-          x.id = doc.id;
-          return x;
+      async (snapshot) => {
+        const programsData = snapshot.docs.map((doc) => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            ...data,
+          };
         });
 
-        const CaseInOne = result.filter((m) => m.Title === "قضية بدقيقة");
+        const CaseInOneProgram = programsData.filter(
+          (m) => m.Title === "قضية بدقيقة"
+        );
 
-        const groupedCaseProgrames = [...CaseInOne];
+        if (CaseInOneProgram) {
+          const programsIDArray = CaseInOneProgram[0].ProgramsID;
 
-        setGrouppedProgramsData({
-          programs: groupedCaseProgrames,
-        });
+          // Create a query to fetch episodes with matching IDs
+          const q = query(
+            collection(db, "ProgramsEpisodes"),
+            where("EpisodeID", "in", programsIDArray)
+          );
+          const querySnapshot = await getDocs(q);
 
-        setProgramsData(result);
+          // Extract the episode data from the query snapshot
+          const episodes = querySnapshot.docs.map((doc) => doc.data());
+
+          setGrouppedProgramsData({
+            programs: episodes,
+          });
+        }
+
+        setProgramsData(programsData);
       }
     );
     const unsubscribeWriters = onSnapshot(
@@ -360,8 +383,9 @@ const Home = () => {
         setArticlesData(result);
       }
     );
+
     const unsubscribePodcast = onSnapshot(
-      collection(db, "Podcast"),
+      collection(db, "PodcastEpisodes"),
       (snapshot) => {
         const result = snapshot.docs.map((doc) => {
           const x = doc.data();
@@ -389,14 +413,15 @@ const Home = () => {
     }
 
     const sortedPrograms = [...groupedProgramsData.programs].sort((a, b) => {
-      return new Date(b.PublishDate) - new Date(a.PublishDate);
+      return new Date(a.PublishDate) - new Date(b.PublishDate);
     });
 
-    const latestProgram = sortedPrograms[0];
+    const latestProgram = sortedPrograms[sortedPrograms.length - 1];
+
     let videoUrl = null;
 
     if (latestProgram) {
-      videoUrl = latestProgram.YoutubeUrl;
+      videoUrl = latestProgram.YoutubeLink;
     }
 
     if (videoUrl) {
@@ -408,6 +433,27 @@ const Home = () => {
     }
   }, [groupedProgramsData]);
 
+  // Getting latest video url for the podcast
+  useEffect(() => {
+    if (!podcastData) {
+      return;
+    }
+
+    // Map over each podcast to get its video URL and set the video ID in the state
+    const podcastVideoIds = podcastData.map((podcast) => {
+      const videoUrl = podcast.YouTubeURL;
+      if (videoUrl) {
+        const url = new URLParse(videoUrl, true);
+        const id = url.query.v;
+        return id;
+      } else {
+        return null;
+      }
+    });
+
+    setPodcastVideoIds(podcastVideoIds);
+  }, [podcastData]);
+
   const handleMouseEnter = (index) => {
     setHoverIndex(index);
   };
@@ -416,15 +462,15 @@ const Home = () => {
     setHoverIndex(-1);
   };
 
-  const handlePlay = (index) => {
-    if (currentPlayingIndex === index) {
-      // Clicked on the currently playing video, pause it
-      setCurrentPlayingIndex(null);
-    } else {
-      // Clicked on a new video, stop the currently playing video and play the new one
-      setCurrentPlayingIndex(index);
-    }
-  };
+  // const handlePlay = (index) => {
+  //   if (currentPlayingIndex === index) {
+  //     // Clicked on the currently playing video, pause it
+  //     setCurrentPlayingIndex(null);
+  //   } else {
+  //     // Clicked on a new video, stop the currently playing video and play the new one
+  //     setCurrentPlayingIndex(index);
+  //   }
+  // };
 
   return (
     <>
@@ -1002,43 +1048,48 @@ const Home = () => {
               <div className={classes.podcastMediaItems}>
                 <Slider {...podcastSettings}>
                   {podcastData.map((podcast, index) => (
-                    <div className={classes.podcastContent}>
-                      <Link
-                        // to={"podcast/" + podcast.id}
-                        to={{
-                          pathname: `/podcast`,
-                        }}
-                        state={podcast}
-                        className={classes.LinkInnerPages}
-                      >
-                        <img
-                          key={index}
-                          src={podcast.ImageURL}
-                          alt={podcast.Title}
-                          className={classes.podcastMediaImage}
-                        />
-                      </Link>
-                      <IconButton
-                        className={classes.playButton}
-                        onClick={() => handlePlay(index)}
-                      >
-                        {currentPlayingIndex === index ? (
-                          <PauseIcon className={classes.playButtonIcon} />
-                        ) : (
-                          <PlayArrowIcon className={classes.playButtonIcon} />
-                        )}
-                      </IconButton>
-                      {currentPlayingIndex === index && (
-                        <ReactPlayer
-                          url={podcast["YouTube URL"]}
-                          playing={true}
-                          controls={true}
-                          width={640}
-                          height={360}
-                          style={{ display: "none" }}
-                        />
-                      )}
+                    <div className={classes.podcastContent} key={index}>
+                      <YouTube
+                        videoId={podcastVideoIds[index]}
+                        className={classes.podcastYoutubeVideo}
+                      />
                     </div>
+                    // <div className={classes.podcastContent}>
+                    //   <Link
+                    //     to={{
+                    //       pathname: `/podcast`,
+                    //     }}
+                    //     state={podcast}
+                    //     className={classes.LinkInnerPages}
+                    //   >
+                    //     <img
+                    //       key={index}
+                    //       src={podcast.ImageURL}
+                    //       alt={podcast.Title}
+                    //       className={classes.podcastMediaImage}
+                    //     />
+                    //   </Link>
+                    //   <IconButton
+                    //     className={classes.playButton}
+                    //     onClick={() => handlePlay(index)}
+                    //   >
+                    //     {currentPlayingIndex === index ? (
+                    //       <PauseIcon className={classes.playButtonIcon} />
+                    //     ) : (
+                    //       <PlayArrowIcon className={classes.playButtonIcon} />
+                    //     )}
+                    //   </IconButton>
+                    //   {currentPlayingIndex === index && (
+                    //     <ReactPlayer
+                    //       url={podcast["YouTube URL"]}
+                    //       playing={true}
+                    //       controls={true}
+                    //       width={640}
+                    //       height={360}
+                    //       style={{ display: "none" }}
+                    //     />
+                    //   )}
+                    // </div>
                   ))}
                 </Slider>
               </div>

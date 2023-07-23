@@ -1,13 +1,12 @@
 import React, { useState, useRef } from "react";
 
 import {
-  storage,
   db,
   collection,
   addDoc,
-  ref,
-  uploadBytesResumable,
-  getDownloadURL,
+  serverTimestamp,
+  updateDoc,
+  doc,
 } from "../../Utils/firebase";
 
 import { CacheProvider } from "@emotion/react";
@@ -39,23 +38,14 @@ const PodcastEntry = () => {
 
   const [formValues, setFormValues] = useState({
     Title: "",
-    Description: "",
-    YoutubeLink: "",
-    ImageURL: "",
-    PublishDate: new Date(),
+    YouTubeURL: "",
+    PublishDate: serverTimestamp(),
   });
 
   const [loading, setLoading] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
-  const [progress, setProgress] = useState(0);
 
   const form = useRef();
-
-  const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    setSelectedImage(file);
-  };
 
   const handleSave = async (event) => {
     event.preventDefault();
@@ -63,45 +53,30 @@ const PodcastEntry = () => {
     try {
       setLoading(true);
 
-      const timestamp = Date.now(); // Get the current timestamp
-      const storageRef = ref(
-        storage,
-        `news_images/${timestamp}` // Append the timestamp to the image name
+      const podcastData = {
+        ...formValues,
+      };
+
+      const docRef = await addDoc(
+        collection(db, "PodcastEpisodes"),
+        podcastData
       );
-      const uploadTask = uploadBytesResumable(storageRef, selectedImage);
 
-      uploadTask
-        .then(async (snapshot) => {
-          const newProgress = Math.round(
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          );
-          setProgress(newProgress);
+      await updateDoc(doc(db, "PodcastEpisodes", docRef.id), {
+        EpisodeID: docRef.id,
+      });
 
-          const downloadURL = await getDownloadURL(snapshot.ref);
-          return addDoc(collection(db, "Podcast"), {
-            ...formValues,
-            ImageURL: downloadURL,
-          });
-        })
-        .then((docRef) => {
-          console.log("Document written with ID: ", docRef.id);
-          setFormValues({
-            Title: "",
-            Description: "",
-            YoutubeLink: "",
-            ImageURL: "",
-            PublishDate: new Date(),
-          });
-          setSelectedImage(null);
-          setLoading(false);
-          setShowPopup(false);
-        })
-        .catch((error) => {
-          console.error("Error adding document: ", error);
-          setLoading(false);
-        });
+      console.log("Document written with ID: ", docRef.id);
+
+      setFormValues({
+        Title: "",
+        YouTubeURL: "",
+        PublishDate: serverTimestamp(),
+      });
+      setLoading(false);
+      setShowPopup(false);
     } catch (error) {
-      console.error("Error uploading image: ", error);
+      console.error("Error adding document: ", error);
       setLoading(false);
     }
   };
@@ -110,9 +85,8 @@ const PodcastEntry = () => {
     event.preventDefault();
     setFormValues({
       Title: form.current.Title.value,
-      Description: form.current.Description.value,
-      YoutubeLink: form.current.YoutubeLink.value,
-      PublishDate: new Date(),
+      YouTubeURL: form.current.YouTubeURL.value,
+      PublishDate: serverTimestamp(),
     });
     setShowPopup(true);
   };
@@ -128,9 +102,9 @@ const PodcastEntry = () => {
           size={60}
           thickness={5}
           style={{ color: "#2E3190" }}
-          value={progress}
+          value="100%"
         />
-        <p style={{ color: "white", paddingTop: 10 }}>{progress}%</p>{" "}
+        <p style={{ color: "white", paddingTop: 10 }}>100%</p>{" "}
       </div>
     );
   }
@@ -150,37 +124,12 @@ const PodcastEntry = () => {
                 required
               />
               <TextField
-                label="النص"
-                name="Description"
-                type="text"
-                variant="outlined"
-                className={classes.textField}
-                multiline
-              />
-              <TextField
                 label="رابط الفيديو"
-                name="YoutubeLink"
+                name="YouTubeURL"
                 type="text"
                 variant="outlined"
                 style={{ width: "95%", paddingBottom: "15px" }}
               />
-              <div className={classes.imageFieldContainer}>
-                <label
-                  htmlFor="image-upload"
-                  className={classes.imageFieldLabel}
-                >
-                  حمل الصورة
-                </label>
-                <input
-                  id="image-upload"
-                  type="file"
-                  name="ImageURL"
-                  accept="image/*"
-                  onChange={handleImageChange}
-                  className={classes.imageField}
-                />
-              </div>
-
               <div>
                 <Button
                   variant="contained"
@@ -194,13 +143,6 @@ const PodcastEntry = () => {
                 <div className={classes.popup}>
                   <div className={classes.previewContainer}>
                     <h2 className={classes.previewTitle}>معاينة</h2>
-                    {selectedImage && (
-                      <img
-                        src={URL.createObjectURL(selectedImage)}
-                        alt="Selected"
-                        className={classes.previewImage}
-                      />
-                    )}
                     <div className={classes.previewContent}>
                       {formValues.Title && (
                         <p className={classes.previewItem}>
@@ -210,18 +152,12 @@ const PodcastEntry = () => {
                           {formValues.Title}
                         </p>
                       )}
-                      {formValues.Description && (
-                        <p className={classes.previewItem}>
-                          <span className={classes.previewLabel}>الوصف: </span>
-                          {formValues.Description}
-                        </p>
-                      )}
-                      {formValues.YoutubeLink && (
+                      {formValues.YouTubeURL && (
                         <p className={classes.previewItem}>
                           <span className={classes.previewLabel}>
                             رابط الفيديو:{" "}
                           </span>
-                          {formValues.YoutubeLink}
+                          {formValues.YouTubeURL}
                         </p>
                       )}
                     </div>

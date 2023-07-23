@@ -89,6 +89,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '1% !important',
     fontFamily: "GE_SS_Two_M !important",
     fontSize: "17.33px !important",
+    color: '#2C3690',
 
     "@media (max-width: 768px)": {
       fontSize: "12px !important",
@@ -1035,7 +1036,7 @@ const useStyles = makeStyles((theme) => ({
     position: 'absolute',
     backgroundColor: 'white',
     top:"-18px",
-    right: "45.4%",
+    right: "43.5%",
     paddingLeft: '7px',
     paddingRight: '7px',
     color: '#2E3190',
@@ -1069,6 +1070,19 @@ const useStyles = makeStyles((theme) => ({
   },
   podcastContent: {
     position: 'relative',
+  },
+  podcastYoutubeVideo: {
+    width: '244px',
+    height: '244px',
+
+    "& iframe": {
+      width: "100%",
+      height: '100%',
+    },
+
+    "@media (max-width: 768px)": {
+      width: '90vw',
+    },
   },
   podcastMediaImage: {
     width: "242px !important",
