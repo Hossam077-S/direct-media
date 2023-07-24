@@ -39,7 +39,7 @@ const ArticleDetails = () => {
         <div className={classes.Title}>
           {writerItem?.Name} - {newsItem?.Text}{" "}
         </div>
-        <div className={classes.Date}>{formattedDate}</div>
+
         <div className={classes.Content}>
           <div className={classes.ImageDiv}>
             <img
@@ -48,7 +48,7 @@ const ArticleDetails = () => {
               className={classes.newsDetailsImage}
             />
           </div>
-
+          <div className={classes.Date}>{formattedDate}</div>
           <div className={classes.Description}>{newsItem?.Content}</div>
         </div>
       </div>

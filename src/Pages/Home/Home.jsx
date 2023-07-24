@@ -75,6 +75,7 @@ const Home = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     vertical: true,
+    pauseOnHover: true,
     verticalSwiping: true,
     autoplay: true,
     rtl: true,
@@ -113,6 +114,7 @@ const Home = () => {
     dots: false,
     infinite: true,
     speed: 500,
+    pauseOnHover: true,
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: true,
@@ -144,6 +146,7 @@ const Home = () => {
     slidesToScroll: 1,
     autoplay: true,
     rtl: true,
+    pauseOnHover: true,
     autoplaySpeed: 3000,
     responsive: [
       {
@@ -166,6 +169,7 @@ const Home = () => {
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: true,
+    pauseOnHover: true,
     rtl: true,
     prevArrow: (
       <img
@@ -208,6 +212,7 @@ const Home = () => {
     slidesToScroll: 1,
     arrows: true,
     rtl: true,
+    pauseOnHover: true,
     prevArrow: <img src={arrowThreeLeft} alt={"arrowLeft"} />,
     nextArrow: <img src={arrowThreeRight} alt={"arrowLeft"} />,
     responsive: [
@@ -232,6 +237,7 @@ const Home = () => {
     slidesToShow: 4,
     slidesToScroll: 1,
     rtl: true,
+    pauseOnHover: true,
     responsive: [
       {
         breakpoint: 768,
@@ -253,12 +259,15 @@ const Home = () => {
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 6000,
     rtl: true,
+    pauseOnHover: true,
     responsive: [
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 1,
         },
       },
       {
@@ -915,7 +924,7 @@ const Home = () => {
                                             className={classes.articleContent}
                                           >
                                             <Truncate
-                                              lines={3}
+                                              lines={2}
                                               ellipsis={
                                                 <span
                                                   style={{ fontSize: "10px" }}

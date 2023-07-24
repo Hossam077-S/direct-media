@@ -32,7 +32,7 @@
     }
 
   };
-  
+
   @font-face {
     font-family: 'GE_SS_B';
     src: url('./fonts/GE SS Text Bold.otf') format('truetype');
@@ -48,24 +48,39 @@
     src: url('./fonts/GE SS Text Medium.otf') format('truetype');
   }
 
-  @font-face {
+  /* @font-face {
     font-family: 'GE_SS_Two_L';
     src: url('./fonts/GE SS Two Light copy.otf') format('truetype');
-  }
+  } */
+
   @font-face {
+    font-family: 'GE_SS_Two_L';
+    src: url('./fonts/GE SS Two Light2.otf') format('truetype');
+  }
+
+  /* @font-face {
     font-family: 'GE_SS_Two_B';
     src: url('./fonts/GE SS Text Bold.otf') format('truetype');
+  } */
+    
+  @font-face {
+    font-family: 'GE_SS_Two_B';
+    src: url('./fonts/GE SS Two Bold2.otf') format('truetype');
   }
+
   @font-face {
     font-family: 'GE_SS_Two_Li';
     src: url('./fonts/GESSTwoLightItalic.otf') format('truetype');
   }
-  @font-face {
+  /* @font-face {
     font-family: 'GE_SS_Two_M';
     src: url('./fonts/GESSTwoMedium.otf') format('truetype');
+  } */
+  @font-face {
+    font-family: 'GE_SS_Two_M';
+    src: url('./fonts/GE SS Two Medium2.otf') format('truetype');
   }
   @font-face {
     font-family: 'GE_SS_Two_Mi';
     src: url('./fonts/GESSTwoMediumItalic.otf') format('truetype');
   }
-  

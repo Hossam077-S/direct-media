@@ -45,14 +45,14 @@ const Footer = () => {
   const classes = useStyles();
   return (
     <div className={classes.containerFooter}>
+      <>
+        <Divider
+          orientation="horizontal"
+          flexItem
+          className={classes.DividerHeader}
+        />
+      </>
       <div className={classes.divFooter}>
-        <>
-          <Divider
-            orientation="horizontal"
-            flexItem
-            className={classes.DividerHeader}
-          />
-        </>
         <div className={classes.menuDetails}>
           <Divider
             orientation="vertical"

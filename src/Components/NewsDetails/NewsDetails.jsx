@@ -84,7 +84,6 @@ const NewsDetails = () => {
     <>
       <div className={classes.container}>
         <div className={classes.Title}>{newsItem?.Title} </div>
-        <div className={classes.Date}>{formattedDate}</div>
         <div className={classes.Content}>
           <div className={classes.ImageDiv}>
             <img
@@ -93,6 +92,7 @@ const NewsDetails = () => {
               className={classes.newsDetailsImage}
             />
           </div>
+          <div className={classes.Date}>{formattedDate}</div>
 
           <div className={classes.Description}>
             <span style={{ fontFamily: "GE_SS_Two_M" }}>

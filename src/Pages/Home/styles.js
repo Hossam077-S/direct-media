@@ -149,7 +149,7 @@ const useStyles = makeStyles((theme) => ({
     },
 
     "& .MuiStack-root.css-1p5q5e5-MuiStack-root": {
-      marginRight: '25.6px',
+      marginRight: '28px',
       marginLeft: '0px !important',
 
       "@media (max-width: 768px)": {
@@ -397,10 +397,12 @@ const useStyles = makeStyles((theme) => ({
   programItems: {
     marginTop: '27px',
     width: '100%',
+    
   },
   programImage: {
     width: "170px !important",
     height: "94.2px !important",
+    
 
     "@media (max-width: 768px)": {
       width: "100% !important",
@@ -610,13 +612,15 @@ const useStyles = makeStyles((theme) => ({
   },
   newsListItem: {
     padding: theme.spacing(2.4, 0),
-    transition: 'background-color 0.3s ease',
+    // transition: 'background-color 0.3s ease',
     cursor: 'pointer',
     paddingLeft: '30px',
     height: '125px',
     overflow: 'hidden',
     position:'relative',
     justifyContent: 'flex-end',
+
+    transition: 'transform 1.2s ease-in-out',
 
     "&:nth-child(odd)": {
       backgroundColor: '#1B1464'
@@ -626,13 +630,19 @@ const useStyles = makeStyles((theme) => ({
   newsAvatar: {
     width: '84.8px',
     height: '84.8px',
+    transition: 'transform .2s',
+
+    "&:hover": {
+      transform: 'scale(1.1)',
+      transition: 'transform .2s',
+    },
   },
   activeListItem: {
     width: '315px',
     height: '125px',
     paddingLeft: '30px',
     padding: 0,
-    
+        
     "@media (max-width: 768px)": {
       width: '90vw',
     },
@@ -672,7 +682,8 @@ const useStyles = makeStyles((theme) => ({
     width: '13px',
     top: 0,
     bottom: 0,
-    minHeight: '100%'
+    minHeight: '100%',
+    transition: '0.5s ease-in-out',
   },
   activeDivider: {
     backgroundColor: "#F9AE3B !important",
@@ -814,9 +825,9 @@ const useStyles = makeStyles((theme) => ({
         width: '90vw',
         height: '100vw',
       },
+
       "@media screen and (min-width: 768px) and (max-width: 1024px)": {
-        width: '90vw',
-        height: '75vw',
+
       },
     },
 
@@ -984,6 +995,13 @@ const useStyles = makeStyles((theme) => ({
   writerImage: {
     width: "166px",
     height: "166px",
+
+    transition: 'transform .2s',
+
+    "&:hover": {
+      transform: 'scale(1.05)',
+      transition: 'transform .2s',
+    },
   },
   writerTitle: {
     paddingTop: '12px',
@@ -1017,6 +1035,10 @@ const useStyles = makeStyles((theme) => ({
     marginTop: '53px',
     display: 'flex !important',
     justifyContent: 'center',
+
+    "@media screen and (min-width: 768px) and (max-width: 1024px)": {
+      marginTop: '18vw',
+    },
   },
   podcastContainer: {
     width: '874px !important',

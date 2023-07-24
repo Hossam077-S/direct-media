@@ -1,6 +1,4 @@
 import React, { useEffect, useState } from "react";
-import "slick-carousel/slick/slick-theme.css";
-import "slick-carousel/slick/slick.css";
 
 import { Link, useParams } from "react-router-dom";
 import {
@@ -38,18 +36,16 @@ const WriterDetails = () => {
       if (writerItem?.ArticleID && writerItem?.ArticleID?.length > 0) {
         const wArticle = writerItem.ArticleID;
 
-        // Create a query to fetch episodes with matching IDs
         const q = query(
           collection(db, "Articles"),
           where("ArticleID", "in", wArticle)
         );
         const querySnapshot = await getDocs(q);
 
-        // Extract the episode data from the query snapshot
         const wArticles = querySnapshot.docs.map((doc) => doc.data());
 
         setWrtierArticle(wArticles);
-        setLoading(false); // Set loading to false after data is fetched
+        setLoading(false);
       }
     };
 
@@ -57,8 +53,7 @@ const WriterDetails = () => {
   }, [writerItem?.ArticleID]);
 
   if (loading) {
-    // While loading, display a loading message or spinner
-    return <div>Loading...</div>;
+    return <div className={classes.container}>Loading...</div>;
   }
 
   return (

@@ -50,7 +50,7 @@ const Programs = () => {
 
   if (loading) {
     // While loading, display a loading message or spinner
-    return <div>Loading...</div>;
+    return <div className={classes.container}>Loading...</div>;
   }
 
   return (
@@ -58,10 +58,7 @@ const Programs = () => {
       <div className={classes.container}>
         <div className={classes.Title}>
           {programItem?.Title}{" "}
-          <span style={{ fontFamily: "GE_SS_Two_L", fontSize: "15px" }}>
-            {" "}
-            - {formattedDate}
-          </span>
+          <span style={{ fontFamily: "GE_SS_Two_L", fontSize: "15px" }}></span>
         </div>
         <div className={classes.Content}>
           <div className={classes.ImageDiv}>
@@ -71,6 +68,8 @@ const Programs = () => {
               className={classes.newsDetailsImage}
             />
           </div>
+          <div className={classes.Date}>{formattedDate}</div>
+
           <div className={classes.Description}>{programItem?.Description}</div>
 
           {/* List of Episodes */}

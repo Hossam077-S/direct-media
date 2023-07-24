@@ -3,9 +3,10 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
     containerFooter: {
         display: 'flex !important',
+        flexDirection: 'column',
         justifyContent: 'center',
+        alignItems: 'center',
         marginTop: '100px',
-        height: '251px',
         backgroundColor: '#2E3190',
 
         "@media (max-width: 768px)": {
@@ -15,13 +16,26 @@ const useStyles = makeStyles((theme) => ({
             width: '100vw',
         }
     },
-    divFooter: {
-        // 
-    },
+
     DividerHeader: {
         backgroundColor: "#F9AE3B !important",
-        width: '1001px',
         height: "9px !important",
+    },
+
+    divFooter: {
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+
+        marginBottom: '2vw',
+        width:'874px',
+
+        "@media screen and (min-width: 768px) and (max-width: 1024px)": {
+            width:'874px',
+        },
+        "@media (max-width: 768px)": {
+            width:'874px',
+        },
     },
     menuDetails: {
         display: 'flex',
@@ -70,6 +84,7 @@ const useStyles = makeStyles((theme) => ({
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
+            paddingTop: '24px',
           }
     },
     logoContentDiv: {

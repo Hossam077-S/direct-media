@@ -30,13 +30,17 @@ const ProgramDetails = () => {
 
   useEffect(() => {
     let videoUrl = null;
-    videoUrl = programItem.YouTubeURL;
+
+    if (programItem) {
+      videoUrl = programItem.YouTubeURL;
+    }
+
     if (videoUrl) {
       const url = new URLParse(videoUrl, true);
       const id = url.query.v;
       setVideoId(id);
     } else {
-      setVideoId(null);
+      setVideoId(0);
     }
   }, [programItem]);
 
@@ -55,24 +59,19 @@ const ProgramDetails = () => {
       <div className={classes.container}>
         <div className={classes.Title}>
           {programItem?.Title}{" "}
-          <span style={{ fontFamily: "GE_SS_Two_L", fontSize: "15px" }}>
-            {" "}
-            - {formattedDate}
-          </span>
+          <span style={{ fontFamily: "GE_SS_Two_L", fontSize: "15px" }}></span>
         </div>
         <div className={classes.Content}>
-          <div className={classes.ImageDiv}>
-            <img
-              src={programItem?.["Image URL"]}
-              alt={programItem?.Title}
-              className={classes.newsDetailsImage}
-            />
+          <div className={classes.VideoDiv}>
+            {videoId && (
+              <div className={classes.VideoDiv}>
+                <YouTube videoId={videoId} className={classes.youtubeVideo} />
+              </div>
+            )}
           </div>
 
+          <div className={classes.Date}>{formattedDate}</div>
           <div className={classes.Description}>{programItem?.Description}</div>
-          <div className={classes.VideoDiv}>
-            <YouTube videoId={videoId} className={classes.youtubeVideo} />
-          </div>
         </div>
       </div>
     </>
