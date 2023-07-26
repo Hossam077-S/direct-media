@@ -5,6 +5,7 @@ const useStyles = makeStyles((theme) => ({
         maxWidth: '874px',
         margin: '20px auto',
         width: '640px',
+        height: '35vw',
         '@media screen and (max-width: 500px)' : {
             width: 'auto',
             padding: "0 15px",

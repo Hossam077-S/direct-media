@@ -4,7 +4,7 @@ const useStyles = makeStyles((theme) => ({
     container: {
         maxWidth: '874px',
         margin: '60px auto',
-
+        height: '35vw',
         '@media screen and (max-width: 500px)' : {
             width: 'auto',
             padding: "0 15px",
@@ -13,25 +13,16 @@ const useStyles = makeStyles((theme) => ({
     Title: {
         fontSize: '24px',
         fontFamily: "GE_SS_Two_B",
-        paddingBottom: '10px',
+        paddingBottom: '15px',
     },
-    newsDetailsImage: {
-        width: '200px',
-        height: 'auto',
-
-        "@media (max-width: 768px)": {
-            width: '330px',
-            height: 'auto',
-            textAlign: 'center',
-        },
+    Date: {
+        padding: '10px 0',
+        fontFamily: "GE_SS_Two_L",
+        fontSize: '12px',
     },
     Description: {
         fontSize: '20px',
         fontFamily: "GE_SS_Two_L",
-        paddingTop: '10px',
-    },
-    VideoDiv: {
-      paddingTop: '10px',  
     },
     youtubeVideo: {
        width: '640px',

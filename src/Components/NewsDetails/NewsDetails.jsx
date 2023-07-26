@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from "react";
+
+import { Link, useParams } from "react-router-dom";
+
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 
 import {
+  db,
   collection,
   doc,
   getDoc,
   onSnapshot,
   query,
   where,
-} from "firebase/firestore";
-import { Link, useParams } from "react-router-dom";
-import { db } from "../../Utils/firebase";
+} from "../../Utils/firebase";
+
+import Slider from "react-slick";
 
 import useStyles from "./style";
 
@@ -26,6 +30,34 @@ const NewsDetails = () => {
   const [relatedNews, setRelatedNews] = useState([]);
 
   const [videoId, setVideoId] = useState(null);
+
+  const newsTypesSliderSettings = {
+    dots: false,
+    infinite: true,
+    autoplay: true,
+    slidesToShow: relatedNews.length || 0,
+    slidesToScroll: 1,
+    arrows: true,
+    pauseOnHover: true,
+    rtl: true,
+    vertical: true,
+    lazyLoad: true,
+    variableWidth: false,
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: relatedNews.length || 1,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: relatedNews.length || 1,
+        },
+      },
+    ],
+  };
 
   // Getting Data from firebase
   useEffect(() => {
@@ -60,7 +92,11 @@ const NewsDetails = () => {
 
   useEffect(() => {
     let videoUrl = null;
-    videoUrl = newsItem.YoutubeLink;
+
+    if (newsItem) {
+      videoUrl = newsItem.YoutubeLink;
+    }
+
     if (videoUrl) {
       const url = new URLParse(videoUrl, true);
       const id = url.query.v;
@@ -108,37 +144,52 @@ const NewsDetails = () => {
           {relatedNews.length > 0 && (
             <div className={classes.relatedNewsDiv}>
               <h2>الأخبار المرتبطة</h2>
-              <ul>
-                {relatedNews.map((relatedNewsItem) => (
-                  <li
-                    key={relatedNewsItem.id}
-                    className={classes.relatedNewsLi}
-                  >
-                    <Link
-                      to={`/news/${relatedNewsItem.id}`}
-                      style={{ textDecoration: "none", color: "black" }}
-                    >
-                      <h3 className={classes.relatedTitle}>
-                        {relatedNewsItem.Title}
-                      </h3>
-                    </Link>
-                    <p className={classes.relatedDescription}>
-                      {relatedNewsItem.Description}
-                    </p>
-                    <p className={classes.relatedDate}>
-                      {relatedNewsItem.PublishDate.toDate().toLocaleDateString(
-                        "ar",
-                        {
-                          weekday: "long",
-                          day: "numeric",
-                          month: "long",
-                          year: "numeric",
-                        }
-                      )}
-                    </p>
-                  </li>
-                ))}
-              </ul>
+
+              <div className={classes.newsTypeSlider}>
+                <ul className={classes.ul}>
+                  <Slider {...newsTypesSliderSettings}>
+                    {relatedNews.map((relatedNewsItem) => (
+                      <li
+                        key={relatedNewsItem.id}
+                        className={classes.relatedNewsLi}
+                      >
+                        <div>
+                          <img
+                            src={relatedNewsItem.ImageURL}
+                            alt={"arrowLeft"}
+                            className={classes.relatedNewsImage}
+                          />
+                        </div>
+                        <div className={classes.relatedNewsContent}>
+                          <Link
+                            to={`/news/${relatedNewsItem.id}`}
+                            className={classes.relatedNewsLink}
+                            onClick={() => window.scrollTo(0, 0)}
+                          >
+                            <h3 className={classes.relatedTitle}>
+                              {relatedNewsItem.Title}
+                            </h3>
+                          </Link>
+                          <p className={classes.relatedDescription}>
+                            {relatedNewsItem.Description}
+                          </p>
+                          <p className={classes.relatedDate}>
+                            {relatedNewsItem.PublishDate.toDate().toLocaleDateString(
+                              "ar",
+                              {
+                                weekday: "long",
+                                day: "numeric",
+                                month: "long",
+                                year: "numeric",
+                              }
+                            )}
+                          </p>
+                        </div>
+                      </li>
+                    ))}
+                  </Slider>
+                </ul>
+              </div>
             </div>
           )}
         </div>

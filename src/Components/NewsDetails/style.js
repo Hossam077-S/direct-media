@@ -12,13 +12,12 @@ const useStyles = makeStyles((theme) => ({
     Title: {
         fontSize: '24px',
         fontFamily: "GE_SS_Two_B",
-        paddingBottom: '5px',
+        paddingBottom: '15px',
     },
     Date: {
         fontFamily: "GE_SS_Two_L",
         fontSize: "15px",
-        paddingBottom: "10px",
-
+        padding: "5px 0",
     },
     newsDetailsImage: {
         width: '640px',
@@ -33,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     Description: {
         fontSize: '20px',
         fontFamily: "GE_SS_Two_L",
-        paddingTop: '10px',
+        padding: '15px 0',
     },
     VideoDiv: {
       paddingTop: '10px',  
@@ -53,15 +52,36 @@ const useStyles = makeStyles((theme) => ({
     },
 
     relatedNewsDiv: {
-        paddingTop: "15px",
+        marginTop: "15px",
     },
     relatedNewsLi: {
-        paddingBottom: "10px",
+        padding: "15px 0",
+        display: 'flex !important',
+        flexDirection: 'row',
+        direction: 'rtl',
+        backgroundColor: '#F0F0F0',
+        alignItems: 'center',
+    },
+    relatedNewsImage: {
+        width: "10vw",
+        height: 'auto'
+    },
+    relatedNewsContent: {
+        paddingRight: '15px'
+    },
+    relatedNewsLink: {
+        textDecoration: "none",
+        color: "black",
+
+        "&:hover": {
+            textDecoration: "underline",
+        },
     },
     relatedTitle: {
         fontSize: '18px',
         fontFamily: "GE_SS_Two_L",
         paddingBottom: '5px',
+
     },
     relatedDescription: {
         fontSize: '12px',

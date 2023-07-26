@@ -1,4 +1,7 @@
 import { React, useState } from "react";
+
+import { db, collection, getDocs, where, query } from "../../Utils/firebase";
+
 import {
   AppBar,
   Toolbar,
@@ -12,6 +15,8 @@ import {
   Divider,
   Grid,
   Container,
+  Dialog,
+  DialogContent,
 } from "@mui/material";
 
 import { Link } from "react-router-dom";
@@ -47,6 +52,9 @@ const Header = () => {
 
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
+  const [open, setOpen] = useState(false);
+  const [searchResults, setSearchResults] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -54,6 +62,85 @@ const Header = () => {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleSearchClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setSearchQuery("");
+    setSearchResults([]);
+  };
+
+  const handleSearchResultClick = () => {
+    setOpen(false);
+    setSearchQuery("");
+    setSearchResults([]);
+  };
+
+  const handleSearchInputChange = (event) => {
+    const inputQuery = event.target.value;
+    setSearchQuery(inputQuery);
+
+    if (inputQuery.trim().length > 0) {
+      searchFunction(inputQuery);
+    } else {
+      setSearchResults([]);
+    }
+  };
+
+  const searchFunction = async (text) => {
+    try {
+      const q = text.toLowerCase();
+
+      const newsQuery = query(
+        collection(db, "News"),
+        where("Title", ">=", q),
+        where("Title", "<=", q + "\uf8ff")
+      );
+
+      const programQuery = query(
+        collection(db, "ProgramsEpisodes"),
+        where("Title", ">=", q),
+        where("Title", "<=", q + "\uf8ff")
+      );
+
+      const articleQuery = query(
+        collection(db, "Articles"),
+        where("Text", ">=", q),
+        where("Text", "<=", q + "\uf8ff")
+      );
+
+      // Execute the query and get the results
+      const newsSnapshot = await getDocs(newsQuery);
+      const newsResults = newsSnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+        type: "news",
+      }));
+
+      const programSnapshot = await getDocs(programQuery);
+      const programResults = programSnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+        type: "program",
+      }));
+
+      const articleSnapshot = await getDocs(articleQuery);
+      const articleResults = articleSnapshot.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+        type: "article",
+      }));
+
+      const allResults = [...newsResults, ...articleResults, ...programResults];
+
+      setSearchResults(allResults);
+    } catch (error) {
+      console.error("Error fetching search results:", error);
+    }
   };
 
   return (
@@ -88,17 +175,69 @@ const Header = () => {
               </IconButton>
             </Box>
 
-            {/* Left Header */}
+            {/* Left Header / Search */}
             <Box className={classes.leftheader}>
-              {/* Search Box */}
               <Box className={classes.searchbox} component="div">
                 {/* Search Icon */}
                 <IconButton>
                   <SearchIcon className={classes.searchicon} />
                 </IconButton>
-                <InputBase className={classes.inputbase} placeholder="بحث" />
+                <InputBase
+                  className={classes.inputbase}
+                  placeholder="بحث"
+                  onClick={handleSearchClick}
+                />
               </Box>
             </Box>
+
+            {/* Dialog for the search input */}
+            <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
+              <DialogContent>
+                <Box className={classes.searchboxbigger} component="div">
+                  <IconButton>
+                    <SearchIcon className={classes.searchiconbigger} />
+                  </IconButton>
+                  <InputBase
+                    className={classes.inputbasebigger}
+                    placeholder="بحث"
+                    value={searchQuery}
+                    onChange={handleSearchInputChange}
+                  />
+                </Box>
+
+                {/* Display the search results */}
+                <Box className={classes.searchResults}>
+                  {searchResults.map((result, index) => (
+                    <div key={index} className={classes.searchResultItem}>
+                      <Link
+                        to={`/${result.type}/${result.id}`}
+                        onClick={handleSearchResultClick}
+                        className={classes.searchResultLink}
+                      >
+                        {result.type === "news" && (
+                          <div>
+                            <span>خبر: </span>
+                            <span>{result.Title}</span>
+                          </div>
+                        )}
+                        {result.type === "article" && (
+                          <div>
+                            <span>مقال: </span>
+                            <span>{result.Text}</span>
+                          </div>
+                        )}
+                        {result.type === "برنامج" && (
+                          <div>
+                            <span>Program: </span>
+                            <span>{result.Title}</span>
+                          </div>
+                        )}
+                      </Link>
+                    </div>
+                  ))}
+                </Box>
+              </DialogContent>
+            </Dialog>
           </Toolbar>
         </Container>
         {/* </Grid> */}

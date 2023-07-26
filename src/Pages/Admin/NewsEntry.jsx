@@ -159,7 +159,7 @@ const NewsEntry = ({
     setFormValues({
       Title: form.current.Title.value,
       Description: form.current.Description.value,
-      NewsType: form.current.NewsType.value,
+      NewsType: "خبر",
       Category: form.current.Category.value,
       YoutubeLink: form.current.YoutubeLink.value,
       Hashtag: form.current.Hashtag.value,
@@ -210,8 +210,8 @@ const NewsEntry = ({
                     >
                       {distinctNewsCategory.length > 0
                         ? distinctNewsCategory.map((category) => (
-                            <MenuItem key={category} value={category}>
-                              {category}
+                            <MenuItem key={category.id} value={category.title}>
+                              {category.title}
                             </MenuItem>
                           ))
                         : categories.map((category) => (

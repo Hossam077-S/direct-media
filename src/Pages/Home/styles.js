@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     width: '716px',
-    
+
     "& .slick-next": {
       position: 'absolute',
       top: "40%", 
@@ -218,7 +218,6 @@ const useStyles = makeStyles((theme) => ({
       width: '19px',
       height: '39px',
     },
-    
   },
 
   allnewsImage: {

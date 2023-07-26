@@ -57,10 +57,7 @@ const ProgramDetails = () => {
   return (
     <>
       <div className={classes.container}>
-        <div className={classes.Title}>
-          {programItem?.Title}{" "}
-          <span style={{ fontFamily: "GE_SS_Two_L", fontSize: "15px" }}></span>
-        </div>
+        <div className={classes.Title}>{programItem?.Title}</div>
         <div className={classes.Content}>
           <div className={classes.VideoDiv}>
             {videoId && (

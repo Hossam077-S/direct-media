@@ -33,7 +33,7 @@ const WriterDetails = () => {
 
   useEffect(() => {
     const fetchProgramEpisodes = async () => {
-      if (writerItem?.ArticleID && writerItem?.ArticleID?.length > 0) {
+      if (writerItem?.ArticleID?.length > 0) {
         const wArticle = writerItem.ArticleID;
 
         const q = query(

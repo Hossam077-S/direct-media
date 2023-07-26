@@ -5,13 +5,13 @@ import "slick-carousel/slick/slick-theme.css";
 import Truncate from "react-truncate";
 
 import {
+  db,
   collection,
   getDocs,
   onSnapshot,
   query,
   where,
-} from "firebase/firestore";
-import { db } from "../../Utils/firebase";
+} from "../../Utils/firebase";
 
 import {
   Container,
@@ -71,7 +71,7 @@ const Home = () => {
   const importantNew = {
     dots: false,
     infinite: true,
-    speed: 500,
+    speed: 1200,
     slidesToShow: 1,
     slidesToScroll: 1,
     vertical: true,
@@ -79,7 +79,7 @@ const Home = () => {
     verticalSwiping: true,
     autoplay: true,
     rtl: true,
-    autoplaySpeed: 6000,
+    autoplaySpeed: 3500,
     arrows: true,
     prevArrow: <img src={arrowINup} alt={"arrowLeft"} />,
     nextArrow: <img src={arrowINdown} alt={"arrowLeft"} />,
@@ -113,7 +113,7 @@ const Home = () => {
   const allNewsSlider = {
     dots: false,
     infinite: true,
-    speed: 500,
+    speed: 1200,
     pauseOnHover: true,
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -141,7 +141,7 @@ const Home = () => {
   const programSettings = {
     dots: false,
     infinite: true,
-    speed: 500,
+    speed: 1200,
     slidesToShow: 5,
     slidesToScroll: 1,
     autoplay: true,
@@ -207,7 +207,7 @@ const Home = () => {
   const threeTypeSlider = {
     dots: false,
     infinite: true,
-    speed: 500,
+    speed: 1200,
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: true,
@@ -233,7 +233,7 @@ const Home = () => {
   const writersSettings = {
     dots: false,
     infinite: true,
-    speed: 500,
+    speed: 1200,
     slidesToShow: 4,
     slidesToScroll: 1,
     rtl: true,
@@ -256,7 +256,7 @@ const Home = () => {
   const podcastSettings = {
     dots: false,
     infinite: true,
-    speed: 500,
+    speed: 1200,
     slidesToShow: 3,
     slidesToScroll: 1,
     autoplay: true,
@@ -630,7 +630,14 @@ const Home = () => {
             {/* Render the news Videos slider */}
             {Object.keys(groupedProgramsData).length > 0 ? (
               <div>
-                <YouTube videoId={videoId} className={classes.youtubeVideo} />
+                {videoId && (
+                  <div className={classes.VideoDiv}>
+                    <YouTube
+                      videoId={videoId}
+                      className={classes.youtubeVideo}
+                    />
+                  </div>
+                )}
               </div>
             ) : (
               <div>
@@ -904,7 +911,6 @@ const Home = () => {
                                   }`}
                                 />
                               )}
-
                               <div className={classes.descriptionContent}>
                                 <div className={classes.newsItemTitle}>
                                   {articlesData.map((articleItem, index) => {
@@ -933,7 +939,7 @@ const Home = () => {
                                                 </span>
                                               }
                                             >
-                                              {articleItem.Content}
+                                              {articleItem.Text}
                                             </Truncate>
                                           </Typography>
                                         </Link>

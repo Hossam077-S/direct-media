@@ -45,10 +45,6 @@ export default makeStyles((theme) => ({
     },
   },
   leftheader: {
-    // [theme.breakpoints.down('sm')]: {
-    //   width: '100vw',
-    //   justifyContent: 'start',
-    // },
 
     '@media (max-width: 768px)': {
       paddingTop: '1vw',
@@ -83,6 +79,28 @@ export default makeStyles((theme) => ({
       opacity: 0.5,
       textAlign: 'center',
     },
+  },
+
+  inputbasebigger: {
+    width: '80%',
+    height: '3vw',
+    fontSize: '18px !important',
+    fontFamily: 'GE_SS_Two_M !important',
+  },
+  searchiconbigger: {
+    color: '#2E3190',
+    width: '30px',
+    height: '30px',
+  },
+  searchResultLink: {
+    textDecoration: 'none',
+    color: '#2E3190',
+    fontSize: '12px !important',
+    fontFamily: 'GE_SS_Two_M !important',
+
+    "&:hover": {
+      textDecoration: 'underline'
+    }
   },
   socialmediaiconbox: {
     flexGrow: 1,

@@ -2,6 +2,10 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
     container: {
+        display: 'flex',
+        flexDirection: 'column',
+        flexGrow: 1,
+        height: '35vw',
         maxWidth: '874px',
         margin: '60px auto',
         '@media screen and (max-width: 500px)' : {
@@ -12,13 +16,12 @@ const useStyles = makeStyles((theme) => ({
     Title: {
         fontSize: '24px',
         fontFamily: "GE_SS_Two_B",
-        paddingBottom: '5px',
+        paddingBottom: '15px',
     },
     Date: {
         fontFamily: "GE_SS_Two_L",
         fontSize: "15px",
-        paddingBottom: "10px",
-
+        padding: "5px 0",
     },
     newsDetailsImage: {
         width: '640px',

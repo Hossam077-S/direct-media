@@ -13,6 +13,7 @@ const ArticleDetails = () => {
 
   const { id } = useParams();
   const [newsItem, setNewsItem] = useState({});
+  const [loading, setLoading] = useState(true);
 
   // Getting Data from firebase
   useEffect(() => {
@@ -21,6 +22,8 @@ const ArticleDetails = () => {
     getDoc(q).then((docSnap) => {
       setNewsItem(docSnap.data());
     });
+
+    setLoading(false);
   }, [id]);
 
   const formattedDate = newsItem?.PublishDate?.toDate()?.toLocaleDateString(
@@ -32,6 +35,10 @@ const ArticleDetails = () => {
       year: "numeric",
     }
   );
+
+  if (loading) {
+    return <div className={classes.container}>Loading...</div>;
+  }
 
   return (
     <>

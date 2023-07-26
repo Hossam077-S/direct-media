@@ -32,12 +32,21 @@ const Admin = () => {
     const unsubscribe = onSnapshot(collection(db, "News"), (snapshot) => {
       const relatedNewsOptions = snapshot.docs.map((doc) => doc.data().Title);
       setRelatedNewsOptions(relatedNewsOptions);
-
-      const NewsCategory = new Set(
-        snapshot.docs.map((doc) => doc.data().Category)
-      );
-      setDistinctNewsCategory(Array.from(NewsCategory));
     });
+
+    const unsubscribeCategory = onSnapshot(
+      collection(db, "Categories"),
+      (snapshot) => {
+        const Category = snapshot.docs.map((doc) => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            title: data.Name,
+          };
+        });
+        setDistinctNewsCategory(Category);
+      }
+    );
 
     const unsubscribeProgram = onSnapshot(
       collection(db, "Programs"),
@@ -67,6 +76,7 @@ const Admin = () => {
     return () => {
       // Unsubscribe from the snapshot listener when the component unmounts
       unsubscribe();
+      unsubscribeCategory();
       unsubscribeProgram();
       unsubscribeWriters();
     };

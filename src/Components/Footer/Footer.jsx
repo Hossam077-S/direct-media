@@ -13,19 +13,19 @@ import logo from "../../assests/WhiteLogo.gif";
 const menuItems = [
   {
     title: "كل الأخبار",
-    url: "/news",
+    url: "/#latest-news",
   },
   {
     title: "برامج المنصة",
-    url: "/platform-programs",
+    url: "/#programs",
   },
   {
     title: "بودكاست",
-    url: "/podcasts",
+    url: "/#podcast",
   },
   {
     title: "رصد مباشر",
-    url: "/live-monitoring",
+    url: "/#rasd",
   },
   {
     title: "الطقس",
@@ -33,11 +33,11 @@ const menuItems = [
   },
   {
     title: "صحف عالمية",
-    url: "/international-newspapers",
+    url: "/#international-newspapers",
   },
   {
     title: "مقترحاتكم",
-    url: "/user-suggestions",
+    url: "/#user-suggestions",
   },
 ];
 
