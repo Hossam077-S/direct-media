@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 
       "& iframe": {
        width: "100% !important",
-       height: '3vw !important',
+       height: '30vw !important',
 
        "@media (max-width: 768px)": {
         height: '100% !important',

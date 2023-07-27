@@ -121,6 +121,7 @@ const NewsDetails = () => {
             <ReactPlayer
               url={newsItem?.YoutubeLink}
               className={classes.youtubeVideo}
+              controls
             />
           </div>
 

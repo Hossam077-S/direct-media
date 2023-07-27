@@ -44,6 +44,7 @@ const ProgramDetails = () => {
               <ReactPlayer
                 url={programItem?.YoutubeLink}
                 className={classes.youtubeVideo}
+                controls
               />
             </div>
           </div>
