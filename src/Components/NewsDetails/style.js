@@ -20,11 +20,11 @@ const useStyles = makeStyles((theme) => ({
         padding: "5px 0",
     },
     newsDetailsImage: {
-        width: '640px',
+        width: '100%',
         height: 'auto',
 
         "@media (max-width: 768px)": {
-            width: '330px',
+            width: '90vw',
             height: 'auto',
             textAlign: 'center',
         },
@@ -38,21 +38,34 @@ const useStyles = makeStyles((theme) => ({
       paddingTop: '10px',  
     },
     youtubeVideo: {
-       width: '640px',
-       height: '360px',
+       width: '100% !important',
+       height: '100% !important',
+
       "& iframe": {
-       width: "100%",
-       height: '100%',
+       width: "100% !important",
+       height: '3vw !important',
+
+       "@media (max-width: 768px)": {
+        height: '100% !important',
+       },
       },
     
       "@media (max-width: 768px)": {
        width: '90vw',
-       height: '186px',
+       height: '100%',
       },
     },
 
     relatedNewsDiv: {
         marginTop: "15px",
+
+        "& .slick-track": {
+            height: '100% !important',
+        },
+        "@media (max-width: 768px)": {
+            marginTop: "30px",
+
+        },
     },
     relatedNewsLi: {
         padding: "15px 0",
@@ -61,10 +74,21 @@ const useStyles = makeStyles((theme) => ({
         direction: 'rtl',
         backgroundColor: '#F0F0F0',
         alignItems: 'center',
+
+        "@media (max-width: 768px)": {
+            flexDirection: 'column',
+        },
+        
     },
     relatedNewsImage: {
         width: "10vw",
-        height: 'auto'
+        height: 'auto',
+
+        "@media (max-width: 768px)": {
+            width: "90vw",
+            height: '100%',
+            paddingBottom: '15px'
+        },
     },
     relatedNewsContent: {
         paddingRight: '15px'

@@ -5,7 +5,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column',
         flexGrow: 1,
-        height: '35vw',
+
         maxWidth: '874px',
         margin: '60px auto',
         '@media screen and (max-width: 500px)' : {
@@ -24,11 +24,11 @@ const useStyles = makeStyles((theme) => ({
         padding: "5px 0",
     },
     newsDetailsImage: {
-        width: '640px',
+        width: '100%',
         height: 'auto',
 
         "@media (max-width: 768px)": {
-            width: '330px',
+            width: '90vw',
             height: 'auto',
             textAlign: 'center',
         },

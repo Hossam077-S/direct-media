@@ -2,8 +2,6 @@ import React, { useState, useEffect } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import Truncate from "react-truncate";
-
 import {
   db,
   collection,
@@ -21,13 +19,10 @@ import {
   ListItemAvatar,
 } from "@mui/material";
 
-// import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-// import PauseIcon from "@mui/icons-material/Pause";
-
 import { Avatar, Divider, List, ListItem } from "@material-ui/core";
+import { Link } from "react-router-dom";
 
-import YouTube from "react-youtube";
-import URLParse from "url-parse";
+import ReactPlayer from "react-player";
 
 import rectangleShape from "../../assests/rect-tri.gif";
 import rectangle2Shape from "../../assests/reactangle.gif";
@@ -46,9 +41,7 @@ import Slider from "react-slick";
 
 import NewsTypeSliderItem from "./newsTypeSliderItem";
 import ThreeSliderComponentItem from "./ThreeSliderComponentItem";
-import { Link } from "react-router-dom";
-
-// import ReactPlayer from "react-player";
+import Dotdotdot from "react-dotdotdot";
 
 const Home = () => {
   const classes = useStyles();
@@ -62,9 +55,9 @@ const Home = () => {
   const [groupedData, setGrouppedData] = useState({});
   const [groupedProgramsData, setGrouppedProgramsData] = useState({});
 
-  const [videoId, setVideoId] = useState(null);
-  const [podcastVideoIds, setPodcastVideoIds] = useState(null);
   const [hoverIndex, setHoverIndex] = useState(-1);
+
+  const [latestProgram, setLatestProgram] = useState(null);
 
   // const [currentPlayingIndex, setCurrentPlayingIndex] = useState(null);
 
@@ -279,7 +272,6 @@ const Home = () => {
     ],
   };
 
-  // Getting Data from firebase
   useEffect(() => {
     const unsubscribeNews = onSnapshot(collection(db, "News"), (snapshot) => {
       const result = snapshot.docs.map((doc) => {
@@ -349,26 +341,28 @@ const Home = () => {
         );
 
         if (CaseInOneProgram) {
-          const programsIDArray = CaseInOneProgram[0].ProgramsID;
+          const programsIDArray = CaseInOneProgram[0]?.ProgramsID;
 
           // Create a query to fetch episodes with matching IDs
-          const q = query(
-            collection(db, "ProgramsEpisodes"),
-            where("EpisodeID", "in", programsIDArray)
-          );
-          const querySnapshot = await getDocs(q);
+          if (programsIDArray) {
+            const q = query(
+              collection(db, "ProgramsEpisodes"),
+              where("EpisodeID", "in", programsIDArray)
+            );
+            const querySnapshot = await getDocs(q);
 
-          // Extract the episode data from the query snapshot
-          const episodes = querySnapshot.docs.map((doc) => doc.data());
+            // Extract the episode data from the query snapshot
+            const episodes = querySnapshot.docs.map((doc) => doc.data());
 
-          setGrouppedProgramsData({
-            programs: episodes,
-          });
+            setGrouppedProgramsData({
+              programs: episodes,
+            });
+          }
         }
-
         setProgramsData(programsData);
       }
     );
+
     const unsubscribeWriters = onSnapshot(
       collection(db, "Writers"),
       (snapshot) => {
@@ -415,53 +409,14 @@ const Home = () => {
     };
   }, []);
 
-  // Getting latest video url for the programes
   useEffect(() => {
-    if (!groupedProgramsData || !groupedProgramsData.programs) {
-      return;
-    }
-
-    const sortedPrograms = [...groupedProgramsData.programs].sort((a, b) => {
+    const sortedPrograms = groupedProgramsData.programs?.sort((a, b) => {
       return new Date(a.PublishDate) - new Date(b.PublishDate);
     });
 
-    const latestProgram = sortedPrograms[sortedPrograms.length - 1];
-
-    let videoUrl = null;
-
-    if (latestProgram) {
-      videoUrl = latestProgram.YoutubeLink;
-    }
-
-    if (videoUrl) {
-      const url = new URLParse(videoUrl, true);
-      const id = url.query.v;
-      setVideoId(id);
-    } else {
-      setVideoId(null);
-    }
+    const latestProgram = sortedPrograms?.[sortedPrograms.length - 1];
+    setLatestProgram(latestProgram);
   }, [groupedProgramsData]);
-
-  // Getting latest video url for the podcast
-  useEffect(() => {
-    if (!podcastData) {
-      return;
-    }
-
-    // Map over each podcast to get its video URL and set the video ID in the state
-    const podcastVideoIds = podcastData.map((podcast) => {
-      const videoUrl = podcast.YouTubeURL;
-      if (videoUrl) {
-        const url = new URLParse(videoUrl, true);
-        const id = url.query.v;
-        return id;
-      } else {
-        return null;
-      }
-    });
-
-    setPodcastVideoIds(podcastVideoIds);
-  }, [podcastData]);
 
   const handleMouseEnter = (index) => {
     setHoverIndex(index);
@@ -567,20 +522,9 @@ const Home = () => {
                             gutterBottom
                             className={classes.sliderNewsDescription}
                           >
-                            <Truncate
-                              lines={2}
-                              ellipsis={
-                                <span
-                                  style={{
-                                    fontSize: "15px",
-                                  }}
-                                >
-                                  ...
-                                </span>
-                              }
-                            >
+                            <Dotdotdot clamp={2}>
                               {newsItem.Description}
-                            </Truncate>
+                            </Dotdotdot>
                           </Typography>
                           <Typography className={classes.sliderArticlDate}>
                             {newsItem.PublishDate instanceof Date
@@ -630,14 +574,12 @@ const Home = () => {
             {/* Render the news Videos slider */}
             {Object.keys(groupedProgramsData).length > 0 ? (
               <div>
-                {videoId && (
-                  <div className={classes.VideoDiv}>
-                    <YouTube
-                      videoId={videoId}
-                      className={classes.youtubeVideo}
-                    />
-                  </div>
-                )}
+                <div className={classes.VideoDiv}>
+                  <ReactPlayer
+                    url={latestProgram?.YoutubeLink}
+                    className={classes.youtubeVideo}
+                  />
+                </div>
               </div>
             ) : (
               <div>
@@ -929,18 +871,9 @@ const Home = () => {
                                             key={index}
                                             className={classes.articleContent}
                                           >
-                                            <Truncate
-                                              lines={2}
-                                              ellipsis={
-                                                <span
-                                                  style={{ fontSize: "10px" }}
-                                                >
-                                                  ...{" "}
-                                                </span>
-                                              }
-                                            >
+                                            <Dotdotdot clamp={2}>
                                               {articleItem.Text}
-                                            </Truncate>
+                                            </Dotdotdot>
                                           </Typography>
                                         </Link>
                                       );
@@ -1064,9 +997,10 @@ const Home = () => {
                 <Slider {...podcastSettings}>
                   {podcastData.map((podcast, index) => (
                     <div className={classes.podcastContent} key={index}>
-                      <YouTube
-                        videoId={podcastVideoIds[index]}
+                      <ReactPlayer
+                        url={podcast.YouTubeURL}
                         className={classes.podcastYoutubeVideo}
+                        controls
                       />
                     </div>
                     // <div className={classes.podcastContent}>

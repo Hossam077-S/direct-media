@@ -4,7 +4,6 @@ const useStyles = makeStyles((theme) => ({
     container: {
         maxWidth: '874px',
         margin: '60px auto',
-        height: '35vw',
         '@media screen and (max-width: 500px)' : {
             width: 'auto',
             padding: "0 15px",
@@ -16,11 +15,11 @@ const useStyles = makeStyles((theme) => ({
         paddingBottom: '10px',
     },
     newsDetailsImage: {
-        width: '200px',
+        width: '100%',
         height: 'auto',
 
         "@media (max-width: 768px)": {
-            width: '330px',
+            width: '90vw',
             height: 'auto',
             textAlign: 'center',
         },

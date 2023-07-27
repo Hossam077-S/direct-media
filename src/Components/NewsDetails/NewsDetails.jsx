@@ -19,8 +19,7 @@ import Slider from "react-slick";
 
 import useStyles from "./style";
 
-import YouTube from "react-youtube";
-import URLParse from "url-parse";
+import ReactPlayer from "react-player";
 
 const NewsDetails = () => {
   const classes = useStyles();
@@ -28,8 +27,6 @@ const NewsDetails = () => {
   const { id } = useParams();
   const [newsItem, setNewsItem] = useState({});
   const [relatedNews, setRelatedNews] = useState([]);
-
-  const [videoId, setVideoId] = useState(null);
 
   const newsTypesSliderSettings = {
     dots: false,
@@ -90,22 +87,6 @@ const NewsDetails = () => {
     }
   }, [newsItem.Category]);
 
-  useEffect(() => {
-    let videoUrl = null;
-
-    if (newsItem) {
-      videoUrl = newsItem.YoutubeLink;
-    }
-
-    if (videoUrl) {
-      const url = new URLParse(videoUrl, true);
-      const id = url.query.v;
-      setVideoId(id);
-    } else {
-      setVideoId(null);
-    }
-  }, [newsItem]);
-
   const formattedDate = newsItem?.PublishDate?.toDate()?.toLocaleDateString(
     "ar",
     {
@@ -137,7 +118,10 @@ const NewsDetails = () => {
             - {newsItem?.Description}
           </div>
           <div className={classes.VideoDiv}>
-            <YouTube videoId={videoId} className={classes.youtubeVideo} />
+            <ReactPlayer
+              url={newsItem?.YoutubeLink}
+              className={classes.youtubeVideo}
+            />
           </div>
 
           {/* Display the related news section */}

@@ -4,7 +4,7 @@ const useStyles = makeStyles((theme) => ({
     container: {
         maxWidth: '874px',
         margin: '60px auto',
-        height: '35vw',
+
         '@media screen and (max-width: 500px)' : {
             width: 'auto',
             padding: "0 15px",
@@ -25,16 +25,19 @@ const useStyles = makeStyles((theme) => ({
         fontFamily: "GE_SS_Two_L",
     },
     youtubeVideo: {
-       width: '640px',
-       height: '360px',
+       width: '100% !important',
+       height: '100% !important',
       "& iframe": {
-       width: "100%",
-       height: '100%',
+       height: '30vw !important',
+       
+       "@media (max-width: 768px)": {
+        height: '100% !important',
+       },
       },
     
       "@media (max-width: 768px)": {
-       width: '90vw',
-       height: '186px',
+       width: '90vw !important',
+       height: '186px !important',
       },
     },
 

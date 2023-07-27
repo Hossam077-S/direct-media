@@ -8,16 +8,12 @@ import { db } from "../../Utils/firebase";
 
 import useStyles from "./style";
 
-import YouTube from "react-youtube";
-import URLParse from "url-parse";
-
+import ReactPlayer from "react-player";
 const ProgramDetails = () => {
   const classes = useStyles();
 
   const { id } = useParams();
   const [programItem, setNewsItem] = useState({});
-
-  const [videoId, setVideoId] = useState(null);
 
   // Getting Data from firebase
   useEffect(() => {
@@ -27,22 +23,6 @@ const ProgramDetails = () => {
       setNewsItem(docSnap.data());
     });
   }, [id]);
-
-  useEffect(() => {
-    let videoUrl = null;
-
-    if (programItem) {
-      videoUrl = programItem.YouTubeURL;
-    }
-
-    if (videoUrl) {
-      const url = new URLParse(videoUrl, true);
-      const id = url.query.v;
-      setVideoId(id);
-    } else {
-      setVideoId(0);
-    }
-  }, [programItem]);
 
   const formattedDate = programItem?.PublishDate?.toDate()?.toLocaleDateString(
     "ar",
@@ -60,11 +40,12 @@ const ProgramDetails = () => {
         <div className={classes.Title}>{programItem?.Title}</div>
         <div className={classes.Content}>
           <div className={classes.VideoDiv}>
-            {videoId && (
-              <div className={classes.VideoDiv}>
-                <YouTube videoId={videoId} className={classes.youtubeVideo} />
-              </div>
-            )}
+            <div className={classes.VideoDiv}>
+              <ReactPlayer
+                url={programItem?.YoutubeLink}
+                className={classes.youtubeVideo}
+              />
+            </div>
           </div>
 
           <div className={classes.Date}>{formattedDate}</div>

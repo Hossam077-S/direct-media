@@ -159,10 +159,10 @@ const useStyles = makeStyles((theme) => ({
   },
 
   youtubeVideo: {
-    width: '205px',
-    height: '364px',
+    width: '205px !important',
+    height: '364px !important',
     "& iframe": {
-      width: "100%",
+      width: "205px !important",
       height: '100%',
     },
 
@@ -288,7 +288,8 @@ const useStyles = makeStyles((theme) => ({
     color: 'white',
     
     fontFamily: 'GE_SS_Two_L !important',
-    fontSize: '19.48px !important',
+    fontSize: '18px !important',
+    lineHeight: '1.2 !important',
 
     animation: "$slideInDescription 2s ease-in-out",
 
@@ -1093,8 +1094,8 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
   },
   podcastYoutubeVideo: {
-    width: '244px',
-    height: '244px',
+    width: '244px !important',
+    height: '244px !important',
 
     "& iframe": {
       width: "100%",
