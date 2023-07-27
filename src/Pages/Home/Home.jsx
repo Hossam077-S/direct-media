@@ -436,6 +436,25 @@ const Home = () => {
   //   }
   // };
 
+  const getTimeDifferenceString = (publishDate) => {
+    const currentTime = new Date();
+    const timeDifference = currentTime - publishDate;
+    const minutesDifference = Math.round(timeDifference / (1000 * 60));
+    const hoursDifference = Math.round(minutesDifference / 60);
+
+    if (hoursDifference >= 24) {
+      return publishDate.toDate().toLocaleDateString("ar", {
+        day: "numeric",
+        month: "numeric",
+        year: "numeric",
+      });
+    } else if (hoursDifference >= 1) {
+      return `منذ ${hoursDifference} ساعة`;
+    } else {
+      return `منذ ${minutesDifference} دقيقة`;
+    }
+  };
+
   return (
     <>
       <Container className={classes.container}>
@@ -528,19 +547,10 @@ const Home = () => {
                           </Typography>
                           <Typography className={classes.sliderArticlDate}>
                             {newsItem.PublishDate instanceof Date
-                              ? newsItem.PublishDate.toLocaleDateString("ar", {
-                                  day: "numeric",
-                                  month: "numeric",
-                                  year: "numeric",
-                                })
-                              : newsItem.PublishDate.toDate().toLocaleDateString(
-                                  "ar",
-                                  {
-                                    day: "numeric",
-                                    month: "numeric",
-                                    year: "numeric",
-                                  }
-                                )}
+                              ? getTimeDifferenceString(
+                                  newsItem.PublishDate.toDate()
+                                )
+                              : getTimeDifferenceString(newsItem.PublishDate)}
                           </Typography>
                         </div>
                       </div>

@@ -6,6 +6,25 @@ import Truncate from "react-truncate";
 import useStyles from "./styles";
 import { Link } from "react-router-dom";
 
+const getTimeDifferenceString = (publishDate) => {
+  const currentTime = new Date();
+  const timeDifference = currentTime - publishDate;
+  const minutesDifference = Math.round(timeDifference / (1000 * 60));
+  const hoursDifference = Math.round(minutesDifference / 60);
+
+  if (hoursDifference >= 24) {
+    return publishDate.toDate().toLocaleDateString("ar", {
+      day: "numeric",
+      month: "numeric",
+      year: "numeric",
+    });
+  } else if (hoursDifference >= 1) {
+    return `منذ ${hoursDifference} ساعة`;
+  } else {
+    return `منذ ${minutesDifference} دقيقة`;
+  }
+};
+
 const ThreeSliderComponentItem = ({ index, item, id }) => {
   const classes = useStyles();
 
@@ -30,16 +49,8 @@ const ThreeSliderComponentItem = ({ index, item, id }) => {
         <Typography gutterBottom className={classes.sliderThreeTypeAndDate}>
           {item.Category} -{" "}
           {item.PublishDate instanceof Date
-            ? item.PublishDate.toLocaleDateString("ar", {
-                day: "numeric",
-                month: "numeric",
-                year: "numeric",
-              })
-            : item.PublishDate.toDate().toLocaleDateString("ar", {
-                day: "numeric",
-                month: "numeric",
-                year: "numeric",
-              })}
+            ? getTimeDifferenceString(item.PublishDate.toDate())
+            : getTimeDifferenceString(item.PublishDate)}
         </Typography>
       </div>
     </div>
