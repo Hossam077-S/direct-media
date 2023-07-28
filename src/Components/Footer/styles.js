@@ -158,9 +158,15 @@ const useStyles = makeStyles((theme) => ({
             paddingLeft: '0px',
           }
     },
-    rightsText: {
-        fontSize: "14.9px !important",
+    rightsTextArabic: {
+        fontSize: "14.7px !important",
         fontFamily: "GE_SS_Two_L !important",
+        color: 'white',
+        marginBottom: '0px !important',
+    },
+    rightsTextEng: {
+        fontSize: "15px !important",
+        fontFamily: "MP_R !important",
         color: 'white',
         marginBottom: '0px !important',
     },

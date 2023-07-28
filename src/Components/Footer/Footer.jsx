@@ -86,14 +86,14 @@ const Footer = () => {
             <Typography
               variant="body1"
               gutterBottom
-              className={classes.rightsText}
+              className={classes.rightsTextArabic}
             >
               جميع الحقوق محفوظة لموقع الإعلام المباشر
             </Typography>
             <Typography
               variant="body1"
               gutterBottom
-              className={classes.rightsText}
+              className={classes.rightsTextEng}
             >
               All Rights Reserved for Direct Media Website{" "}
             </Typography>

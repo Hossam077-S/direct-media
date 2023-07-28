@@ -276,7 +276,7 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: '1.2 !important',
     
     animation: "$slideInTitle 2s ease-in-out",
-    marginBottom: '0px !important',
+    marginBottom: '6px !important',
     
     direction: "rtl",
 

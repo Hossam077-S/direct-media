@@ -64,7 +64,7 @@ const Home = () => {
   const importantNew = {
     dots: false,
     infinite: true,
-    speed: 1200,
+    speed: 1500,
     slidesToShow: 1,
     slidesToScroll: 1,
     vertical: true,
@@ -72,7 +72,7 @@ const Home = () => {
     verticalSwiping: true,
     autoplay: true,
     rtl: true,
-    autoplaySpeed: 3500,
+    autoplaySpeed: 4000,
     arrows: true,
     prevArrow: <img src={arrowINup} alt={"arrowLeft"} />,
     nextArrow: <img src={arrowINdown} alt={"arrowLeft"} />,
@@ -106,7 +106,7 @@ const Home = () => {
   const allNewsSlider = {
     dots: false,
     infinite: true,
-    speed: 1200,
+    speed: 1500,
     pauseOnHover: true,
     slidesToShow: 1,
     slidesToScroll: 1,

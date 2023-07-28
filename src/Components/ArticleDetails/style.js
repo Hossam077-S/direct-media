@@ -14,9 +14,9 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     Title: {
-        fontSize: '24px',
+        fontSize: '38px',
         fontFamily: "GE_SS_Two_B",
-        paddingBottom: '15px',
+        paddingBottom: '25px',
     },
     Date: {
         fontFamily: "GE_SS_Two_L",
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     Description: {
-        fontSize: '20px',
+        fontSize: '28px',
         fontFamily: "GE_SS_Two_L",
         paddingTop: '10px',
     },
