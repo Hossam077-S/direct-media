@@ -32,16 +32,17 @@ import arrowLeft from "../../assests/arrowLeft.gif";
 import arrowRight from "../../assests/arrowRight.gif";
 import arrowThreeLeft from "../../assests/arrowThreeLeft.gif";
 import arrowThreeRight from "../../assests/arrowThreeRight.gif";
-import VideImage from "../../assests/VideImage.gif";
 import PodcastBackground from "../../assests/PodcastBackground.gif";
+
+import videoDirectMedia from "../../assests/DirectMediaVideo.mp4";
 
 import useStyles from "./styles";
 
 import Slider from "react-slick";
+import Dotdotdot from "react-dotdotdot";
 
 import NewsTypeSliderItem from "./newsTypeSliderItem";
 import ThreeSliderComponentItem from "./ThreeSliderComponentItem";
-import Dotdotdot from "react-dotdotdot";
 
 const Home = () => {
   const classes = useStyles();
@@ -928,7 +929,15 @@ const Home = () => {
       <Container className={classes.containerDiv3}>
         {" "}
         <div className={classes.videoImageDiv}>
-          <img src={VideImage} alt="Video" className={classes.videoImage} />
+          <video
+            src={videoDirectMedia}
+            type="video/mp4"
+            alt="Video"
+            className={classes.videoImage}
+            loop={true}
+            autoPlay={true}
+            muted // Add the muted attribute
+          />
         </div>
       </Container>
 

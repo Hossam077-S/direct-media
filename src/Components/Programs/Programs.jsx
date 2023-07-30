@@ -71,9 +71,6 @@ const Programs = () => {
     slidesToScroll: 1,
     vertical: true,
     autoplay: true,
-    arrows: true,
-    prevArrow: <img src={arrowLColored} alt={"arrowLeft"} />,
-    nextArrow: <img src={arrowRColored} alt={"arrowLeft"} />,
     autoplaySpeed: 6000,
     rtl: true,
     pauseOnHover: true,
@@ -81,13 +78,13 @@ const Programs = () => {
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: programItem?.ProgramsID?.length,
         },
       },
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: programItem?.ProgramsID?.length,
         },
       },
     ],

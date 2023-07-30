@@ -514,6 +514,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'flex-start',
     paddingBottom: "3.4px",
     direction: 'rtl',
+    height: 'auto'
   },
   newsTypeSliderItems: {
     display: 'flex',
@@ -918,7 +919,9 @@ const useStyles = makeStyles((theme) => ({
     height: "633px !important",
     width: '527px',
   },
+
   containerDiv3: {
+    marginTop: '32px',
     height: '89px',
     width: '1000px !important',
     backgroundColor: '#F0F0F0',
