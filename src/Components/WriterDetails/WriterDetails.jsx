@@ -12,6 +12,7 @@ import {
 } from "../../Utils/firebase";
 
 import useStyles from "./style";
+import { Divider } from "@material-ui/core";
 
 const WriterDetails = () => {
   const { id } = useParams();
@@ -59,7 +60,6 @@ const WriterDetails = () => {
   return (
     <>
       <div className={classes.container}>
-        <div className={classes.Title}>{writerItem?.Name}</div>
         <div className={classes.Content}>
           <div className={classes.ImageDiv}>
             <img
@@ -68,13 +68,26 @@ const WriterDetails = () => {
               className={classes.newsDetailsImage}
             />
           </div>
+          <div className={classes.Title}>{writerItem?.Name}</div>
+          <div className={classes.writerContent}>
+            <div className={classes.dividerContent}>
+              <Divider
+                orientation="vertical"
+                flexItem
+                className={classes.divider}
+              />
+            </div>
+            <div className={classes.descriptionContent}>
+              <p className={classes.description}>{writerItem.Description}</p>
+            </div>
+          </div>
           {/* List of Episodes */}
           <div className={classes.EpisodesList}>
-            <h2 className={classes.EpisodesHeaderTitle}>المقالات:</h2>
+            <p className={classes.EpisodesHeaderTitle}>المقالات</p>
             {wrtierArticle.length === 0 ? (
               <p>لا يوجد اي مقالات.</p>
             ) : (
-              <ul>
+              <ul className={classes.EpisodesUL}>
                 {wrtierArticle.map((wArticle) => (
                   <Link
                     to={"/article/" + wArticle.ArticleID}

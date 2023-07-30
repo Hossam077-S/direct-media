@@ -9,13 +9,8 @@ const useStyles = makeStyles((theme) => ({
             padding: "0 15px",
         }
     },
-    Title: {
-        fontSize: '24px',
-        fontFamily: "GE_SS_Two_B",
-        paddingBottom: '10px',
-    },
     newsDetailsImage: {
-        width: '100%',
+        width: '153px',
         height: 'auto',
 
         "@media (max-width: 768px)": {
@@ -24,30 +19,123 @@ const useStyles = makeStyles((theme) => ({
             textAlign: 'center',
         },
     },
-    Description: {
-        fontSize: '20px',
+    progContent: {
+        display: 'flex',
+        margin: '25px 0'
+    },
+    dividerContent: {
+        display: 'flex',
+    },
+    divider: {
+        backgroundColor: "#F9AE3B",
+        width: "13px",
+        height: "auto",
+    },
+    descriptionContent: {
+        display: 'flex',
+    },
+    description: {
+        fontSize: "18px",
         fontFamily: "GE_SS_Two_L",
-        paddingTop: '10px',
+        paddingRight: '15px',
+        color: '#2E3190'
     },
-    VideoDiv: {
-      paddingTop: '10px',  
-    },
-    youtubeVideo: {
-       width: '640px',
-       height: '360px',
-      "& iframe": {
-       width: "100%",
-       height: '100%',
-      },
     
-      "@media (max-width: 768px)": {
-       width: '90vw',
-       height: '186px',
-      },
+    EpisodesList:{
+        margin: '50px 0',
     },
 
-    EpisodesList:{
-        marginTop: '15px',
+    EpisodesSliderDiv: {
+        padding: '0px 25px',
+        width: 'auto',
+        display: 'flex',
+        flexDirection: 'column',
+        
+        "@media (max-width: 768px)": {
+            width: '90vw'
+        },
+        
+        "& .slick-track": {
+          direction: 'rtl',
+          width: '52vw'
+        },
+    
+        "& .slick-initialized .slick-slide": {
+          "@media (max-width: 768px)": {
+            display: 'flex',
+            justifyContent: 'center',
+          },
+        },
+
+        "& .slick-next": {
+            opacity: "1",
+            zIndex: 1,  
+            width: '19px',
+            height: '39px',
+            
+          },
+          "& .slick-prev": {
+            opacity: "1",
+            zIndex: 1,
+            width: '19px',
+            height: '39px',
+          },
+    },
+    episodeContent: {
+        position:'relative',
+        display: 'flex !important',
+        justifyContent: 'center',
+    },
+    episodeYoutubeVideo: {
+        width: '208px !important',
+        height: '370px !important',
+    
+        "& iframe": {
+          width: "100%",
+          height: '100%',
+        },
+    
+        "@media (max-width: 768px)": {
+          width: '90vw',
+        },  
+    },
+
+    EpisodesSliderDiv2: {
+        width: 'auto',
+        higeht: 'auto',
+        
+        "@media (max-width: 768px)": {
+            width: '90vw'
+        },
+        
+        "& .slick-track": {
+          direction: 'rtl',
+          width: 'auto',
+          height: 'auto !important',
+        },
+    
+        "& .slick-initialized .slick-slide": {
+          "@media (max-width: 768px)": {
+            display: 'flex',
+            justifyContent: 'center',
+          },
+        },
+    },
+    episodeContent2: {
+        position:'relative',
+    },
+    episodeYoutubeVideo2: {
+        width: 'auto !important',
+        height: '330px !important',
+    
+        "& iframe": {
+          width: "100%",
+          height: '100%',
+        },
+    
+        "@media (max-width: 768px)": {
+          width: '90vw',
+        },  
     },
 }));
 

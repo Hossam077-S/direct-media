@@ -622,10 +622,7 @@ const Home = () => {
                 <Slider {...programSettings}>
                   {programsData.map((newsItem, index) => (
                     <Link
-                      to={{
-                        pathname: `/programs`,
-                      }}
-                      state={newsItem}
+                      to={"programs/" + newsItem.id}
                       className={classes.LinkInnerPages}
                       key={index}
                     >

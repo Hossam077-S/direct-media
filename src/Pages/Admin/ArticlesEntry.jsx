@@ -64,6 +64,7 @@ const ArticlesEntry = ({ distinctWritersName }) => {
   const form = useRef();
 
   const nameRef = useRef(null);
+  const descRef = useRef(null);
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -155,6 +156,8 @@ const ArticlesEntry = ({ distinctWritersName }) => {
     // Get values from the refs
     const writerName = nameRef.current.value;
 
+    const writerDesc = descRef.current.value;
+
     try {
       setLoading(true);
 
@@ -176,6 +179,7 @@ const ArticlesEntry = ({ distinctWritersName }) => {
         const docRef = await addDoc(collection(db, "Writers"), {
           ProfileImage: downloadURL,
           Name: writerName,
+          Description: writerDesc,
           ArticleID: [],
         });
 
@@ -364,6 +368,13 @@ const ArticlesEntry = ({ distinctWritersName }) => {
                       type="text"
                       ref={nameRef}
                       placeholder="إسم الكاتب"
+                      className={classes.inputField}
+                    />
+
+                    <textarea
+                      type="text"
+                      ref={descRef}
+                      placeholder="نبذة عن الكاتب"
                       className={classes.inputField}
                     />
 

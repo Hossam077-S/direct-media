@@ -1,19 +1,106 @@
 import React, { useEffect, useState } from "react";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
-import { db, query, collection, where, getDocs } from "../../Utils/firebase";
+import {
+  db,
+  query,
+  collection,
+  where,
+  getDocs,
+  doc,
+  getDoc,
+} from "../../Utils/firebase";
 
-import { Link, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import useStyles from "./style";
 
-const Programs = () => {
-  const location = useLocation();
-  const programItem = location.state;
+import arrowRColored from "../../assests/arrowRColored.gif";
+import arrowLColored from "../../assests/arrowLColored.gif";
 
+import { Divider } from "@mui/material";
+
+import Slider from "react-slick";
+
+import ReactPlayer from "react-player";
+
+const Programs = () => {
   const classes = useStyles();
 
+  const { id } = useParams();
+
+  const [programItem, setProgramItem] = useState({});
   const [ProgramEposide, setProgramEposide] = useState(null);
   const [loading, setLoading] = useState(true);
+
+  const episodeSettings = {
+    dots: false,
+    infinite: true,
+    speed: 1200,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: true,
+    arrows: true,
+    prevArrow: <img src={arrowLColored} alt={"arrowLeft"} />,
+    nextArrow: <img src={arrowRColored} alt={"arrowLeft"} />,
+    autoplaySpeed: 6000,
+    rtl: true,
+    pauseOnHover: true,
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  };
+
+  const episodeSettings2 = {
+    dots: false,
+    infinite: true,
+    speed: 1200,
+    slidesToShow: programItem?.ProgramsID?.length,
+    slidesToScroll: 1,
+    vertical: true,
+    autoplay: true,
+    arrows: true,
+    prevArrow: <img src={arrowLColored} alt={"arrowLeft"} />,
+    nextArrow: <img src={arrowRColored} alt={"arrowLeft"} />,
+    autoplaySpeed: 6000,
+    rtl: true,
+    pauseOnHover: true,
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  };
+
+  // Getting Data from firebase
+  useEffect(() => {
+    const q = doc(db, "Programs", id);
+
+    getDoc(q).then((docSnap) => {
+      setProgramItem(docSnap.data());
+    });
+  }, [id]);
 
   useEffect(() => {
     const fetchProgramEpisodes = async () => {
@@ -56,10 +143,6 @@ const Programs = () => {
   return (
     <>
       <div className={classes.container}>
-        <div className={classes.Title}>
-          {programItem?.Title}{" "}
-          <span style={{ fontFamily: "GE_SS_Two_L", fontSize: "15px" }}></span>
-        </div>
         <div className={classes.Content}>
           <div className={classes.ImageDiv}>
             <img
@@ -68,28 +151,52 @@ const Programs = () => {
               className={classes.newsDetailsImage}
             />
           </div>
-          <div className={classes.Date}>{formattedDate}</div>
-
-          <div className={classes.Description}>{programItem?.Description}</div>
+          <div className={classes.progContent}>
+            <div className={classes.dividerContent}>
+              <Divider
+                orientation="vertical"
+                flexItem
+                className={classes.divider}
+              />
+            </div>
+            <div className={classes.descriptionContent}>
+              <p className={classes.description}>{programItem.Description}</p>
+            </div>
+          </div>
 
           {/* List of Episodes */}
+          <div className={classes.Date}>{formattedDate}</div>
           <div className={classes.EpisodesList}>
-            <h2 className={classes.EpisodesHeaderTitle}>الحلقات:</h2>
             {ProgramEposide.length === 0 ? (
-              <p>لا يوجد اي حلقات.</p>
+              <p>لا يوجد أي حلقات.</p>
+            ) : id === "7s6Zwakzt8JpvYOvgvQD" ? (
+              <div className={classes.EpisodesSliderDiv}>
+                <Slider {...episodeSettings}>
+                  {ProgramEposide.map((episode) => (
+                    <div className={classes.episodeContent} key={episode.id}>
+                      <ReactPlayer
+                        url={episode.YoutubeLink}
+                        className={classes.episodeYoutubeVideo}
+                        controls
+                      />
+                    </div>
+                  ))}
+                </Slider>
+              </div>
             ) : (
-              <ul>
-                {ProgramEposide.map((episode) => (
-                  <Link
-                    to={"/programs/" + episode.EpisodeID}
-                    className={classes.LinkInnerPages}
-                  >
-                    <li key={episode.id} className={classes.EpisodesTitle}>
-                      {episode.Title}
-                    </li>
-                  </Link>
-                ))}
-              </ul>
+              <div className={classes.EpisodesSliderDiv2}>
+                <Slider {...episodeSettings2}>
+                  {ProgramEposide.map((episode) => (
+                    <div className={classes.episodeContent2} key={episode.id}>
+                      <ReactPlayer
+                        url={episode.YoutubeLink}
+                        className={classes.episodeYoutubeVideo2}
+                        controls
+                      />
+                    </div>
+                  ))}
+                </Slider>
+              </div>
             )}
           </div>
         </div>
