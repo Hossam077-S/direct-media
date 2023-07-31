@@ -6,13 +6,13 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 
 // Add your Firebase configuration object here
 const firebaseConfig = {
-  apiKey: "AIzaSyDHGHrVx-F92gK2JTa3JPAIpP6U610zRWI",
-  authDomain: "directmedia-6b77f.firebaseapp.com",
-  projectId: "directmedia-6b77f",
-  storageBucket: "directmedia-6b77f.appspot.com",
-  messagingSenderId: "734279987662",
-  appId: "1:734279987662:web:a8dc0c053dfb672d59bb9f",
-  measurementId: "G-R4YDZXW30E"
+  apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMENT_ID,
 };
 
 // Initialize Firebase
