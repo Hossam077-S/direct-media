@@ -31,7 +31,7 @@ const Programs = () => {
   const { id } = useParams();
 
   const [programItem, setProgramItem] = useState({});
-  const [ProgramEposide, setProgramEposide] = useState(null);
+  const [ProgramEposide, setProgramEposide] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const episodeSettings = {
@@ -115,7 +115,9 @@ const Programs = () => {
         const episodes = querySnapshot.docs.map((doc) => doc.data());
 
         setProgramEposide(episodes);
-        setLoading(false); // Set loading to false after data is fetched
+        setLoading(false);
+      } else {
+        setLoading(false);
       }
     };
 
@@ -166,7 +168,7 @@ const Programs = () => {
           <div className={classes.EpisodesList}>
             {ProgramEposide.length === 0 ? (
               <p>لا يوجد أي حلقات.</p>
-            ) : id === "7s6Zwakzt8JpvYOvgvQD" ? (
+            ) : id === "z4yIpPQkFYkH36oaLwL0" ? (
               <div className={classes.EpisodesSliderDiv}>
                 <Slider {...episodeSettings}>
                   {ProgramEposide.map((episode) => (

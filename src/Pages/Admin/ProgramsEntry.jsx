@@ -329,7 +329,7 @@ const ProgramsEntry = ({ distinctProgram }) => {
                       className={classes.inputField}
                     />
 
-                    <input
+                    <textarea
                       type="text"
                       ref={descriptionRef}
                       placeholder="الوصف"

@@ -9,19 +9,23 @@ const useStyles = makeStyles((theme) => ({
             padding: "0 15px",
         }
     },
+    ImageDiv: {
+      display: 'flex',
+      justifyContent: 'center',
+    },
     newsDetailsImage: {
-        width: '153px',
-        height: 'auto',
-
-        "@media (max-width: 768px)": {
-            width: '90vw',
-            height: 'auto',
-            textAlign: 'center',
-        },
+      width: '250px',
+      height: 'auto',
+        
+      "@media (max-width: 768px)": {
+          width: '90vw',
+          height: 'auto',
+          textAlign: 'center',
+      },
     },
     progContent: {
         display: 'flex',
-        margin: '25px 0'
+        margin: '20px 0'
     },
     dividerContent: {
         display: 'flex',

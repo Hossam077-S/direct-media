@@ -342,14 +342,15 @@ const Home = () => {
         );
 
         if (CaseInOneProgram) {
-          const programsIDArray = CaseInOneProgram[0]?.ProgramsID;
+          const programsIDArray = CaseInOneProgram[0]?.ProgramsID || [];
 
           // Create a query to fetch episodes with matching IDs
-          if (programsIDArray) {
+          if (programsIDArray.length > 0) {
             const q = query(
               collection(db, "ProgramsEpisodes"),
               where("EpisodeID", "in", programsIDArray)
             );
+
             const querySnapshot = await getDocs(q);
 
             // Extract the episode data from the query snapshot
@@ -703,9 +704,7 @@ const Home = () => {
                 {newsData.length > 0 ? (
                   <Slider {...newsTypesSliderSettings}>
                     {groupedData.inter.map((newsItem, index) => (
-                      <div>
-                        <NewsTypeSliderItem Item={newsItem} ItemIndex={index} />
-                      </div>
+                      <NewsTypeSliderItem Item={newsItem} ItemIndex={index} />
                     ))}
                   </Slider>
                 ) : (

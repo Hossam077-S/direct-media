@@ -1,6 +1,9 @@
 import React, { Suspense, lazy } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
+import './App.css';
+
+
 const [Header, Footer, NewsDetails, ProgramDetails, WriterDetails, ArticleDetails, PodcastDetails, Programs ] = [
   'Header',
   'Footer',
@@ -24,7 +27,10 @@ const [Home, Admin] = [
 const App = () => {
   // const user = JSON.parse(localStorage.getItem('profile'));
   return (
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={
+        <div className="loading-logo"></div>
+      }
+      >
       <Header />
       <Routes>
         <Route exact path="/" element={<Home />} />

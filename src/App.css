@@ -1,0 +1,22 @@
+.loading-logo {
+    margin: 50% 50%;
+    width: 200px; /* Set the width and height of your logo */
+    height: 200px;
+    background: url('./assests/logo.gif') no-repeat center;
+    background-size: contain;
+  
+    /* Animation properties */
+    animation-name: fillLogo;
+    animation-duration: 2s; /* Adjust the duration as needed */
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+  }
+  
+  @keyframes fillLogo {
+    0% {
+      filter: brightness(0%); /* Start with no color (black and white) */
+    }
+    100% {
+      filter: brightness(100%); /* Fill the logo with color */
+    }
+  }
