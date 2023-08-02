@@ -565,7 +565,7 @@ const Home = () => {
               />
             </div>
           )}
-          <Stack direction="column" spacing={2}>
+          <Stack direction="column" spacing={2} className={classes.videoStack}>
             {/* Render Video */}
             <div className={classes.imageDiv2}>
               <Typography className={classes.imageTitle2}>

@@ -146,17 +146,25 @@ const useStyles = makeStyles((theme) => ({
       justifyContent: 'center',
     },
 
-    "& .MuiStack-root.css-1sazv7p-MuiStack-root": {
-      marginRight: '28px !important',
-      marginLeft: '0px !important',
+    // "& .MuiStack-root.css-1sazv7p-MuiStack-root": {
+    //   marginRight: '28px !important',
+    //   marginLeft: '0px !important',
 
-      "@media (max-width: 768px)": {
-        marginRight: '0px'
-      },
-    },
+    //   "@media (max-width: 768px)": {
+    //     marginRight: '0px'
+    //   },
+    // },
     
   },
 
+  videoStack: {
+    marginRight: '28px !important',
+    marginLeft: '0px !important',
+
+    "@media (max-width: 768px)": {
+      marginRight: '0px'
+    },
+  },
   youtubeVideo: {
     width: '205px !important',
     height: '364px !important',
