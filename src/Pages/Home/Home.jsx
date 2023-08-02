@@ -19,7 +19,7 @@ import {
   ListItemAvatar,
 } from "@mui/material";
 
-import { Avatar, Divider, List, ListItem } from "@material-ui/core";
+import { Avatar, Divider, List, ListItem } from "@mui/material";
 import { Link } from "react-router-dom";
 
 import ReactPlayer from "react-player";
@@ -503,11 +503,7 @@ const Home = () => {
         </div>
 
         {/* First Slider */}
-        <Stack
-          direction="row"
-          spacing={3.2}
-          className={classes.gridSlidersContainer}
-        >
+        <Stack direction="row" className={classes.gridSlidersContainer}>
           {/* Render the News images slider */}
           {newsData.length > 0 ? (
             <div className={classes.newsImageDiv}>
@@ -658,7 +654,9 @@ const Home = () => {
                 {newsData.length > 0 ? (
                   <Slider {...newsTypesSliderSettings}>
                     {groupedData.local.map((newsItem, index) => (
-                      <NewsTypeSliderItem Item={newsItem} ItemIndex={index} />
+                      <div key={index}>
+                        <NewsTypeSliderItem Item={newsItem} ItemIndex={index} />
+                      </div>
                     ))}
                   </Slider>
                 ) : (
@@ -681,7 +679,9 @@ const Home = () => {
                 {newsData.length > 0 ? (
                   <Slider {...newsTypesSliderSettings}>
                     {groupedData.press.map((newsItem, index) => (
-                      <NewsTypeSliderItem Item={newsItem} ItemIndex={index} />
+                      <div key={index}>
+                        <NewsTypeSliderItem Item={newsItem} ItemIndex={index} />
+                      </div>
                     ))}
                   </Slider>
                 ) : (
@@ -704,7 +704,9 @@ const Home = () => {
                 {newsData.length > 0 ? (
                   <Slider {...newsTypesSliderSettings}>
                     {groupedData.inter.map((newsItem, index) => (
-                      <NewsTypeSliderItem Item={newsItem} ItemIndex={index} />
+                      <div key={index}>
+                        <NewsTypeSliderItem Item={newsItem} ItemIndex={index} />
+                      </div>
                     ))}
                   </Slider>
                 ) : (
@@ -782,33 +784,39 @@ const Home = () => {
                   <div className={classes.newsThreeSlider}>
                     <Slider {...threeTypeSlider}>
                       {groupedData.press2.map((newsItem, index) => (
-                        <ThreeSliderComponentItem
-                          index={index}
-                          item={newsItem}
-                          id={newsItem.id}
-                        />
+                        <div key={index}>
+                          <ThreeSliderComponentItem
+                            index={index}
+                            item={newsItem}
+                            id={newsItem.id}
+                          />
+                        </div>
                       ))}
                     </Slider>
                   </div>
                   <div className={classes.newsThreeSlider}>
                     <Slider {...threeTypeSlider}>
                       {groupedData.local2.map((newsItem, index) => (
-                        <ThreeSliderComponentItem
-                          index={index}
-                          item={newsItem}
-                          id={newsItem.id}
-                        />
+                        <div key={index}>
+                          <ThreeSliderComponentItem
+                            index={index}
+                            item={newsItem}
+                            id={newsItem.id}
+                          />
+                        </div>
                       ))}
                     </Slider>
                   </div>
                   <div className={classes.newsThreeSlider}>
                     <Slider {...threeTypeSlider}>
                       {groupedData.inter2.map((newsItem, index) => (
-                        <ThreeSliderComponentItem
-                          index={index}
-                          item={newsItem}
-                          id={newsItem.id}
-                        />
+                        <div key={index}>
+                          <ThreeSliderComponentItem
+                            index={index}
+                            item={newsItem}
+                            id={newsItem.id}
+                          />
+                        </div>
                       ))}
                     </Slider>
                   </div>
@@ -873,6 +881,7 @@ const Home = () => {
                                           to={"article/" + articleItem.id}
                                           state={writerItem}
                                           className={classes.LinkInnerPages}
+                                          key={index}
                                         >
                                           <Typography
                                             key={index}

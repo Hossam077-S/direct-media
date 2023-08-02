@@ -1,5 +1,7 @@
 import React, { useState, useRef } from "react";
 
+import { adaptV4Theme } from '@mui/material/styles';
+
 import {
   db,
   collection,
@@ -20,6 +22,7 @@ import {
   Button,
   TextField,
   ThemeProvider,
+  StyledEngineProvider,
   createTheme,
   CircularProgress,
 } from "@mui/material";
@@ -27,13 +30,14 @@ import {
 const PodcastEntry = () => {
   const classes = useStyles();
 
-  const theme = createTheme({
+  const theme = createTheme(adaptV4Theme({
     direction: "rtl", // Both here and <body dir="rtl">
-  });
+  }));
   // Create rtl cache
   const cacheRtl = createCache({
     key: "muirtl",
     stylisPlugins: [prefixer, rtlPlugin],
+    prepend: true,
   });
 
   const [formValues, setFormValues] = useState({
@@ -113,78 +117,80 @@ const PodcastEntry = () => {
     <div className={classes.containerDiv}>
       <form className={classes.form} ref={form} onSubmit={handleSubmit}>
         <CacheProvider value={cacheRtl}>
-          <ThemeProvider theme={theme}>
-            <div className={classes.TextFieldDiv}>
-              <TextField
-                label="العنوان"
-                name="Title"
-                type="text"
-                variant="outlined"
-                className={classes.textField}
-                required
-              />
-              <TextField
-                label="رابط الفيديو"
-                name="YouTubeURL"
-                type="text"
-                variant="outlined"
-                style={{ width: "95%", paddingBottom: "15px" }}
-              />
-              <div>
-                <Button
-                  variant="contained"
-                  type="submit"
-                  className={classes.submitButton}
-                >
-                  إرسال
-                </Button>
-              </div>
-              {showPopup && (
-                <div className={classes.popup}>
-                  <div className={classes.previewContainer}>
-                    <h2 className={classes.previewTitle}>معاينة</h2>
-                    <div className={classes.previewContent}>
-                      {formValues.Title && (
-                        <p className={classes.previewItem}>
-                          <span className={classes.previewLabel}>
-                            العنوان:{" "}
-                          </span>
-                          {formValues.Title}
-                        </p>
-                      )}
-                      {formValues.YouTubeURL && (
-                        <p className={classes.previewItem}>
-                          <span className={classes.previewLabel}>
-                            رابط الفيديو:{" "}
-                          </span>
-                          {formValues.YouTubeURL}
-                        </p>
-                      )}
+          <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={theme}>
+              <div className={classes.TextFieldDiv}>
+                <TextField
+                  label="العنوان"
+                  name="Title"
+                  type="text"
+                  variant="outlined"
+                  className={classes.textField}
+                  required
+                />
+                <TextField
+                  label="رابط الفيديو"
+                  name="YouTubeURL"
+                  type="text"
+                  variant="outlined"
+                  style={{ width: "95%", paddingBottom: "15px" }}
+                />
+                <div>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    className={classes.submitButton}
+                  >
+                    إرسال
+                  </Button>
+                </div>
+                {showPopup && (
+                  <div className={classes.popup}>
+                    <div className={classes.previewContainer}>
+                      <h2 className={classes.previewTitle}>معاينة</h2>
+                      <div className={classes.previewContent}>
+                        {formValues.Title && (
+                          <p className={classes.previewItem}>
+                            <span className={classes.previewLabel}>
+                              العنوان:{" "}
+                            </span>
+                            {formValues.Title}
+                          </p>
+                        )}
+                        {formValues.YouTubeURL && (
+                          <p className={classes.previewItem}>
+                            <span className={classes.previewLabel}>
+                              رابط الفيديو:{" "}
+                            </span>
+                            {formValues.YouTubeURL}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <div className={classes.popupButtonContainer}>
+                      <Button
+                        variant="contained"
+                        onClick={handleSave}
+                        className={classes.saveButton}
+                      >
+                        Save
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        onClick={handleCancel}
+                        sx={{
+                          backgroundColor: "transparent",
+                          color: "#2E3190",
+                        }}
+                      >
+                        Cancel
+                      </Button>
                     </div>
                   </div>
-                  <div className={classes.popupButtonContainer}>
-                    <Button
-                      variant="contained"
-                      onClick={handleSave}
-                      className={classes.saveButton}
-                    >
-                      Save
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      onClick={handleCancel}
-                      sx={{
-                        backgroundColor: "transparent",
-                        color: "#2E3190",
-                      }}
-                    >
-                      Cancel
-                    </Button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </ThemeProvider>
+                )}
+              </div>
+            </ThemeProvider>
+          </StyledEngineProvider>
         </CacheProvider>
       </form>
     </div>

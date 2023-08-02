@@ -12,7 +12,7 @@ import {
 } from "../../Utils/firebase";
 
 import useStyles from "./style";
-import { Divider } from "@material-ui/core";
+import { Divider } from "@mui/material";
 
 const WriterDetails = () => {
   const { id } = useParams();

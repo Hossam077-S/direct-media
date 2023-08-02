@@ -1,9 +1,7 @@
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles((theme) => ({
   container: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
     width: "874px !important", 
     padding: "0px !important", 
     marginTop: "23px !important",
@@ -148,14 +146,15 @@ const useStyles = makeStyles((theme) => ({
       justifyContent: 'center',
     },
 
-    "& .MuiStack-root.css-1p5q5e5-MuiStack-root": {
-      marginRight: '28px',
+    "& .MuiStack-root.css-1sazv7p-MuiStack-root": {
+      marginRight: '28px !important',
       marginLeft: '0px !important',
 
       "@media (max-width: 768px)": {
         marginRight: '0px'
       },
     },
+    
   },
 
   youtubeVideo: {
@@ -612,8 +611,6 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   newsListItem: {
-    padding: theme.spacing(2.4, 0),
-    // transition: 'background-color 0.3s ease',
     cursor: 'pointer',
     paddingLeft: '30px',
     height: '125px',
@@ -629,8 +626,8 @@ const useStyles = makeStyles((theme) => ({
 
   },
   newsAvatar: {
-    width: '84.8px',
-    height: '84.8px',
+    width: '84.8px !important',
+    height: '84.8px !important',
     transition: 'transform .2s',
 
     "&:hover": {
@@ -741,6 +738,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'end',
 
     width: '100%',
+    height: '100%',
 
     "@media (max-width: 768px)": {
       bottom: "0",

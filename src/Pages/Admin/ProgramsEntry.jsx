@@ -1,5 +1,7 @@
 import React, { useState, useRef } from "react";
 
+import { adaptV4Theme } from '@mui/material/styles';
+
 import {
   storage,
   db,
@@ -26,6 +28,7 @@ import {
   Grid,
   TextField,
   ThemeProvider,
+  StyledEngineProvider,
   createTheme,
   FormControl,
   InputLabel,
@@ -37,13 +40,14 @@ import {
 const ProgramsEntry = ({ distinctProgram }) => {
   const classes = useStyles();
 
-  const theme = createTheme({
+  const theme = createTheme(adaptV4Theme({
     direction: "rtl", // Both here and <body dir="rtl">
-  });
+  }));
   // Create rtl cache
   const cacheRtl = createCache({
     key: "muirtl",
     stylisPlugins: [prefixer, rtlPlugin],
+    prepend: true,
   });
 
   const [formValues, setFormValues] = useState({
@@ -197,184 +201,186 @@ const ProgramsEntry = ({ distinctProgram }) => {
     <div className={classes.containerDiv}>
       <form className={classes.form} ref={form} onSubmit={handleSubmit}>
         <CacheProvider value={cacheRtl}>
-          <ThemeProvider theme={theme}>
-            <div dir="rtl" className={classes.TextFieldDiv}>
-              <Grid item xs={12} sm={6}>
-                <div className={classes.fieldContainer}>
-                  <FormControl fullWidth required>
-                    <InputLabel
-                      id="programName-label"
-                      className={classes.labelText}
-                    >
-                      إسم البرنامج
-                    </InputLabel>
-                    <Select
-                      labelId="programName-label"
-                      name="Title"
-                      defaultValue=""
-                      className={classes.textFieldSelect}
-                    >
-                      {distinctProgram.map((program, index) => (
-                        <MenuItem key={index} value={program.id}>
-                          {program.title}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
+          <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={theme}>
+              <div dir="rtl" className={classes.TextFieldDiv}>
+                <Grid item xs={12} sm={6}>
+                  <div className={classes.fieldContainer}>
+                    <FormControl fullWidth required>
+                      <InputLabel
+                        id="programName-label"
+                        className={classes.labelText}
+                      >
+                        إسم البرنامج
+                      </InputLabel>
+                      <Select
+                        labelId="programName-label"
+                        name="Title"
+                        defaultValue=""
+                        className={classes.textFieldSelect}
+                      >
+                        {distinctProgram.map((program, index) => (
+                          <MenuItem key={index} value={program.id}>
+                            {program.title}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </div>
+                  <TextField
+                    label="عنوان الحلقة"
+                    name="Name"
+                    type="text"
+                    variant="outlined"
+                    className={classes.textField}
+                    multiline
+                  />
+                  <TextField
+                    label="الوصف"
+                    name="Description"
+                    type="text"
+                    variant="outlined"
+                    className={classes.textField}
+                    multiline
+                  />
+                  <TextField
+                    label="رابط الفيديو"
+                    name="YoutubeLink"
+                    type="text"
+                    variant="outlined"
+                    className={classes.textField}
+                  />
+                  <Button
+                    onClick={handleAddNewProgram}
+                    style={{ paddingBottom: "15px" }}
+                  >
+                    إضافة برنامج
+                  </Button>
+                </Grid>
+                <div>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    className={classes.submitButton}
+                  >
+                    إرسال
+                  </Button>
                 </div>
-                <TextField
-                  label="عنوان الحلقة"
-                  name="Name"
-                  type="text"
-                  variant="outlined"
-                  className={classes.textField}
-                  multiline
-                />
-                <TextField
-                  label="الوصف"
-                  name="Description"
-                  type="text"
-                  variant="outlined"
-                  className={classes.textField}
-                  multiline
-                />
-                <TextField
-                  label="رابط الفيديو"
-                  name="YoutubeLink"
-                  type="text"
-                  variant="outlined"
-                  className={classes.textField}
-                />
-                <Button
-                  onClick={handleAddNewProgram}
-                  style={{ paddingBottom: "15px" }}
-                >
-                  إضافة برنامج
-                </Button>
-              </Grid>
-              <div>
-                <Button
-                  variant="contained"
-                  type="submit"
-                  className={classes.submitButton}
-                >
-                  إرسال
-                </Button>
-              </div>
-              {showPopup && (
-                <div className={classes.popup}>
-                  <div className={classes.previewContainer}>
-                    <h2 className={classes.previewTitle}>معاينة</h2>
-                    {selectedImage && (
-                      <img
-                        src={URL.createObjectURL(selectedImage)}
-                        alt="Selected"
-                        className={classes.previewImage}
-                      />
-                    )}
-                    <div className={classes.previewContent}>
-                      {formValues.Title && (
-                        <p className={classes.previewItem}>
-                          <span className={classes.previewLabel}>
-                            عنوان الحلقة:{" "}
-                          </span>
-                          {formValues.Title}
-                        </p>
+                {showPopup && (
+                  <div className={classes.popup}>
+                    <div className={classes.previewContainer}>
+                      <h2 className={classes.previewTitle}>معاينة</h2>
+                      {selectedImage && (
+                        <img
+                          src={URL.createObjectURL(selectedImage)}
+                          alt="Selected"
+                          className={classes.previewImage}
+                        />
                       )}
-                      {formValues.Description && (
-                        <p className={classes.previewItem}>
-                          <span className={classes.previewLabel}>الوصف: </span>
-                          {formValues.Description}
-                        </p>
-                      )}
-                      {formValues.YoutubeLink && (
-                        <p className={classes.previewItem}>
-                          <span className={classes.previewLabel}>
-                            رابط الفيديو:{" "}
-                          </span>
-                          {formValues.YoutubeLink}
-                        </p>
-                      )}
+                      <div className={classes.previewContent}>
+                        {formValues.Title && (
+                          <p className={classes.previewItem}>
+                            <span className={classes.previewLabel}>
+                              عنوان الحلقة:{" "}
+                            </span>
+                            {formValues.Title}
+                          </p>
+                        )}
+                        {formValues.Description && (
+                          <p className={classes.previewItem}>
+                            <span className={classes.previewLabel}>الوصف: </span>
+                            {formValues.Description}
+                          </p>
+                        )}
+                        {formValues.YoutubeLink && (
+                          <p className={classes.previewItem}>
+                            <span className={classes.previewLabel}>
+                              رابط الفيديو:{" "}
+                            </span>
+                            {formValues.YoutubeLink}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <div className={classes.popupButtonContainer}>
+                      <Button
+                        variant="contained"
+                        onClick={handleSave}
+                        className={classes.saveButton}
+                      >
+                        Save
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        onClick={handleCancel}
+                        sx={{
+                          backgroundColor: "transparent",
+                          color: "#2E3190",
+                        }}
+                      >
+                        Cancel
+                      </Button>
                     </div>
                   </div>
-                  <div className={classes.popupButtonContainer}>
-                    <Button
-                      variant="contained"
-                      onClick={handleSave}
-                      className={classes.saveButton}
-                    >
-                      Save
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      onClick={handleCancel}
-                      sx={{
-                        backgroundColor: "transparent",
-                        color: "#2E3190",
-                      }}
-                    >
-                      Cancel
-                    </Button>
-                  </div>
-                </div>
-              )}
-              {showPopupProgram && (
-                <div className={classes.popup}>
-                  <div className={classes.writerItem}>
-                    {/* Name */}
-                    <input
-                      type="text"
-                      ref={nameRef}
-                      placeholder="إسم البرنامج"
-                      className={classes.inputField}
-                    />
+                )}
+                {showPopupProgram && (
+                  <div className={classes.popup}>
+                    <div className={classes.writerItem}>
+                      {/* Name */}
+                      <input
+                        type="text"
+                        ref={nameRef}
+                        placeholder="إسم البرنامج"
+                        className={classes.inputField}
+                      />
 
-                    <textarea
-                      type="text"
-                      ref={descriptionRef}
-                      placeholder="الوصف"
-                      className={classes.inputField}
-                    />
+                      <textarea
+                        type="text"
+                        ref={descriptionRef}
+                        placeholder="الوصف"
+                        className={classes.inputField}
+                      />
 
-                    {/* Image */}
-                    <label
-                      htmlFor="image-upload"
-                      className={classes.imageFieldLabel}
-                    >
-                      الصورة{" "}
-                    </label>
-                    <input
-                      id="image-upload"
-                      type="file"
-                      name="ImageURL"
-                      accept="image/*"
-                      onChange={handleImageChange}
-                      className={classes.imageField}
-                    />
+                      {/* Image */}
+                      <label
+                        htmlFor="image-upload"
+                        className={classes.imageFieldLabel}
+                      >
+                        الصورة{" "}
+                      </label>
+                      <input
+                        id="image-upload"
+                        type="file"
+                        name="ImageURL"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className={classes.imageField}
+                      />
+                    </div>
+                    <div className={classes.popupButtonContainer}>
+                      <Button
+                        variant="contained"
+                        onClick={handleSaveProgram}
+                        className={classes.saveButton}
+                      >
+                        Save
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        onClick={handleCancel}
+                        sx={{
+                          backgroundColor: "transparent",
+                          color: "#2E3190",
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
                   </div>
-                  <div className={classes.popupButtonContainer}>
-                    <Button
-                      variant="contained"
-                      onClick={handleSaveProgram}
-                      className={classes.saveButton}
-                    >
-                      Save
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      onClick={handleCancel}
-                      sx={{
-                        backgroundColor: "transparent",
-                        color: "#2E3190",
-                      }}
-                    >
-                      Cancel
-                    </Button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </ThemeProvider>
+                )}
+              </div>
+            </ThemeProvider>
+          </StyledEngineProvider>
         </CacheProvider>
       </form>
     </div>

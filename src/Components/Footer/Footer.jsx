@@ -110,22 +110,22 @@ const Footer = () => {
             <div className={classes.socialMediaDiv}>
               {" "}
               <Box className={classes.socialmediaiconbox}>
-                <IconButton className={classes.fButton}>
+                <IconButton className={classes.fButton} size="large">
                   <BsFacebook className={classes.fIcon} />
                 </IconButton>
 
-                <IconButton className={classes.IButton}>
+                <IconButton className={classes.IButton} size="large">
                   <FaInstagram className={classes.IIcon} />
                 </IconButton>
 
-                <IconButton className={classes.TWButton}>
+                <IconButton className={classes.TWButton} size="large">
                   <AiFillTwitterCircle className={classes.TWIcon} />
                 </IconButton>
 
-                <IconButton className={classes.TButton}>
+                <IconButton className={classes.TButton} size="large">
                   <FaTiktok className={classes.TIcon} />
                 </IconButton>
-                <IconButton className={classes.YButton}>
+                <IconButton className={classes.YButton} size="large">
                   <BsYoutube className={classes.YIcon} />
                 </IconButton>
               </Box>

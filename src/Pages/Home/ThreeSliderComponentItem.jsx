@@ -1,10 +1,11 @@
-import { Typography } from "@mui/material";
 import React from "react";
+import { Link } from "react-router-dom";
 
-import Truncate from "react-truncate";
+import { Typography } from "@mui/material";
+
+import Dotdotdot from "react-dotdotdot";
 
 import useStyles from "./styles";
-import { Link } from "react-router-dom";
 
 const getTimeDifferenceString = (publishDate) => {
   const currentTime = new Date();
@@ -42,9 +43,7 @@ const ThreeSliderComponentItem = ({ index, item, id }) => {
           {item.Title}
         </Typography>
         <Typography gutterBottom className={classes.sliderThreeDescription}>
-          <Truncate lines={3} ellipsis={<span>...</span>}>
-            {item.Description}
-          </Truncate>
+          <Dotdotdot clamp={3}>{item.Description}</Dotdotdot>
         </Typography>
         <Typography gutterBottom className={classes.sliderThreeTypeAndDate}>
           {item.Category} -{" "}

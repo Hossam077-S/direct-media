@@ -2,9 +2,8 @@ import React, { useEffect, useState } from "react";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 
-import { doc, getDoc } from "firebase/firestore";
 import { useParams } from "react-router-dom";
-import { db } from "../../Utils/firebase";
+import { db, doc, getDoc } from "../../Utils/firebase";
 
 import useStyles from "./style";
 

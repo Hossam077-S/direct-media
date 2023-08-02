@@ -1,5 +1,7 @@
 import React, { useState, useRef } from "react";
 
+import { adaptV4Theme } from '@mui/material/styles';
+
 import {
   storage,
   db,
@@ -25,6 +27,7 @@ import {
   Grid,
   TextField,
   ThemeProvider,
+  StyledEngineProvider,
   createTheme,
   CircularProgress,
   Select,
@@ -36,13 +39,14 @@ import {
 const ArticlesEntry = ({ distinctWritersName }) => {
   const classes = useStyles();
 
-  const theme = createTheme({
+  const theme = createTheme(adaptV4Theme({
     direction: "rtl", // Both here and <body dir="rtl">
-  });
+  }));
   // Create rtl cache
   const cacheRtl = createCache({
     key: "muirtl",
     stylisPlugins: [prefixer, rtlPlugin],
+    prepend: true,
   });
 
   const [formValues, setFormValues] = useState({
@@ -221,169 +225,63 @@ const ArticlesEntry = ({ distinctWritersName }) => {
     <div className={classes.containerDiv}>
       <form className={classes.form} ref={form} onSubmit={handleSubmit}>
         <CacheProvider value={cacheRtl}>
-          <ThemeProvider theme={theme}>
-            <div dir="rtl" className={classes.TextFieldDiv}>
-              <Grid item xs={12} sm={6}>
-                <div className={classes.fieldContainer}>
-                  <FormControl fullWidth required>
-                    <InputLabel
-                      id="programName-label"
-                      className={classes.labelText}
-                    >
-                      إسم الكاتب
-                    </InputLabel>
-                    <Select
-                      labelId="programName-label"
-                      name="WriterID"
-                      defaultValue="N3L3ytluKU4BZTu7k3rg"
-                      className={classes.textFieldSelect}
-                    >
-                      {distinctWritersName.map((writer, index) => (
-                        <MenuItem key={index} value={writer.id}>
-                          {writer.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </div>
-                <TextField
-                  label="عنوان المقال"
-                  name="Text"
-                  type="text"
-                  variant="outlined"
-                  className={classes.textField}
-                  required
-                />
-                <TextField
-                  label="نص المقال"
-                  name="Content"
-                  type="text"
-                  variant="outlined"
-                  className={classes.textField}
-                  multiline
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  label="الهاشتاغ"
-                  name="Hashtag"
-                  type="text"
-                  variant="outlined"
-                  style={{ width: "95%", paddingBottom: "15px" }}
-                />
-                <div className={classes.imageFieldContainer}>
-                  <label
-                    htmlFor="image-upload"
-                    className={classes.imageFieldLabel}
-                  >
-                    حمل الصورة
-                  </label>
-                  <input
-                    id="image-upload"
-                    type="file"
-                    name="ImageURL"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className={classes.imageField}
+          <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={theme}>
+              <div dir="rtl" className={classes.TextFieldDiv}>
+                <Grid item xs={12} sm={6}>
+                  <div className={classes.fieldContainer}>
+                    <FormControl fullWidth required>
+                      <InputLabel
+                        id="programName-label"
+                        className={classes.labelText}
+                      >
+                        إسم الكاتب
+                      </InputLabel>
+                      <Select
+                        labelId="programName-label"
+                        name="WriterID"
+                        defaultValue="N3L3ytluKU4BZTu7k3rg"
+                        className={classes.textFieldSelect}
+                      >
+                        {distinctWritersName.map((writer, index) => (
+                          <MenuItem key={index} value={writer.id}>
+                            {writer.name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+                  </div>
+                  <TextField
+                    label="عنوان المقال"
+                    name="Text"
+                    type="text"
+                    variant="outlined"
+                    className={classes.textField}
+                    required
                   />
-                </div>
-                <Button
-                  onClick={handleAddNewWriter}
-                  style={{ paddingBottom: "15px" }}
-                >
-                  إضافة كاتب
-                </Button>
-              </Grid>
-              <div>
-                <Button
-                  variant="contained"
-                  type="submit"
-                  className={classes.submitButton}
-                >
-                  إرسال
-                </Button>
-              </div>
-              {showPopup && (
-                <div className={classes.popup}>
-                  <div className={classes.previewContainer}>
-                    <h2 className={classes.previewTitle}>معاينة</h2>
-                    {selectedImage && (
-                      <img
-                        src={URL.createObjectURL(selectedImage)}
-                        alt="Selected"
-                        className={classes.previewImage}
-                      />
-                    )}
-                    <div className={classes.previewContent}>
-                      {formValues.Text && (
-                        <p className={classes.previewItem}>
-                          <span className={classes.previewLabel}>
-                            العنوان:{" "}
-                          </span>
-                          {formValues.Text}
-                        </p>
-                      )}
-                      {formValues.Content && (
-                        <p className={classes.previewItem}>
-                          <span className={classes.previewLabel}>الوصف: </span>
-                          {formValues.Content}
-                        </p>
-                      )}
-                      {formValues.Hashtag && (
-                        <p className={classes.previewItem}>
-                          <span className={classes.previewLabel}>
-                            الهاشتاغ:{" "}
-                          </span>
-                          {formValues.Hashtag}
-                        </p>
-                      )}
-                    </div>
-                  </div>
-                  <div className={classes.popupButtonContainer}>
-                    <Button
-                      variant="contained"
-                      onClick={handleSave}
-                      className={classes.saveButton}
-                    >
-                      Save
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      onClick={handleCancel}
-                      sx={{
-                        backgroundColor: "transparent",
-                        color: "#2E3190",
-                      }}
-                    >
-                      Cancel
-                    </Button>
-                  </div>
-                </div>
-              )}
-              {showPopupWriter && (
-                <div className={classes.popup}>
-                  <div className={classes.writerItem}>
-                    {/* Writer Name */}
-                    <input
-                      type="text"
-                      ref={nameRef}
-                      placeholder="إسم الكاتب"
-                      className={classes.inputField}
-                    />
-
-                    <textarea
-                      type="text"
-                      ref={descRef}
-                      placeholder="نبذة عن الكاتب"
-                      className={classes.inputField}
-                    />
-
-                    {/* Profile Image */}
+                  <TextField
+                    label="نص المقال"
+                    name="Content"
+                    type="text"
+                    variant="outlined"
+                    className={classes.textField}
+                    multiline
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    label="الهاشتاغ"
+                    name="Hashtag"
+                    type="text"
+                    variant="outlined"
+                    style={{ width: "95%", paddingBottom: "15px" }}
+                  />
+                  <div className={classes.imageFieldContainer}>
                     <label
                       htmlFor="image-upload"
                       className={classes.imageFieldLabel}
                     >
-                      الصورة الشخصية
+                      حمل الصورة
                     </label>
                     <input
                       id="image-upload"
@@ -394,29 +292,137 @@ const ArticlesEntry = ({ distinctWritersName }) => {
                       className={classes.imageField}
                     />
                   </div>
-                  <div className={classes.popupButtonContainer}>
-                    <Button
-                      variant="contained"
-                      onClick={handleSaveWriter}
-                      className={classes.saveButton}
-                    >
-                      Save
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      onClick={handleCancel}
-                      sx={{
-                        backgroundColor: "transparent",
-                        color: "#2E3190",
-                      }}
-                    >
-                      Cancel
-                    </Button>
-                  </div>
+                  <Button
+                    onClick={handleAddNewWriter}
+                    style={{ paddingBottom: "15px" }}
+                  >
+                    إضافة كاتب
+                  </Button>
+                </Grid>
+                <div>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    className={classes.submitButton}
+                  >
+                    إرسال
+                  </Button>
                 </div>
-              )}
-            </div>
-          </ThemeProvider>
+                {showPopup && (
+                  <div className={classes.popup}>
+                    <div className={classes.previewContainer}>
+                      <h2 className={classes.previewTitle}>معاينة</h2>
+                      {selectedImage && (
+                        <img
+                          src={URL.createObjectURL(selectedImage)}
+                          alt="Selected"
+                          className={classes.previewImage}
+                        />
+                      )}
+                      <div className={classes.previewContent}>
+                        {formValues.Text && (
+                          <p className={classes.previewItem}>
+                            <span className={classes.previewLabel}>
+                              العنوان:{" "}
+                            </span>
+                            {formValues.Text}
+                          </p>
+                        )}
+                        {formValues.Content && (
+                          <p className={classes.previewItem}>
+                            <span className={classes.previewLabel}>الوصف: </span>
+                            {formValues.Content}
+                          </p>
+                        )}
+                        {formValues.Hashtag && (
+                          <p className={classes.previewItem}>
+                            <span className={classes.previewLabel}>
+                              الهاشتاغ:{" "}
+                            </span>
+                            {formValues.Hashtag}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <div className={classes.popupButtonContainer}>
+                      <Button
+                        variant="contained"
+                        onClick={handleSave}
+                        className={classes.saveButton}
+                      >
+                        Save
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        onClick={handleCancel}
+                        sx={{
+                          backgroundColor: "transparent",
+                          color: "#2E3190",
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </div>
+                )}
+                {showPopupWriter && (
+                  <div className={classes.popup}>
+                    <div className={classes.writerItem}>
+                      {/* Writer Name */}
+                      <input
+                        type="text"
+                        ref={nameRef}
+                        placeholder="إسم الكاتب"
+                        className={classes.inputField}
+                      />
+
+                      <textarea
+                        type="text"
+                        ref={descRef}
+                        placeholder="نبذة عن الكاتب"
+                        className={classes.inputField}
+                      />
+
+                      {/* Profile Image */}
+                      <label
+                        htmlFor="image-upload"
+                        className={classes.imageFieldLabel}
+                      >
+                        الصورة الشخصية
+                      </label>
+                      <input
+                        id="image-upload"
+                        type="file"
+                        name="ImageURL"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className={classes.imageField}
+                      />
+                    </div>
+                    <div className={classes.popupButtonContainer}>
+                      <Button
+                        variant="contained"
+                        onClick={handleSaveWriter}
+                        className={classes.saveButton}
+                      >
+                        Save
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        onClick={handleCancel}
+                        sx={{
+                          backgroundColor: "transparent",
+                          color: "#2E3190",
+                        }}
+                      >
+                        Cancel
+                      </Button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </ThemeProvider>
+          </StyledEngineProvider>
         </CacheProvider>
       </form>
     </div>

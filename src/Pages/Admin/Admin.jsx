@@ -5,7 +5,7 @@ import { db, collection, onSnapshot } from "../../Utils/firebase";
 import useStyles from "./styles";
 
 import { Container } from "@mui/material";
-import { Tab, Tabs } from "@material-ui/core";
+import { Tab, Tabs } from "@mui/material";
 import NewsEntry from "./NewsEntry";
 import PodcastEntry from "./PodcastEntry";
 import ProgramsEntry from "./ProgramsEntry";

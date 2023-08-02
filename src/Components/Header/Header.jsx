@@ -21,12 +21,12 @@ import {
 
 import { Link } from "react-router-dom";
 
-import { Search as SearchIcon } from "@material-ui/icons";
+import { Search as SearchIcon } from "@mui/icons-material";
 import { BsFacebook, BsYoutube } from "react-icons/bs";
 import { AiFillTwitterCircle } from "react-icons/ai";
 import { FaInstagram, FaTiktok } from "react-icons/fa";
 
-import MenuIcon from "@material-ui/icons/Menu";
+import MenuIcon from "@mui/icons-material/Menu";
 
 import logo from "../../assests/logo.gif";
 
@@ -158,19 +158,19 @@ const Header = () => {
 
             {/* Social Media Icons */}
             <Box className={classes.socialmediaiconbox}>
-              <IconButton className={classes.fButton}>
+              <IconButton className={classes.fButton} size="large">
                 <BsFacebook className={classes.fIcon} />
               </IconButton>
-              <IconButton className={classes.IButton}>
+              <IconButton className={classes.IButton} size="large">
                 <FaInstagram className={classes.IIcon} />
               </IconButton>
-              <IconButton>
+              <IconButton size="large">
                 <AiFillTwitterCircle className={classes.TWIcon} />
               </IconButton>
-              <IconButton className={classes.TButton}>
+              <IconButton className={classes.TButton} size="large">
                 <FaTiktok className={classes.TIcon} />
               </IconButton>
-              <IconButton className={classes.YButton}>
+              <IconButton className={classes.YButton} size="large">
                 <BsYoutube className={classes.YIcon} />
               </IconButton>
             </Box>
@@ -179,7 +179,7 @@ const Header = () => {
             <Box className={classes.leftheader}>
               <Box className={classes.searchbox} component="div">
                 {/* Search Icon */}
-                <IconButton>
+                <IconButton size="large">
                   <SearchIcon className={classes.searchicon} />
                 </IconButton>
                 <InputBase
@@ -194,7 +194,7 @@ const Header = () => {
             <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
               <DialogContent>
                 <Box className={classes.searchboxbigger} component="div">
-                  <IconButton>
+                  <IconButton size="large">
                     <SearchIcon className={classes.searchiconbigger} />
                   </IconButton>
                   <InputBase
@@ -255,23 +255,15 @@ const Header = () => {
               flexItem
               className={classes.divider}
             />
-            <Hidden mdDown>
-              {menuItems.map((item) => (
-                <a className={classes.linkMenu} href={item.href}>
+            <Hidden lgDown>
+              {menuItems.map((item, index) => (
+                <a key={index} className={classes.linkMenu} href={item.href}>
                   {item.name}
                 </a>
-                // <NavLink
-                //   key={item.name}
-                //   className={classes.linkMenu}
-                //   to={item.href}
-                //   color="inherit"
-                // >
-                //   {item.name}
-                // </NavLink>
               ))}
             </Hidden>
             <Hidden mdUp>
-              <IconButton onClick={handleMenuOpen}>
+              <IconButton onClick={handleMenuOpen} size="large">
                 <MenuIcon />
               </IconButton>
             </Hidden>

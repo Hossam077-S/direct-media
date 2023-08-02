@@ -1,5 +1,7 @@
 import React, { useState, useRef } from "react";
 
+import { adaptV4Theme } from '@mui/material/styles';
+
 import {
   storage,
   db,
@@ -23,6 +25,7 @@ import {
   Grid,
   TextField,
   ThemeProvider,
+  StyledEngineProvider,
   createTheme,
   FormControl,
   InputLabel,
@@ -39,13 +42,14 @@ const NewsEntry = ({
 }) => {
   const classes = useStyles();
 
-  const theme = createTheme({
+  const theme = createTheme(adaptV4Theme({
     direction: "rtl", // Both here and <body dir="rtl">
-  });
+  }));
   // Create rtl cache
   const cacheRtl = createCache({
     key: "muirtl",
     stylisPlugins: [prefixer, rtlPlugin],
+    prepend: true,
   });
 
   const [formValues, setFormValues] = useState({
@@ -190,218 +194,220 @@ const NewsEntry = ({
     <div className={classes.containerDiv}>
       <form className={classes.form} ref={form} onSubmit={handleSubmit}>
         <CacheProvider value={cacheRtl}>
-          <ThemeProvider theme={theme}>
-            <div dir="rtl" className={classes.TextFieldDiv}>
-              <Grid item xs={12} sm={6}>
-                <div className={classes.fieldContainer}>
-                  <FormControl fullWidth required>
-                    <InputLabel
-                      id="category-label"
-                      className={classes.labelText}
-                    >
-                      تصنيف الخبر
-                    </InputLabel>
-                    <Select
-                      labelId="category-label"
-                      type="select"
-                      name="Category"
-                      defaultValue={formValues.Category}
-                      className={classes.textFieldSelect}
-                    >
-                      {distinctNewsCategory.length > 0
-                        ? distinctNewsCategory.map((category) => (
-                            <MenuItem key={category.id} value={category.title}>
-                              {category.title}
-                            </MenuItem>
-                          ))
-                        : categories.map((category) => (
-                            <MenuItem
-                              key={category.value}
-                              value={category.value}
-                            >
-                              {category.label}
-                            </MenuItem>
-                          ))}
-                    </Select>
-                  </FormControl>
-                </div>
-                <TextField
-                  label="عنوان الخبر"
-                  name="Title"
-                  type="text"
-                  variant="outlined"
-                  className={classes.textField}
-                  required
-                />
-                <TextField
-                  label="نص الخبر"
-                  name="Description"
-                  type="text"
-                  variant="outlined"
-                  className={classes.textField}
-                  multiline
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <Autocomplete
-                  className={`${classes.autocomplete} ${
-                    isAlreadySelected ? classes.redAutocompleteInput : ""
-                  }`}
-                  options={relatedNewsOptions}
-                  onChange={handleRelatedNewsSelect}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      name="RelatedNews"
-                      label="البحث عن الأخبار المرتبطة"
-                      variant="outlined"
-                      className={classes.textField}
-                    />
-                  )}
-                />
-
-                {selectedNews.length > 0 && (
-                  <div className={classes.selectedNewsContainer}>
-                    {selectedNews.map((news) => (
-                      <li
-                        key={news.id}
-                        className={`${classes.selectedNewsItem} ${classes.selectedNewsItemHover}`}
-                        onClick={() => handleRemoveSelectedNews(news.id)}
+          <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={theme}>
+              <div dir="rtl" className={classes.TextFieldDiv}>
+                <Grid item xs={12} sm={6}>
+                  <div className={classes.fieldContainer}>
+                    <FormControl fullWidth required>
+                      <InputLabel
+                        id="category-label"
+                        className={classes.labelText}
                       >
-                        <div
-                          className={`${classes.selectedNewsItemContent} ${classes.selectedNewsItemFront}`}
-                        >
-                          <div className={classes.selectedNewsText}>
-                            {news.value} X
-                          </div>
-                        </div>
-                      </li>
-                    ))}
+                        تصنيف الخبر
+                      </InputLabel>
+                      <Select
+                        labelId="category-label"
+                        type="select"
+                        name="Category"
+                        defaultValue={formValues.Category}
+                        className={classes.textFieldSelect}
+                      >
+                        {distinctNewsCategory.length > 0
+                          ? distinctNewsCategory.map((category) => (
+                              <MenuItem key={category.id} value={category.title}>
+                                {category.title}
+                              </MenuItem>
+                            ))
+                          : categories.map((category) => (
+                              <MenuItem
+                                key={category.value}
+                                value={category.value}
+                              >
+                                {category.label}
+                              </MenuItem>
+                            ))}
+                      </Select>
+                    </FormControl>
                   </div>
-                )}
-                <TextField
-                  label="رابط الفيديو"
-                  name="YoutubeLink"
-                  type="text"
-                  variant="outlined"
-                  className={classes.textField}
-                />
-                <TextField
-                  label="الهاشتاغ"
-                  name="Hashtag"
-                  type="text"
-                  variant="outlined"
-                  className={classes.textField}
-                />
-                <div className={classes.imageFieldContainer}>
-                  <label
-                    htmlFor="image-upload"
-                    className={classes.imageFieldLabel}
-                  >
-                    حمل الصورة
-                  </label>
-                  <input
-                    id="image-upload"
-                    type="file"
-                    name="ImageURL"
-                    accept="image/*"
-                    onChange={handleImageChange}
-                    className={classes.imageField}
+                  <TextField
+                    label="عنوان الخبر"
+                    name="Title"
+                    type="text"
+                    variant="outlined"
+                    className={classes.textField}
+                    required
                   />
-                </div>
-              </Grid>
-              <div>
-                <Button
-                  variant="contained"
-                  type="submit"
-                  className={classes.submitButton}
-                >
-                  إرسال
-                </Button>
-              </div>
-              {showPopup && (
-                <div className={classes.popup}>
-                  <div className={classes.previewContainer}>
-                    <h2 className={classes.previewTitle}>معاينة</h2>
-                    {selectedImage && (
-                      <img
-                        src={URL.createObjectURL(selectedImage)}
-                        alt="Selected"
-                        className={classes.previewImage}
+                  <TextField
+                    label="نص الخبر"
+                    name="Description"
+                    type="text"
+                    variant="outlined"
+                    className={classes.textField}
+                    multiline
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <Autocomplete
+                    className={`${classes.autocomplete} ${
+                      isAlreadySelected ? classes.redAutocompleteInput : ""
+                    }`}
+                    options={relatedNewsOptions}
+                    onChange={handleRelatedNewsSelect}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        name="RelatedNews"
+                        label="البحث عن الأخبار المرتبطة"
+                        variant="outlined"
+                        className={classes.textField}
                       />
                     )}
-                    <div className={classes.previewContent}>
-                      {formValues.Title && (
-                        <p className={classes.previewItem}>
-                          <span className={classes.previewLabel}>
-                            العنوان:{" "}
-                          </span>
-                          {formValues.Title}
-                        </p>
+                  />
+
+                  {selectedNews.length > 0 && (
+                    <div className={classes.selectedNewsContainer}>
+                      {selectedNews.map((news) => (
+                        <li
+                          key={news.id}
+                          className={`${classes.selectedNewsItem} ${classes.selectedNewsItemHover}`}
+                          onClick={() => handleRemoveSelectedNews(news.id)}
+                        >
+                          <div
+                            className={`${classes.selectedNewsItemContent} ${classes.selectedNewsItemFront}`}
+                          >
+                            <div className={classes.selectedNewsText}>
+                              {news.value} X
+                            </div>
+                          </div>
+                        </li>
+                      ))}
+                    </div>
+                  )}
+                  <TextField
+                    label="رابط الفيديو"
+                    name="YoutubeLink"
+                    type="text"
+                    variant="outlined"
+                    className={classes.textField}
+                  />
+                  <TextField
+                    label="الهاشتاغ"
+                    name="Hashtag"
+                    type="text"
+                    variant="outlined"
+                    className={classes.textField}
+                  />
+                  <div className={classes.imageFieldContainer}>
+                    <label
+                      htmlFor="image-upload"
+                      className={classes.imageFieldLabel}
+                    >
+                      حمل الصورة
+                    </label>
+                    <input
+                      id="image-upload"
+                      type="file"
+                      name="ImageURL"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className={classes.imageField}
+                    />
+                  </div>
+                </Grid>
+                <div>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    className={classes.submitButton}
+                  >
+                    إرسال
+                  </Button>
+                </div>
+                {showPopup && (
+                  <div className={classes.popup}>
+                    <div className={classes.previewContainer}>
+                      <h2 className={classes.previewTitle}>معاينة</h2>
+                      {selectedImage && (
+                        <img
+                          src={URL.createObjectURL(selectedImage)}
+                          alt="Selected"
+                          className={classes.previewImage}
+                        />
                       )}
-                      {formValues.Description && (
-                        <p className={classes.previewItem}>
-                          <span className={classes.previewLabel}>الوصف: </span>
-                          {formValues.Description}
-                        </p>
-                      )}
-                      {formValues.NewsType && (
-                        <p className={classes.previewItem}>
-                          <span className={classes.previewLabel}>
-                            نوع الخبر:{" "}
-                          </span>
-                          {formValues.NewsType}
-                        </p>
-                      )}
-                      {formValues.Category && (
-                        <p className={classes.previewItem}>
-                          <span className={classes.previewLabel}>
-                            التصنيف:{" "}
-                          </span>
-                          {formValues.Category}
-                        </p>
-                      )}
-                      {formValues.YoutubeLink && (
-                        <p className={classes.previewItem}>
-                          <span className={classes.previewLabel}>
-                            رابط الفيديو:{" "}
-                          </span>
-                          {formValues.YoutubeLink}
-                        </p>
-                      )}
-                      {formValues.Hashtag && (
-                        <p className={classes.previewItem}>
-                          <span className={classes.previewLabel}>
-                            الهاشتاغ:{" "}
-                          </span>
-                          {formValues.Hashtag}
-                        </p>
-                      )}
+                      <div className={classes.previewContent}>
+                        {formValues.Title && (
+                          <p className={classes.previewItem}>
+                            <span className={classes.previewLabel}>
+                              العنوان:{" "}
+                            </span>
+                            {formValues.Title}
+                          </p>
+                        )}
+                        {formValues.Description && (
+                          <p className={classes.previewItem}>
+                            <span className={classes.previewLabel}>الوصف: </span>
+                            {formValues.Description}
+                          </p>
+                        )}
+                        {formValues.NewsType && (
+                          <p className={classes.previewItem}>
+                            <span className={classes.previewLabel}>
+                              نوع الخبر:{" "}
+                            </span>
+                            {formValues.NewsType}
+                          </p>
+                        )}
+                        {formValues.Category && (
+                          <p className={classes.previewItem}>
+                            <span className={classes.previewLabel}>
+                              التصنيف:{" "}
+                            </span>
+                            {formValues.Category}
+                          </p>
+                        )}
+                        {formValues.YoutubeLink && (
+                          <p className={classes.previewItem}>
+                            <span className={classes.previewLabel}>
+                              رابط الفيديو:{" "}
+                            </span>
+                            {formValues.YoutubeLink}
+                          </p>
+                        )}
+                        {formValues.Hashtag && (
+                          <p className={classes.previewItem}>
+                            <span className={classes.previewLabel}>
+                              الهاشتاغ:{" "}
+                            </span>
+                            {formValues.Hashtag}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                    <div className={classes.popupButtonContainer}>
+                      <Button
+                        variant="contained"
+                        onClick={handleSave}
+                        className={classes.saveButton}
+                      >
+                        Save
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        onClick={handleCancel}
+                        sx={{
+                          backgroundColor: "transparent",
+                          color: "#2E3190",
+                        }}
+                      >
+                        Cancel
+                      </Button>
                     </div>
                   </div>
-                  <div className={classes.popupButtonContainer}>
-                    <Button
-                      variant="contained"
-                      onClick={handleSave}
-                      className={classes.saveButton}
-                    >
-                      Save
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      onClick={handleCancel}
-                      sx={{
-                        backgroundColor: "transparent",
-                        color: "#2E3190",
-                      }}
-                    >
-                      Cancel
-                    </Button>
-                  </div>
-                </div>
-              )}
-            </div>
-          </ThemeProvider>
+                )}
+              </div>
+            </ThemeProvider>
+          </StyledEngineProvider>
         </CacheProvider>
       </form>
     </div>
