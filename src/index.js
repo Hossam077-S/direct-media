@@ -1,15 +1,14 @@
 import React from 'react';
-import { createRoot } from 'react-dom/client';
+import ReactDOM from 'react-dom';
 import { BrowserRouter as Router} from 'react-router-dom';
 
 import './index.css';
 
 import App from './App';
 
-createRoot(
+ReactDOM.render(
+    <Router>
+      <App /> 
+    </Router>,
     document.getElementById('root')
-    ).render(
-        <Router>
-            <App /> 
-        </Router>,
-    );
+  );
