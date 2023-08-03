@@ -16,17 +16,19 @@
     direction: rtl;
   }
 
-  .MuiPaper-root.MuiMenu-paper.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation8.MuiPopover-paper.css-1ka5eyc-MuiPaper-root-MuiMenu-paper-MuiPopover-paper {
-    position: fixed;
+  
+
+  .MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation8 {
+    position: fixed !important;
     top: 0 !important;
     bottom: 0;
     right: 0;
     width: 70vw;
-    max-height: 100%;
+    max-height: 100% !important;
   }
 
   @media screen and (min-width: 768px) and (max-width: 1024px) {
-    .MuiPaper-root.MuiMenu-paper.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation8.MuiPopover-paper.css-1ka5eyc-MuiPaper-root-MuiMenu-paper-MuiPopover-paper {
+    .MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation8 {
       right: 15rem;
 
     }

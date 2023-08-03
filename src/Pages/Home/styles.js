@@ -91,8 +91,9 @@ const useStyles = makeStyles((theme) => ({
 
     "@media (max-width: 768px)": {
       fontSize: "12px !important",
-      // marginTop: '5% !important',
-      marginRight: "10px !important",
+      marginTop: '2% !important',
+      marginRight: "0px !important",
+      textAlign: 'center',
     }
   },
   imageDiv: {
@@ -117,8 +118,8 @@ const useStyles = makeStyles((theme) => ({
     height: "43px",
 
     "@media (max-width: 768px)": {
-      width: "120px",
-      height: "55px"
+      width: "110px",
+      height: "53px"
     }
   },
   importantNewSkeletonDiv: {
@@ -145,16 +146,6 @@ const useStyles = makeStyles((theme) => ({
     "@media screen and (min-width: 768px) and (max-width: 1024px)": {
       justifyContent: 'center',
     },
-
-    // "& .MuiStack-root.css-1sazv7p-MuiStack-root": {
-    //   marginRight: '28px !important',
-    //   marginLeft: '0px !important',
-
-    //   "@media (max-width: 768px)": {
-    //     marginRight: '0px'
-    //   },
-    // },
-    
   },
 
   videoStack: {
@@ -162,20 +153,24 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: '0px !important',
 
     "@media (max-width: 768px)": {
-      marginRight: '0px'
+      marginRight: '0px !important'
     },
   },
   youtubeVideo: {
     width: '205px !important',
     height: '364px !important',
+
     "& iframe": {
       width: "205px !important",
       height: '100%',
+
+      "@media (max-width: 768px)": {
+        width: '90vw !important',
+      },
     },
 
     "@media (max-width: 768px)": {
-      width: '90vw',
-      
+      width: '90vw !important',
     },
   },
   imageDiv2: {
@@ -471,6 +466,7 @@ const useStyles = makeStyles((theme) => ({
 
     "@media (max-width: 768px)": {
       paddingBottom: '20px',
+      marginTop: '25px',
     },
 
     "& .slick-list": {
@@ -509,7 +505,7 @@ const useStyles = makeStyles((theme) => ({
         top: 'unset',
         left: 'unset',
         bottom: '-10%',
-        right: '4%',
+        right: '7%',
       },
 
     },
@@ -738,7 +734,7 @@ const useStyles = makeStyles((theme) => ({
   sliderDetailsDiv2: {
     position: "absolute",
     top: "75%",
-    right: "0",
+    right: "0px",
     
     backgroundColor: '#2E3190',
 
@@ -750,7 +746,8 @@ const useStyles = makeStyles((theme) => ({
 
     "@media (max-width: 768px)": {
       bottom: "0",
-      top: "unset"
+      top: "unset",
+      height: "auto",
     },
 
   },
@@ -764,20 +761,15 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   title_dividerArticl: {
-    paddingTop: '20px',
-    paddingRight: '22px',
-    paddingLeft: '22px',
+    padding: '20px',
     
     "@media (max-width: 768px)": {
-      paddingTop: '15px',
-      paddingRight: '12px',
-      paddingLeft: '12px',
+      padding: '10px',
     },
   },
   articlSliderDivider: {
     backgroundColor: "#F9AE3B",
-    width: "14px",
-    height: "80px",
+    width: "15px",
   },
   sliderArticlTitle: {
     color: 'white',
@@ -813,11 +805,10 @@ const useStyles = makeStyles((theme) => ({
   newsThreeSlider: {
     position: 'relative',
     display: 'flex',
-    paddingLeft: '23px',
-    
+
     "@media (max-width: 768px)": {
       paddingLeft: '0px',
-      paddingBottom: '4%'
+      paddingBottom: '15%'
     },
 
     "& .slick-slider.slick-initialized":{
@@ -847,11 +838,10 @@ const useStyles = makeStyles((theme) => ({
       marginTop: '15px',
 
       "@media (max-width: 768px)": {
-        top: "unset", 
         bottom: "0%",
       },
-
     },
+
     "& .slick-prev": {
       position: "absolute",
       top: "100%", 
@@ -862,9 +852,8 @@ const useStyles = makeStyles((theme) => ({
 
       "@media (max-width: 768px)": {
         left: "unset",
-        top: "unset", 
         bottom: "0%",
-        right: '10%',
+        right: '8%',
       },
       "@media screen and (min-width: 768px) and (max-width: 1024px)": {
         right: '4%',
@@ -935,6 +924,7 @@ const useStyles = makeStyles((theme) => ({
     
     "@media (max-width: 768px)": {
       width: '90vw !important',
+      height: '100%',
     },
   },
   videoImageDiv: {
@@ -945,7 +935,7 @@ const useStyles = makeStyles((theme) => ({
 
     "@media (max-width: 768px)": {
       width: '90vw',
-      height: '10vh'
+      height: 'auto'
     },
   },
 
@@ -980,7 +970,7 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "GE_SS_Two_M !important",
 
     "@media (max-width: 768px)": {
-      right: "34vw",
+      right: "33vw",
     },
   },
 
@@ -1075,7 +1065,7 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "GE_SS_Two_M !important",
 
     "@media (max-width: 768px)": {
-      right: "30vw",
+      right: "27vw",
     },
   },
   podcastMediaHeader: {

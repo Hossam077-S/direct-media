@@ -484,7 +484,7 @@ const Home = () => {
                         className={classes.LinkInnerPages}
                       >
                         <Typography key={index} className={classes.typoTitle}>
-                          {newsItem.Title}
+                          <Dotdotdot clamp={2}>{newsItem.Title}</Dotdotdot>
                         </Typography>
                       </Link>
                     </div>

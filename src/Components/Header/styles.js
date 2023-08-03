@@ -48,7 +48,7 @@ export default makeStyles((theme) => ({
 
     '@media (max-width: 768px)': {
       paddingTop: '1vw',
-      width: '50vw',
+      width: '100%',
     },
   },
   searchbox: {
@@ -62,7 +62,9 @@ export default makeStyles((theme) => ({
     height: '22.4px',
     marginRight: '12px',
 
-    '@media (max-width: 768px)': {},
+    '@media (max-width: 768px)': {
+      marginRight: '0px'
+    },
   },
   searchicon: {
     color: '#2E3190',
@@ -106,12 +108,19 @@ export default makeStyles((theme) => ({
     flexGrow: 1,
     textAlign: 'left',
 
-    '@media (max-width: 768px)': {},
+    '@media (max-width: 768px)': {
+      textAlign: 'center',
+      width: '100%',
+    },
   },
+
   todaydatebox: {
     display: 'flex',
 
-    '@media (max-width: 768px)': {},
+    '@media (max-width: 768px)': {
+      width: '100%',
+      justifyContent: 'center',
+    },
   },
   todaydatetext: {
     fontFamily: 'GE_SS_Two_L !important',
