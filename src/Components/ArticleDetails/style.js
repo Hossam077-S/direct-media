@@ -18,11 +18,19 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '38px',
         fontFamily: "GE_SS_Two_B",
         paddingBottom: '25px',
+
+        "@media (max-width: 768px)": {
+            fontSize: '28px',
+        },
     },
     Date: {
         fontFamily: "GE_SS_Two_L",
         fontSize: "15px",
         padding: "5px 0",
+
+        "@media (max-width: 768px)": {
+            fontSize: '12px',
+        },
     },
     newsDetailsImage: {
         width: '100%',
@@ -38,6 +46,10 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '28px',
         fontFamily: "GE_SS_Two_L",
         paddingTop: '10px',
+
+        "@media (max-width: 768px)": {
+            fontSize: '18px',
+        },
     },
 }));
 

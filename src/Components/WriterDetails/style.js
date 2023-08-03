@@ -10,22 +10,24 @@ const useStyles = makeStyles((theme) => ({
         }
     },
     ImageDiv: {
-        marginBottom: '30px'
+        marginBottom: '30px',   
     },
     Title: {
         fontSize: '40px',
         fontFamily: "GE_SS_Two_M",
         color: '#2E3190',
 
+        "@media (max-width: 768px)": {
+            fontSize: '30px',
+        },
     },
     newsDetailsImage: {
         width: '173px',
         height: 'auto',
 
         "@media (max-width: 768px)": {
-            width: '330px',
+            width: 'auto',
             height: 'auto',
-            textAlign: 'center',
         },
     },
     writerContent: {
@@ -54,7 +56,11 @@ const useStyles = makeStyles((theme) => ({
         margin: '25px 0'
     },
     EpisodesUL: {
-        listStyle: 'disclosure-closed'
+        listStyle: 'disclosure-closed',
+
+        "@media (max-width: 768px)": {
+            paddingRight: '20px',
+        },
     },
     EpisodesHeaderTitle: {
         padding: '15px 0',
@@ -66,6 +72,7 @@ const useStyles = makeStyles((theme) => ({
         textDecorationColor: '#F9AE3B',
         textDecorationThickness: '5px',
         textUnderlineOffset: '8px',
+
     },
     LinkInnerPages: {
         textDecoration: 'none',
