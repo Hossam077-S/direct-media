@@ -528,6 +528,11 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: '10px',
     fontSize: '10px !important',
     fontFamily: 'GE_SS_Two_M !important',
+
+    "@media (max-width: 768px)": {
+      fontSize: '12px !important',
+    },
+
   },
   newsTypeSliderDate: {
     paddingRight: '10px',
@@ -649,8 +654,8 @@ const useStyles = makeStyles((theme) => ({
     },
 
     "@media (max-width: 768px)": {
-      width: '75px !important',
-      height: '75px !important',
+      width: '80px !important',
+      height: '80px !important',
     },
   },
   activeListItem: {
@@ -675,7 +680,8 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: '12px',
 
     "@media (max-width: 768px)": {
-      flexGrow: 1
+      flexGrow: 1,
+      width: '55vw',
     },
   },
   newsItemTitle: {
@@ -925,6 +931,11 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '10px !important',
     fontFamily: 'GE_SS_Two_M !important',
     textAlign: 'right',
+
+    "@media (max-width: 768px)": {
+      fontSize: '14px !important',
+    },
+    
   },
   sliderThreeDescription: {
     fontSize: '8px !important',
@@ -933,6 +944,10 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     lineHeight: 1.5,
     direction: 'rtl',
+
+    "@media (max-width: 768px)": {
+      fontSize: '12px !important',
+    },
   },
   sliderThreeTypeAndDate: {
     fontSize: '7px !important',
