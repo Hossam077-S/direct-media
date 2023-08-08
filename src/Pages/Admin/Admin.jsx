@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 
-import { db, collection, onSnapshot } from "../../Utils/firebase";
+import { db, collection, onSnapshot, auth } from "../../Utils/firebase";
 
 import useStyles from "./styles";
 
-import { Container } from "@mui/material";
-import { Tab, Tabs } from "@mui/material";
+import { Button, Container, Tab, Tabs, TextField } from "@mui/material";
 import NewsEntry from "./NewsEntry";
 import PodcastEntry from "./PodcastEntry";
 import ProgramsEntry from "./ProgramsEntry";
@@ -26,6 +25,10 @@ const Admin = () => {
   const [distinctProgram, setDistinctPrograms] = useState([]);
   const [distinctWritersName, setDistinctWritersName] = useState([]);
   const [distinctNewsCategory, setDistinctNewsCategory] = useState([]);
+
+  // const [email, setEmail] = useState(null);
+  // const [password, setPassword] = useState(null);
+  // const [user, setUser] = useState(null);
 
   // Getting RealtedNews
   useEffect(() => {
@@ -82,8 +85,28 @@ const Admin = () => {
     };
   }, []);
 
+  // const handleSignIn = async () => {
+  //   try {
+  //     await auth.signInWithEmailAndPassword(email, password);
+  //     setUser(auth.currentUser);
+  //   } catch (error) {
+  //     console.error("Error signing in:", error.message);
+  //   }
+  // };
+
+  // const handleSignOut = async () => {
+  //   try {
+  //     await auth.signOut();
+  //     setUser(null);
+  //   } catch (error) {
+  //     console.error("Error signing out:", error.message);
+  //   }
+  // };
+
   return (
     <Container className={classes.container}>
+      {/* {user ? (
+        <> */}
       <h1 style={{ textAlign: "center", color: "#2E3190" }}>إضافة بينات:</h1>
       <Tabs
         value={activeTab}
@@ -109,6 +132,48 @@ const Admin = () => {
       )}
       {activeTab === 2 && <ProgramsEntry distinctProgram={distinctProgram} />}
       {activeTab === 3 && <PodcastEntry />}
+      {/* <Button
+            variant="contained"
+            color="primary"
+            onClick={handleSignOut}
+            style={{ marginTop: "20px" }}
+          >
+            Sign Out
+          </Button>
+        </>
+      ) : (
+        <div>
+          <h1 style={{ textAlign: "center", color: "#2E3190" }}>
+            تسجبل الدخول:
+          </h1>
+          <div className={classes.loginForm}>
+            <TextField
+              label="Email"
+              variant="outlined"
+              fullWidth
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <TextField
+              label="Password"
+              variant="outlined"
+              type="password"
+              fullWidth
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              style={{ marginTop: "10px" }}
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleSignIn}
+              style={{ marginTop: "20px" }}
+            >
+              دخول
+            </Button>
+          </div>
+        </div>
+      )} */}
     </Container>
   );
 };

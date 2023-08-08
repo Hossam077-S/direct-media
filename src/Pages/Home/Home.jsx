@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useQuery } from "react-query";
+
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -47,13 +49,22 @@ import ThreeSliderComponentItem from "./ThreeSliderComponentItem";
 const Home = () => {
   const classes = useStyles();
 
-  const [newsData, setNewsData] = useState([]);
+  // const [newsData, setNewsData] = useState([]);
   const [programsData, setProgramsData] = useState([]);
   const [writersData, setWritersData] = useState([]);
   const [articlesData, setArticlesData] = useState([]);
   const [podcastData, setPodcastData] = useState([]);
 
-  const [groupedData, setGrouppedData] = useState({});
+  const [groupedData, setGrouppedData] = useState({
+    press: [],
+    press2: [],
+    local: [],
+    local2: [],
+    inter: [],
+    inter2: [],
+    important: [],
+  });
+
   const [groupedProgramsData, setGrouppedProgramsData] = useState({});
 
   const [hoverIndex, setHoverIndex] = useState(-1);
@@ -274,57 +285,57 @@ const Home = () => {
   };
 
   useEffect(() => {
-    const unsubscribeNews = onSnapshot(collection(db, "News"), (snapshot) => {
-      const result = snapshot.docs.map((doc) => {
-        const x = doc.data();
-        x.id = doc.id;
-        return x;
-      });
+    // const unsubscribeNews = onSnapshot(collection(db, "News"), (snapshot) => {
+    //   const result = snapshot.docs.map((doc) => {
+    //     const x = doc.data();
+    //     x.id = doc.id;
+    //     return x;
+    //   });
 
-      const ImportantNews = result.filter((m) => m.Category === "خبر عاجل");
-      const pressNews = result.filter((m) => m.Category === "صحافة");
-      const localNews = result.filter((m) => m.Category === "محلي");
-      const internationalNews = result.filter((m) => m.Category === "دولي");
+    //   const ImportantNews = result.filter((m) => m.Category === "خبر عاجل");
+    //   const pressNews = result.filter((m) => m.Category === "صحافة");
+    //   const localNews = result.filter((m) => m.Category === "محلي");
+    //   const internationalNews = result.filter((m) => m.Category === "دولي");
 
-      const numberOfItems = 5;
+    //   const numberOfItems = 5;
 
-      const groupedImportantNews = [...ImportantNews];
+    //   const groupedImportantNews = [...ImportantNews];
 
-      const groupedPressNews2 = [...pressNews];
+    //   const groupedPressNews2 = [...pressNews];
 
-      const groupedLocalNews2 = [...localNews];
+    //   const groupedLocalNews2 = [...localNews];
 
-      const groupedInternationalNews2 = [...internationalNews];
+    //   const groupedInternationalNews2 = [...internationalNews];
 
-      const groupedPressNews = [];
-      while (pressNews.length > 0) {
-        groupedPressNews.push(pressNews.splice(0, numberOfItems));
-      }
+    //   const groupedPressNews = [];
+    //   while (pressNews.length > 0) {
+    //     groupedPressNews.push(pressNews.splice(0, numberOfItems));
+    //   }
 
-      const groupedLocalNews = [];
-      while (localNews.length > 0) {
-        groupedLocalNews.push(localNews.splice(0, numberOfItems));
-      }
+    //   const groupedLocalNews = [];
+    //   while (localNews.length > 0) {
+    //     groupedLocalNews.push(localNews.splice(0, numberOfItems));
+    //   }
 
-      const groupedInternationalNews = [];
-      while (internationalNews.length > 0) {
-        groupedInternationalNews.push(
-          internationalNews.splice(0, numberOfItems)
-        );
-      }
+    //   const groupedInternationalNews = [];
+    //   while (internationalNews.length > 0) {
+    //     groupedInternationalNews.push(
+    //       internationalNews.splice(0, numberOfItems)
+    //     );
+    //   }
 
-      setGrouppedData({
-        press: groupedPressNews,
-        press2: groupedPressNews2,
-        local: groupedLocalNews,
-        local2: groupedLocalNews2,
-        inter: groupedInternationalNews,
-        inter2: groupedInternationalNews2,
-        important: groupedImportantNews,
-      });
+    //   setGrouppedData({
+    //     press: groupedPressNews,
+    //     press2: groupedPressNews2,
+    //     local: groupedLocalNews,
+    //     local2: groupedLocalNews2,
+    //     inter: groupedInternationalNews,
+    //     inter2: groupedInternationalNews2,
+    //     important: groupedImportantNews,
+    //   });
 
-      setNewsData(result);
-    });
+    //   setNewsData(result);
+    // });
 
     const unsubscribeProgrames = onSnapshot(
       collection(db, "Programs"),
@@ -403,7 +414,7 @@ const Home = () => {
 
     return () => {
       // UnsubscribeNews from the snapshot listener when the component unmounts
-      unsubscribeNews();
+      // unsubscribeNews();
       unsubscribeProgrames();
       unsubscribeWriters();
       unsubscribeArticles();
@@ -456,6 +467,73 @@ const Home = () => {
       return `منذ ${minutesDifference} دقيقة`;
     }
   };
+
+  const fetchNewsData = async () => {
+    const querySnapshot = await getDocs(collection(db, "News"));
+
+    const result = querySnapshot.docs.map((doc) => {
+      const x = doc.data();
+      x.id = doc.id;
+      return x;
+    });
+
+    const ImportantNews = result.filter((m) => m.Category === "خبر عاجل");
+    const pressNews = result.filter((m) => m.Category === "صحافة");
+    const localNews = result.filter((m) => m.Category === "محلي");
+    const internationalNews = result.filter((m) => m.Category === "دولي");
+
+    const numberOfItems = 5;
+
+    const groupedImportantNews = [...ImportantNews];
+
+    const groupedPressNews2 = [...pressNews];
+
+    const groupedLocalNews2 = [...localNews];
+
+    const groupedInternationalNews2 = [...internationalNews];
+
+    const groupedPressNews = [];
+    while (pressNews.length > 0) {
+      groupedPressNews.push(pressNews.splice(0, numberOfItems));
+    }
+
+    const groupedLocalNews = [];
+    while (localNews.length > 0) {
+      groupedLocalNews.push(localNews.splice(0, numberOfItems));
+    }
+
+    const groupedInternationalNews = [];
+    while (internationalNews.length > 0) {
+      groupedInternationalNews.push(internationalNews.splice(0, numberOfItems));
+    }
+
+    setGrouppedData({
+      press: groupedPressNews,
+      press2: groupedPressNews2,
+      local: groupedLocalNews,
+      local2: groupedLocalNews2,
+      inter: groupedInternationalNews,
+      inter2: groupedInternationalNews2,
+      important: groupedImportantNews,
+    });
+
+    return result; // Return the result for the useQuery data
+  };
+
+  const {
+    data: newsData,
+    isLoading,
+    isError,
+  } = useQuery("news", fetchNewsData);
+
+  // Handle loading and error states
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (isError) {
+    return <p>Error fetching data!</p>;
+  }
 
   return (
     <>

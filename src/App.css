@@ -11,7 +11,13 @@
     animation-timing-function: linear;
     animation-fill-mode: forwards;
   }
-  
+    
+  @media (max-width: 768px) {
+    .loading-logo {
+      margin: 0%;
+    }
+  }
+
   @keyframes fillLogo {
     0% {
       filter: brightness(0%); /* Start with no color (black and white) */

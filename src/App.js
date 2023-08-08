@@ -1,8 +1,10 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useMemo } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import './App.css';
 
+// import { Header, Footer, NewsDetails, Programs, ProgramDetails, WriterDetails, ArticleDetails, PodcastDetails } from './Components';
+// import { Home, Admin } from './Pages';
 
 const [Header, Footer, NewsDetails, ProgramDetails, WriterDetails, ArticleDetails, PodcastDetails, Programs ] = [
   'Header',
@@ -17,8 +19,7 @@ const [Header, Footer, NewsDetails, ProgramDetails, WriterDetails, ArticleDetail
   lazy(() => import(`./Components/${component}/${component}`))
 );
 
-const [Home, Admin] = [
-  'Home',
+const [Admin] = [
   'Admin',
 ].map((page) =>
   lazy(() => import(`./Pages/${page}/${page}`))
@@ -26,14 +27,18 @@ const [Home, Admin] = [
 
 const App = () => {
   // const user = JSON.parse(localStorage.getItem('profile'));
+
+  // Use useMemo to memoize the Home component, preventing re-rendering on navigation
+  const MemoizedHome = useMemo(() => lazy(() => import('./Pages/Home/Home')), []);
+
   return (
-      <Suspense fallback={
-        <div className="loading-logo"></div>
-      }
-      >
+    <Suspense fallback={<div className="loading-logo"></div>}>
       <Header />
       <Routes>
-        <Route exact path="/" element={<Home />} />
+        {/* Render the MemoizedHome component */}
+        <Route exact path="/" element={<MemoizedHome />} />
+
+        {/* Other routes */}
         <Route path="/admin" element={<Admin />} />
         <Route path="/news/:id" element={<NewsDetails />} />
         <Route path="/programs/:id" element={<Programs />} />
@@ -43,7 +48,7 @@ const App = () => {
         <Route path="/podcast/:id" element={<PodcastDetails />} />
       </Routes>
       <Footer />
-      </Suspense>
+    </Suspense>
   );
 };
 

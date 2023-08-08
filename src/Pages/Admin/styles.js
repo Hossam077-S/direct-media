@@ -1,13 +1,9 @@
 import { makeStyles } from "@mui/styles";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   container: {
-    paddingTop: theme.spacing(4),
-    paddingBottom: theme.spacing(4),
-
     width: "970px !important", 
-    padding: "0px !important", 
-    marginTop: "50px !important",
+    marginTop: "50px",
 
     flexgrow: 1,
   },
@@ -15,9 +11,8 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent: 'center',
     marginRight: '5%'
-    
   },
-    progressIndicator: {
+  progressIndicator: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -31,40 +26,40 @@ const useStyles = makeStyles((theme) => ({
     zIndex: 9999,
   },
   progressText: {
-    marginTop: theme.spacing(2),
-    color: theme.palette.common.white,
+    marginTop: "8px",
+    color: 'white',
     fontWeight: "bold",
   },
   previewContainer: {
-    border: `1px solid ${theme.palette.grey[300]}`,
-    padding: theme.spacing(2),
-    borderRadius: theme.spacing(1),
-    marginBottom: theme.spacing(2),
-    backgroundColor: theme.palette.background.paper,
+    border: `1px gray`,
+    padding: '16px',
+    borderRadius: '4px',
+    marginBottom: '16px',
+    backgroundColor: 'gray',
     textAlign: "center", // Align text to the center
   },
   previewTitle: {
     fontSize: "1.5rem",
     fontWeight: "bold",
-    marginBottom: theme.spacing(2),
+    marginBottom: '16px',
   },
   previewImage: {
     width: "50%",
     maxWidth: "300px",
-    marginBottom: theme.spacing(2),
-    borderRadius: theme.spacing(1),
-    boxShadow: theme.shadows[1],
+    marginBottom: '16px',
+    borderRadius: '4px',
+    boxShadow: '4px',
   },
   previewContent: {
     textAlign: "right",
-    marginBottom: theme.spacing(2),
+    marginBottom: '16px',
   },
   previewItem: {
-    marginBottom: theme.spacing(1),
+    marginBottom: '8px',
   },
   previewLabel: {
     fontWeight: "bold",
-    marginRight: theme.spacing(1),
+    marginRight: '8px',
   },
   form: {
     display: "flex",
@@ -103,19 +98,19 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: "15px !important",
     flexWrap: "wrap",
     width: "95%",
-    border: `1px solid ${theme.palette.grey[300]}`,
-    borderRadius: theme.spacing(1),
-    padding: theme.spacing(1),
+    border: `1px solid gray`,
+    borderRadius: '4px',
+    padding: '8px',
   },
   imageField: {
     display: "none", // Hide the input element
   },
   imageFieldLabel: {
     display: "block",
-    padding: theme.spacing(1),
-    backgroundColor: theme.palette.background.default,
-    border: `1px solid ${theme.palette.grey[300]}`,
-    borderRadius: theme.spacing(1),
+    padding: '8px',
+    backgroundColor: 'lightgray',
+    border: `1px solid darkgray`,
+    borderRadius: '4px',
     cursor: "pointer",
     textAlign: "center",
   },
@@ -144,8 +139,8 @@ const useStyles = makeStyles((theme) => ({
   selectedNewsItem: {
     backgroundColor: "#2E3190",
     borderRadius: '8%',
-    padding: theme.spacing(1),
-    marginBottom: theme.spacing(1.5),
+    padding: '8px',
+    marginBottom: '12px',
     marginLeft: 5,
     paddingRight: '5px',
     color: "#FFFFFF",
@@ -183,15 +178,15 @@ const useStyles = makeStyles((theme) => ({
     left: "50%",
     transform: "translate(-50%, -50%)",
     background: "#fff",
-    padding: theme.spacing(2),
-    borderRadius: theme.spacing(1),
+    padding: '16px',
+    borderRadius: '4px',
     boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
     zIndex: 9999,
   },
   popupButtonContainer: {
     display: "flex",
     justifyContent: "flex-end",
-    marginTop: theme.spacing(2),
+    marginTop: '16px',
   },
   redAutocompleteInput: {
     "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {

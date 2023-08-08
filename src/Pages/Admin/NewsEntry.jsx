@@ -1,7 +1,5 @@
 import React, { useState, useRef } from "react";
 
-import { adaptV4Theme } from '@mui/material/styles';
-
 import {
   storage,
   db,
@@ -42,9 +40,31 @@ const NewsEntry = ({
 }) => {
   const classes = useStyles();
 
-  const theme = createTheme(adaptV4Theme({
+  const theme = createTheme({
     direction: "rtl", // Both here and <body dir="rtl">
-  }));
+    textAlign: "center",
+    palette: {
+      primary: {
+        main: "#2E3190",
+      },
+      common: {
+        white: "#ffffff",
+      },
+      background: {
+        paper: "#ffffff",
+      },
+      grey: {
+        300: "#e0e0e0",
+      },
+    },
+    typography: {
+      fontFamily: "GE_SS_TWO_L",
+      fontSize: 14,
+      fontWeightBold: 700,
+    },
+    spacing: 8, // Define your custom spacing unit here
+  });
+
   // Create rtl cache
   const cacheRtl = createCache({
     key: "muirtl",
@@ -215,7 +235,10 @@ const NewsEntry = ({
                       >
                         {distinctNewsCategory.length > 0
                           ? distinctNewsCategory.map((category) => (
-                              <MenuItem key={category.id} value={category.title}>
+                              <MenuItem
+                                key={category.id}
+                                value={category.title}
+                              >
                                 {category.title}
                               </MenuItem>
                             ))
@@ -346,7 +369,9 @@ const NewsEntry = ({
                         )}
                         {formValues.Description && (
                           <p className={classes.previewItem}>
-                            <span className={classes.previewLabel}>الوصف: </span>
+                            <span className={classes.previewLabel}>
+                              الوصف:{" "}
+                            </span>
                             {formValues.Description}
                           </p>
                         )}
