@@ -1172,7 +1172,15 @@ const useStyles = makeStyles((theme) => ({
     "&:hover": {
       "text-decoration": 'underline',
     }
-  }
+  },
+
+  loadingLogo: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: '15% 0',
+  },
+
 }));
 
 export default useStyles;

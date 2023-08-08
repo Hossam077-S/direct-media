@@ -29,6 +29,8 @@ const getTimeDifferenceString = (publishDate) => {
 const ThreeSliderComponentItem = ({ index, item, id }) => {
   const classes = useStyles();
 
+  console.log("test", index);
+
   return (
     <div key={index} className={classes.ThreeSlider}>
       <Link to={"news/" + id}>

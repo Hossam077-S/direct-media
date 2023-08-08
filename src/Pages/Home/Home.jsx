@@ -1,17 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import {
-  db,
-  collection,
-  getDocs,
-  onSnapshot,
-  query,
-  where,
-} from "../../Utils/firebase";
+import { db, collection, getDocs, query, where } from "../../Utils/firebase";
 
 import {
   Container,
@@ -49,29 +42,8 @@ import ThreeSliderComponentItem from "./ThreeSliderComponentItem";
 const Home = () => {
   const classes = useStyles();
 
-  // const [newsData, setNewsData] = useState([]);
-  const [programsData, setProgramsData] = useState([]);
-  const [writersData, setWritersData] = useState([]);
-  const [articlesData, setArticlesData] = useState([]);
-  const [podcastData, setPodcastData] = useState([]);
-
-  const [groupedData, setGrouppedData] = useState({
-    press: [],
-    press2: [],
-    local: [],
-    local2: [],
-    inter: [],
-    inter2: [],
-    important: [],
-  });
-
-  const [groupedProgramsData, setGrouppedProgramsData] = useState({});
-
   const [hoverIndex, setHoverIndex] = useState(-1);
-
-  const [latestProgram, setLatestProgram] = useState(null);
-
-  // const [currentPlayingIndex, setCurrentPlayingIndex] = useState(null);
+  const [latestProgramData, setLatestProgramData] = useState("");
 
   const importantNew = {
     dots: false,
@@ -284,152 +256,138 @@ const Home = () => {
     ],
   };
 
-  useEffect(() => {
-    // const unsubscribeNews = onSnapshot(collection(db, "News"), (snapshot) => {
-    //   const result = snapshot.docs.map((doc) => {
-    //     const x = doc.data();
-    //     x.id = doc.id;
-    //     return x;
-    //   });
-
-    //   const ImportantNews = result.filter((m) => m.Category === "خبر عاجل");
-    //   const pressNews = result.filter((m) => m.Category === "صحافة");
-    //   const localNews = result.filter((m) => m.Category === "محلي");
-    //   const internationalNews = result.filter((m) => m.Category === "دولي");
-
-    //   const numberOfItems = 5;
-
-    //   const groupedImportantNews = [...ImportantNews];
-
-    //   const groupedPressNews2 = [...pressNews];
-
-    //   const groupedLocalNews2 = [...localNews];
-
-    //   const groupedInternationalNews2 = [...internationalNews];
-
-    //   const groupedPressNews = [];
-    //   while (pressNews.length > 0) {
-    //     groupedPressNews.push(pressNews.splice(0, numberOfItems));
-    //   }
-
-    //   const groupedLocalNews = [];
-    //   while (localNews.length > 0) {
-    //     groupedLocalNews.push(localNews.splice(0, numberOfItems));
-    //   }
-
-    //   const groupedInternationalNews = [];
-    //   while (internationalNews.length > 0) {
-    //     groupedInternationalNews.push(
-    //       internationalNews.splice(0, numberOfItems)
-    //     );
-    //   }
-
-    //   setGrouppedData({
-    //     press: groupedPressNews,
-    //     press2: groupedPressNews2,
-    //     local: groupedLocalNews,
-    //     local2: groupedLocalNews2,
-    //     inter: groupedInternationalNews,
-    //     inter2: groupedInternationalNews2,
-    //     important: groupedImportantNews,
-    //   });
-
-    //   setNewsData(result);
-    // });
-
-    const unsubscribeProgrames = onSnapshot(
-      collection(db, "Programs"),
-      async (snapshot) => {
-        const programsData = snapshot.docs.map((doc) => {
-          const data = doc.data();
-          return {
-            id: doc.id,
-            ...data,
-          };
-        });
-
-        const CaseInOneProgram = programsData.filter(
-          (m) => m.Title === "قضية بدقيقة"
-        );
-
-        if (CaseInOneProgram) {
-          const programsIDArray = CaseInOneProgram[0]?.ProgramsID || [];
-
-          // Create a query to fetch episodes with matching IDs
-          if (programsIDArray.length > 0) {
-            const q = query(
-              collection(db, "ProgramsEpisodes"),
-              where("EpisodeID", "in", programsIDArray)
-            );
-
-            const querySnapshot = await getDocs(q);
-
-            // Extract the episode data from the query snapshot
-            const episodes = querySnapshot.docs.map((doc) => doc.data());
-
-            setGrouppedProgramsData({
-              programs: episodes,
-            });
-          }
-        }
-        setProgramsData(programsData);
-      }
-    );
-
-    const unsubscribeWriters = onSnapshot(
-      collection(db, "Writers"),
-      (snapshot) => {
-        const result = snapshot.docs.map((doc) => {
-          const x = doc.data();
-          x.id = doc.id;
-          return x;
-        });
-
-        setWritersData(result);
-      }
-    );
-    const unsubscribeArticles = onSnapshot(
-      collection(db, "Articles"),
-      (snapshot) => {
-        const result = snapshot.docs.map((doc) => {
-          const x = doc.data();
-          x.id = doc.id;
-          return x;
-        });
-        setArticlesData(result);
-      }
-    );
-
-    const unsubscribePodcast = onSnapshot(
-      collection(db, "PodcastEpisodes"),
-      (snapshot) => {
-        const result = snapshot.docs.map((doc) => {
-          const x = doc.data();
-          x.id = doc.id;
-          return x;
-        });
-        setPodcastData(result);
-      }
-    );
-
-    return () => {
-      // UnsubscribeNews from the snapshot listener when the component unmounts
-      // unsubscribeNews();
-      unsubscribeProgrames();
-      unsubscribeWriters();
-      unsubscribeArticles();
-      unsubscribePodcast();
-    };
-  }, []);
-
-  useEffect(() => {
-    const sortedPrograms = groupedProgramsData.programs?.sort((a, b) => {
-      return new Date(a.PublishDate) - new Date(b.PublishDate);
+  const fetchNewsData = async () => {
+    const querySnapshot = await getDocs(collection(db, "News"));
+    const result = querySnapshot.docs.map((doc) => {
+      const x = doc.data();
+      x.id = doc.id;
+      return x;
     });
 
-    const latestProgram = sortedPrograms?.[sortedPrograms.length - 1];
-    setLatestProgram(latestProgram);
-  }, [groupedProgramsData]);
+    const ImportantNews = result.filter((m) => m.Category === "خبر عاجل");
+    const pressNews = result.filter((m) => m.Category === "صحافة");
+    const localNews = result.filter((m) => m.Category === "محلي");
+    const internationalNews = result.filter((m) => m.Category === "دولي");
+
+    const groupedPressNews2 = [...pressNews];
+    const groupedLocalNewsThree = [...localNews];
+    const groupedInternationalNews2 = [...internationalNews];
+    const groupedImportantNews = [...ImportantNews];
+
+    const numberOfItems = 5;
+
+    const groupedPressNews = [];
+    while (pressNews.length > 0) {
+      groupedPressNews.push(pressNews.splice(0, numberOfItems));
+    }
+
+    const groupedLocalNews = [];
+    while (localNews.length > 0) {
+      groupedLocalNews.push(localNews.splice(0, numberOfItems));
+    }
+
+    const groupedInternationalNews = [];
+    while (internationalNews.length > 0) {
+      groupedInternationalNews.push(internationalNews.splice(0, numberOfItems));
+    }
+
+    return {
+      press: groupedPressNews,
+      press2: groupedPressNews2,
+      local: groupedLocalNews,
+      local2: groupedLocalNewsThree,
+      inter: groupedInternationalNews,
+      inter2: groupedInternationalNews2,
+      important: groupedImportantNews,
+      result: result,
+    };
+  };
+  const {
+    data: newsData,
+    isLoading,
+    isError,
+  } = useQuery("news", fetchNewsData);
+
+  const fetchProgramData = async () => {
+    const querySnapshot = await getDocs(collection(db, "Programs"));
+
+    const result = querySnapshot.docs.map((doc) => {
+      const x = doc.data();
+      x.id = doc.id;
+      return x;
+    });
+
+    const CaseInOneProgram = result?.filter((m) => m.Title === "قضية بدقيقة");
+
+    let episodes = [];
+    if (CaseInOneProgram) {
+      const programsIDArray = CaseInOneProgram[0]?.ProgramsID || [];
+
+      // Create a query to fetch episodes with matching IDs
+      if (programsIDArray.length > 0) {
+        const q = query(
+          collection(db, "ProgramsEpisodes"),
+          where("EpisodeID", "in", programsIDArray)
+        );
+
+        const querySnapshot = await getDocs(q);
+
+        // Extract the episode data from the query snapshot
+        episodes = querySnapshot.docs.map((doc) => doc.data());
+      }
+    }
+
+    return {
+      episodes: episodes,
+      result: result,
+    };
+  };
+  const { data: programsData } = useQuery("programs", fetchProgramData);
+
+  const fetchWriterData = async () => {
+    const querySnapshot = await getDocs(collection(db, "Writers"));
+
+    const result = querySnapshot.docs.map((doc) => {
+      const x = doc.data();
+      x.id = doc.id;
+      return x;
+    });
+
+    return {
+      result: result,
+    };
+  };
+  const { data: writersData } = useQuery("writers", fetchWriterData);
+
+  const fetchArticlesData = async () => {
+    const querySnapshot = await getDocs(collection(db, "Articles"));
+
+    const result = querySnapshot.docs.map((doc) => {
+      const x = doc.data();
+      x.id = doc.id;
+      return x;
+    });
+
+    return {
+      result: result,
+    };
+  };
+  const { data: articlesData } = useQuery("articles", fetchArticlesData);
+
+  const fetchPodcastData = async () => {
+    const querySnapshot = await getDocs(collection(db, "PodcastEpisodes"));
+
+    const result = querySnapshot.docs.map((doc) => {
+      const x = doc.data();
+      x.id = doc.id;
+      return x;
+    });
+
+    return {
+      result: result,
+    };
+  };
+  const { data: podcastData } = useQuery("podcast", fetchPodcastData);
 
   const handleMouseEnter = (index) => {
     setHoverIndex(index);
@@ -438,16 +396,6 @@ const Home = () => {
   const handleMouseLeave = () => {
     setHoverIndex(-1);
   };
-
-  // const handlePlay = (index) => {
-  //   if (currentPlayingIndex === index) {
-  //     // Clicked on the currently playing video, pause it
-  //     setCurrentPlayingIndex(null);
-  //   } else {
-  //     // Clicked on a new video, stop the currently playing video and play the new one
-  //     setCurrentPlayingIndex(index);
-  //   }
-  // };
 
   const getTimeDifferenceString = (publishDate) => {
     const currentTime = new Date();
@@ -468,71 +416,27 @@ const Home = () => {
     }
   };
 
-  const fetchNewsData = async () => {
-    const querySnapshot = await getDocs(collection(db, "News"));
-
-    const result = querySnapshot.docs.map((doc) => {
-      const x = doc.data();
-      x.id = doc.id;
-      return x;
+  useEffect(() => {
+    const sortedPrograms = programsData?.episodes?.sort((a, b) => {
+      return new Date(a.PublishDate) - new Date(b.PublishDate);
     });
 
-    const ImportantNews = result.filter((m) => m.Category === "خبر عاجل");
-    const pressNews = result.filter((m) => m.Category === "صحافة");
-    const localNews = result.filter((m) => m.Category === "محلي");
-    const internationalNews = result.filter((m) => m.Category === "دولي");
+    const latestProgram = sortedPrograms?.[sortedPrograms.length - 1];
 
-    const numberOfItems = 5;
-
-    const groupedImportantNews = [...ImportantNews];
-
-    const groupedPressNews2 = [...pressNews];
-
-    const groupedLocalNews2 = [...localNews];
-
-    const groupedInternationalNews2 = [...internationalNews];
-
-    const groupedPressNews = [];
-    while (pressNews.length > 0) {
-      groupedPressNews.push(pressNews.splice(0, numberOfItems));
-    }
-
-    const groupedLocalNews = [];
-    while (localNews.length > 0) {
-      groupedLocalNews.push(localNews.splice(0, numberOfItems));
-    }
-
-    const groupedInternationalNews = [];
-    while (internationalNews.length > 0) {
-      groupedInternationalNews.push(internationalNews.splice(0, numberOfItems));
-    }
-
-    setGrouppedData({
-      press: groupedPressNews,
-      press2: groupedPressNews2,
-      local: groupedLocalNews,
-      local2: groupedLocalNews2,
-      inter: groupedInternationalNews,
-      inter2: groupedInternationalNews2,
-      important: groupedImportantNews,
-    });
-
-    return result; // Return the result for the useQuery data
-  };
-
-  const {
-    data: newsData,
-    isLoading,
-    isError,
-  } = useQuery("news", fetchNewsData);
+    setLatestProgramData(latestProgram);
+  }, [programsData]);
 
   // Handle loading and error states
   if (isLoading) {
-    return <p>Loading...</p>;
+    return (
+      <div className={classes.loadingLogo}>
+        <p>جاري التجميل...</p>
+      </div>
+    );
   }
 
   if (isError) {
-    return <p>Error fetching data!</p>;
+    return <p>!!!هنالك خلل ما في البينات</p>;
   }
 
   return (
@@ -549,10 +453,10 @@ const Home = () => {
                 className={classes.ImportantNewsImage}
               />
             </div>
-            {Object.keys(groupedData).length > 0 ? (
+            {newsData && Object.keys(newsData).length > 0 ? (
               <div className={classes.importantNewsDiv}>
                 <Slider {...importantNew}>
-                  {groupedData.important.map((newsItem, index) => (
+                  {newsData.important.map((newsItem, index) => (
                     <div
                       key={index}
                       className={classes.importantNewsSliderItem}
@@ -583,10 +487,10 @@ const Home = () => {
         {/* First Slider */}
         <Stack direction="row" className={classes.gridSlidersContainer}>
           {/* Render the News images slider */}
-          {newsData.length > 0 ? (
+          {newsData.result.length > 0 ? (
             <div className={classes.newsImageDiv}>
               <Slider {...allNewsSlider}>
-                {newsData.map((newsItem, index) => (
+                {newsData.result.map((newsItem, index) => (
                   <div key={index} className={classes.sliderItem}>
                     <>
                       <img
@@ -658,11 +562,11 @@ const Home = () => {
             </div>
 
             {/* Render the news Videos slider */}
-            {Object.keys(groupedProgramsData).length > 0 ? (
+            {programsData?.episodes?.length > 0 ? (
               <div>
                 <div className={classes.VideoDiv}>
                   <ReactPlayer
-                    url={latestProgram?.YoutubeLink}
+                    url={latestProgramData?.YoutubeLink}
                     className={classes.youtubeVideo}
                   />
                 </div>
@@ -693,10 +597,10 @@ const Home = () => {
             <Typography className={classes.programText}>البرامج</Typography>
           </div>
           <div className={classes.programSlider}>
-            {programsData.length > 0 ? (
+            {programsData?.result?.length > 0 ? (
               <div className={classes.programItems}>
                 <Slider {...programSettings}>
-                  {programsData.map((newsItem, index) => (
+                  {programsData?.result?.map((newsItem, index) => (
                     <Link
                       to={"programs/" + newsItem.id}
                       className={classes.LinkInnerPages}
@@ -729,9 +633,9 @@ const Home = () => {
                 <Typography className={classes.globalText}>محلي</Typography>
               </div>
               <div className={classes.newsTypeSlider}>
-                {newsData.length > 0 ? (
+                {newsData && newsData.local.length > 0 ? (
                   <Slider {...newsTypesSliderSettings}>
-                    {groupedData.local.map((newsItem, index) => (
+                    {newsData.local.map((newsItem, index) => (
                       <div key={index}>
                         <NewsTypeSliderItem Item={newsItem} ItemIndex={index} />
                       </div>
@@ -754,9 +658,9 @@ const Home = () => {
                 />
               </div>
               <div className={classes.newsTypeSlider}>
-                {newsData.length > 0 ? (
+                {newsData && newsData.press.length > 0 ? (
                   <Slider {...newsTypesSliderSettings}>
-                    {groupedData.press.map((newsItem, index) => (
+                    {newsData.press.map((newsItem, index) => (
                       <div key={index}>
                         <NewsTypeSliderItem Item={newsItem} ItemIndex={index} />
                       </div>
@@ -779,9 +683,9 @@ const Home = () => {
                 />
               </div>
               <div className={classes.newsTypeSlider}>
-                {newsData.length > 0 ? (
+                {newsData && newsData.inter.length > 0 ? (
                   <Slider {...newsTypesSliderSettings}>
-                    {groupedData.inter.map((newsItem, index) => (
+                    {newsData.inter.map((newsItem, index) => (
                       <div key={index}>
                         <NewsTypeSliderItem Item={newsItem} ItemIndex={index} />
                       </div>
@@ -802,12 +706,12 @@ const Home = () => {
       <div className={classes.containerDiv2}>
         <Container className={classes.container2}>
           <Stack direction="row" spacing={4}>
-            {newsData.length > 0 ? (
+            {newsData && newsData.result.length > 0 ? (
               <div>
                 <div className={classes.articlImageDiv}>
                   {/* Need Just filter */}
                   <Slider {...allNewsSlider}>
-                    {newsData.map((newsItem, index) => (
+                    {newsData.result.map((newsItem, index) => (
                       <div key={index} className={classes.sliderItem}>
                         <>
                           <img
@@ -861,7 +765,7 @@ const Home = () => {
                 <div className={classes.threeNewsContainer}>
                   <div className={classes.newsThreeSlider}>
                     <Slider {...threeTypeSlider}>
-                      {groupedData.press2.map((newsItem, index) => (
+                      {newsData.press2.map((newsItem, index) => (
                         <div key={index}>
                           <ThreeSliderComponentItem
                             index={index}
@@ -874,7 +778,7 @@ const Home = () => {
                   </div>
                   <div className={classes.newsThreeSlider}>
                     <Slider {...threeTypeSlider}>
-                      {groupedData.local2.map((newsItem, index) => (
+                      {newsData.local2.map((newsItem, index) => (
                         <div key={index}>
                           <ThreeSliderComponentItem
                             index={index}
@@ -887,7 +791,7 @@ const Home = () => {
                   </div>
                   <div className={classes.newsThreeSlider}>
                     <Slider {...threeTypeSlider}>
-                      {groupedData.inter2.map((newsItem, index) => (
+                      {newsData.inter2.map((newsItem, index) => (
                         <div key={index}>
                           <ThreeSliderComponentItem
                             index={index}
@@ -921,84 +825,94 @@ const Home = () => {
                   كتّاب المنصّة
                 </Typography>
               </div>
-              {Object.keys(writersData).length > 0 ? (
+              {writersData && writersData?.result?.length > 0 ? (
                 <div className={classes.articlContentDiv}>
                   <div className={classes.articlImage_Divider}>
                     <List className={classes.newsList}>
-                      {writersData.slice(0, 4).map((writerItem, index) => (
-                        <React.Fragment key={index}>
-                          <ListItem
-                            className={`${classes.newsListItem} ${
-                              index === hoverIndex ? classes.activeListItem : ""
-                            }`}
-                            onMouseEnter={() => handleMouseEnter(index)}
-                            onMouseLeave={handleMouseLeave}
-                          >
-                            <div className={classes.newsItemContent}>
-                              {index >= 0 && (
-                                <Divider
-                                  orientation="vertical"
-                                  flexItem
-                                  className={`${classes.articlDivider} ${
-                                    index === hoverIndex
-                                      ? classes.activeDivider
-                                      : ""
-                                  }`}
-                                />
-                              )}
-                              <div className={classes.descriptionContent}>
-                                <div className={classes.newsItemTitle}>
-                                  {articlesData.map((articleItem, index) => {
-                                    const articleID =
-                                      writerItem.ArticleID[
-                                        writerItem.ArticleID.length - 1
-                                      ];
-                                    if (articleItem.ArticleID === articleID) {
-                                      return (
-                                        <Link
-                                          to={"article/" + articleItem.id}
-                                          state={writerItem}
-                                          className={classes.LinkInnerPages}
-                                          key={index}
-                                        >
-                                          <Typography
-                                            key={index}
-                                            className={classes.articleContent}
-                                          >
-                                            <Dotdotdot clamp={2}>
-                                              {articleItem.Text}
-                                            </Dotdotdot>
-                                          </Typography>
-                                        </Link>
-                                      );
-                                    }
-                                    return null;
-                                  })}
+                      {writersData?.result
+                        ?.slice(0, 4)
+                        .map((writerItem, index) => (
+                          <React.Fragment key={index}>
+                            <ListItem
+                              className={`${classes.newsListItem} ${
+                                index === hoverIndex
+                                  ? classes.activeListItem
+                                  : ""
+                              }`}
+                              onMouseEnter={() => handleMouseEnter(index)}
+                              onMouseLeave={handleMouseLeave}
+                            >
+                              <div className={classes.newsItemContent}>
+                                {index >= 0 && (
+                                  <Divider
+                                    orientation="vertical"
+                                    flexItem
+                                    className={`${classes.articlDivider} ${
+                                      index === hoverIndex
+                                        ? classes.activeDivider
+                                        : ""
+                                    }`}
+                                  />
+                                )}
+                                <div className={classes.descriptionContent}>
+                                  <div className={classes.newsItemTitle}>
+                                    {articlesData?.result?.map(
+                                      (articleItem, index) => {
+                                        const articleID =
+                                          writerItem.ArticleID[
+                                            writerItem.ArticleID.length - 1
+                                          ];
+                                        if (
+                                          articleItem.ArticleID === articleID
+                                        ) {
+                                          return (
+                                            <Link
+                                              to={"article/" + articleItem.id}
+                                              state={writerItem}
+                                              className={classes.LinkInnerPages}
+                                              key={index}
+                                            >
+                                              <Typography
+                                                key={index}
+                                                className={
+                                                  classes.articleContent
+                                                }
+                                              >
+                                                <Dotdotdot clamp={2}>
+                                                  {articleItem.Text}
+                                                </Dotdotdot>
+                                              </Typography>
+                                            </Link>
+                                          );
+                                        }
+                                        return null;
+                                      }
+                                    )}
+                                  </div>
+                                  <div className={classes.newsItemDescription}>
+                                    <span
+                                      style={{
+                                        fontSize: "30px",
+                                        paddingLeft: "  5px",
+                                      }}
+                                    >
+                                      ,,
+                                    </span>
+                                    <span>{writerItem.Name}</span>
+                                  </div>
                                 </div>
-                                <div className={classes.newsItemDescription}>
-                                  <span
-                                    style={{
-                                      fontSize: "30px",
-                                      paddingLeft: "  5px",
-                                    }}
-                                  >
-                                    ,,
-                                  </span>
-                                  <span>{writerItem.Name}</span>
-                                </div>
-                              </div>
 
-                              <ListItemAvatar>
-                                <Avatar
-                                  alt={writerItem.Title}
-                                  src={writerItem.ProfileImage}
-                                  className={classes.newsAvatar}
-                                />
-                              </ListItemAvatar>
-                            </div>
-                          </ListItem>
-                        </React.Fragment>
-                      ))}
+                                <ListItemAvatar>
+                                  <Avatar
+                                    alt={writerItem.Title}
+                                    src={writerItem.ProfileImage}
+                                    className={classes.newsAvatar}
+                                  />
+                                </ListItemAvatar>
+                              </div>
+                            </ListItem>
+                          </React.Fragment>
+                        ))}
                     </List>
                   </div>
                 </div>
@@ -1039,10 +953,10 @@ const Home = () => {
           </div>
 
           <div className={classes.writerDetails}>
-            {writersData.length > 0 ? (
+            {writersData?.result?.length > 0 ? (
               <div className={classes.writerItems}>
                 <Slider {...writersSettings}>
-                  {writersData.map((newsItem, index) => (
+                  {writersData?.result?.map((newsItem, index) => (
                     <div key={index}>
                       <img
                         src={newsItem.ProfileImage}
@@ -1094,10 +1008,10 @@ const Home = () => {
             <Typography className={classes.podcastText}>بودكاست</Typography>
           </div>
           <div className={classes.podcastMediaHeader}>
-            {Object.keys(podcastData).length > 0 ? (
+            {podcastData?.result?.length > 0 ? (
               <div className={classes.podcastMediaItems}>
                 <Slider {...podcastSettings}>
-                  {podcastData.map((podcast, index) => (
+                  {podcastData?.result?.map((podcast, index) => (
                     <div className={classes.podcastContent} key={index}>
                       <ReactPlayer
                         url={podcast.YouTubeURL}

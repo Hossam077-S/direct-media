@@ -32,7 +32,11 @@ const App = () => {
   const MemoizedHome = useMemo(() => lazy(() => import('./Pages/Home/Home')), []);
 
   return (
-    <Suspense fallback={<div className="loading-logo"></div>}>
+    <Suspense fallback={
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <div className="loading-logo"></div>
+      </div>
+    }>
       <Header />
       <Routes>
         {/* Render the MemoizedHome component */}
