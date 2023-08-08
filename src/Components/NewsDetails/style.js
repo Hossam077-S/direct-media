@@ -1,6 +1,6 @@
 import { makeStyles } from "@mui/styles";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     container: {
         maxWidth: '874px',
         margin: '60px auto',
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     Description: {
-        fontSize: '28px',
+        fontSize: '25px',
         fontFamily: "GE_SS_Two_L",
         padding: '15px 0',
 
@@ -69,7 +69,7 @@ const useStyles = makeStyles((theme) => ({
     },
 
     relatedNewsDiv: {
-        marginTop: "15px",
+        marginTop: "30px",
 
         "& .slick-track": {
             height: '100% !important',
@@ -78,6 +78,10 @@ const useStyles = makeStyles((theme) => ({
             marginTop: "30px",
 
         },
+    },
+    relatedNewsTitle: {
+        fontFamily: "GE_SS_Two_B",
+        paddingBottom: '15px',
     },
     relatedNewsLi: {
         padding: "15px 0",
@@ -103,7 +107,7 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     relatedNewsContent: {
-        paddingRight: '15px'
+        padding: '0px 15px'
     },
     relatedNewsLink: {
         textDecoration: "none",
@@ -115,13 +119,12 @@ const useStyles = makeStyles((theme) => ({
     },
     relatedTitle: {
         fontSize: '18px',
-        fontFamily: "GE_SS_Two_L",
+        fontFamily: "GE_SS_Two_M",
         paddingBottom: '5px',
-
     },
     relatedDescription: {
         fontSize: '12px',
-        fontFamily: "GE_SS_M",
+        fontFamily: "GE_SS_Two_L",
         paddingBottom: '5px',
     },
     relatedDate: {

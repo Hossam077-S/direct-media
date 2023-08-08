@@ -115,11 +115,11 @@ const useStyles = makeStyles((theme) => ({
   },
   ImportantNewsImage: {
     width: "157px",
-    height: "43px",
-
+    marginTop: '-1px',
     "@media (max-width: 768px)": {
       width: "110px",
-      height: "53px"
+      height: "53px",
+      marginTop: '0px',
     }
   },
   importantNewSkeletonDiv: {
@@ -1168,6 +1168,7 @@ const useStyles = makeStyles((theme) => ({
 
   LinkInnerPages: {
     "text-decoration": 'none',
+    color: '#2E3190',
 
     "&:hover": {
       "text-decoration": 'underline',

@@ -118,13 +118,13 @@ const Home = () => {
   const programSettings = {
     dots: false,
     infinite: true,
-    speed: 1200,
+    speed: 1000,
     slidesToShow: 5,
     slidesToScroll: 1,
     autoplay: true,
     rtl: true,
     pauseOnHover: true,
-    autoplaySpeed: 3000,
+    autoplaySpeed: 2000,
     responsive: [
       {
         breakpoint: 768,
@@ -551,7 +551,12 @@ const Home = () => {
             {/* Render Video */}
             <div className={classes.imageDiv2}>
               <Typography className={classes.imageTitle2}>
-                قضية بدقيقة
+                <Link
+                  to={"programs/z4yIpPQkFYkH36oaLwL0"}
+                  className={classes.LinkInnerPages}
+                >
+                  قضية بدقيقة
+                </Link>
               </Typography>
               <img
                 src={rectangle2Shape}

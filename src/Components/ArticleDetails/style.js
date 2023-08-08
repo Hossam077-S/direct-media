@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
         },
     },
     Description: {
-        fontSize: '28px',
+        fontSize: '25px',
         fontFamily: "GE_SS_Two_L",
         paddingTop: '10px',
 

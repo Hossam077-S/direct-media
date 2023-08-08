@@ -1,6 +1,6 @@
 import { makeStyles } from "@mui/styles";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     containerFooter: {
         display: 'flex !important',
         flexDirection: 'column',
@@ -89,7 +89,6 @@ const useStyles = makeStyles((theme) => ({
     },
     logoContentDiv: {
         display: 'flex',
-        paddingLeft: '56px',
 
         "@media (max-width: 768px)": {
             paddingTop: '3vw',

@@ -57,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
     },
     EpisodesUL: {
         listStyle: 'disclosure-closed',
-
+        paddingRight: '18px',
         "@media (max-width: 768px)": {
             paddingRight: '20px',
         },

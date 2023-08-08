@@ -128,7 +128,7 @@ const NewsDetails = () => {
           {/* Display the related news section */}
           {relatedNews.length > 0 && (
             <div className={classes.relatedNewsDiv}>
-              <h2>الأخبار المرتبطة</h2>
+              <h2 className={classes.relatedNewsTitle}>الأخبار المرتبطة</h2>
 
               <div className={classes.newsTypeSlider}>
                 <ul className={classes.ul}>
