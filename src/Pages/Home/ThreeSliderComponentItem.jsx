@@ -33,17 +33,18 @@ const ThreeSliderComponentItem = ({ index, item, id }) => {
 
   return (
     <div key={index} className={classes.ThreeSlider}>
-      <Link to={"news/" + id}>
-        <img
-          src={item.ImageURL}
-          alt={item.Title}
-          className={classes.threenewsImage}
-        />
-      </Link>
+      <img
+        src={item.ImageURL}
+        alt={item.Title}
+        className={classes.threenewsImage}
+      />
+
       <div className={classes.title_description_threeSlider}>
-        <Typography gutterBottom className={classes.sliderThreeTitle}>
-          {item.Title}
-        </Typography>
+        <Link to={"news/" + id} className={classes.LinkInnerPages}>
+          <Typography gutterBottom className={classes.sliderThreeTitle}>
+            {item.Title}
+          </Typography>
+        </Link>
         <Typography gutterBottom className={classes.sliderThreeDescription}>
           <Dotdotdot clamp={3}>{item.Description}</Dotdotdot>
         </Typography>

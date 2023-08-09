@@ -35,18 +35,20 @@ const NewsTypeSliderItem = ({ Item, ItemIndex }) => {
           className={classes.newsTypeSliderItems}
         >
           <div className={classes.newsTypeSliderItem}>
-            <Link to={"news/" + newsItem.id}>
-              <img
-                src={newsItem.ImageURL}
-                alt={newsItem.Title}
-                className={classes.newsTypeSliderImage}
-              />
-            </Link>
+            <img
+              src={newsItem.ImageURL}
+              alt={newsItem.Title}
+              className={classes.newsTypeSliderImage}
+            />
             <div>
-              <Typography className={classes.newsTypeSliderText}>
-                {newsItem.Title}
-              </Typography>
-
+              <Link
+                to={"news/" + newsItem.id}
+                className={classes.LinkInnerPages}
+              >
+                <Typography className={classes.newsTypeSliderText}>
+                  {newsItem.Title}
+                </Typography>
+              </Link>
               <Typography className={classes.newsTypeSliderDate}>
                 <span className={classes.newsTypeSliderDateWord}>
                   قسم التحرير -

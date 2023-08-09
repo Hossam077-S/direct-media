@@ -7,3 +7,4 @@ export { default as ProgramDetails } from './ProgramDetails/ProgramDetails';
 export { default as WriterDetails } from './WriterDetails/WriterDetails';
 export { default as ArticleDetails } from './ArticleDetails/ArticleDetails';
 export { default as PodcastDetails } from './PodcastDetails/PodcastDetails';
+export { default as Podcast } from './Podcast/Podcast';

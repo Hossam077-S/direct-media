@@ -1010,7 +1010,9 @@ const Home = () => {
               flexItem
               className={classes.podcastDivider}
             />
-            <Typography className={classes.podcastText}>بودكاست</Typography>
+            <Link to={`/podcasts`}>
+              <Typography className={classes.podcastText}>بودكاست</Typography>
+            </Link>
           </div>
           <div className={classes.podcastMediaHeader}>
             {podcastData?.result?.length > 0 ? (

@@ -3,10 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 
 import './App.css';
 
-// import { Header, Footer, NewsDetails, Programs, ProgramDetails, WriterDetails, ArticleDetails, PodcastDetails } from './Components';
-// import { Home, Admin } from './Pages';
-
-const [Header, Footer, NewsDetails, ProgramDetails, WriterDetails, ArticleDetails, PodcastDetails, Programs ] = [
+const [Header, Footer, NewsDetails, ProgramDetails, WriterDetails, ArticleDetails, PodcastDetails, Programs, Podcast ] = [
   'Header',
   'Footer',
   'NewsDetails',
@@ -15,6 +12,7 @@ const [Header, Footer, NewsDetails, ProgramDetails, WriterDetails, ArticleDetail
   'ArticleDetails',
   'PodcastDetails',
   'Programs',
+  'Podcast',
 ].map((component) =>
   lazy(() => import(`./Components/${component}/${component}`))
 );
@@ -50,6 +48,7 @@ const App = () => {
         <Route path="/writer/:id" element={<WriterDetails />} />
         <Route path="/article/:id" element={<ArticleDetails />} />
         <Route path="/podcast/:id" element={<PodcastDetails />} />
+        <Route path="/podcasts" element={<Podcast />} />
       </Routes>
       <Footer />
     </Suspense>
