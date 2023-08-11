@@ -34,13 +34,13 @@ import useStyles from "./styles";
 
 const Header = () => {
   const menuItems = [
-    { name: "كل الأخبار", href: "/#latest-news" },
-    { name: "محلي", href: "/#news" },
-    { name: "صحافة", href: "/#news" },
-    { name: "دولي", href: "/#news" },
-    { name: "برامج المنصة", href: "/#programs" },
-    { name: "بودكاست", href: "/#podcast" },
-    { name: "رصد مباشر", href: "/#rasd" },
+    { name: "كل الأخبار", to: "/news" },
+    { name: "محلي", to: "/newstype" },
+    { name: "صحافة", to: "/newstype" },
+    { name: "دولي", to: "/newstype" },
+    { name: "برامج المنصة", to: "/programs" },
+    { name: "بودكاست", to: "/podcasts" },
+    { name: "رصد مباشر", to: "/rasd" },
   ];
 
   const currentDate = new Date().toLocaleDateString("ar", {
@@ -226,9 +226,9 @@ const Header = () => {
                             <span>{result.Text}</span>
                           </div>
                         )}
-                        {result.type === "برنامج" && (
+                        {result.type === "program" && (
                           <div>
-                            <span>Program: </span>
+                            <span>برنامج: </span>
                             <span>{result.Title}</span>
                           </div>
                         )}
@@ -257,9 +257,9 @@ const Header = () => {
             />
             <Hidden lgDown>
               {menuItems.map((item, index) => (
-                <a key={index} className={classes.linkMenu} href={item.href}>
+                <Link key={index} className={classes.linkMenu} to={item.to}>
                   {item.name}
-                </a>
+                </Link>
               ))}
             </Hidden>
             <Hidden mdUp>
@@ -275,16 +275,13 @@ const Header = () => {
             >
               {menuItems.map((item) => (
                 <MenuItem key={item.name} onClick={handleMenuClose}>
-                  <a className={classes.linkMenu} href={item.href}>
-                    {item.name}
-                  </a>
-                  {/* <NavLink
+                  <Link
                     className={classes.linkMenu}
-                    to={item.href}
+                    to={item.to}
                     color="inherit"
                   >
                     {item.name}
-                  </NavLink> */}
+                  </Link>
                 </MenuItem>
               ))}
             </Menu>

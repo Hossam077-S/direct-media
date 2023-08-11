@@ -1172,7 +1172,7 @@ const useStyles = makeStyles((theme) => ({
 
     "&:hover": {
       "text-decoration": 'underline',
-      color: '#F9AE3B',
+      "text-decoration-color": '#F9AE3B'
     }
   },
 
