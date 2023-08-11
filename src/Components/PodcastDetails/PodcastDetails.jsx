@@ -3,22 +3,55 @@ import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 
 import { useParams } from "react-router-dom";
-import { db, doc, getDoc } from "../../Utils/firebase";
+import {
+  collection,
+  db,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  where,
+} from "../../Utils/firebase";
 
 import useStyles from "./style";
 
-import YouTube from "react-youtube";
-import URLParse from "url-parse";
+import Slider from "react-slick";
+import ReactPlayer from "react-player";
 
 const PodcastDetails = () => {
   const classes = useStyles();
 
   const { id } = useParams();
+
   const [podcastItem, setPodcastItem] = useState({});
+  const [podcastEp, setPodcastEp] = useState({});
 
-  const [videoId, setVideoId] = useState(null);
+  const podcastSettings = {
+    dots: false,
+    infinite: true,
+    speed: 1200,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 6000,
+    rtl: true,
+    pauseOnHover: true,
+    responsive: [
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+        },
+      },
+    ],
+  };
 
-  // Getting Data from firebase
   useEffect(() => {
     const q = doc(db, "Podcast", id);
 
@@ -28,16 +61,24 @@ const PodcastDetails = () => {
   }, [id]);
 
   useEffect(() => {
-    let videoUrl = null;
-    videoUrl = podcastItem?.["YouTube URL"];
-    if (videoUrl) {
-      const url = new URLParse(videoUrl, true);
-      const id = url.query.v;
-      setVideoId(id);
-    } else {
-      setVideoId(null);
-    }
-  }, [podcastItem]);
+    const fetchPodcastEpisodes = async () => {
+      if (podcastItem?.PodcastsID?.length > 0) {
+        const productsID = podcastItem?.PodcastsID;
+
+        const q = query(
+          collection(db, "PodcastEpisodes"),
+          where("EpisodeID", "in", productsID)
+        );
+        const querySnapshot = await getDocs(q);
+
+        const podcastEpisodes = querySnapshot.docs.map((doc) => doc.data());
+
+        setPodcastEp(podcastEpisodes);
+      }
+    };
+
+    fetchPodcastEpisodes();
+  }, [podcastItem.PodcastsID]);
 
   const formattedDate = podcastItem?.PublishDate?.toDate()?.toLocaleDateString(
     "ar",
@@ -48,6 +89,8 @@ const PodcastDetails = () => {
       year: "numeric",
     }
   );
+
+  console.log("test", podcastEp);
 
   return (
     <>
@@ -67,10 +110,27 @@ const PodcastDetails = () => {
             <span style={{ fontFamily: "GE_SS_Two_M" }}>
               {podcastItem?.Category}
             </span>{" "}
-            - {podcastItem?.Description}
           </div>
-          <div className={classes.VideoDiv}>
-            <YouTube videoId={videoId} className={classes.youtubeVideo} />
+          <div className={classes.podcastMediaHeader}>
+            {podcastEp?.length > 0 ? (
+              <div className={classes.podcastMediaItems}>
+                <Slider {...podcastSettings}>
+                  {podcastEp?.map((podcast, index) => (
+                    <div className={classes.podcastContent} key={index}>
+                      <ReactPlayer
+                        url={podcast.YouTubeURL}
+                        className={classes.podcastYoutubeVideo}
+                        controls
+                      />
+                    </div>
+                  ))}
+                </Slider>
+              </div>
+            ) : (
+              <h3 variant="body1" gutterBottom>
+                لا يوجد حلقات
+              </h3>
+            )}
           </div>
         </div>
       </div>

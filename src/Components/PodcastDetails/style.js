@@ -4,8 +4,7 @@ const useStyles = makeStyles(() => ({
     container: {
         maxWidth: '874px',
         margin: '20px auto',
-        width: '640px',
-        height: '35vw',
+        width: 'auto',
         '@media screen and (max-width: 500px)' : {
             width: 'auto',
             padding: "0 15px",
@@ -31,22 +30,44 @@ const useStyles = makeStyles(() => ({
         fontFamily: "GE_SS_Two_L",
         paddingTop: '10px',
     },
-    VideoDiv: {
-      paddingTop: '10px',  
-    },
-    youtubeVideo: {
-       width: '640px',
-       height: '360px',
-      "& iframe": {
-       width: "100%",
-       height: '100%',
+
+    podcastMediaHeader: {
+        marginTop: '47px',
       },
+      podcastMediaItems: {
+        width: 'auto',
     
-      "@media (max-width: 768px)": {
-       width: '90vw',
-       height: '186px',
+        "@media (max-width: 768px)": {
+          width: '90vw'
+        },
+       
+        "& .slick-track": {
+          direction: 'rtl'
+        },
+    
+        "& .slick-initialized .slick-slide": {
+          "@media (max-width: 768px)": {
+            display: 'flex',
+            justifyContent: 'center',
+          },
+        }
       },
-    },
+      podcastContent: {
+        position: 'relative',
+      },
+      podcastYoutubeVideo: {
+        width: '245px !important',
+        height: 'auto',
+    
+        "& iframe": {
+          width: "100%",
+          height: '100%',
+        },
+    
+        "@media (max-width: 768px)": {
+          width: '90vw',
+        },
+      },
 
 }));
 

@@ -1,53 +1,51 @@
 import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles(() => ({
-    container: {
+    podcastContainer: {
+        display: 'flex',
+        justifyContent: 'start',
+        flexDirection: 'column',
         maxWidth: '874px',
-        margin: '20px auto',
-        width: '640px',
-        height: '35vw',
+        margin: '5vw auto',
         '@media screen and (max-width: 500px)' : {
             width: 'auto',
             padding: "0 15px",
         }
     },
-    Title: {
-        fontSize: '24px',
-        fontFamily: "GE_SS_Two_B",
-        paddingBottom: '10px',
+    imageContainer: {
+        marginBottom: '2VW',
     },
-    newsDetailsImage: {
-        width: '200px',
+    imageLogo: {
+        width: 'auto',
+    },
+    descriptionContent: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'start',
+    },
+    SliderDivider: {
+        backgroundColor: "#F9AE3B",
+        width: "13px",
+      },
+    description: {
+        paddingRight: '1vw',
+        fontSize: '18px',
+        fontFamily: 'GE_SS_Two_L !important',
+        color: '#2E3190',
+    },
+    podcastItemContainer: {
+        margin: '3vw 0'
+    },
+    podcastMediaItems: {
+
+    },
+    podcastContent: {
+
+    },
+    podcastImageCover: {
+        width: '252px',
         height: 'auto',
-
-        "@media (max-width: 768px)": {
-            width: '330px',
-            height: 'auto',
-            textAlign: 'center',
-        },
     },
-    Description: {
-        fontSize: '20px',
-        fontFamily: "GE_SS_Two_L",
-        paddingTop: '10px',
-    },
-    VideoDiv: {
-      paddingTop: '10px',  
-    },
-    youtubeVideo: {
-       width: '640px',
-       height: '360px',
-      "& iframe": {
-       width: "100%",
-       height: '100%',
-      },
-    
-      "@media (max-width: 768px)": {
-       width: '90vw',
-       height: '186px',
-      },
-    },
-
 }));
 
 export default useStyles;

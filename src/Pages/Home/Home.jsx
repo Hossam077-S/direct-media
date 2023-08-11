@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from "react";
+
+import { Link } from "react-router-dom";
+
 import { useQuery } from "react-query";
 
 import "slick-carousel/slick/slick.css";
@@ -12,10 +15,11 @@ import {
   Typography,
   Skeleton,
   ListItemAvatar,
+  Avatar,
+  Divider,
+  List,
+  ListItem,
 } from "@mui/material";
-
-import { Avatar, Divider, List, ListItem } from "@mui/material";
-import { Link } from "react-router-dom";
 
 import ReactPlayer from "react-player";
 
@@ -1026,42 +1030,6 @@ const Home = () => {
                         controls
                       />
                     </div>
-                    // <div className={classes.podcastContent}>
-                    //   <Link
-                    //     to={{
-                    //       pathname: `/podcast`,
-                    //     }}
-                    //     state={podcast}
-                    //     className={classes.LinkInnerPages}
-                    //   >
-                    //     <img
-                    //       key={index}
-                    //       src={podcast.ImageURL}
-                    //       alt={podcast.Title}
-                    //       className={classes.podcastMediaImage}
-                    //     />
-                    //   </Link>
-                    //   <IconButton
-                    //     className={classes.playButton}
-                    //     onClick={() => handlePlay(index)}
-                    //   >
-                    //     {currentPlayingIndex === index ? (
-                    //       <PauseIcon className={classes.playButtonIcon} />
-                    //     ) : (
-                    //       <PlayArrowIcon className={classes.playButtonIcon} />
-                    //     )}
-                    //   </IconButton>
-                    //   {currentPlayingIndex === index && (
-                    //     <ReactPlayer
-                    //       url={podcast["YouTube URL"]}
-                    //       playing={true}
-                    //       controls={true}
-                    //       width={640}
-                    //       height={360}
-                    //       style={{ display: "none" }}
-                    //     />
-                    //   )}
-                    // </div>
                   ))}
                 </Slider>
               </div>
