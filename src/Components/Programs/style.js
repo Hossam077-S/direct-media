@@ -1,6 +1,6 @@
 import { makeStyles } from "@mui/styles";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     container: {
         maxWidth: '874px',
         margin: '60px auto',

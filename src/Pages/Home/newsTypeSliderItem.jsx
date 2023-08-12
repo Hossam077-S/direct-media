@@ -27,6 +27,8 @@ const getTimeDifferenceString = (publishDate) => {
 const NewsTypeSliderItem = ({ Item, ItemIndex }) => {
   const classes = useStyles();
 
+  console.log("NewsTypeSliderItem");
+
   return (
     <>
       {Item.map((newsItem, index) => (

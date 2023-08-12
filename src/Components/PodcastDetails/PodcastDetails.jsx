@@ -90,8 +90,6 @@ const PodcastDetails = () => {
     }
   );
 
-  console.log("test", podcastEp);
-
   return (
     <>
       <div className={classes.container}>
