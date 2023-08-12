@@ -268,44 +268,62 @@ const Home = () => {
       return x;
     });
 
-    const ImportantNews = result.filter((m) => m.Category === "خبر عاجل");
-    const pressNews = result.filter((m) => m.Category === "صحافة");
-    const localNews = result.filter((m) => m.Category === "محلي");
-    const internationalNews = result.filter((m) => m.Category === "دولي");
+    const newsCategories = {
+      press2: [],
+      local2: [],
+      inter2: [],
+      important: [],
+    };
 
-    const groupedPressNews2 = [...pressNews];
-    const groupedLocalNewsThree = [...localNews];
-    const groupedInternationalNews2 = [...internationalNews];
-    const groupedImportantNews = [...ImportantNews];
+    result.forEach((newsItem) => {
+      if (newsItem.Category === "خبر عاجل") {
+        newsCategories.important.push(newsItem);
+      } else if (newsItem.Category === "صحافة") {
+        newsCategories.press2.push(newsItem);
+      } else if (newsItem.Category === "محلي") {
+        newsCategories.local2.push(newsItem);
+      } else if (newsItem.Category === "دولي") {
+        newsCategories.inter2.push(newsItem);
+      }
+    });
 
     const numberOfItems = 5;
 
-    const groupedPressNews = [];
-    while (pressNews.length > 0) {
-      groupedPressNews.push(pressNews.splice(0, numberOfItems));
-    }
-
-    const groupedLocalNews = [];
-    while (localNews.length > 0) {
-      groupedLocalNews.push(localNews.splice(0, numberOfItems));
-    }
-
-    const groupedInternationalNews = [];
-    while (internationalNews.length > 0) {
-      groupedInternationalNews.push(internationalNews.splice(0, numberOfItems));
-    }
+    const groupedImportantNews = newsCategories.important;
+    const groupedPressNews = groupArray(newsCategories.press2, numberOfItems);
+    const groupedPressNews2 = newsCategories.press2;
+    const groupedLocalNews = groupArray(newsCategories.local2, numberOfItems);
+    const groupedLocalNews2 = newsCategories.local2;
+    const groupedInternationalNews = groupArray(
+      newsCategories.inter2,
+      numberOfItems
+    );
+    const groupedInternationalNews2 = newsCategories.inter2;
 
     return {
       press: groupedPressNews,
       press2: groupedPressNews2,
+
       local: groupedLocalNews,
-      local2: groupedLocalNewsThree,
+      local2: groupedLocalNews2,
+
       inter: groupedInternationalNews,
       inter2: groupedInternationalNews2,
+
       important: groupedImportantNews,
       result: result,
     };
   };
+
+  const groupArray = (array, chunkSize) => {
+    const groupedArray = [];
+    for (let i = 0; i < array.length; i += chunkSize) {
+      groupedArray.push(array.slice(i, i + chunkSize));
+    }
+
+    return groupedArray;
+  };
+
   const {
     data: newsData,
     isLoading,
@@ -430,7 +448,6 @@ const Home = () => {
     setLatestProgramData(latestProgram);
   }, [programsData]);
 
-  // Handle loading and error states
   if (isLoading) {
     return (
       <div className={classes.loadingLogo}>
