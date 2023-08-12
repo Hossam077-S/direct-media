@@ -37,6 +37,7 @@ const App = () => {
     }>
       <Header />
       <Routes>
+
         {/* Render the MemoizedHome component */}
         <Route exact path="/" element={<MemoizedHome />} />
 
@@ -50,6 +51,7 @@ const App = () => {
         <Route path="/podcast/:id" element={<PodcastDetails />} />
         <Route path="/podcasts" element={<Podcast />} />
       </Routes>
+
       <Footer />
     </Suspense>
   );

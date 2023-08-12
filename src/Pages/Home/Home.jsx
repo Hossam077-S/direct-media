@@ -43,6 +43,138 @@ import Dotdotdot from "react-dotdotdot";
 import NewsTypeSliderItem from "./newsTypeSliderItem";
 import ThreeSliderComponentItem from "./ThreeSliderComponentItem";
 
+const fetchNewsData = async () => {
+  const querySnapshot = await getDocs(collection(db, "News"));
+  const result = querySnapshot.docs.map((doc) => {
+    const x = doc.data();
+    x.id = doc.id;
+    return x;
+  });
+
+  const ImportantNews = result.filter((m) => m.Category === "خبر عاجل");
+  const pressNews = result.filter((m) => m.Category === "صحافة");
+  const localNews = result.filter((m) => m.Category === "محلي");
+  const internationalNews = result.filter((m) => m.Category === "دولي");
+
+  const groupedPressNews2 = [...pressNews];
+  const groupedLocalNewsThree = [...localNews];
+  const groupedInternationalNews2 = [...internationalNews];
+  const groupedImportantNews = [...ImportantNews];
+
+  const numberOfItems = 5;
+
+  const groupedPressNews = [];
+  while (pressNews.length > 0) {
+    groupedPressNews.push(pressNews.splice(0, numberOfItems));
+  }
+
+  const groupedLocalNews = [];
+  while (localNews.length > 0) {
+    groupedLocalNews.push(localNews.splice(0, numberOfItems));
+  }
+
+  const groupedInternationalNews = [];
+  while (internationalNews.length > 0) {
+    groupedInternationalNews.push(internationalNews.splice(0, numberOfItems));
+  }
+
+  console.log("test1");
+  return {
+    press: groupedPressNews,
+    press2: groupedPressNews2,
+    local: groupedLocalNews,
+    local2: groupedLocalNewsThree,
+    inter: groupedInternationalNews,
+    inter2: groupedInternationalNews2,
+    important: groupedImportantNews,
+    result: result,
+  };
+};
+
+const fetchProgramData = async () => {
+  const querySnapshot = await getDocs(collection(db, "Programs"));
+
+  const result = querySnapshot.docs.map((doc) => {
+    const x = doc.data();
+    x.id = doc.id;
+    return x;
+  });
+
+  const CaseInOneProgram = result?.filter((m) => m.Title === "قضية بدقيقة");
+
+  let episodes = [];
+  if (CaseInOneProgram) {
+    const programsIDArray = CaseInOneProgram[0]?.ProgramsID || [];
+
+    // Create a query to fetch episodes with matching IDs
+    if (programsIDArray.length > 0) {
+      const q = query(
+        collection(db, "ProgramsEpisodes"),
+        where("EpisodeID", "in", programsIDArray)
+      );
+
+      const querySnapshot = await getDocs(q);
+
+      // Extract the episode data from the query snapshot
+      episodes = querySnapshot.docs.map((doc) => doc.data());
+    }
+  }
+  console.log("test2");
+
+  return {
+    episodes: episodes,
+    result: result,
+  };
+};
+
+const fetchWriterData = async () => {
+  const querySnapshot = await getDocs(collection(db, "Writers"));
+
+  const result = querySnapshot.docs.map((doc) => {
+    const x = doc.data();
+    x.id = doc.id;
+    return x;
+  });
+
+  console.log("test3");
+
+  return {
+    result: result,
+  };
+};
+
+const fetchArticlesData = async () => {
+  const querySnapshot = await getDocs(collection(db, "Articles"));
+
+  const result = querySnapshot.docs.map((doc) => {
+    const x = doc.data();
+    x.id = doc.id;
+    return x;
+  });
+
+  console.log("test4");
+
+  return {
+    result: result,
+  };
+};
+
+const fetchPodcastData = async () => {
+  const querySnapshot = await getDocs(collection(db, "PodcastEpisodes"));
+
+  const result = querySnapshot.docs.map((doc) => {
+    const x = doc.data();
+    x.id = doc.id;
+    return x;
+  });
+
+  console.log("test5");
+
+  return {
+    result: result,
+  };
+};
+
 const Home = () => {
   const classes = useStyles();
 
@@ -260,156 +392,33 @@ const Home = () => {
     ],
   };
 
-  const fetchNewsData = async () => {
-    const querySnapshot = await getDocs(collection(db, "News"));
-    const result = querySnapshot.docs.map((doc) => {
-      const x = doc.data();
-      x.id = doc.id;
-      return x;
-    });
-
-    const newsCategories = {
-      press2: [],
-      local2: [],
-      inter2: [],
-      important: [],
-    };
-
-    result.forEach((newsItem) => {
-      if (newsItem.Category === "خبر عاجل") {
-        newsCategories.important.push(newsItem);
-      } else if (newsItem.Category === "صحافة") {
-        newsCategories.press2.push(newsItem);
-      } else if (newsItem.Category === "محلي") {
-        newsCategories.local2.push(newsItem);
-      } else if (newsItem.Category === "دولي") {
-        newsCategories.inter2.push(newsItem);
-      }
-    });
-
-    const numberOfItems = 5;
-
-    const groupedImportantNews = newsCategories.important;
-    const groupedPressNews = groupArray(newsCategories.press2, numberOfItems);
-    const groupedPressNews2 = newsCategories.press2;
-    const groupedLocalNews = groupArray(newsCategories.local2, numberOfItems);
-    const groupedLocalNews2 = newsCategories.local2;
-    const groupedInternationalNews = groupArray(
-      newsCategories.inter2,
-      numberOfItems
-    );
-    const groupedInternationalNews2 = newsCategories.inter2;
-
-    return {
-      press: groupedPressNews,
-      press2: groupedPressNews2,
-
-      local: groupedLocalNews,
-      local2: groupedLocalNews2,
-
-      inter: groupedInternationalNews,
-      inter2: groupedInternationalNews2,
-
-      important: groupedImportantNews,
-      result: result,
-    };
-  };
-
-  const groupArray = (array, chunkSize) => {
-    const groupedArray = [];
-    for (let i = 0; i < array.length; i += chunkSize) {
-      groupedArray.push(array.slice(i, i + chunkSize));
-    }
-
-    return groupedArray;
-  };
+  // const {
+  //   data: newsData,
+  //   isLoading,
+  //   isError,
+  //   dataUpdatedAt,
+  //   isStale
+  // } = useQuery("news", fetchNewsData);
 
   const {
     data: newsData,
     isLoading,
     isError,
-  } = useQuery("news", fetchNewsData);
-
-  const fetchProgramData = async () => {
-    const querySnapshot = await getDocs(collection(db, "Programs"));
-
-    const result = querySnapshot.docs.map((doc) => {
-      const x = doc.data();
-      x.id = doc.id;
-      return x;
-    });
-
-    const CaseInOneProgram = result?.filter((m) => m.Title === "قضية بدقيقة");
-
-    let episodes = [];
-    if (CaseInOneProgram) {
-      const programsIDArray = CaseInOneProgram[0]?.ProgramsID || [];
-
-      // Create a query to fetch episodes with matching IDs
-      if (programsIDArray.length > 0) {
-        const q = query(
-          collection(db, "ProgramsEpisodes"),
-          where("EpisodeID", "in", programsIDArray)
-        );
-
-        const querySnapshot = await getDocs(q);
-
-        // Extract the episode data from the query snapshot
-        episodes = querySnapshot.docs.map((doc) => doc.data());
-      }
-    }
-
-    return {
-      episodes: episodes,
-      result: result,
-    };
-  };
-  const { data: programsData } = useQuery("programs", fetchProgramData);
-
-  const fetchWriterData = async () => {
-    const querySnapshot = await getDocs(collection(db, "Writers"));
-
-    const result = querySnapshot.docs.map((doc) => {
-      const x = doc.data();
-      x.id = doc.id;
-      return x;
-    });
-
-    return {
-      result: result,
-    };
-  };
-  const { data: writersData } = useQuery("writers", fetchWriterData);
-
-  const fetchArticlesData = async () => {
-    const querySnapshot = await getDocs(collection(db, "Articles"));
-
-    const result = querySnapshot.docs.map((doc) => {
-      const x = doc.data();
-      x.id = doc.id;
-      return x;
-    });
-
-    return {
-      result: result,
-    };
-  };
-  const { data: articlesData } = useQuery("articles", fetchArticlesData);
-
-  const fetchPodcastData = async () => {
-    const querySnapshot = await getDocs(collection(db, "PodcastEpisodes"));
-
-    const result = querySnapshot.docs.map((doc) => {
-      const x = doc.data();
-      x.id = doc.id;
-      return x;
-    });
-
-    return {
-      result: result,
-    };
-  };
-  const { data: podcastData } = useQuery("podcast", fetchPodcastData);
+  } = useQuery("news", fetchNewsData, {
+    staleTime: 120000 * 100,
+  });
+  const { data: programsData } = useQuery("programs", fetchProgramData, {
+    staleTime: 120000 * 100,
+  });
+  const { data: writersData } = useQuery("writers", fetchWriterData, {
+    staleTime: 120000 * 100,
+  });
+  const { data: articlesData } = useQuery("articles", fetchArticlesData, {
+    staleTime: 120000 * 100,
+  });
+  const { data: podcastData } = useQuery("podcast", fetchPodcastData, {
+    staleTime: 120000 * 100,
+  });
 
   const handleMouseEnter = (index) => {
     setHoverIndex(index);
@@ -438,6 +447,22 @@ const Home = () => {
     }
   };
 
+  // useEffect(() => {
+  //   // Check if data is available and if it's not stale (not outdated)
+  //   if (!isLoading && !isError && newsData) {
+  //     // Use dataUpdatedAt to compare with the current time
+  //     const currentTime = Date.now();
+
+  //     // Determine the difference between current time and dataUpdatedAt
+  //     const timeSinceLastUpdate = currentTime - dataUpdatedAt;
+
+  //     // Check if the data is both not stale and has been updated recently
+  //     if (!isStale && timeSinceLastUpdate <= 60000) {
+
+  //     }
+  //   }
+  // }, [newsData, isLoading, isError, isStale, dataUpdatedAt]);
+
   useEffect(() => {
     const sortedPrograms = programsData?.episodes?.sort((a, b) => {
       return new Date(a.PublishDate) - new Date(b.PublishDate);
@@ -459,6 +484,158 @@ const Home = () => {
   if (isError) {
     return <p>!!!هنالك خلل ما في البينات</p>;
   }
+
+  // const fetchInitialData = async () => {
+  //   const unsubscribeNews = onSnapshot(collection(db, "News"), (snapshot) => {
+  //     const result = snapshot.docs.map((doc) => {
+  //       const x = doc.data();
+  //       x.id = doc.id;
+  //       return x;
+  //     });
+
+  //     const ImportantNews = result.filter((m) => m.Category === "خبر عاجل");
+  //     const pressNews = result.filter((m) => m.Category === "صحافة");
+  //     const localNews = result.filter((m) => m.Category === "محلي");
+  //     const internationalNews = result.filter((m) => m.Category === "دولي");
+
+  //     const numberOfItems = 5;
+
+  //     const groupedImportantNews = [...ImportantNews];
+
+  //     const groupedPressNews2 = [...pressNews];
+
+  //     const groupedLocalNews2 = [...localNews];
+
+  //     const groupedInternationalNews2 = [...internationalNews];
+
+  //     const groupedPressNews = [];
+  //     while (pressNews.length > 0) {
+  //       groupedPressNews.push(pressNews.splice(0, numberOfItems));
+  //     }
+
+  //     const groupedLocalNews = [];
+  //     while (localNews.length > 0) {
+  //       groupedLocalNews.push(localNews.splice(0, numberOfItems));
+  //     }
+
+  //     const groupedInternationalNews = [];
+  //     while (internationalNews.length > 0) {
+  //       groupedInternationalNews.push(
+  //         internationalNews.splice(0, numberOfItems)
+  //       );
+  //     }
+
+  //     setGrouppedData({
+  //       press: groupedPressNews,
+  //       press2: groupedPressNews2,
+  //       local: groupedLocalNews,
+  //       local2: groupedLocalNews2,
+  //       inter: groupedInternationalNews,
+  //       inter2: groupedInternationalNews2,
+  //       important: groupedImportantNews,
+  //     });
+
+  //     setNewsData(result);
+
+  //     console.log("newsDataTest");
+  //   });
+
+  //   const unsubscribeProgrames = onSnapshot(
+  //     collection(db, "Programs"),
+  //     async (snapshot) => {
+  //       const programsData = snapshot.docs.map((doc) => {
+  //         const data = doc.data();
+  //         return {
+  //           id: doc.id,
+  //           ...data,
+  //         };
+  //       });
+
+  //       const CaseInOneProgram = programsData.filter(
+  //         (m) => m.Title === "قضية بدقيقة"
+  //       );
+
+  //       if (CaseInOneProgram) {
+  //         const programsIDArray = CaseInOneProgram[0]?.ProgramsID || [];
+
+  //         // Create a query to fetch episodes with matching IDs
+  //         if (programsIDArray.length > 0) {
+  //           const q = query(
+  //             collection(db, "ProgramsEpisodes"),
+  //             where("EpisodeID", "in", programsIDArray)
+  //           );
+
+  //           const querySnapshot = await getDocs(q);
+
+  //           // Extract the episode data from the query snapshot
+  //           const episodes = querySnapshot.docs.map((doc) => doc.data());
+
+  //           setGrouppedProgramsData({
+  //             programs: episodes,
+  //           });
+  //         }
+  //       }
+  //       setProgramsData(programsData);
+  //       console.log("programsDataTest");
+  //     }
+  //   );
+
+  //   const unsubscribeWriters = onSnapshot(
+  //     collection(db, "Writers"),
+  //     (snapshot) => {
+  //       const result = snapshot.docs.map((doc) => {
+  //         const x = doc.data();
+  //         x.id = doc.id;
+  //         return x;
+  //       });
+
+  //       setWritersData(result);
+  //       console.log("WritersTest");
+  //     }
+  //   );
+
+  //   const unsubscribeArticles = onSnapshot(
+  //     collection(db, "Articles"),
+  //     (snapshot) => {
+  //       const result = snapshot.docs.map((doc) => {
+  //         const x = doc.data();
+  //         x.id = doc.id;
+  //         return x;
+  //       });
+  //       setArticlesData(result);
+  //       console.log("ArticlesTest");
+  //     }
+  //   );
+
+  //   const unsubscribePodcast = onSnapshot(
+  //     collection(db, "PodcastEpisodes"),
+  //     (snapshot) => {
+  //       const result = snapshot.docs.map((doc) => {
+  //         const x = doc.data();
+  //         x.id = doc.id;
+  //         return x;
+  //       });
+  //       setPodcastData(result);
+  //       console.log("PodcastEpisodesTest");
+  //     }
+  //   );
+  //   console.log("test");
+
+  //   return () => {
+  //     // UnsubscribeNews from the snapshot listener when the component unmounts
+  //     unsubscribeNews();
+  //     unsubscribeProgrames();
+  //     unsubscribeWriters();
+  //     unsubscribeArticles();
+  //     unsubscribePodcast();
+  //   };
+  // };
+
+  // useEffect(() => {
+  //   if (newsData.length === 0) {
+  //     fetchInitialData();
+  //   }
+  // }, []);
 
   return (
     <>

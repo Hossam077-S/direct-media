@@ -1,10 +1,10 @@
-import { Typography } from "@mui/material";
 import React from "react";
-
-import useStyles from "./styles";
 import { Link } from "react-router-dom";
 
-// Function to calculate the time difference in hours or minutes
+import { Typography } from "@mui/material";
+
+import useStyles from "./styles";
+
 const getTimeDifferenceString = (publishDate) => {
   const currentTime = new Date();
   const timeDifference = currentTime - publishDate;
@@ -26,8 +26,6 @@ const getTimeDifferenceString = (publishDate) => {
 
 const NewsTypeSliderItem = ({ Item, ItemIndex }) => {
   const classes = useStyles();
-
-  console.log("NewsTypeSliderItem");
 
   return (
     <>

@@ -19,7 +19,7 @@ import {
   DialogContent,
 } from "@mui/material";
 
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 import { Search as SearchIcon } from "@mui/icons-material";
 import { BsFacebook, BsYoutube } from "react-icons/bs";
@@ -34,7 +34,7 @@ import useStyles from "./styles";
 
 const Header = () => {
   const menuItems = [
-    { name: "كل الأخبار", to: "/news" },
+    { name: "كل الأخبار", to: "/" },
     { name: "محلي", to: "/newstype" },
     { name: "صحافة", to: "/newstype" },
     { name: "دولي", to: "/newstype" },
@@ -247,9 +247,9 @@ const Header = () => {
       <Container className={classes.widthContainer}>
         <Grid container spacing={2} className={classes.gridContainer}>
           <Grid item className={classes.gridMenu}>
-            <Link to="/">
+            <NavLink to="/">
               <img src={logo} alt="Logo" className={classes.logoHeader} />
-            </Link>
+            </NavLink>
             <Divider
               orientation="vertical"
               flexItem
@@ -257,9 +257,9 @@ const Header = () => {
             />
             <Hidden lgDown>
               {menuItems.map((item, index) => (
-                <Link key={index} className={classes.linkMenu} to={item.to}>
+                <NavLink key={index} className={classes.linkMenu} to={item.to}>
                   {item.name}
-                </Link>
+                </NavLink>
               ))}
             </Hidden>
             <Hidden mdUp>
