@@ -17,8 +17,6 @@ import {
   ListItem,
 } from "@mui/material";
 
-import ReactPlayer from "react-player";
-
 import rectangleShape from "../../assests/rect-tri.gif";
 import rectangle2Shape from "../../assests/reactangle.gif";
 import arrowINup from "../../assests/arrowINup.gif";
@@ -40,6 +38,7 @@ import NewsTypeSliderItem from "./newsTypeSliderItem";
 import ThreeSliderComponentItem from "./ThreeSliderComponentItem";
 
 import FirestoreContext from "../../Utils/FirestoreContext";
+import VideoComponent from "../../Components/VideoComponent/VideoComponent";
 
 const Home = () => {
   const classes = useStyles();
@@ -56,7 +55,6 @@ const Home = () => {
   } = useContext(FirestoreContext);
 
   const [hoverIndex, setHoverIndex] = useState(-1);
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   const importantNew = {
     dots: false,
@@ -296,9 +294,7 @@ const Home = () => {
     }
   };
 
-  const handleThumbnailClick = () => {
-    setIsVideoPlaying(true);
-  };
+  console.log(latestProgram);
 
   return (
     <>
@@ -431,21 +427,11 @@ const Home = () => {
             {Object.keys(groupedProgramsData).length > 0 ? (
               <div>
                 <div className={classes.VideoDiv}>
-                  {isVideoPlaying ? (
-                    <ReactPlayer
-                      url={latestProgram?.YoutubeLink}
-                      className={classes.youtubeVideo}
-                    />
-                  ) : (
-                    <div>
-                      <img
-                        src={PodcastBackground}
-                        alt="Video Thumbnail"
-                        onClick={handleThumbnailClick}
-                        style={{ cursor: "pointer" }}
-                      />
-                    </div>
-                  )}
+                  <VideoComponent
+                    videoUrl={latestProgram?.YoutubeLink}
+                    thumbnailUrl={latestProgram?.thumbnailUrl}
+                    cName="youtubeVideo"
+                  />
                 </div>
               </div>
             ) : (
@@ -882,7 +868,7 @@ const Home = () => {
                 <Slider {...podcastSettings}>
                   {podcastData?.map((podcast, index) => (
                     <div className={classes.podcastContent} key={index}>
-                      {isVideoPlaying ? (
+                      {/* {isVideoPlaying ? (
                         <ReactPlayer
                           url={podcast?.YouTubeURL}
                           className={classes.podcastYoutubeVideo}
@@ -897,7 +883,12 @@ const Home = () => {
                             style={{ cursor: "pointer" }}
                           />
                         </div>
-                      )}
+                      )} */}
+                      <VideoComponent
+                        videoUrl={podcast.YouTubeURL}
+                        thumbnailUrl={podcast.thumbnailUrl}
+                        cName="podcastYoutubeVideo"
+                      />
                     </div>
                   ))}
                 </Slider>

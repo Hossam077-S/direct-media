@@ -120,6 +120,7 @@ export const FirestoreProvider = ({ children }) => {
         setWritersData(result);
       }
     );
+
     const unsubscribeArticles = onSnapshot(
       collection(db, "Articles"),
       (snapshot) => {
@@ -138,6 +139,15 @@ export const FirestoreProvider = ({ children }) => {
         const result = snapshot.docs.map((doc) => {
           const x = doc.data();
           x.id = doc.id;
+
+          if (x.YouTubeURL) {
+            const videoUrl = new URL(x?.YouTubeURL);
+
+            const videoId = videoUrl?.searchParams.get("v");
+
+            x.thumbnailUrl = `https://img.youtube.com/vi/${videoId}/sddefault.jpg`;
+          }
+
           return x;
         });
         setPodcastData(result);
@@ -160,7 +170,15 @@ export const FirestoreProvider = ({ children }) => {
     });
 
     const latestProgram = sortedPrograms?.[sortedPrograms.length - 1];
-    setLatestProgram(latestProgram);
+
+    if (latestProgram && latestProgram.YoutubeLink) {
+      const videoUrl = new URL(latestProgram?.YoutubeLink);
+      const videoId = videoUrl?.searchParams.get("v");
+
+      const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/sddefault.jpg`;
+
+      setLatestProgram({ ...latestProgram, videoId, thumbnailUrl });
+    }
   }, [groupedProgramsData]);
 
   return (
