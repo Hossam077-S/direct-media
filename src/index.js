@@ -2,19 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router} from 'react-router-dom';
 
-import { QueryClient, QueryClientProvider } from 'react-query';
+import App from './App';
 
 import './index.css';
 
-import App from './App';
+import { FirestoreProvider } from './Utils/FirestoreContext';
 
-const queryClient = new QueryClient();
-
-ReactDOM.render(
-    <Router>
-      <QueryClientProvider client={queryClient}>
-        <App /> 
-      </QueryClientProvider>
-    </Router>,
-    document.getElementById('root')
-  );
+ReactDOM.render( 
+  <Router>
+    <FirestoreProvider>
+      <App /> 
+    </FirestoreProvider>
+  </Router>,
+  document.getElementById('root')
+);

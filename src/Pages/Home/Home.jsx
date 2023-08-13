@@ -1,13 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 
 import { Link } from "react-router-dom";
 
-import { useQuery } from "react-query";
-
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
-import { db, collection, getDocs, query, where } from "../../Utils/firebase";
 
 import {
   Container,
@@ -43,143 +39,24 @@ import Dotdotdot from "react-dotdotdot";
 import NewsTypeSliderItem from "./newsTypeSliderItem";
 import ThreeSliderComponentItem from "./ThreeSliderComponentItem";
 
-const fetchNewsData = async () => {
-  const querySnapshot = await getDocs(collection(db, "News"));
-  const result = querySnapshot.docs.map((doc) => {
-    const x = doc.data();
-    x.id = doc.id;
-    return x;
-  });
-
-  const ImportantNews = result.filter((m) => m.Category === "خبر عاجل");
-  const pressNews = result.filter((m) => m.Category === "صحافة");
-  const localNews = result.filter((m) => m.Category === "محلي");
-  const internationalNews = result.filter((m) => m.Category === "دولي");
-
-  const groupedPressNews2 = [...pressNews];
-  const groupedLocalNewsThree = [...localNews];
-  const groupedInternationalNews2 = [...internationalNews];
-  const groupedImportantNews = [...ImportantNews];
-
-  const numberOfItems = 5;
-
-  const groupedPressNews = [];
-  while (pressNews.length > 0) {
-    groupedPressNews.push(pressNews.splice(0, numberOfItems));
-  }
-
-  const groupedLocalNews = [];
-  while (localNews.length > 0) {
-    groupedLocalNews.push(localNews.splice(0, numberOfItems));
-  }
-
-  const groupedInternationalNews = [];
-  while (internationalNews.length > 0) {
-    groupedInternationalNews.push(internationalNews.splice(0, numberOfItems));
-  }
-
-  console.log("test1");
-  return {
-    press: groupedPressNews,
-    press2: groupedPressNews2,
-    local: groupedLocalNews,
-    local2: groupedLocalNewsThree,
-    inter: groupedInternationalNews,
-    inter2: groupedInternationalNews2,
-    important: groupedImportantNews,
-    result: result,
-  };
-};
-
-const fetchProgramData = async () => {
-  const querySnapshot = await getDocs(collection(db, "Programs"));
-
-  const result = querySnapshot.docs.map((doc) => {
-    const x = doc.data();
-    x.id = doc.id;
-    return x;
-  });
-
-  const CaseInOneProgram = result?.filter((m) => m.Title === "قضية بدقيقة");
-
-  let episodes = [];
-  if (CaseInOneProgram) {
-    const programsIDArray = CaseInOneProgram[0]?.ProgramsID || [];
-
-    // Create a query to fetch episodes with matching IDs
-    if (programsIDArray.length > 0) {
-      const q = query(
-        collection(db, "ProgramsEpisodes"),
-        where("EpisodeID", "in", programsIDArray)
-      );
-
-      const querySnapshot = await getDocs(q);
-
-      // Extract the episode data from the query snapshot
-      episodes = querySnapshot.docs.map((doc) => doc.data());
-    }
-  }
-  console.log("test2");
-
-  return {
-    episodes: episodes,
-    result: result,
-  };
-};
-
-const fetchWriterData = async () => {
-  const querySnapshot = await getDocs(collection(db, "Writers"));
-
-  const result = querySnapshot.docs.map((doc) => {
-    const x = doc.data();
-    x.id = doc.id;
-    return x;
-  });
-
-  console.log("test3");
-
-  return {
-    result: result,
-  };
-};
-
-const fetchArticlesData = async () => {
-  const querySnapshot = await getDocs(collection(db, "Articles"));
-
-  const result = querySnapshot.docs.map((doc) => {
-    const x = doc.data();
-    x.id = doc.id;
-    return x;
-  });
-
-  console.log("test4");
-
-  return {
-    result: result,
-  };
-};
-
-const fetchPodcastData = async () => {
-  const querySnapshot = await getDocs(collection(db, "PodcastEpisodes"));
-
-  const result = querySnapshot.docs.map((doc) => {
-    const x = doc.data();
-    x.id = doc.id;
-    return x;
-  });
-
-  console.log("test5");
-
-  return {
-    result: result,
-  };
-};
+import FirestoreContext from "../../Utils/FirestoreContext";
 
 const Home = () => {
   const classes = useStyles();
 
+  const {
+    newsData,
+    programsData,
+    writersData,
+    articlesData,
+    podcastData,
+    groupedData,
+    latestProgram,
+    groupedProgramsData,
+  } = useContext(FirestoreContext);
+
   const [hoverIndex, setHoverIndex] = useState(-1);
-  const [latestProgramData, setLatestProgramData] = useState("");
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   const importantNew = {
     dots: false,
@@ -392,34 +269,6 @@ const Home = () => {
     ],
   };
 
-  // const {
-  //   data: newsData,
-  //   isLoading,
-  //   isError,
-  //   dataUpdatedAt,
-  //   isStale
-  // } = useQuery("news", fetchNewsData);
-
-  const {
-    data: newsData,
-    isLoading,
-    isError,
-  } = useQuery("news", fetchNewsData, {
-    staleTime: 120000 * 100,
-  });
-  const { data: programsData } = useQuery("programs", fetchProgramData, {
-    staleTime: 120000 * 100,
-  });
-  const { data: writersData } = useQuery("writers", fetchWriterData, {
-    staleTime: 120000 * 100,
-  });
-  const { data: articlesData } = useQuery("articles", fetchArticlesData, {
-    staleTime: 120000 * 100,
-  });
-  const { data: podcastData } = useQuery("podcast", fetchPodcastData, {
-    staleTime: 120000 * 100,
-  });
-
   const handleMouseEnter = (index) => {
     setHoverIndex(index);
   };
@@ -447,195 +296,9 @@ const Home = () => {
     }
   };
 
-  // useEffect(() => {
-  //   // Check if data is available and if it's not stale (not outdated)
-  //   if (!isLoading && !isError && newsData) {
-  //     // Use dataUpdatedAt to compare with the current time
-  //     const currentTime = Date.now();
-
-  //     // Determine the difference between current time and dataUpdatedAt
-  //     const timeSinceLastUpdate = currentTime - dataUpdatedAt;
-
-  //     // Check if the data is both not stale and has been updated recently
-  //     if (!isStale && timeSinceLastUpdate <= 60000) {
-
-  //     }
-  //   }
-  // }, [newsData, isLoading, isError, isStale, dataUpdatedAt]);
-
-  useEffect(() => {
-    const sortedPrograms = programsData?.episodes?.sort((a, b) => {
-      return new Date(a.PublishDate) - new Date(b.PublishDate);
-    });
-
-    const latestProgram = sortedPrograms?.[sortedPrograms.length - 1];
-
-    setLatestProgramData(latestProgram);
-  }, [programsData]);
-
-  if (isLoading) {
-    return (
-      <div className={classes.loadingLogo}>
-        <p>جاري التجميل...</p>
-      </div>
-    );
-  }
-
-  if (isError) {
-    return <p>!!!هنالك خلل ما في البينات</p>;
-  }
-
-  // const fetchInitialData = async () => {
-  //   const unsubscribeNews = onSnapshot(collection(db, "News"), (snapshot) => {
-  //     const result = snapshot.docs.map((doc) => {
-  //       const x = doc.data();
-  //       x.id = doc.id;
-  //       return x;
-  //     });
-
-  //     const ImportantNews = result.filter((m) => m.Category === "خبر عاجل");
-  //     const pressNews = result.filter((m) => m.Category === "صحافة");
-  //     const localNews = result.filter((m) => m.Category === "محلي");
-  //     const internationalNews = result.filter((m) => m.Category === "دولي");
-
-  //     const numberOfItems = 5;
-
-  //     const groupedImportantNews = [...ImportantNews];
-
-  //     const groupedPressNews2 = [...pressNews];
-
-  //     const groupedLocalNews2 = [...localNews];
-
-  //     const groupedInternationalNews2 = [...internationalNews];
-
-  //     const groupedPressNews = [];
-  //     while (pressNews.length > 0) {
-  //       groupedPressNews.push(pressNews.splice(0, numberOfItems));
-  //     }
-
-  //     const groupedLocalNews = [];
-  //     while (localNews.length > 0) {
-  //       groupedLocalNews.push(localNews.splice(0, numberOfItems));
-  //     }
-
-  //     const groupedInternationalNews = [];
-  //     while (internationalNews.length > 0) {
-  //       groupedInternationalNews.push(
-  //         internationalNews.splice(0, numberOfItems)
-  //       );
-  //     }
-
-  //     setGrouppedData({
-  //       press: groupedPressNews,
-  //       press2: groupedPressNews2,
-  //       local: groupedLocalNews,
-  //       local2: groupedLocalNews2,
-  //       inter: groupedInternationalNews,
-  //       inter2: groupedInternationalNews2,
-  //       important: groupedImportantNews,
-  //     });
-
-  //     setNewsData(result);
-
-  //     console.log("newsDataTest");
-  //   });
-
-  //   const unsubscribeProgrames = onSnapshot(
-  //     collection(db, "Programs"),
-  //     async (snapshot) => {
-  //       const programsData = snapshot.docs.map((doc) => {
-  //         const data = doc.data();
-  //         return {
-  //           id: doc.id,
-  //           ...data,
-  //         };
-  //       });
-
-  //       const CaseInOneProgram = programsData.filter(
-  //         (m) => m.Title === "قضية بدقيقة"
-  //       );
-
-  //       if (CaseInOneProgram) {
-  //         const programsIDArray = CaseInOneProgram[0]?.ProgramsID || [];
-
-  //         // Create a query to fetch episodes with matching IDs
-  //         if (programsIDArray.length > 0) {
-  //           const q = query(
-  //             collection(db, "ProgramsEpisodes"),
-  //             where("EpisodeID", "in", programsIDArray)
-  //           );
-
-  //           const querySnapshot = await getDocs(q);
-
-  //           // Extract the episode data from the query snapshot
-  //           const episodes = querySnapshot.docs.map((doc) => doc.data());
-
-  //           setGrouppedProgramsData({
-  //             programs: episodes,
-  //           });
-  //         }
-  //       }
-  //       setProgramsData(programsData);
-  //       console.log("programsDataTest");
-  //     }
-  //   );
-
-  //   const unsubscribeWriters = onSnapshot(
-  //     collection(db, "Writers"),
-  //     (snapshot) => {
-  //       const result = snapshot.docs.map((doc) => {
-  //         const x = doc.data();
-  //         x.id = doc.id;
-  //         return x;
-  //       });
-
-  //       setWritersData(result);
-  //       console.log("WritersTest");
-  //     }
-  //   );
-
-  //   const unsubscribeArticles = onSnapshot(
-  //     collection(db, "Articles"),
-  //     (snapshot) => {
-  //       const result = snapshot.docs.map((doc) => {
-  //         const x = doc.data();
-  //         x.id = doc.id;
-  //         return x;
-  //       });
-  //       setArticlesData(result);
-  //       console.log("ArticlesTest");
-  //     }
-  //   );
-
-  //   const unsubscribePodcast = onSnapshot(
-  //     collection(db, "PodcastEpisodes"),
-  //     (snapshot) => {
-  //       const result = snapshot.docs.map((doc) => {
-  //         const x = doc.data();
-  //         x.id = doc.id;
-  //         return x;
-  //       });
-  //       setPodcastData(result);
-  //       console.log("PodcastEpisodesTest");
-  //     }
-  //   );
-  //   console.log("test");
-
-  //   return () => {
-  //     // UnsubscribeNews from the snapshot listener when the component unmounts
-  //     unsubscribeNews();
-  //     unsubscribeProgrames();
-  //     unsubscribeWriters();
-  //     unsubscribeArticles();
-  //     unsubscribePodcast();
-  //   };
-  // };
-
-  // useEffect(() => {
-  //   if (newsData.length === 0) {
-  //     fetchInitialData();
-  //   }
-  // }, []);
+  const handleThumbnailClick = () => {
+    setIsVideoPlaying(true);
+  };
 
   return (
     <>
@@ -651,10 +314,10 @@ const Home = () => {
                 className={classes.ImportantNewsImage}
               />
             </div>
-            {newsData && Object.keys(newsData).length > 0 ? (
+            {Object.keys(groupedData).length > 0 ? (
               <div className={classes.importantNewsDiv}>
                 <Slider {...importantNew}>
-                  {newsData.important.map((newsItem, index) => (
+                  {groupedData.important.map((newsItem, index) => (
                     <div
                       key={index}
                       className={classes.importantNewsSliderItem}
@@ -685,10 +348,10 @@ const Home = () => {
         {/* First Slider */}
         <Stack direction="row" className={classes.gridSlidersContainer}>
           {/* Render the News images slider */}
-          {newsData.result.length > 0 ? (
+          {newsData.length > 0 ? (
             <div className={classes.newsImageDiv}>
               <Slider {...allNewsSlider}>
-                {newsData.result.map((newsItem, index) => (
+                {newsData.map((newsItem, index) => (
                   <div key={index} className={classes.sliderItem}>
                     <>
                       <img
@@ -765,13 +428,24 @@ const Home = () => {
             </div>
 
             {/* Render the news Videos slider */}
-            {programsData?.episodes?.length > 0 ? (
+            {Object.keys(groupedProgramsData).length > 0 ? (
               <div>
                 <div className={classes.VideoDiv}>
-                  <ReactPlayer
-                    url={latestProgramData?.YoutubeLink}
-                    className={classes.youtubeVideo}
-                  />
+                  {isVideoPlaying ? (
+                    <ReactPlayer
+                      url={latestProgram?.YoutubeLink}
+                      className={classes.youtubeVideo}
+                    />
+                  ) : (
+                    <div>
+                      <img
+                        src={PodcastBackground}
+                        alt="Video Thumbnail"
+                        onClick={handleThumbnailClick}
+                        style={{ cursor: "pointer" }}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             ) : (
@@ -800,10 +474,10 @@ const Home = () => {
             <Typography className={classes.programText}>البرامج</Typography>
           </div>
           <div className={classes.programSlider}>
-            {programsData?.result?.length > 0 ? (
+            {programsData?.length > 0 ? (
               <div className={classes.programItems}>
                 <Slider {...programSettings}>
-                  {programsData?.result?.map((newsItem, index) => (
+                  {programsData?.map((newsItem, index) => (
                     <Link
                       to={"programs/" + newsItem.id}
                       className={classes.LinkInnerPages}
@@ -836,9 +510,9 @@ const Home = () => {
                 <Typography className={classes.globalText}>محلي</Typography>
               </div>
               <div className={classes.newsTypeSlider}>
-                {newsData && newsData.local.length > 0 ? (
+                {newsData.length > 0 ? (
                   <Slider {...newsTypesSliderSettings}>
-                    {newsData.local.map((newsItem, index) => (
+                    {groupedData.local.map((newsItem, index) => (
                       <div key={index}>
                         <NewsTypeSliderItem Item={newsItem} ItemIndex={index} />
                       </div>
@@ -861,9 +535,9 @@ const Home = () => {
                 />
               </div>
               <div className={classes.newsTypeSlider}>
-                {newsData && newsData.press.length > 0 ? (
+                {newsData.length > 0 ? (
                   <Slider {...newsTypesSliderSettings}>
-                    {newsData.press.map((newsItem, index) => (
+                    {groupedData.press.map((newsItem, index) => (
                       <div key={index}>
                         <NewsTypeSliderItem Item={newsItem} ItemIndex={index} />
                       </div>
@@ -886,9 +560,9 @@ const Home = () => {
                 />
               </div>
               <div className={classes.newsTypeSlider}>
-                {newsData && newsData.inter.length > 0 ? (
+                {newsData.length > 0 ? (
                   <Slider {...newsTypesSliderSettings}>
-                    {newsData.inter.map((newsItem, index) => (
+                    {groupedData.inter.map((newsItem, index) => (
                       <div key={index}>
                         <NewsTypeSliderItem Item={newsItem} ItemIndex={index} />
                       </div>
@@ -909,12 +583,12 @@ const Home = () => {
       <div className={classes.containerDiv2}>
         <Container className={classes.container2}>
           <Stack direction="row" spacing={4}>
-            {newsData && newsData.result.length > 0 ? (
+            {newsData.length > 0 ? (
               <div>
                 <div className={classes.articlImageDiv}>
                   {/* Need Just filter */}
                   <Slider {...allNewsSlider}>
-                    {newsData.result.map((newsItem, index) => (
+                    {newsData.map((newsItem, index) => (
                       <div key={index} className={classes.sliderItem}>
                         <>
                           <img
@@ -968,7 +642,7 @@ const Home = () => {
                 <div className={classes.threeNewsContainer}>
                   <div className={classes.newsThreeSlider}>
                     <Slider {...threeTypeSlider}>
-                      {newsData.press2.map((newsItem, index) => (
+                      {groupedData.press2.map((newsItem, index) => (
                         <div key={index}>
                           <ThreeSliderComponentItem
                             index={index}
@@ -981,7 +655,7 @@ const Home = () => {
                   </div>
                   <div className={classes.newsThreeSlider}>
                     <Slider {...threeTypeSlider}>
-                      {newsData.local2.map((newsItem, index) => (
+                      {groupedData.local2.map((newsItem, index) => (
                         <div key={index}>
                           <ThreeSliderComponentItem
                             index={index}
@@ -994,7 +668,7 @@ const Home = () => {
                   </div>
                   <div className={classes.newsThreeSlider}>
                     <Slider {...threeTypeSlider}>
-                      {newsData.inter2.map((newsItem, index) => (
+                      {groupedData.inter2.map((newsItem, index) => (
                         <div key={index}>
                           <ThreeSliderComponentItem
                             index={index}
@@ -1028,94 +702,84 @@ const Home = () => {
                   كتّاب المنصّة
                 </Typography>
               </div>
-              {writersData && writersData?.result?.length > 0 ? (
+              {Object.keys(writersData).length > 0 ? (
                 <div className={classes.articlContentDiv}>
                   <div className={classes.articlImage_Divider}>
                     <List className={classes.newsList}>
-                      {writersData?.result
-                        ?.slice(0, 4)
-                        .map((writerItem, index) => (
-                          <React.Fragment key={index}>
-                            <ListItem
-                              className={`${classes.newsListItem} ${
-                                index === hoverIndex
-                                  ? classes.activeListItem
-                                  : ""
-                              }`}
-                              onMouseEnter={() => handleMouseEnter(index)}
-                              onMouseLeave={handleMouseLeave}
-                            >
-                              <div className={classes.newsItemContent}>
-                                {index >= 0 && (
-                                  <Divider
-                                    orientation="vertical"
-                                    flexItem
-                                    className={`${classes.articlDivider} ${
-                                      index === hoverIndex
-                                        ? classes.activeDivider
-                                        : ""
-                                    }`}
-                                  />
-                                )}
-                                <div className={classes.descriptionContent}>
-                                  <div className={classes.newsItemTitle}>
-                                    {articlesData?.result?.map(
-                                      (articleItem, index) => {
-                                        const articleID =
-                                          writerItem.ArticleID[
-                                            writerItem.ArticleID.length - 1
-                                          ];
-                                        if (
-                                          articleItem.ArticleID === articleID
-                                        ) {
-                                          return (
-                                            <Link
-                                              to={"article/" + articleItem.id}
-                                              state={writerItem}
-                                              className={classes.LinkInnerPages}
-                                              key={index}
-                                            >
-                                              <Typography
-                                                key={index}
-                                                className={
-                                                  classes.articleContent
-                                                }
-                                              >
-                                                <Dotdotdot clamp={2}>
-                                                  {articleItem.Text}
-                                                </Dotdotdot>
-                                              </Typography>
-                                            </Link>
-                                          );
-                                        }
-                                        return null;
-                                      }
-                                    )}
-                                  </div>
-                                  <div className={classes.newsItemDescription}>
-                                    <span
-                                      style={{
-                                        fontSize: "30px",
-                                        paddingLeft: "  5px",
-                                      }}
-                                    >
-                                      ,,
-                                    </span>
-                                    <span>{writerItem.Name}</span>
-                                  </div>
+                      {writersData?.slice(0, 4).map((writerItem, index) => (
+                        <React.Fragment key={index}>
+                          <ListItem
+                            className={`${classes.newsListItem} ${
+                              index === hoverIndex ? classes.activeListItem : ""
+                            }`}
+                            onMouseEnter={() => handleMouseEnter(index)}
+                            onMouseLeave={handleMouseLeave}
+                          >
+                            <div className={classes.newsItemContent}>
+                              {index >= 0 && (
+                                <Divider
+                                  orientation="vertical"
+                                  flexItem
+                                  className={`${classes.articlDivider} ${
+                                    index === hoverIndex
+                                      ? classes.activeDivider
+                                      : ""
+                                  }`}
+                                />
+                              )}
+                              <div className={classes.descriptionContent}>
+                                <div className={classes.newsItemTitle}>
+                                  {articlesData?.map((articleItem, index) => {
+                                    const articleID =
+                                      writerItem.ArticleID[
+                                        writerItem.ArticleID.length - 1
+                                      ];
+                                    if (articleItem.ArticleID === articleID) {
+                                      return (
+                                        <Link
+                                          to={"article/" + articleItem.id}
+                                          state={writerItem}
+                                          className={classes.LinkInnerPages}
+                                          key={index}
+                                        >
+                                          <Typography
+                                            key={index}
+                                            className={classes.articleContent}
+                                          >
+                                            <Dotdotdot clamp={2}>
+                                              {articleItem.Text}
+                                            </Dotdotdot>
+                                          </Typography>
+                                        </Link>
+                                      );
+                                    }
+                                    return null;
+                                  })}
                                 </div>
-
-                                <ListItemAvatar>
-                                  <Avatar
-                                    alt={writerItem.Title}
-                                    src={writerItem.ProfileImage}
-                                    className={classes.newsAvatar}
-                                  />
-                                </ListItemAvatar>
+                                <div className={classes.newsItemDescription}>
+                                  <span
+                                    style={{
+                                      fontSize: "30px",
+                                      paddingLeft: "  5px",
+                                    }}
+                                  >
+                                    ,,
+                                  </span>
+                                  <span>{writerItem.Name}</span>
+                                </div>
                               </div>
-                            </ListItem>
-                          </React.Fragment>
-                        ))}
+
+                              <ListItemAvatar>
+                                <Avatar
+                                  alt={writerItem.Title}
+                                  src={writerItem.ProfileImage}
+                                  className={classes.newsAvatar}
+                                />
+                              </ListItemAvatar>
+                            </div>
+                          </ListItem>
+                        </React.Fragment>
+                      ))}
                     </List>
                   </div>
                 </div>
@@ -1156,10 +820,10 @@ const Home = () => {
           </div>
 
           <div className={classes.writerDetails}>
-            {writersData?.result?.length > 0 ? (
+            {writersData?.length > 0 ? (
               <div className={classes.writerItems}>
                 <Slider {...writersSettings}>
-                  {writersData?.result?.map((newsItem, index) => (
+                  {writersData?.map((newsItem, index) => (
                     <div key={index}>
                       <img
                         src={newsItem.ProfileImage}
@@ -1213,16 +877,27 @@ const Home = () => {
             </Link>
           </div>
           <div className={classes.podcastMediaHeader}>
-            {podcastData?.result?.length > 0 ? (
+            {podcastData?.length > 0 ? (
               <div className={classes.podcastMediaItems}>
                 <Slider {...podcastSettings}>
-                  {podcastData?.result?.map((podcast, index) => (
+                  {podcastData?.map((podcast, index) => (
                     <div className={classes.podcastContent} key={index}>
-                      <ReactPlayer
-                        url={podcast.YouTubeURL}
-                        className={classes.podcastYoutubeVideo}
-                        controls
-                      />
+                      {isVideoPlaying ? (
+                        <ReactPlayer
+                          url={podcast?.YouTubeURL}
+                          className={classes.podcastYoutubeVideo}
+                          controls
+                        />
+                      ) : (
+                        <div>
+                          <img
+                            src={PodcastBackground}
+                            alt="Video Thumbnail"
+                            onClick={handleThumbnailClick}
+                            style={{ cursor: "pointer" }}
+                          />
+                        </div>
+                      )}
                     </div>
                   ))}
                 </Slider>

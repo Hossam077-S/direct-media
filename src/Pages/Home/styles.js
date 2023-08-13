@@ -1,6 +1,6 @@
 import { makeStyles } from "@mui/styles";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   container: {
     width: "874px !important", 
     padding: "0px !important", 
@@ -223,7 +223,6 @@ const useStyles = makeStyles((theme) => ({
   },
 
   allnewsImage: {
-    animation: "$slideInImage 1.2s ease-in-out",
     width: "642px",
     height: "425px",
 
@@ -250,8 +249,6 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
 
     minHeight: '150px'
-    // May be needed on laptop size.
-    // height: '32%',
   },
   sliderContent: {
    paddingTop: '28px',
@@ -267,7 +264,6 @@ const useStyles = makeStyles((theme) => ({
   SliderDivider: {
     backgroundColor: "#F9AE3B",
     width: "13px",
-    // height: "136px",
   },
   sliderNewsTitle : {
     color: 'white',
@@ -277,7 +273,6 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'right',
     lineHeight: '1.2 !important',
     
-    animation: "$slideInTitle 2s ease-in-out",
     marginBottom: '6px !important',
     
     direction: "rtl",
@@ -293,21 +288,11 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '18px !important',
     lineHeight: '1.2 !important',
 
-    animation: "$slideInDescription 2s ease-in-out",
-
-    // display: "-webkit-box",
-    // WebkitLineClamp: 2,
-    // WebkitBoxOrient: "vertical",
-    // overflow: "hidden",
-    // textOverflow: "ellipsis",
-    // lineHeight: "1.5",
-    // textAlign: "justify",
     direction: "rtl",
 
     "@media (max-width: 768px)": {
       fontSize: '14px !important',
     },
-    
   },
   skeletonSlider:{
     height: "425px !important",
@@ -317,36 +302,6 @@ const useStyles = makeStyles((theme) => ({
       height: "118vw !important",
       width: "90vw",
       marginBottom: "4vw",
-    },
-  },
-  "@keyframes slideInImage": {
-    "0%": {
-      opacity: 0,
-      transform: "translateX(30px)",
-    },
-    "100%": {
-      opacity: 1,
-      transform: "translateX(0)",
-    },
-  },
-  "@keyframes slideInTitle": {
-    "0%": {
-      opacity: 0,
-      transform: "translateX(20px)",
-    },
-    "100%": {
-      opacity: 1,
-      transform: "translateX(0)",
-    },
-  },
-  "@keyframes slideInDescription": {
-    "0%": {
-      opacity: 0,
-      transform: "translateX(20px)",
-    },
-    "100%": {
-      opacity: 1,
-      transform: "translateX(0)",
     },
   },
   
