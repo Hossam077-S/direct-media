@@ -23,7 +23,7 @@ import { Divider } from "@mui/material";
 
 import Slider from "react-slick";
 
-import ReactPlayer from "react-player";
+import VideoComponent from "../../Components/VideoComponent/VideoComponent";
 
 const Programs = () => {
   const classes = useStyles();
@@ -104,17 +104,25 @@ const Programs = () => {
       if (programItem?.ProgramsID && programItem.ProgramsID.length > 0) {
         const episodeIds = programItem.ProgramsID;
 
-        // Create a query to fetch episodes with matching IDs
         const q = query(
           collection(db, "ProgramsEpisodes"),
           where("EpisodeID", "in", episodeIds)
         );
         const querySnapshot = await getDocs(q);
 
-        // Extract the episode data from the query snapshot
         const episodes = querySnapshot.docs.map((doc) => doc.data());
 
-        setProgramEposide(episodes);
+        // Loop through the fetched episodes to update thumbnail URLs
+        const episodesWithThumbnails = episodes.map((episode) => {
+          if (episode.YoutubeLink) {
+            const videoUrl = new URL(episode.YoutubeLink);
+            const videoId = videoUrl?.searchParams.get("v");
+            episode.thumbnailUrl = `https://img.youtube.com/vi/${videoId}/sddefault.jpg`;
+          }
+          return episode;
+        });
+
+        setProgramEposide(episodesWithThumbnails);
         setLoading(false);
       } else {
         setLoading(false);
@@ -173,10 +181,10 @@ const Programs = () => {
                 <Slider {...episodeSettings}>
                   {ProgramEposide.map((episode) => (
                     <div className={classes.episodeContent} key={episode.id}>
-                      <ReactPlayer
-                        url={episode.YoutubeLink}
-                        className={classes.episodeYoutubeVideo}
-                        controls
+                      <VideoComponent
+                        videoUrl={episode?.YoutubeLink}
+                        thumbnailUrl={episode?.thumbnailUrl}
+                        cName="episodeYoutubeVideo"
                       />
                     </div>
                   ))}
@@ -187,10 +195,10 @@ const Programs = () => {
                 <Slider {...episodeSettings2}>
                   {ProgramEposide.map((episode) => (
                     <div className={classes.episodeContent2} key={episode.id}>
-                      <ReactPlayer
-                        url={episode.YoutubeLink}
-                        className={classes.episodeYoutubeVideo2}
-                        controls
+                      <VideoComponent
+                        videoUrl={episode?.YoutubeLink}
+                        thumbnailUrl={episode?.thumbnailUrl}
+                        cName="episodeYoutubeVideo2"
                       />
                     </div>
                   ))}

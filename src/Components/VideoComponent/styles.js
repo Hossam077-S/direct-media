@@ -51,7 +51,34 @@ const useStyles = makeStyles(() => ({
     fontSize: "50px !important",
     color: "#fff",
   },
+  
+  episodeYoutubeVideo: {
+    width: '208px !important',
+    height: '370px !important',
 
+    "& iframe": {
+      width: "100%",
+      height: '100%',
+    },
+
+    "@media (max-width: 768px)": {
+      width: '90vw',
+    },  
+  },
+
+  episodeYoutubeVideo2: {
+    width: 'auto !important',
+    height: '330px !important',
+
+    "& iframe": {
+      width: "100%",
+      height: '100%',
+    },
+
+    "@media (max-width: 768px)": {
+      width: '90vw',
+    },  
+  },
 }));
 
 export default useStyles;

@@ -77,13 +77,13 @@ const useStyles = makeStyles(() => ({
             width: '19px',
             height: '39px',
             
-          },
-          "& .slick-prev": {
+        },
+        "& .slick-prev": {
             opacity: "1",
             zIndex: 1,
             width: '19px',
             height: '39px',
-          },
+        },
     },
     episodeContent: {
         position:'relative',

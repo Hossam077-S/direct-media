@@ -12,14 +12,14 @@ const ProgramDetails = () => {
   const classes = useStyles();
 
   const { id } = useParams();
-  const [programItem, setNewsItem] = useState({});
+  const [programItem, setProgramItem] = useState({});
 
   // Getting Data from firebase
   useEffect(() => {
     const q = doc(db, "ProgramsEpisodes", id);
 
     getDoc(q).then((docSnap) => {
-      setNewsItem(docSnap.data());
+      setProgramItem(docSnap.data());
     });
   }, [id]);
 

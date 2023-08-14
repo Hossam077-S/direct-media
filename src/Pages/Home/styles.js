@@ -1040,7 +1040,7 @@ const useStyles = makeStyles(() => ({
     },
   },
   podcastContainer: {
-    width: '874px !important',
+    width: '874px',
 
     "@media (max-width: 768px)": {
       width: '90vw !important',
@@ -1072,22 +1072,40 @@ const useStyles = makeStyles(() => ({
     marginTop: '47px',
   },
   podcastMediaItems: {
-    width: '946px',
+    padding: '0px 25px',
+    width: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
 
     "@media (max-width: 768px)": {
       width: '90vw'
     },
    
     "& .slick-track": {
-      direction: 'rtl'
+      direction: 'rtl',
     },
 
     "& .slick-initialized .slick-slide": {
+      width: '273px !important',
       "@media (max-width: 768px)": {
         display: 'flex',
         justifyContent: 'center',
       },
-    }
+    },
+
+    "& .slick-next": {
+      opacity: "1",
+      zIndex: 1,  
+      width: '19px',
+      height: '39px',
+      
+    },
+    "& .slick-prev": {
+      opacity: "1",
+      zIndex: 1,
+      width: '19px',
+      height: '39px',
+    },
   },
   podcastContent: {
     position: 'relative',

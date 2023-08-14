@@ -13,10 +13,14 @@ import {
   where,
 } from "../../Utils/firebase";
 
-import useStyles from "./style";
-
 import Slider from "react-slick";
-import ReactPlayer from "react-player";
+
+import arrowRColored from "../../assests/arrowRColored.gif";
+import arrowLColored from "../../assests/arrowLColored.gif";
+
+import VideoComponent from "../../Components/VideoComponent/VideoComponent";
+
+import useStyles from "./style";
 
 const PodcastDetails = () => {
   const classes = useStyles();
@@ -35,6 +39,9 @@ const PodcastDetails = () => {
     autoplay: true,
     autoplaySpeed: 6000,
     rtl: true,
+    arrows: true,
+    prevArrow: <img src={arrowLColored} alt={"arrowLeft"} />,
+    nextArrow: <img src={arrowRColored} alt={"arrowLeft"} />,
     pauseOnHover: true,
     responsive: [
       {
@@ -63,7 +70,7 @@ const PodcastDetails = () => {
   useEffect(() => {
     const fetchPodcastEpisodes = async () => {
       if (podcastItem?.PodcastsID?.length > 0) {
-        const productsID = podcastItem?.PodcastsID;
+        const productsID = podcastItem.PodcastsID;
 
         const q = query(
           collection(db, "PodcastEpisodes"),
@@ -73,52 +80,44 @@ const PodcastDetails = () => {
 
         const podcastEpisodes = querySnapshot.docs.map((doc) => doc.data());
 
-        setPodcastEp(podcastEpisodes);
+        // Loop through the fetched episodes to update thumbnail URLs
+        const episodesWithThumbnails = podcastEpisodes.map((episode) => {
+          if (episode.YouTubeURL) {
+            const videoUrl = new URL(episode.YouTubeURL);
+            const videoId = videoUrl?.searchParams.get("v");
+            episode.thumbnailUrl = `https://img.youtube.com/vi/${videoId}/sddefault.jpg`;
+          }
+          return episode;
+        });
+
+        setPodcastEp(episodesWithThumbnails);
       }
     };
 
     fetchPodcastEpisodes();
   }, [podcastItem.PodcastsID]);
 
-  const formattedDate = podcastItem?.PublishDate?.toDate()?.toLocaleDateString(
-    "ar",
-    {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    }
-  );
-
   return (
     <>
       <div className={classes.container}>
-        <div className={classes.Title}>{podcastItem?.Title} </div>
-        <div className={classes.Date}>{formattedDate}</div>
+        <div className={classes.CoverDiv}>
+          <img
+            src={podcastItem?.CoverImage}
+            alt={podcastItem?.Title}
+            className={classes.CoverImage}
+          />
+        </div>
         <div className={classes.Content}>
-          <div className={classes.ImageDiv}>
-            <img
-              src={podcastItem?.ImageUrl}
-              alt={podcastItem?.Title}
-              className={classes.newsDetailsImage}
-            />
-          </div>
-
-          <div className={classes.Description}>
-            <span style={{ fontFamily: "GE_SS_Two_M" }}>
-              {podcastItem?.Category}
-            </span>{" "}
-          </div>
           <div className={classes.podcastMediaHeader}>
             {podcastEp?.length > 0 ? (
               <div className={classes.podcastMediaItems}>
                 <Slider {...podcastSettings}>
                   {podcastEp?.map((podcast, index) => (
                     <div className={classes.podcastContent} key={index}>
-                      <ReactPlayer
-                        url={podcast.YouTubeURL}
-                        className={classes.podcastYoutubeVideo}
-                        controls
+                      <VideoComponent
+                        videoUrl={podcast?.YouTubeURL}
+                        thumbnailUrl={podcast?.thumbnailUrl}
+                        cName="podcastYoutubeVideo"
                       />
                     </div>
                   ))}

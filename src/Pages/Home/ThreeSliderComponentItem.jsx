@@ -44,7 +44,9 @@ const ThreeSliderComponentItem = ({ index, item, id }) => {
           </Typography>
         </Link>
         <Typography gutterBottom className={classes.sliderThreeDescription}>
-          <Dotdotdot clamp={3}>{item.Description}</Dotdotdot>
+          <span>
+            <Dotdotdot clamp={3}>{item.Description}</Dotdotdot>
+          </span>
         </Typography>
         <Typography gutterBottom className={classes.sliderThreeTypeAndDate}>
           {item.Category} -{" "}

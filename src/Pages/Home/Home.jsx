@@ -26,6 +26,8 @@ import arrowRight from "../../assests/arrowRight.gif";
 import arrowThreeLeft from "../../assests/arrowThreeLeft.gif";
 import arrowThreeRight from "../../assests/arrowThreeRight.gif";
 import PodcastBackground from "../../assests/PodcastBackground.gif";
+import arrowRColored from "../../assests/arrowRColored.gif";
+import arrowLColored from "../../assests/arrowLColored.gif";
 
 import videoDirectMedia from "../../assests/DirectMediaVideo.mp4";
 
@@ -250,6 +252,9 @@ const Home = () => {
     autoplay: true,
     autoplaySpeed: 6000,
     rtl: true,
+    arrows: true,
+    prevArrow: <img src={arrowLColored} alt={"arrowLeft"} />,
+    nextArrow: <img src={arrowRColored} alt={"arrowLeft"} />,
     pauseOnHover: true,
     responsive: [
       {
@@ -294,8 +299,6 @@ const Home = () => {
     }
   };
 
-  console.log(latestProgram);
-
   return (
     <>
       <Container className={classes.container}>
@@ -323,7 +326,9 @@ const Home = () => {
                         className={classes.LinkInnerPages}
                       >
                         <Typography key={index} className={classes.typoTitle}>
-                          <Dotdotdot clamp={2}>{newsItem.Title}</Dotdotdot>
+                          <span>
+                            <Dotdotdot clamp={2}>{newsItem.Title}</Dotdotdot>
+                          </span>
                         </Typography>
                       </Link>
                     </div>
@@ -378,9 +383,11 @@ const Home = () => {
                             gutterBottom
                             className={classes.sliderNewsDescription}
                           >
-                            <Dotdotdot clamp={2}>
-                              {newsItem.Description}
-                            </Dotdotdot>
+                            <span>
+                              <Dotdotdot clamp={2}>
+                                {newsItem.Description}
+                              </Dotdotdot>
+                            </span>
                           </Typography>
                           <Typography className={classes.sliderArticlDate}>
                             {newsItem.PublishDate instanceof Date
@@ -732,9 +739,11 @@ const Home = () => {
                                             key={index}
                                             className={classes.articleContent}
                                           >
-                                            <Dotdotdot clamp={2}>
-                                              {articleItem.Text}
-                                            </Dotdotdot>
+                                            <span>
+                                              <Dotdotdot clamp={2}>
+                                                {articleItem.Text}
+                                              </Dotdotdot>
+                                            </span>
                                           </Typography>
                                         </Link>
                                       );
@@ -868,22 +877,6 @@ const Home = () => {
                 <Slider {...podcastSettings}>
                   {podcastData?.map((podcast, index) => (
                     <div className={classes.podcastContent} key={index}>
-                      {/* {isVideoPlaying ? (
-                        <ReactPlayer
-                          url={podcast?.YouTubeURL}
-                          className={classes.podcastYoutubeVideo}
-                          controls
-                        />
-                      ) : (
-                        <div>
-                          <img
-                            src={PodcastBackground}
-                            alt="Video Thumbnail"
-                            onClick={handleThumbnailClick}
-                            style={{ cursor: "pointer" }}
-                          />
-                        </div>
-                      )} */}
                       <VideoComponent
                         videoUrl={podcast.YouTubeURL}
                         thumbnailUrl={podcast.thumbnailUrl}
