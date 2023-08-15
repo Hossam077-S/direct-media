@@ -1,58 +1,62 @@
 import React, { useEffect, useState } from "react";
-import "slick-carousel/slick/slick-theme.css";
-import "slick-carousel/slick/slick.css";
 
-import { useParams } from "react-router-dom";
-import { db, doc, getDoc } from "../../Utils/firebase";
+import { collection, db, onSnapshot } from "../../Utils/firebase";
+
+import { Link } from "react-router-dom";
+
+import Dotdotdot from "react-dotdotdot";
 
 import useStyles from "./style";
 
-import ReactPlayer from "react-player";
 const ProgramDetails = () => {
   const classes = useStyles();
 
-  const { id } = useParams();
-  const [programItem, setProgramItem] = useState({});
+  const [programItem, setProgramItem] = useState([]);
 
-  // Getting Data from firebase
   useEffect(() => {
-    const q = doc(db, "ProgramsEpisodes", id);
+    const unsubscribeProgrames = onSnapshot(
+      collection(db, "Programs"),
+      (snapshot) => {
+        const result = snapshot.docs.map((doc) => {
+          const x = doc.data();
+          x.id = doc.id;
+          return x;
+        });
 
-    getDoc(q).then((docSnap) => {
-      setProgramItem(docSnap.data());
-    });
-  }, [id]);
+        setProgramItem(result);
+      }
+    );
 
-  const formattedDate = programItem?.PublishDate?.toDate()?.toLocaleDateString(
-    "ar",
-    {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    }
-  );
+    return () => {
+      unsubscribeProgrames();
+    };
+  }, []);
 
   return (
-    <>
-      <div className={classes.container}>
-        <div className={classes.Title}>{programItem?.Title}</div>
-        <div className={classes.Content}>
-          <div className={classes.VideoDiv}>
-            <div className={classes.VideoDiv}>
-              <ReactPlayer
-                url={programItem?.YoutubeLink}
-                className={classes.youtubeVideo}
-                controls
-              />
+    <div className={classes.container}>
+      <div className={classes.newsList}>
+        {programItem.map((program, index) => (
+          <div key={index} className={classes.program}>
+            <img
+              src={program["Image URL"]}
+              alt={program.Title}
+              className={classes.newsImage}
+            />
+            <div className={classes.newsContent}>
+              <Link
+                to={"/program/" + program.id}
+                className={classes.LinkInnerPages}
+              >
+                <h2 className={classes.newsTitle}>{program.Title}</h2>
+              </Link>
+              <p className={classes.newsDescription}>
+                <Dotdotdot clamp={5}>{program.Description}</Dotdotdot>
+              </p>
             </div>
           </div>
-
-          <div className={classes.Date}>{formattedDate}</div>
-          <div className={classes.Description}>{programItem?.Description}</div>
-        </div>
+        ))}
       </div>
-    </>
+    </div>
   );
 };
 

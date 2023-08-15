@@ -3,9 +3,10 @@ import { Routes, Route } from 'react-router-dom';
 
 import './App.css';
 
-const [Header, Footer, NewsDetails, ProgramDetails, WriterDetails, ArticleDetails, PodcastDetails, Programs, Podcast ] = [
+const [Header, Footer, NewsPage, NewsDetails, ProgramDetails, WriterDetails, ArticleDetails, PodcastDetails, Programs, Podcast ] = [
   'Header',
   'Footer',
+  'NewsPage',
   'NewsDetails',
   'ProgramDetails',
   'WriterDetails',
@@ -43,9 +44,10 @@ const App = () => {
 
         {/* Other routes */}
         <Route path="/admin" element={<Admin />} />
+        <Route path="/newsPage/:category?" element={<NewsPage />} />
         <Route path="/news/:id" element={<NewsDetails />} />
-        <Route path="/programs/:id" element={<Programs />} />
-        <Route path="/program/:id" element={<ProgramDetails />} />
+        <Route path="/program/:id" element={<Programs />} />
+        <Route path="/programs" element={<ProgramDetails />} />
         <Route path="/writer/:id" element={<WriterDetails />} />
         <Route path="/article/:id" element={<ArticleDetails />} />
         <Route path="/podcast/:id" element={<PodcastDetails />} />

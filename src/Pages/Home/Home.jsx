@@ -472,7 +472,7 @@ const Home = () => {
                 <Slider {...programSettings}>
                   {programsData?.map((newsItem, index) => (
                     <Link
-                      to={"programs/" + newsItem.id}
+                      to={"program/" + newsItem.id}
                       className={classes.LinkInnerPages}
                       key={index}
                     >

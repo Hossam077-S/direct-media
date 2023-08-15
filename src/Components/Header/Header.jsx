@@ -34,10 +34,10 @@ import useStyles from "./styles";
 
 const Header = () => {
   const menuItems = [
-    { name: "كل الأخبار", to: "/" },
-    { name: "محلي", to: "/newstype" },
-    { name: "صحافة", to: "/newstype" },
-    { name: "دولي", to: "/newstype" },
+    { name: "كل الأخبار", to: "/newsPage/كل الأخبار" },
+    { name: "محلي", to: "/newsPage/محلي" },
+    { name: "صحافة", to: "/newsPage/صحافة" },
+    { name: "دولي", to: "/newsPage/دولي" },
     { name: "برامج المنصة", to: "/programs" },
     { name: "بودكاست", to: "/podcasts" },
     { name: "رصد مباشر", to: "/rasd" },
