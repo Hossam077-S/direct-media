@@ -36,25 +36,26 @@ const App = () => {
         <div className="loading-logo"></div>
       </div>
     }>
-      <Header />
-      <Routes>
+      <div className="main-container">
+        <Header />
+        <Routes>
 
-        {/* Render the MemoizedHome component */}
-        <Route exact path="/" element={<MemoizedHome />} />
+          {/* Render the MemoizedHome component */}
+          <Route exact path="/" element={<MemoizedHome />} />
 
-        {/* Other routes */}
-        <Route path="/admin" element={<Admin />} />
-        <Route path="/newsPage/:category?" element={<NewsPage />} />
-        <Route path="/news/:id" element={<NewsDetails />} />
-        <Route path="/program/:id" element={<Programs />} />
-        <Route path="/programs" element={<ProgramDetails />} />
-        <Route path="/writer/:id" element={<WriterDetails />} />
-        <Route path="/article/:id" element={<ArticleDetails />} />
-        <Route path="/podcast/:id" element={<PodcastDetails />} />
-        <Route path="/podcasts" element={<Podcast />} />
-      </Routes>
-
-      <Footer />
+          {/* Other routes */}
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/newsPage/:category?" element={<NewsPage />} />
+          <Route path="/news/:id" element={<NewsDetails />} />
+          <Route path="/program/:id" element={<Programs />} />
+          <Route path="/programs" element={<ProgramDetails />} />
+          <Route path="/writer/:id" element={<WriterDetails />} />
+          <Route path="/article/:id" element={<ArticleDetails />} />
+          <Route path="/podcast/:id" element={<PodcastDetails />} />
+          <Route path="/podcasts" element={<Podcast />} />
+        </Routes>
+      </div>
+        <Footer />
     </Suspense>
   );
 };

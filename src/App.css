@@ -9,19 +9,25 @@
     animation-duration: 2s; /* Adjust the duration as needed */
     animation-timing-function: linear;
     animation-fill-mode: forwards;
-  }
+}
     
-  @media (max-width: 768px) {
-    .loading-logo {
-      margin: 0%;
-    }
+@media (max-width: 768px) {
+  .loading-logo {
+    margin: 0%;
   }
+}
 
-  @keyframes fillLogo {
-    0% {
-      filter: brightness(0%); /* Start with no color (black and white) */
-    }
-    100% {
-      filter: brightness(100%); /* Fill the logo with color */
-    }
+@keyframes fillLogo {
+  0% {
+    filter: brightness(0%); /* Start with no color (black and white) */
   }
+  100% {
+    filter: brightness(100%); /* Fill the logo with color */
+  }
+}
+
+.main-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}

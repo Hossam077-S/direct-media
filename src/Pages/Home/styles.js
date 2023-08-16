@@ -1078,7 +1078,7 @@ const useStyles = makeStyles(() => ({
     flexDirection: 'column',
 
     "@media (max-width: 768px)": {
-      width: '90vw'
+      width: '86vw',
     },
    
     "& .slick-track": {

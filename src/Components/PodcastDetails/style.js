@@ -19,6 +19,7 @@ const useStyles = makeStyles(() => ({
 
     podcastMediaHeader: {
       marginTop: '47px',
+      width: '874px',
     },
     podcastMediaItems: {
       width: 'auto',

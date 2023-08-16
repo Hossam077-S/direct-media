@@ -171,9 +171,12 @@ export default makeStyles((theme) => ({
   },
   //Menu
   gridContainer: {
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
     marginTop: '27px !important',
     marginBottom: '5px !important',
+
+    maxWidth: '874px', // Set the maximum width
+
 
     '@media (max-width: 768px)': {
       justifyContent: 'center',
@@ -183,6 +186,14 @@ export default makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     padding: '0px !important',
+
+    width: '100%', // Occupy the entire available width
+    justifyContent: 'space-between', // Space between items
+
+    '@media (max-width: 768px)': {
+      flexDirection: 'column', // Stack items vertically on smaller screens
+      alignItems: 'center',
+    },
   },
   divider: {
     backgroundColor: '#F9AE3B !important',

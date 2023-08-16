@@ -416,7 +416,7 @@ const Home = () => {
             <div className={classes.imageDiv2}>
               <Typography className={classes.imageTitle2}>
                 <Link
-                  to={"programs/z4yIpPQkFYkH36oaLwL0"}
+                  to={"program/z4yIpPQkFYkH36oaLwL0"}
                   className={classes.LinkInnerPages}
                 >
                   قضية بدقيقة

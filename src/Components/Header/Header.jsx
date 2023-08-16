@@ -38,9 +38,9 @@ const Header = () => {
     { name: "محلي", to: "/newsPage/محلي" },
     { name: "صحافة", to: "/newsPage/صحافة" },
     { name: "دولي", to: "/newsPage/دولي" },
+    { name: "ثقافة", to: "/newsPage/ثقافة" },
     { name: "برامج المنصة", to: "/programs" },
     { name: "بودكاست", to: "/podcasts" },
-    { name: "رصد مباشر", to: "/rasd" },
   ];
 
   const currentDate = new Date().toLocaleDateString("ar", {

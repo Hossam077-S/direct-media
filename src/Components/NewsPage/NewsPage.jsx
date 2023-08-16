@@ -36,28 +36,32 @@ const NewsPage = () => {
 
   return (
     <div className={classes.container}>
-      <div className={classes.newsList}>
-        {filteredNews.map((newsItem, index) => (
-          <div key={index} className={classes.newsItem}>
-            <img
-              src={newsItem.ImageURL}
-              alt={newsItem.Title}
-              className={classes.newsImage}
-            />
-            <div className={classes.newsContent}>
-              <Link
-                to={"/news/" + newsItem.id}
-                className={classes.LinkInnerPages}
-              >
-                <h2 className={classes.newsTitle}>{newsItem.Title}</h2>
-              </Link>
-              <p className={classes.newsDescription}>
-                <Dotdotdot clamp={5}>{newsItem.Description}</Dotdotdot>
-              </p>
+      {filteredNews.length === 0 ? (
+        <p>لا يوجد أخبار {category}.</p>
+      ) : (
+        <div className={classes.newsList}>
+          {filteredNews.map((newsItem, index) => (
+            <div key={index} className={classes.newsItem}>
+              <img
+                src={newsItem.ImageURL}
+                alt={newsItem.Title}
+                className={classes.newsImage}
+              />
+              <div className={classes.newsContent}>
+                <Link
+                  to={"/news/" + newsItem.id}
+                  className={classes.LinkInnerPages}
+                >
+                  <h2 className={classes.newsTitle}>{newsItem.Title}</h2>
+                </Link>
+                <p className={classes.newsDescription}>
+                  <Dotdotdot clamp={5}>{newsItem.Description}</Dotdotdot>
+                </p>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

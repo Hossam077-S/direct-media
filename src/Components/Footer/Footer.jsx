@@ -13,31 +13,31 @@ import logo from "../../assests/WhiteLogo.gif";
 const menuItems = [
   {
     title: "كل الأخبار",
-    url: "/#latest-news",
+    url: "/newsPage/كل الأخبار",
   },
   {
     title: "برامج المنصة",
-    url: "/#programs",
+    url: "/programs",
   },
   {
     title: "بودكاست",
-    url: "/#podcast",
+    url: "/podcasts",
   },
   {
-    title: "رصد مباشر",
-    url: "/#rasd",
+    title: "رياضة",
+    url: "/newsPage/رياضة",
   },
   {
     title: "الطقس",
-    url: "/weather",
+    url: "/newsPage/الطقس",
   },
   {
     title: "صحف عالمية",
-    url: "/#international-newspapers",
+    url: "/newsPage/صحف عالمية",
   },
   {
     title: "مقترحاتكم",
-    url: "/#user-suggestions",
+    url: "/suggestions",
   },
 ];
 
