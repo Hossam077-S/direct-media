@@ -1086,10 +1086,12 @@ const useStyles = makeStyles(() => ({
     },
 
     "& .slick-initialized .slick-slide": {
-      width: '273px !important',
+      paddingRight: '16px',
+            
       "@media (max-width: 768px)": {
         display: 'flex',
         justifyContent: 'center',
+        paddingRight: '0px',
       },
     },
 

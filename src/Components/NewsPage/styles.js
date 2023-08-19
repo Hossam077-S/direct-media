@@ -2,12 +2,14 @@ import { makeStyles } from "@mui/styles";
 
 export default makeStyles(() => ({
   container: {
-    width: "874px",
+    width: "100%",
+    maxWidth: "874px",
     margin: "5vw auto",
+    padding: "0 20px", // Add some padding to the sides
   },
   newsList: {
     display: "grid",
-    gridTemplateColumns: "repeat(3, 1fr)",
+    gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", // Responsive grid
     gap: "20px",
   },
   newsItem: {
@@ -31,12 +33,12 @@ export default makeStyles(() => ({
     fontFamily: 'GE_SS_Two_L !important',
   },
   LinkInnerPages: {
-    "text-decoration": 'none',
+    textDecoration: 'none',
     color: 'black',
 
     "&:hover": {
-      "text-decoration": 'underline',
-      "text-decoration-color": '#F9AE3B'
+      textDecoration: 'underline',
+      textDecorationColor: '#F9AE3B'
     }
   },
 }));

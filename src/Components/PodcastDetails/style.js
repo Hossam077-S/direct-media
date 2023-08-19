@@ -13,8 +13,14 @@ const useStyles = makeStyles(() => ({
     CoverDiv: {
       marginRight: '-62px',
       paddingBottom: '10px',
+
+      "@media (max-width: 768px)": {
+        marginRight: '0px',
+        width: '90vw'
+      },
     },
     CoverImage: {
+      width : '100%'
     },
 
     podcastMediaHeader: {
@@ -35,10 +41,12 @@ const useStyles = makeStyles(() => ({
       },
   
       "& .slick-initialized .slick-slide": {
-        width: '288px !important',
+        paddingRight: '26px',
+
         "@media (max-width: 768px)": {
           display: 'flex',
           justifyContent: 'center',
+          paddingRight: '0px',
         },
       },
 
@@ -47,13 +55,18 @@ const useStyles = makeStyles(() => ({
         zIndex: 1,  
         width: '19px',
         height: '39px',
-        
+        "@media (max-width: 768px)": {
+          right: '0px',
+        },
       },
       "& .slick-prev": {
         opacity: "1",
         zIndex: 1,
         width: '19px',
         height: '39px',
+        "@media (max-width: 768px)": {
+          left: '0px',
+        },
       },
     },
     podcastContent: {
