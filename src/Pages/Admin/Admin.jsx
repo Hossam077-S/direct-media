@@ -23,6 +23,7 @@ const Admin = () => {
   const [activeTab, setActiveTab] = useState(0);
   const [relatedNewsOptions, setRelatedNewsOptions] = useState([]);
   const [distinctProgram, setDistinctPrograms] = useState([]);
+  const [distinctPodcast, setDistinctPodcast] = useState([]);
   const [distinctWritersName, setDistinctWritersName] = useState([]);
   const [distinctNewsCategory, setDistinctNewsCategory] = useState([]);
 
@@ -65,6 +66,20 @@ const Admin = () => {
       }
     );
 
+    const unsubscribePodcast = onSnapshot(
+      collection(db, "Podcast"),
+      (snapshot) => {
+        const podcast = snapshot.docs.map((doc) => {
+          const data = doc.data();
+          return {
+            id: doc.id, // The document ID (program ID)
+            title: data.Title, // The program title
+          };
+        });
+        setDistinctPodcast(podcast);
+      }
+    );
+
     const unsubscribeWriters = onSnapshot(
       collection(db, "Writers"),
       (snapshot) => {
@@ -81,6 +96,7 @@ const Admin = () => {
       unsubscribe();
       unsubscribeCategory();
       unsubscribeProgram();
+      unsubscribePodcast();
       unsubscribeWriters();
     };
   }, []);
@@ -131,7 +147,7 @@ const Admin = () => {
         <ArticlesEntry distinctWritersName={distinctWritersName} />
       )}
       {activeTab === 2 && <ProgramsEntry distinctProgram={distinctProgram} />}
-      {activeTab === 3 && <PodcastEntry />}
+      {activeTab === 3 && <PodcastEntry distinctPodcast={distinctPodcast} />}
       {/* <Button
             variant="contained"
             color="primary"

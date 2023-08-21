@@ -17,9 +17,10 @@ import {
 
 import Slider from "react-slick";
 
-import useStyles from "./style";
-
 import ReactPlayer from "react-player";
+import ShareButton from "../../Components/ShareButton/ShareButton";
+
+import useStyles from "./style";
 
 const NewsDetails = () => {
   const classes = useStyles();
@@ -109,7 +110,15 @@ const NewsDetails = () => {
               className={classes.newsDetailsImage}
             />
           </div>
-          <div className={classes.Date}>{formattedDate}</div>
+          <div className={classes.Date_Share}>
+            <div className={classes.Date}>{formattedDate}</div>
+            <div className={classes.shareButtons}>
+              <ShareButton socialMedia="facebook" url={window.location.href} />
+              <ShareButton socialMedia="instagram" url={window.location.href} />
+              <ShareButton socialMedia="youtube" url={window.location.href} />
+              <ShareButton socialMedia="twitter" url={window.location.href} />
+            </div>
+          </div>
 
           <div className={classes.Description}>
             <span style={{ fontFamily: "GE_SS_Two_M" }}>

@@ -29,6 +29,7 @@ const useStyles = makeStyles(() => ({
     marginTop: "8px",
     color: 'white',
     fontWeight: "bold",
+    fontFamily: 'GE_SS_Two_M !important'
   },
   previewContainer: {
     border: `1px gray`,
@@ -42,6 +43,7 @@ const useStyles = makeStyles(() => ({
     fontSize: "1.5rem",
     fontWeight: "bold",
     marginBottom: '16px',
+    fontFamily: 'GE_SS_Two_M !important'
   },
   previewImage: {
     width: "50%",
@@ -60,6 +62,7 @@ const useStyles = makeStyles(() => ({
   previewLabel: {
     fontWeight: "bold",
     marginRight: '8px',
+    fontFamily: 'GE_SS_Two_M !important'
   },
   form: {
     display: "flex",
@@ -76,16 +79,18 @@ const useStyles = makeStyles(() => ({
     flexWrap: "wrap",
     width: "95%",
     marginLeft: "5% !important",
+    fontFamily: 'GE_SS_Two_L !important'
   },
   textFieldSelect: {
     marginBottom: "15px !important",
     flexWrap: "wrap",
     marginLeft: "5% !important",
-  
+    fontFamily: 'GE_SS_Two_L !important'
   },
   labelText:{
     backgroundColor: 'white',
     paddingRight: "3px !important",
+    fontFamily: 'GE_SS_Two_L !important',
   },
   fieldContainer: {
     display: 'flex',
@@ -98,32 +103,37 @@ const useStyles = makeStyles(() => ({
     marginBottom: "15px !important",
     flexWrap: "wrap",
     width: "95%",
-    border: `1px solid gray`,
+    border: `1px solid #C4C4C4`,
     borderRadius: '4px',
     padding: '8px',
   },
   imageField: {
-    display: "none", // Hide the input element
+    display: "none", // Hide the input element.
   },
   imageFieldLabel: {
     display: "block",
     padding: '8px',
-    backgroundColor: 'lightgray',
+    backgroundColor: '#F9AE3B',
     border: `1px solid darkgray`,
     borderRadius: '4px',
     cursor: "pointer",
     textAlign: "center",
+    color: 'white',
+    fontFamily: 'GE_SS_Two_M !important',
+    width: '874px'
   },
   submitButton: {
     alignSelf: "flex-end",
     marginTop: "5px !important",
     backgroundColor: "#2E3190 !important",
     width: "95%",
+    fontFamily: 'GE_SS_Two_M !important'
   },
   saveButton:{
     alignSelf: "flex-end",
     backgroundColor: "#2E3190 !important",
     marginLeft: "8px !important",
+    fontFamily: 'GE_SS_Two_M !important'
   },
   snackbarContent: {
     display: "flex",
@@ -174,13 +184,15 @@ const useStyles = makeStyles(() => ({
   },
   popup: {
     position: "fixed",
+    width: 'auto',
+    height: 'auto',
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
     background: "#fff",
     padding: '16px',
     borderRadius: '4px',
-    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
+    boxShadow: "0 2px 4px #F9AE3B",
     zIndex: 9999,
   },
   popupButtonContainer: {

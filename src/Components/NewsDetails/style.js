@@ -18,6 +18,11 @@ const useStyles = makeStyles(() => ({
             fontSize: '28px',
         },
     },
+    Date_Share: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
     Date: {
         fontFamily: "GE_SS_Two_L",
         fontSize: "15px",
@@ -27,6 +32,10 @@ const useStyles = makeStyles(() => ({
             fontSize: '12px',
         },
     },
+    shareButtons:{
+        display: 'flex',
+    },
+
     newsDetailsImage: {
         width: '100%',
         height: 'auto',
