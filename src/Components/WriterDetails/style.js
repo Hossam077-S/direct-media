@@ -1,25 +1,21 @@
 import { makeStyles } from "@mui/styles";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
     container: {
-        maxWidth: '874px',
-        margin: '60px auto',
+        display: 'flex',
+        justifyContent: 'center',
         '@media screen and (max-width: 500px)' : {
             width: 'auto',
             padding: "0 15px",
         }
     },
-    ImageDiv: {
-        marginBottom: '30px',   
+    Content: {
+        display: 'flex',
+        flexDirection: 'column',
+        width: '874px',
     },
-    Title: {
-        fontSize: '40px',
-        fontFamily: "GE_SS_Two_M",
-        color: '#2E3190',
-
-        "@media (max-width: 768px)": {
-            fontSize: '30px',
-        },
+    ImageDiv: {
+        margin: '30px 0px',
     },
     newsDetailsImage: {
         width: '173px',
@@ -30,9 +26,19 @@ const useStyles = makeStyles((theme) => ({
             height: 'auto',
         },
     },
+    Title: {
+        fontSize: '35px',
+        fontFamily: "GE_SS_Two_M",
+        color: '#2E3190',
+
+        "@media (max-width: 768px)": {
+            fontSize: '30px',
+        },
+    },
+
     writerContent: {
         display: 'flex',
-        margin: '30px 0'
+        margin: '5px 0'
     },
     dividerContent: {
         display: 'flex',

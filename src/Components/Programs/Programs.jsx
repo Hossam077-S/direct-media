@@ -115,9 +115,19 @@ const Programs = () => {
         // Loop through the fetched episodes to update thumbnail URLs
         const episodesWithThumbnails = episodes.map((episode) => {
           if (episode.YoutubeLink) {
+            let videoId;
             const videoUrl = new URL(episode.YoutubeLink);
-            const videoId = videoUrl?.searchParams.get("v");
-            episode.thumbnailUrl = `https://img.youtube.com/vi/${videoId}/sddefault.jpg`;
+            const isShortsVideo = videoUrl.pathname.includes("/shorts/");
+
+            if (isShortsVideo) {
+              videoId = videoUrl.pathname.split("/shorts/")[1];
+            } else {
+              videoId = videoUrl.searchParams.get("v");
+            }
+
+            if (videoId) {
+              episode.thumbnailUrl = `https://img.youtube.com/vi/${videoId}/sddefault.jpg`;
+            }
           }
           return episode;
         });

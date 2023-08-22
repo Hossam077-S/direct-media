@@ -179,10 +179,19 @@ export const FirestoreProvider = ({ children }) => {
     const latestProgram = sortedPrograms?.[sortedPrograms.length - 1];
 
     if (latestProgram && latestProgram.YoutubeLink) {
+      let videoId, thumbnailUrl;
       const videoUrl = new URL(latestProgram?.YoutubeLink);
-      const videoId = videoUrl?.searchParams.get("v");
+      const isShortsVideo = videoUrl.pathname.includes("/shorts/");
 
-      const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/sddefault.jpg`;
+      if (isShortsVideo) {
+        videoId = videoUrl.pathname.split("/shorts/")[1];
+      } else {
+        videoId = videoUrl.searchParams.get("v");
+      }
+
+      if (videoId) {
+        thumbnailUrl = `https://img.youtube.com/vi/${videoId}/sddefault.jpg`;
+      }
 
       setLatestProgram({ ...latestProgram, videoId, thumbnailUrl });
     }

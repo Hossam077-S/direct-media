@@ -664,7 +664,6 @@ const useStyles = makeStyles(() => ({
     },
   },
   articlDivider: {
-    backgroundColor: '#000000',
     marginRight: '18px',
     opacity: 0,
     position:'absolute',
@@ -673,7 +672,7 @@ const useStyles = makeStyles(() => ({
     top: 0,
     bottom: 0,
     minHeight: '100%',
-    transition: '0.5s ease-in-out',
+    transition: '0.2s ease-in-out',
   },
   activeDivider: {
     backgroundColor: "#F9AE3B !important",

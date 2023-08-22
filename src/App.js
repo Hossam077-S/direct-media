@@ -3,12 +3,13 @@ import { Routes, Route } from 'react-router-dom';
 
 import './App.css';
 
-const [Header, Footer, NewsPage, NewsDetails, ProgramDetails, WriterDetails, ArticleDetails, PodcastDetails, Programs, Podcast ] = [
+const [Header, Footer, NewsPage, NewsDetails, ProgramDetails, Writers, WriterDetails, ArticleDetails, PodcastDetails, Programs, Podcast ] = [
   'Header',
   'Footer',
   'NewsPage',
   'NewsDetails',
   'ProgramDetails',
+  'Writers',
   'WriterDetails',
   'ArticleDetails',
   'PodcastDetails',
@@ -49,6 +50,7 @@ const App = () => {
           <Route path="/news/:id" element={<NewsDetails />} />
           <Route path="/program/:id" element={<Programs />} />
           <Route path="/programs" element={<ProgramDetails />} />
+          <Route path="/writers" element={<Writers />} />
           <Route path="/writer/:id" element={<WriterDetails />} />
           <Route path="/article/:id" element={<ArticleDetails />} />
           <Route path="/podcast/:id" element={<PodcastDetails />} />

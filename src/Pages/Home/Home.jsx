@@ -103,7 +103,7 @@ const Home = () => {
   const allNewsSlider = {
     dots: false,
     infinite: true,
-    speed: 1500,
+    speed: 900,
     pauseOnHover: true,
     slidesToShow: 1,
     slidesToScroll: 1,
@@ -131,7 +131,7 @@ const Home = () => {
   const programSettings = {
     dots: false,
     infinite: true,
-    speed: 1000,
+    speed: 900,
     slidesToShow: 5,
     slidesToScroll: 1,
     autoplay: true,
@@ -197,7 +197,7 @@ const Home = () => {
   const threeTypeSlider = {
     dots: false,
     infinite: true,
-    speed: 1200,
+    speed: 900,
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: true,
@@ -223,7 +223,7 @@ const Home = () => {
   const writersSettings = {
     dots: false,
     infinite: true,
-    speed: 1200,
+    speed: 900,
     slidesToShow: 4,
     slidesToScroll: 1,
     rtl: true,
@@ -246,7 +246,7 @@ const Home = () => {
   const podcastSettings = {
     dots: false,
     infinite: true,
-    speed: 1200,
+    speed: 900,
     slidesToShow: 3,
     slidesToScroll: 1,
     autoplay: true,
@@ -464,7 +464,9 @@ const Home = () => {
               flexItem
               className={classes.programDivider}
             />
-            <Typography className={classes.programText}>البرامج</Typography>
+            <Link to={`/programs`}>
+              <Typography className={classes.programText}>البرامج</Typography>
+            </Link>
           </div>
           <div className={classes.programSlider}>
             {programsData?.length > 0 ? (
@@ -500,7 +502,9 @@ const Home = () => {
                   flexItem
                   className={classes.globalDivider}
                 />
-                <Typography className={classes.globalText}>محلي</Typography>
+                <Link to={"/newsPage/محلي"} className={classes.LinkInnerPages}>
+                  <Typography className={classes.globalText}>محلي</Typography>
+                </Link>
               </div>
               <div className={classes.newsTypeSlider}>
                 {newsData.length > 0 ? (
@@ -520,7 +524,9 @@ const Home = () => {
             </div>
             <div className={classes.headerDiv}>
               <div className={classes.globalHeaderDiv}>
-                <Typography className={classes.globalText}>صحافة</Typography>
+                <Link to={"/newsPage/صحافة"} className={classes.LinkInnerPages}>
+                  <Typography className={classes.globalText}>صحافة</Typography>
+                </Link>
                 <Divider
                   orientation="horizontal"
                   flexItem
@@ -545,7 +551,9 @@ const Home = () => {
             </div>
             <div className={classes.headerDiv}>
               <div className={classes.globalHeaderDiv}>
-                <Typography className={classes.globalText}>دولي</Typography>
+                <Link to={"/newsPage/دولي"} className={classes.LinkInnerPages}>
+                  <Typography className={classes.globalText}>دولي</Typography>
+                </Link>
                 <Divider
                   orientation="horizontal"
                   flexItem
@@ -811,7 +819,9 @@ const Home = () => {
               flexItem
               className={classes.writerDivider}
             />
-            <Typography className={classes.writerText}>الكتاب</Typography>
+            <Link to={`/writers`}>
+              <Typography className={classes.writerText}>الكتاب</Typography>
+            </Link>
           </div>
 
           <div className={classes.writerDetails}>

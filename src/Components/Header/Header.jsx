@@ -38,7 +38,7 @@ const Header = () => {
     { name: "محلي", to: "/newsPage/محلي" },
     { name: "صحافة", to: "/newsPage/صحافة" },
     { name: "دولي", to: "/newsPage/دولي" },
-    { name: "ثقافة", to: "/newsPage/ثقافة" },
+    { name: "الكتاب", to: "/writers" },
     { name: "برامج المنصة", to: "/programs" },
     { name: "بودكاست", to: "/podcasts" },
   ];
