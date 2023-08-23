@@ -146,51 +146,71 @@ const PodcastEntry = ({ distinctPodcast }) => {
     setShowPopupPodcast(true);
   };
 
-  const handleSavePodcast = (event) => {
+  const handleSavePodcast = async (event) => {
     event.preventDefault();
 
-    // Get values from the refs
     const PodcastName = nameRef.current.value;
 
     try {
       setLoading(true);
 
       const timestamp = Date.now(); // Get the current timestamp
-      const storageRef = ref(
-        storage,
-        `Podcast/${timestamp}` // Append the timestamp to the image name
-      );
-      const uploadTask = uploadBytesResumable(storageRef, selectedImage);
-      const uploadTask2 = uploadBytesResumable(storageRef, selectedCover);
 
-      Promise.all([uploadTask, uploadTask2]).then(async (snapshot) => {
+      const imageFileName = `Image_${timestamp}`;
+      const coverFileName = `Cover_${timestamp}`;
+
+      const ImageStorageRef = ref(
+        storage,
+        `Podcast/${imageFileName}` // Append the timestamp to the image name
+      );
+
+      const CoverStorageRef = ref(
+        storage,
+        `Podcast/${coverFileName}` // Append the timestamp to the image name
+      );
+
+      const uploadTask = uploadBytesResumable(ImageStorageRef, selectedImage);
+      const uploadTask2 = uploadBytesResumable(CoverStorageRef, selectedCover);
+
+      uploadTask.on("state_changed", (snapshot) => {
         const newProgress = Math.round(
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100
         );
         setProgress(newProgress);
-
-        const downloadURL = await getDownloadURL(snapshot.ref);
-
-        const docRef = await addDoc(collection(db, "Podcast"), {
-          CoverImage: downloadURL, //Wrong
-          ImageURL: downloadURL,
-          Title: PodcastName,
-          ProgramsID: [],
-          PublishDate: serverTimestamp(),
-        });
-
-        console.log("Document written with ID: ", docRef.id);
-
-        setSelectedImage(null);
-        setLoading(false);
-        setShowPopupPodcast(false);
       });
+
+      uploadTask2.on("state_changed", (snapshot) => {
+        const newProgress = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        );
+        setProgress(newProgress);
+      });
+
+      const [snapshotImage, snapshotCover] = await Promise.all([
+        uploadTask,
+        uploadTask2,
+      ]);
+
+      const downloadURLImage = await getDownloadURL(snapshotImage.ref);
+      const downloadURLCover = await getDownloadURL(snapshotCover.ref);
+
+      const docRef = await addDoc(collection(db, "Podcast"), {
+        CoverImage: downloadURLCover,
+        ImageURL: downloadURLImage,
+        Title: PodcastName,
+        ProgramsID: [],
+        PublishDate: serverTimestamp(),
+      });
+
+      console.log("Document written with ID: ", docRef.id);
+      setSelectedImage(null);
+      setLoading(false);
+      setShowPopupPodcast(false);
     } catch (error) {
       console.error("Error uploading image: ", error);
       setLoading(false);
     }
 
-    // Close the popup form after saving
     setShowPopupPodcast(false);
   };
 
@@ -347,7 +367,7 @@ const PodcastEntry = ({ distinctPodcast }) => {
                     <input
                       id="cover-upload"
                       type="file"
-                      name="ImageURL"
+                      name="CoverURL"
                       accept="image/*"
                       onChange={handleCoverChange}
                       className={classes.imageField}

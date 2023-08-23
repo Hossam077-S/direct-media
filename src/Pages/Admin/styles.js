@@ -1,5 +1,7 @@
 import { makeStyles } from "@mui/styles";
 
+// Need Responsive
+
 const useStyles = makeStyles(() => ({
   container: {
     width: "970px !important", 
@@ -79,7 +81,7 @@ const useStyles = makeStyles(() => ({
     flexWrap: "wrap",
     width: "95%",
     marginLeft: "5% !important",
-    fontFamily: 'GE_SS_Two_L !important'
+    fontFamily: 'GE_SS_Two_L !important',
   },
   textFieldSelect: {
     marginBottom: "15px !important",
@@ -120,7 +122,19 @@ const useStyles = makeStyles(() => ({
     textAlign: "center",
     color: 'white',
     fontFamily: 'GE_SS_Two_M !important',
-    width: '874px'
+    width: '874px',
+    marginBottom: '10px',
+  },
+  imageFieldLabel2: {
+    display: "block",
+    padding: '8px',
+    backgroundColor: '#F9AE3B',
+    border: `1px solid darkgray`,
+    borderRadius: '4px',
+    cursor: "pointer",
+    textAlign: "center",
+    color: 'white',
+    fontFamily: 'GE_SS_Two_M !important',
   },
   submitButton: {
     alignSelf: "flex-end",
@@ -184,16 +198,21 @@ const useStyles = makeStyles(() => ({
   },
   popup: {
     position: "fixed",
-    width: 'auto',
-    height: 'auto',
+    width: '100%',
+    height: '100%',
     top: "50%",
     left: "50%",
     transform: "translate(-50%, -50%)",
-    background: "#fff",
+    background: "rgba(0, 0, 0, 0.5)",
     padding: '16px',
     borderRadius: '4px',
     boxShadow: "0 2px 4px #F9AE3B",
     zIndex: 9999,
+
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   popupButtonContainer: {
     display: "flex",
@@ -225,7 +244,9 @@ const useStyles = makeStyles(() => ({
   inputField: {
     marginBottom: '15px',
     fontSize: '15px',
-    fontFamily: 'GE_SS_Two_L',
+    fontFamily: 'GE_SS_Two_L !important',
+    height: '30px',
+    padding :'0px 5px',
   }
 
 }));

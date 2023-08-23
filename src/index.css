@@ -16,9 +16,7 @@
     direction: rtl;
   }
 
-  
-
-  .MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation8 {
+  div#menu .MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation8 {
     position: fixed !important;
     top: 0 !important;
     bottom: 0;
@@ -28,9 +26,8 @@
   }
 
   @media screen and (min-width: 768px) and (max-width: 1024px) {
-    .MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation8 {
+    div#menu .MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation8 {
       right: 15rem;
-
     }
 
   };

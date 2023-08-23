@@ -320,7 +320,7 @@ const NewsEntry = ({
                 <div className={classes.imageFieldContainer}>
                   <label
                     htmlFor="image-upload"
-                    className={classes.imageFieldLabel}
+                    className={classes.imageFieldLabel2}
                   >
                     حمل الصورة
                   </label>

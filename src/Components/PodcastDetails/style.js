@@ -11,7 +11,7 @@ const useStyles = makeStyles(() => ({
         }
     },
     CoverDiv: {
-      marginRight: '-62px',
+      width: '874px',
       paddingBottom: '10px',
 
       "@media (max-width: 768px)": {
@@ -55,6 +55,7 @@ const useStyles = makeStyles(() => ({
         zIndex: 1,  
         width: '19px',
         height: '39px',
+
         "@media (max-width: 768px)": {
           right: '0px',
         },
@@ -64,6 +65,7 @@ const useStyles = makeStyles(() => ({
         zIndex: 1,
         width: '19px',
         height: '39px',
+        
         "@media (max-width: 768px)": {
           left: '0px',
         },

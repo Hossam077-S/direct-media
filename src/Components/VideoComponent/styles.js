@@ -5,6 +5,7 @@ const useStyles = makeStyles(() => ({
     width: '205px !important',
     height: '364px !important',
     cursor: 'pointer',
+    objectFit: 'cover',
 
     "& iframe": {
       width: "205px !important",
@@ -19,12 +20,11 @@ const useStyles = makeStyles(() => ({
       width: '90vw !important',
     },
   },
-  
   podcastYoutubeVideo: {
     width: '244px !important',
     height: '244px !important',
     cursor: 'pointer',
-
+    
     "& iframe": {
       width: "100%",
       height: '100%',
@@ -55,6 +55,7 @@ const useStyles = makeStyles(() => ({
   episodeYoutubeVideo: {
     width: '208px !important',
     height: '370px !important',
+    objectFit: 'cover',
 
     "& iframe": {
       width: "100%",
@@ -69,6 +70,7 @@ const useStyles = makeStyles(() => ({
   episodeYoutubeVideo2: {
     width: 'auto !important',
     height: '330px !important',
+    objectFit: 'cover',
 
     "& iframe": {
       width: "100%",
