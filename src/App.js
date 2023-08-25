@@ -3,6 +3,8 @@ import { Routes, Route } from 'react-router-dom';
 
 import './App.css';
 
+import { SuspenseFallback } from './Components/SuspenseFallback/SuspenseFallback';
+
 const [Header, Footer, NewsPage, NewsDetails, ProgramDetails, Writers, WriterDetails, ArticleDetails, PodcastDetails, Programs, Podcast ] = [
   'Header',
   'Footer',
@@ -32,11 +34,7 @@ const App = () => {
   const MemoizedHome = useMemo(() => lazy(() => import('./Pages/Home/Home')), []);
 
   return (
-    <Suspense fallback={
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-        <div className="loading-logo"></div>
-      </div>
-    }>
+    <Suspense fallback={<SuspenseFallback cName="dots"/>}>
       <div className="main-container">
         <Header />
         <Routes>

@@ -31,8 +31,8 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  CircularProgress,
 } from "@mui/material";
+import { SuspenseFallback } from "../../Components/SuspenseFallback/SuspenseFallback";
 
 const ProgramsEntry = ({ distinctProgram }) => {
   const classes = useStyles();
@@ -80,7 +80,6 @@ const ProgramsEntry = ({ distinctProgram }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
   const [showPopupProgram, setShowPopupProgram] = useState(false);
-  const [progress, setProgress] = useState(0);
 
   const form = useRef();
 
@@ -172,11 +171,6 @@ const ProgramsEntry = ({ distinctProgram }) => {
       const uploadTask = uploadBytesResumable(storageRef, selectedImage);
 
       uploadTask.then(async (snapshot) => {
-        const newProgress = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
-        setProgress(newProgress);
-
         const downloadURL = await getDownloadURL(snapshot.ref);
 
         const docRef = await addDoc(collection(db, "Programs"), {
@@ -203,17 +197,7 @@ const ProgramsEntry = ({ distinctProgram }) => {
   };
 
   if (loading) {
-    return (
-      <div className={classes.progressIndicator}>
-        <CircularProgress
-          size={60}
-          thickness={5}
-          style={{ color: "#2E3190" }}
-          value={progress}
-        />
-        <p style={{ color: "white", paddingTop: 10 }}>{progress}%</p>{" "}
-      </div>
-    );
+    return <SuspenseFallback cName="progress" />;
   }
 
   return (

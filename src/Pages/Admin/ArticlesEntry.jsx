@@ -26,12 +26,12 @@ import {
   TextField,
   ThemeProvider,
   createTheme,
-  CircularProgress,
   Select,
   InputLabel,
   FormControl,
   MenuItem,
 } from "@mui/material";
+import { SuspenseFallback } from "../../Components/SuspenseFallback/SuspenseFallback";
 
 const ArticlesEntry = ({ distinctWritersName }) => {
   const classes = useStyles();
@@ -81,7 +81,6 @@ const ArticlesEntry = ({ distinctWritersName }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [showPopup, setShowPopup] = useState(false);
   const [showPopupWriter, setShowPopupWriter] = useState(false);
-  const [progress, setProgress] = useState(0);
 
   const form = useRef();
 
@@ -107,11 +106,6 @@ const ArticlesEntry = ({ distinctWritersName }) => {
       const uploadTask = uploadBytesResumable(storageRef, selectedImage);
 
       uploadTask.then(async (snapshot) => {
-        const newProgress = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
-        setProgress(newProgress);
-
         const downloadURL = await getDownloadURL(snapshot.ref);
 
         const docRef = await addDoc(collection(db, "Articles"), {
@@ -191,11 +185,6 @@ const ArticlesEntry = ({ distinctWritersName }) => {
       const uploadTask = uploadBytesResumable(storageRef, selectedImage);
 
       uploadTask.then(async (snapshot) => {
-        const newProgress = Math.round(
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-        );
-        setProgress(newProgress);
-
         const downloadURL = await getDownloadURL(snapshot.ref);
 
         const docRef = await addDoc(collection(db, "Writers"), {
@@ -226,17 +215,7 @@ const ArticlesEntry = ({ distinctWritersName }) => {
   };
 
   if (loading) {
-    return (
-      <div className={classes.progressIndicator}>
-        <CircularProgress
-          size={60}
-          thickness={5}
-          style={{ color: "#2E3190" }}
-          value={progress}
-        />
-        <p style={{ color: "white", paddingTop: 10 }}>{progress}%</p>{" "}
-      </div>
-    );
+    return <SuspenseFallback cName="progress" />;
   }
 
   return (

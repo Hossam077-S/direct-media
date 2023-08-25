@@ -247,7 +247,7 @@ const useStyles = makeStyles(() => ({
     fontFamily: 'GE_SS_Two_L !important',
     height: '30px',
     padding :'0px 5px',
-  }
+  },
 
 }));
 

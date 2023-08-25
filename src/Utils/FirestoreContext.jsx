@@ -23,6 +23,12 @@ export const FirestoreProvider = ({ children }) => {
 
   const [latestProgram, setLatestProgram] = useState(null);
 
+  const [relatedNewsOptions, setRelatedNewsOptions] = useState([]);
+  const [distinctNewsCategory, setDistinctNewsCategory] = useState([]);
+  const [distinctProgram, setDistinctPrograms] = useState([]);
+  const [distinctPodcast, setDistinctPodcast] = useState([]);
+  const [distinctWritersName, setDistinctWritersName] = useState([]);
+
   useEffect(() => {
     const unsubscribeNews = onSnapshot(collection(db, "News"), (snapshot) => {
       const result = snapshot.docs.map((doc) => {
@@ -76,6 +82,12 @@ export const FirestoreProvider = ({ children }) => {
       setNewsData(result);
     });
 
+    return () => {
+      unsubscribeNews();
+    };
+  }, []);
+
+  useEffect(() => {
     const unsubscribeProgrames = onSnapshot(
       collection(db, "Programs"),
       async (snapshot) => {
@@ -115,6 +127,12 @@ export const FirestoreProvider = ({ children }) => {
       }
     );
 
+    return () => {
+      unsubscribeProgrames();
+    };
+  }, []);
+
+  useEffect(() => {
     const unsubscribeWriters = onSnapshot(
       collection(db, "Writers"),
       (snapshot) => {
@@ -128,6 +146,12 @@ export const FirestoreProvider = ({ children }) => {
       }
     );
 
+    return () => {
+      unsubscribeWriters();
+    };
+  }, []);
+
+  useEffect(() => {
     const unsubscribeArticles = onSnapshot(
       collection(db, "Articles"),
       (snapshot) => {
@@ -140,6 +164,12 @@ export const FirestoreProvider = ({ children }) => {
       }
     );
 
+    return () => {
+      unsubscribeArticles();
+    };
+  }, []);
+
+  useEffect(() => {
     const unsubscribePodcast = onSnapshot(
       collection(db, "PodcastEpisodes"),
       (snapshot) => {
@@ -162,11 +192,6 @@ export const FirestoreProvider = ({ children }) => {
     );
 
     return () => {
-      // UnsubscribeNews from the snapshot listener when the component unmounts
-      unsubscribeNews();
-      unsubscribeProgrames();
-      unsubscribeWriters();
-      unsubscribeArticles();
       unsubscribePodcast();
     };
   }, []);
@@ -197,6 +222,74 @@ export const FirestoreProvider = ({ children }) => {
     }
   }, [groupedProgramsData]);
 
+  useEffect(() => {
+    const unsubscribe = onSnapshot(collection(db, "News"), (snapshot) => {
+      const relatedNewsOptions = snapshot.docs.map((doc) => doc.data().Title);
+      setRelatedNewsOptions(relatedNewsOptions);
+    });
+
+    const unsubscribeCategory = onSnapshot(
+      collection(db, "Categories"),
+      (snapshot) => {
+        const Category = snapshot.docs.map((doc) => {
+          const data = doc.data();
+          return {
+            id: doc.id,
+            title: data.Name,
+          };
+        });
+        setDistinctNewsCategory(Category);
+      }
+    );
+
+    const unsubscribeProgram = onSnapshot(
+      collection(db, "Programs"),
+      (snapshot) => {
+        const programs = snapshot.docs.map((doc) => {
+          const data = doc.data();
+          return {
+            id: doc.id, // The document ID (program ID)
+            title: data.Title, // The program title
+          };
+        });
+        setDistinctPrograms(programs);
+      }
+    );
+
+    const unsubscribePodcast = onSnapshot(
+      collection(db, "Podcast"),
+      (snapshot) => {
+        const podcast = snapshot.docs.map((doc) => {
+          const data = doc.data();
+          return {
+            id: doc.id, // The document ID (program ID)
+            title: data.Title, // The program title
+          };
+        });
+        setDistinctPodcast(podcast);
+      }
+    );
+
+    const unsubscribeWriters = onSnapshot(
+      collection(db, "Writers"),
+      (snapshot) => {
+        const writersData = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          name: doc.data().Name,
+        }));
+        setDistinctWritersName(writersData);
+      }
+    );
+
+    return () => {
+      unsubscribe();
+      unsubscribeCategory();
+      unsubscribeProgram();
+      unsubscribePodcast();
+      unsubscribeWriters();
+    };
+  }, []);
+
   return (
     <FirestoreContext.Provider
       value={{
@@ -208,6 +301,12 @@ export const FirestoreProvider = ({ children }) => {
         groupedData,
         latestProgram,
         groupedProgramsData,
+
+        relatedNewsOptions,
+        distinctNewsCategory,
+        distinctProgram,
+        distinctPodcast,
+        distinctWritersName,
       }}
     >
       {children}

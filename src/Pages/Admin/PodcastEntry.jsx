@@ -25,12 +25,12 @@ import {
   TextField,
   ThemeProvider,
   createTheme,
-  CircularProgress,
   FormControl,
   InputLabel,
   Select,
   MenuItem,
 } from "@mui/material";
+import { SuspenseFallback } from "../../Components/SuspenseFallback/SuspenseFallback";
 
 const PodcastEntry = ({ distinctPodcast }) => {
   const classes = useStyles();
@@ -215,17 +215,7 @@ const PodcastEntry = ({ distinctPodcast }) => {
   };
 
   if (loading) {
-    return (
-      <div className={classes.progressIndicator}>
-        <CircularProgress
-          size={60}
-          thickness={5}
-          style={{ color: "#2E3190" }}
-          value={progress}
-        />
-        <p style={{ color: "white", paddingTop: 10 }}>{progress}%</p>{" "}
-      </div>
-    );
+    return <SuspenseFallback cName="progress" /> || progress;
   }
 
   return (

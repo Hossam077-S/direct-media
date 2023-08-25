@@ -30,8 +30,9 @@ import {
   Select,
   MenuItem,
   Autocomplete,
-  CircularProgress,
 } from "@mui/material";
+
+import { SuspenseFallback } from "../../Components/SuspenseFallback/SuspenseFallback";
 
 const NewsEntry = ({
   distinctNewsCategory,
@@ -89,7 +90,6 @@ const NewsEntry = ({
   const [selectedNews, setSelectedNews] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [isAlreadySelected, setIsAlreadySelected] = useState(false);
-  const [progress, setProgress] = useState(0);
 
   const form = useRef();
 
@@ -138,11 +138,6 @@ const NewsEntry = ({
 
       uploadTask
         .then(async (snapshot) => {
-          const newProgress = Math.round(
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100
-          );
-          setProgress(newProgress);
-
           const downloadURL = await getDownloadURL(snapshot.ref);
           return addDoc(collection(db, "News"), {
             ...formValues,
@@ -197,17 +192,7 @@ const NewsEntry = ({
   };
 
   if (loading) {
-    return (
-      <div className={classes.progressIndicator}>
-        <CircularProgress
-          size={60}
-          thickness={5}
-          style={{ color: "#2E3190" }}
-          value={progress}
-        />
-        <p style={{ color: "white", paddingTop: 10 }}>{progress}%</p>{" "}
-      </div>
-    );
+    return <SuspenseFallback cName="progress" />;
   }
 
   return (
