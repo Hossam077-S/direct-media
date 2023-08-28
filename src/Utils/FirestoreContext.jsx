@@ -29,6 +29,8 @@ export const FirestoreProvider = ({ children }) => {
   const [distinctPodcast, setDistinctPodcast] = useState([]);
   const [distinctWritersName, setDistinctWritersName] = useState([]);
 
+  const [searchNews, setSearchNews] = useState([]);
+
   useEffect(() => {
     const unsubscribeNews = onSnapshot(collection(db, "News"), (snapshot) => {
       const result = snapshot.docs.map((doc) => {
@@ -281,12 +283,24 @@ export const FirestoreProvider = ({ children }) => {
       }
     );
 
+    const unsubscribeSearch = onSnapshot(collection(db, "News"), (snapshot) => {
+      const searchNews = snapshot.docs.map((doc) => {
+        const x = doc.data();
+        x.id = doc.id;
+        return x;
+      });
+
+      setSearchNews(searchNews);
+    });
+
     return () => {
       unsubscribe();
       unsubscribeCategory();
       unsubscribeProgram();
       unsubscribePodcast();
       unsubscribeWriters();
+
+      unsubscribeSearch();
     };
   }, []);
 
@@ -307,6 +321,8 @@ export const FirestoreProvider = ({ children }) => {
         distinctProgram,
         distinctPodcast,
         distinctWritersName,
+
+        searchNews,
       }}
     >
       {children}

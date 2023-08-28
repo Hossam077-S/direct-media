@@ -1,29 +1,27 @@
 import React from "react";
-import { FaFacebook, FaInstagram, FaTwitter, FaYoutube } from "react-icons/fa";
+import { FaFacebook, FaTwitter, FaWhatsapp, FaTelegram } from "react-icons/fa";
 
 import useStyles from "./styles";
 
-const ShareButton = ({ socialMedia, url }) => {
+const ShareButton = ({ socialMedia, url, Hashtags, Title }) => {
   const classes = useStyles();
   const handleShare = () => {
-    let url = "";
+    let link = encodeURI(url);
+    let msg = encodeURIComponent(Title);
+    let hash = encodeURIComponent(Hashtags);
 
     switch (socialMedia) {
       case "facebook":
-        url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-          url
-        )}`;
-        break;
-      case "instagram":
-        url = `https://www.instagram.com/${encodeURIComponent(url)}`;
+        url = `https://www.facebook.com/share.php?u=${link}`;
         break;
       case "twitter":
-        url = `https://twitter.com/i/flow/login?redirect_after_login=${encodeURIComponent(
-          url
-        )}`;
+        url = `https://twitter.com/share?&url=${link}&text=${msg}&hashtags=${hash}`;
         break;
-      case "youtube":
-        url = `https:=${encodeURIComponent(url)}`;
+      case "whatsupp":
+        url = `https://api.whatsapp.com/send?text=${msg}%20${link}`;
+        break;
+      case "telegram":
+        url = `https://t.me/share/url?url=${link}`;
         break;
       default:
         break;
@@ -38,12 +36,12 @@ const ShareButton = ({ socialMedia, url }) => {
     switch (socialMedia) {
       case "facebook":
         return <FaFacebook />;
-      case "instagram":
-        return <FaInstagram />;
       case "twitter":
         return <FaTwitter />;
-      case "youtube":
-        return <FaYoutube />;
+      case "telegram":
+        return <FaTelegram />;
+      case "whatsupp":
+        return <FaWhatsapp />;
       default:
         return null;
     }

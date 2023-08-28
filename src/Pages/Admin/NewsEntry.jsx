@@ -100,7 +100,6 @@ const NewsEntry = ({
       setIsAlreadySelected(true);
     } else {
       setIsAlreadySelected(false);
-      // Continue with the selection logic
       if (value) {
         setSelectedNews((prevSelectedNews) => [
           ...prevSelectedNews,

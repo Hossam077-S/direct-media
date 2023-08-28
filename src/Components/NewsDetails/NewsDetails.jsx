@@ -25,6 +25,13 @@ import useStyles from "./style";
 const NewsDetails = () => {
   const classes = useStyles();
 
+  const socialMedia = [
+    { value: "facebook" },
+    { value: "twitter" },
+    { value: "telegram" },
+    { value: "whatsupp" },
+  ];
+
   const { id } = useParams();
   const [newsItem, setNewsItem] = useState({});
   const [relatedNews, setRelatedNews] = useState([]);
@@ -113,10 +120,14 @@ const NewsDetails = () => {
           <div className={classes.Date_Share}>
             <div className={classes.Date}>{formattedDate}</div>
             <div className={classes.shareButtons}>
-              <ShareButton socialMedia="facebook" url={window.location.href} />
-              <ShareButton socialMedia="instagram" url={window.location.href} />
-              <ShareButton socialMedia="youtube" url={window.location.href} />
-              <ShareButton socialMedia="twitter" url={window.location.href} />
+              {socialMedia.map((category) => (
+                <ShareButton
+                  socialMedia={category.value}
+                  url={window.location.href}
+                  Title={newsItem.Title}
+                  Hashtags={newsItem.Hashtag}
+                />
+              ))}
             </div>
           </div>
 

@@ -1,6 +1,4 @@
-import { React, useState } from "react";
-
-import { db, collection, getDocs, where, query } from "../../Utils/firebase";
+import { React, useState, useContext } from "react";
 
 import {
   AppBar,
@@ -17,9 +15,18 @@ import {
   Container,
   Dialog,
   DialogContent,
+  Autocomplete,
+  TextField,
+  ThemeProvider,
+  createTheme,
 } from "@mui/material";
 
 import { Link, NavLink } from "react-router-dom";
+
+import { CacheProvider } from "@emotion/react";
+import createCache from "@emotion/cache";
+import rtlPlugin from "stylis-plugin-rtl";
+import { prefixer } from "stylis";
 
 import { Search as SearchIcon } from "@mui/icons-material";
 import { BsFacebook, BsYoutube } from "react-icons/bs";
@@ -32,7 +39,11 @@ import logo from "../../assests/logo.gif";
 
 import useStyles from "./styles";
 
+import FirestoreContext from "../../Utils/FirestoreContext";
+
 const Header = () => {
+  const { searchNews } = useContext(FirestoreContext);
+
   const menuItems = [
     { name: "كل الأخبار", to: "/newsPage/كل الأخبار" },
     { name: "محلي", to: "/newsPage/محلي" },
@@ -50,11 +61,41 @@ const Header = () => {
     year: "numeric",
   });
 
+  const theme = createTheme({
+    direction: "rtl", // Both here and <body dir="rtl">
+    textAlign: "center",
+    palette: {
+      primary: {
+        main: "#2E3190",
+      },
+      common: {
+        white: "#ffffff",
+      },
+      background: {
+        paper: "#ffffff",
+      },
+      grey: {
+        300: "#e0e0e0",
+      },
+    },
+    typography: {
+      fontFamily: "GE_SS_TWO_L",
+      fontSize: 14,
+      fontWeightBold: 700,
+    },
+    spacing: 8, // Define your custom spacing unit here
+  });
+
+  const cacheRtl = createCache({
+    key: "muirtl",
+    stylisPlugins: [prefixer, rtlPlugin],
+    prepend: true,
+  });
+
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
-  const [searchQuery, setSearchQuery] = useState("");
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -70,76 +111,17 @@ const Header = () => {
 
   const handleClose = () => {
     setOpen(false);
-    setSearchQuery("");
     setSearchResults([]);
   };
 
   const handleSearchResultClick = () => {
     setOpen(false);
-    setSearchQuery("");
     setSearchResults([]);
   };
 
-  const handleSearchInputChange = (event) => {
-    const inputQuery = event.target.value;
-    setSearchQuery(inputQuery);
-
-    if (inputQuery.trim().length > 0) {
-      searchFunction(inputQuery);
-    } else {
-      setSearchResults([]);
-    }
-  };
-
-  const searchFunction = async (text) => {
-    try {
-      const q = text.toLowerCase();
-
-      const newsQuery = query(
-        collection(db, "News"),
-        where("Title", ">=", q),
-        where("Title", "<=", q + "\uf8ff")
-      );
-
-      const programQuery = query(
-        collection(db, "ProgramsEpisodes"),
-        where("Title", ">=", q),
-        where("Title", "<=", q + "\uf8ff")
-      );
-
-      const articleQuery = query(
-        collection(db, "Articles"),
-        where("Text", ">=", q),
-        where("Text", "<=", q + "\uf8ff")
-      );
-
-      // Execute the query and get the results
-      const newsSnapshot = await getDocs(newsQuery);
-      const newsResults = newsSnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-        type: "news",
-      }));
-
-      const programSnapshot = await getDocs(programQuery);
-      const programResults = programSnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-        type: "program",
-      }));
-
-      const articleSnapshot = await getDocs(articleQuery);
-      const articleResults = articleSnapshot.docs.map((doc) => ({
-        ...doc.data(),
-        id: doc.id,
-        type: "article",
-      }));
-
-      const allResults = [...newsResults, ...articleResults, ...programResults];
-
-      setSearchResults(allResults);
-    } catch (error) {
-      console.error("Error fetching search results:", error);
+  const handleSearchInputChange = (_, newValue) => {
+    if (newValue) {
+      window.location.href = `/news/${newValue.id}`;
     }
   };
 
@@ -189,23 +171,32 @@ const Header = () => {
                 />
               </Box>
             </Box>
-
-            {/* Dialog for the search input */}
             <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
               <DialogContent>
                 <Box className={classes.searchboxbigger} component="div">
-                  <IconButton size="large">
+                  {/* <IconButton size="large">
                     <SearchIcon className={classes.searchiconbigger} />
-                  </IconButton>
-                  <InputBase
-                    className={classes.inputbasebigger}
-                    placeholder="بحث"
-                    value={searchQuery}
-                    onChange={handleSearchInputChange}
-                  />
+                  </IconButton> */}
+                  <CacheProvider value={cacheRtl}>
+                    <ThemeProvider theme={theme}>
+                      <Autocomplete
+                        className={classes.inputbasebigger}
+                        options={searchNews}
+                        getOptionLabel={(news) => news.Title}
+                        onChange={handleSearchInputChange}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            name="RelatedNews"
+                            label="بحث"
+                            variant="outlined"
+                            className={classes.textFieldSelect}
+                          />
+                        )}
+                      />
+                    </ThemeProvider>
+                  </CacheProvider>
                 </Box>
-
-                {/* Display the search results */}
                 <Box className={classes.searchResults}>
                   {searchResults.map((result, index) => (
                     <div key={index} className={classes.searchResultItem}>
@@ -240,7 +231,6 @@ const Header = () => {
             </Dialog>
           </Toolbar>
         </Container>
-        {/* </Grid> */}
       </AppBar>
 
       {/* Menu */}

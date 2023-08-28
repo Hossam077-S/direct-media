@@ -84,15 +84,17 @@ export default makeStyles((theme) => ({
   },
 
   inputbasebigger: {
-    width: '80%',
-    height: '3vw',
+    width: '100%',
+    height: '40px',
     fontSize: '18px !important',
     fontFamily: 'GE_SS_Two_M !important',
+    marginBottom: '10px',
   },
   searchiconbigger: {
     color: '#2E3190',
     width: '30px',
     height: '30px',
+    marginRight: '10px',
   },
   searchResultLink: {
     textDecoration: 'none',
@@ -104,6 +106,17 @@ export default makeStyles((theme) => ({
       textDecoration: 'underline'
     }
   },
+  textFieldSelect: {
+    width: '100%',
+    textAlign: 'right',
+    '& .MuiInputLabel-root': {
+      fontFamily: 'GE_SS_Two_M',
+    },
+    '& .MuiInputBase-input': {
+      fontFamily: 'GE_SS_Two_M',
+    },
+  },
+  
   socialmediaiconbox: {
     flexGrow: 1,
     textAlign: 'left',
