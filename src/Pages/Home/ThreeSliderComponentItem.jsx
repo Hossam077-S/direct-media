@@ -6,6 +6,7 @@ import { Typography } from "@mui/material";
 import Dotdotdot from "react-dotdotdot";
 
 import useStyles from "./styles";
+import LazyImage from "../../Components/LazyImage/LazyImage";
 
 const getTimeDifferenceString = (publishDate) => {
   const currentTime = new Date();
@@ -31,12 +32,11 @@ const ThreeSliderComponentItem = ({ index, item, id }) => {
 
   return (
     <div key={index} className={classes.ThreeSlider}>
-      <img
+      <LazyImage
         src={item.ImageURL}
         alt={item.Title}
         className={classes.threenewsImage}
       />
-
       <div className={classes.title_description_threeSlider}>
         <Link to={"news/" + id} className={classes.LinkInnerPages}>
           <Typography gutterBottom className={classes.sliderThreeTitle}>

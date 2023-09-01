@@ -34,9 +34,13 @@ import {
 } from "@mui/material";
 
 import { SuspenseFallback } from "../../Components/SuspenseFallback/SuspenseFallback";
+import ConvertImageWebp from "./ConvertImageWebp";
+import SnackbarComponent from "../../Components/Snackbar/SnackbarComponent";
 
 const ProgramsEntry = ({ distinctProgram }) => {
   const classes = useStyles();
+
+  const { convertedImage, convertImageToWebP } = ConvertImageWebp();
 
   const theme = createTheme({
     direction: "rtl", // Both here and <body dir="rtl">
@@ -78,7 +82,7 @@ const ProgramsEntry = ({ distinctProgram }) => {
   });
 
   const [loading, setLoading] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [snackbar, setSnackbar] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [showPopupProgram, setShowPopupProgram] = useState(false);
 
@@ -87,9 +91,9 @@ const ProgramsEntry = ({ distinctProgram }) => {
   const nameRef = useRef(null);
   const descriptionRef = useRef(null);
 
-  const handleImageChange = (event) => {
+  const handleImageChange = async (event) => {
     const file = event.target.files[0];
-    setSelectedImage(file);
+    await convertImageToWebP(file, "image");
   };
 
   const handleSave = async (event) => {
@@ -125,8 +129,8 @@ const ProgramsEntry = ({ distinctProgram }) => {
         YoutubeLink: "",
         PublishDate: serverTimestamp(),
       });
-      setSelectedImage(null);
       setLoading(false);
+      setSnackbar(true);
       setShowPopup(false);
     } catch (error) {
       console.error("Error adding document: ", error);
@@ -169,7 +173,7 @@ const ProgramsEntry = ({ distinctProgram }) => {
         storage,
         `Programes_Images/${timestamp}` // Append the timestamp to the image name
       );
-      const uploadTask = uploadBytesResumable(storageRef, selectedImage);
+      const uploadTask = uploadBytesResumable(storageRef, convertedImage);
 
       uploadTask.then(async (snapshot) => {
         const downloadURL = await getDownloadURL(snapshot.ref);
@@ -184,8 +188,8 @@ const ProgramsEntry = ({ distinctProgram }) => {
 
         console.log("Document written with ID: ", docRef.id);
 
-        setSelectedImage(null);
         setLoading(false);
+        setSnackbar(true);
         setShowPopupProgram(false);
       });
     } catch (error) {
@@ -276,9 +280,9 @@ const ProgramsEntry = ({ distinctProgram }) => {
                 <div className={classes.popup}>
                   <div className={classes.previewContainer}>
                     <h2 className={classes.previewTitle}>معاينة</h2>
-                    {selectedImage && (
+                    {convertedImage && (
                       <img
-                        src={URL.createObjectURL(selectedImage)}
+                        src={URL.createObjectURL(convertedImage)}
                         alt="Selected"
                         className={classes.previewImage}
                       />
@@ -390,6 +394,12 @@ const ProgramsEntry = ({ distinctProgram }) => {
           </ThemeProvider>
         </CacheProvider>
       </form>
+      <SnackbarComponent
+        snackbar={snackbar}
+        setSnackbar={setSnackbar}
+        error={false}
+        Message={"تم التحميل بنجاح"}
+      />
     </div>
   );
 };

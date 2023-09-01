@@ -31,9 +31,14 @@ import {
   MenuItem,
 } from "@mui/material";
 import { SuspenseFallback } from "../../Components/SuspenseFallback/SuspenseFallback";
+import ConvertImageWebp from "./ConvertImageWebp";
+import SnackbarComponent from "../../Components/Snackbar/SnackbarComponent";
 
 const PodcastEntry = ({ distinctPodcast }) => {
   const classes = useStyles();
+
+  const { convertedImage, convertedCover, convertImageToWebP } =
+    ConvertImageWebp();
 
   const theme = createTheme({
     direction: "rtl", // Both here and <body dir="rtl">
@@ -74,8 +79,7 @@ const PodcastEntry = ({ distinctPodcast }) => {
   });
 
   const [loading, setLoading] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [selectedCover, setSelectedCover] = useState(null);
+  const [snackbar, setSnackbar] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [showPopupPodcast, setShowPopupPodcast] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -111,6 +115,7 @@ const PodcastEntry = ({ distinctPodcast }) => {
         PublishDate: serverTimestamp(),
       });
       setLoading(false);
+      setSnackbar(true);
       setShowPopup(false);
     } catch (error) {
       console.error("Error adding document: ", error);
@@ -133,13 +138,14 @@ const PodcastEntry = ({ distinctPodcast }) => {
     setShowPopupPodcast(false);
   };
 
-  const handleImageChange = (event) => {
+  const handleImageChange = async (event) => {
     const file = event.target.files[0];
-    setSelectedImage(file);
+    await convertImageToWebP(file, "image");
   };
-  const handleCoverChange = (event) => {
+
+  const handleCoverChange = async (event) => {
     const file = event.target.files[0];
-    setSelectedCover(file);
+    await convertImageToWebP(file, "cover");
   };
 
   const handleAddNewPodcast = () => {
@@ -169,8 +175,8 @@ const PodcastEntry = ({ distinctPodcast }) => {
         `Podcast/${coverFileName}` // Append the timestamp to the image name
       );
 
-      const uploadTask = uploadBytesResumable(ImageStorageRef, selectedImage);
-      const uploadTask2 = uploadBytesResumable(CoverStorageRef, selectedCover);
+      const uploadTask = uploadBytesResumable(ImageStorageRef, convertedImage);
+      const uploadTask2 = uploadBytesResumable(CoverStorageRef, convertedCover);
 
       uploadTask.on("state_changed", (snapshot) => {
         const newProgress = Math.round(
@@ -203,12 +209,13 @@ const PodcastEntry = ({ distinctPodcast }) => {
       });
 
       console.log("Document written with ID: ", docRef.id);
-      setSelectedImage(null);
       setLoading(false);
+      setSnackbar(true);
       setShowPopupPodcast(false);
     } catch (error) {
       console.error("Error uploading image: ", error);
       setLoading(false);
+      setSnackbar(false);
     }
 
     setShowPopupPodcast(false);
@@ -389,6 +396,12 @@ const PodcastEntry = ({ distinctPodcast }) => {
           </ThemeProvider>
         </CacheProvider>
       </form>
+      <SnackbarComponent
+        snackbar={snackbar}
+        setSnackbar={setSnackbar}
+        error={false}
+        Message={"تم التحميل بنجاح"}
+      />
     </div>
   );
 };

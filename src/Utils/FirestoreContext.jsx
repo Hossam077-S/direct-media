@@ -83,13 +83,6 @@ export const FirestoreProvider = ({ children }) => {
 
       setNewsData(result);
     });
-
-    return () => {
-      unsubscribeNews();
-    };
-  }, []);
-
-  useEffect(() => {
     const unsubscribeProgrames = onSnapshot(
       collection(db, "Programs"),
       async (snapshot) => {
@@ -128,13 +121,6 @@ export const FirestoreProvider = ({ children }) => {
         setProgramsData(programsData);
       }
     );
-
-    return () => {
-      unsubscribeProgrames();
-    };
-  }, []);
-
-  useEffect(() => {
     const unsubscribeWriters = onSnapshot(
       collection(db, "Writers"),
       (snapshot) => {
@@ -147,13 +133,6 @@ export const FirestoreProvider = ({ children }) => {
         setWritersData(result);
       }
     );
-
-    return () => {
-      unsubscribeWriters();
-    };
-  }, []);
-
-  useEffect(() => {
     const unsubscribeArticles = onSnapshot(
       collection(db, "Articles"),
       (snapshot) => {
@@ -165,13 +144,6 @@ export const FirestoreProvider = ({ children }) => {
         setArticlesData(result);
       }
     );
-
-    return () => {
-      unsubscribeArticles();
-    };
-  }, []);
-
-  useEffect(() => {
     const unsubscribePodcast = onSnapshot(
       collection(db, "PodcastEpisodes"),
       (snapshot) => {
@@ -194,6 +166,10 @@ export const FirestoreProvider = ({ children }) => {
     );
 
     return () => {
+      unsubscribeNews();
+      unsubscribeProgrames();
+      unsubscribeWriters();
+      unsubscribeArticles();
       unsubscribePodcast();
     };
   }, []);

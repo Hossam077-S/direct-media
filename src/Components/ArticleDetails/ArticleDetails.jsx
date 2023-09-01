@@ -43,9 +43,7 @@ const ArticleDetails = () => {
   return (
     <>
       <div className={classes.container}>
-        <div className={classes.Title}>
-          {writerItem?.Name} - {newsItem?.Text}{" "}
-        </div>
+        <div className={classes.Title}>{newsItem?.Text}</div>
 
         <div className={classes.Content}>
           <div className={classes.ImageDiv}>
@@ -57,6 +55,14 @@ const ArticleDetails = () => {
           </div>
           <div className={classes.Date}>{formattedDate}</div>
           <div className={classes.Description}>{newsItem?.Content}</div>
+          <div className={classes.writerSignture}>
+            <img
+              src={writerItem?.ProfileImage}
+              alt={writerItem?.Name}
+              className={classes.profileWriter}
+            />
+            <p className={classes.writerName}>{writerItem?.Name}</p>
+          </div>
         </div>
       </div>
     </>

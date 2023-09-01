@@ -602,6 +602,7 @@ const useStyles = makeStyles(() => ({
     width: '84.8px !important',
     height: '84.8px !important',
     transition: 'transform .2s',
+    borderRadius: '50%',
 
     "&:hover": {
       transform: 'scale(1.1)',

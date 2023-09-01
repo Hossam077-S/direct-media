@@ -11,7 +11,6 @@ import {
   Typography,
   Skeleton,
   ListItemAvatar,
-  Avatar,
   Divider,
   List,
   ListItem,
@@ -41,6 +40,7 @@ import ThreeSliderComponentItem from "./ThreeSliderComponentItem";
 
 import FirestoreContext from "../../Utils/FirestoreContext";
 import VideoComponent from "../../Components/VideoComponent/VideoComponent";
+import LazyImage from "../../Components/LazyImage/LazyImage";
 
 const Home = () => {
   const classes = useStyles();
@@ -355,7 +355,7 @@ const Home = () => {
                 {newsData.map((newsItem, index) => (
                   <div key={index} className={classes.sliderItem}>
                     <>
-                      <img
+                      <LazyImage
                         src={newsItem.ImageURL}
                         alt={newsItem.Title}
                         className={classes.allnewsImage}
@@ -478,8 +478,7 @@ const Home = () => {
                       className={classes.LinkInnerPages}
                       key={index}
                     >
-                      <img
-                        key={index}
+                      <LazyImage
                         src={newsItem["Image URL"]}
                         alt={newsItem.Title}
                         className={classes.programImage}
@@ -592,7 +591,7 @@ const Home = () => {
                     {newsData.map((newsItem, index) => (
                       <div key={index} className={classes.sliderItem}>
                         <>
-                          <img
+                          <LazyImage
                             src={newsItem.ImageURL}
                             alt={newsItem.Title}
                             className={classes.articleContentnewsImage}
@@ -773,7 +772,7 @@ const Home = () => {
                               </div>
 
                               <ListItemAvatar>
-                                <Avatar
+                                <LazyImage
                                   alt={writerItem.Title}
                                   src={writerItem.ProfileImage}
                                   className={classes.newsAvatar}
@@ -830,7 +829,7 @@ const Home = () => {
                 <Slider {...writersSettings}>
                   {writersData?.map((newsItem, index) => (
                     <div key={index}>
-                      <img
+                      <LazyImage
                         src={newsItem.ProfileImage}
                         alt={newsItem.Title}
                         className={classes.writerImage}
@@ -861,7 +860,7 @@ const Home = () => {
 
       <Container id="podcast" className={classes.containerDiv5}>
         <div className={classes.podcastDiv}>
-          <img
+          <LazyImage
             src={PodcastBackground}
             alt="Video"
             className={classes.podcastImage}

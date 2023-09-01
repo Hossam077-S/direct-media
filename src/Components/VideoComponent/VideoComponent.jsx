@@ -4,6 +4,7 @@ import ReactPlayer from "react-player";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow"; // Import PlayArrowIcon from @mui/icons-material
 
 import useStyles from "./styles";
+import LazyImage from "../LazyImage/LazyImage";
 
 function VideoComponent({ videoUrl, thumbnailUrl, cName }) {
   const classes = useStyles();
@@ -25,11 +26,11 @@ function VideoComponent({ videoUrl, thumbnailUrl, cName }) {
         />
       ) : (
         <div className={classes.thumbnailContainer}>
-          <img
+          <LazyImage
             src={thumbnailUrl}
             alt="Video Thumbnail"
-            onClick={handleThumbnailClick}
             className={classes[cName]}
+            onClick={handleThumbnailClick}
           />
           <div className={classes.playButtonOverlay}>
             <PlayArrowIcon

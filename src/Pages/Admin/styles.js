@@ -224,6 +224,29 @@ const useStyles = makeStyles(() => ({
       borderColor: "red",
     },
   },
+  options: {
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: "20px",
+    margin: "20px 0",
+    cursor: "pointer",
+    "& span": {
+      padding: "10px 20px",
+      borderRadius: "5px",
+      backgroundColor: "#2E3190",
+      color: "white",
+      fontSize: "18px",
+      fontFamily: "GE_SS_Two_M",
+      "&:hover": {
+        backgroundColor: "#1E237C",
+      },
+    },
+  },
+  activeOption: {
+    border: "3px solid #2E3190",
+    fontWeight: "bold",
+  },
   Tabs: {
     paddingTop: '30px',
     paddingBottom: '30px',

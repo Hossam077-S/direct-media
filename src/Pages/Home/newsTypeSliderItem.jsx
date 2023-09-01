@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Typography } from "@mui/material";
 
 import useStyles from "./styles";
+import LazyImage from "../../Components/LazyImage/LazyImage";
 
 const getTimeDifferenceString = (publishDate) => {
   const currentTime = new Date();
@@ -35,7 +36,7 @@ const NewsTypeSliderItem = ({ Item, ItemIndex }) => {
           className={classes.newsTypeSliderItems}
         >
           <div className={classes.newsTypeSliderItem}>
-            <img
+            <LazyImage
               src={newsItem.ImageURL}
               alt={newsItem.Title}
               className={classes.newsTypeSliderImage}

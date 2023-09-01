@@ -33,6 +33,8 @@ import {
 } from "@mui/material";
 
 import { SuspenseFallback } from "../../Components/SuspenseFallback/SuspenseFallback";
+import ConvertImageWebp from "./ConvertImageWebp";
+import SnackbarComponent from "../../Components/Snackbar/SnackbarComponent";
 
 const NewsEntry = ({
   distinctNewsCategory,
@@ -40,6 +42,8 @@ const NewsEntry = ({
   relatedNewsOptions,
 }) => {
   const classes = useStyles();
+
+  const { convertedImage, convertImageToWebP } = ConvertImageWebp();
 
   const theme = createTheme({
     direction: "rtl", // Both here and <body dir="rtl">
@@ -86,7 +90,7 @@ const NewsEntry = ({
   });
 
   const [loading, setLoading] = useState(false);
-  const [selectedImage, setSelectedImage] = useState(null);
+  const [snackbar, setSnackbar] = useState(false);
   const [selectedNews, setSelectedNews] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [isAlreadySelected, setIsAlreadySelected] = useState(false);
@@ -117,9 +121,9 @@ const NewsEntry = ({
     });
   };
 
-  const handleImageChange = (event) => {
+  const handleImageChange = async (event) => {
     const file = event.target.files[0];
-    setSelectedImage(file);
+    await convertImageToWebP(file, "image");
   };
 
   const handleSave = async (event) => {
@@ -133,7 +137,7 @@ const NewsEntry = ({
         storage,
         `news_images/${timestamp}` // Append the timestamp to the image name
       );
-      const uploadTask = uploadBytesResumable(storageRef, selectedImage);
+      const uploadTask = uploadBytesResumable(storageRef, convertedImage);
 
       uploadTask
         .then(async (snapshot) => {
@@ -158,8 +162,8 @@ const NewsEntry = ({
             PublishDate: new Date(),
           });
           setSelectedNews([]);
-          setSelectedImage(null);
           setLoading(false);
+          setSnackbar(true);
           setShowPopup(false);
         })
         .catch((error) => {
@@ -331,9 +335,9 @@ const NewsEntry = ({
                 <div className={classes.popup}>
                   <div className={classes.previewContainer}>
                     <h2 className={classes.previewTitle}>معاينة</h2>
-                    {selectedImage && (
+                    {convertedImage && (
                       <img
-                        src={URL.createObjectURL(selectedImage)}
+                        src={URL.createObjectURL(convertedImage)}
                         alt="Selected"
                         className={classes.previewImage}
                       />
@@ -412,6 +416,12 @@ const NewsEntry = ({
           </ThemeProvider>
         </CacheProvider>
       </form>
+      <SnackbarComponent
+        snackbar={snackbar}
+        setSnackbar={setSnackbar}
+        error={false}
+        Message={"تم التحميل بنجاح"}
+      />
     </div>
   );
 };

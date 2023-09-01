@@ -74,11 +74,10 @@ const NewsDetails = () => {
   }, [id]);
 
   useEffect(() => {
-    if (newsItem.Category) {
-      const q = query(
-        collection(db, "News"),
-        where("Category", "==", newsItem.Category)
-      );
+    if (newsItem?.Tadmin?.length > 0) {
+      const titles = newsItem?.Tadmin?.map((item) => item);
+
+      const q = query(collection(db, "News"), where("Title", "in", titles));
 
       const unsubscribeRelatedNews = onSnapshot(q, (snapshot) => {
         const result = snapshot.docs.map((doc) => {
@@ -88,12 +87,10 @@ const NewsDetails = () => {
         });
 
         setRelatedNews(result);
-
-        console.log(result);
       });
       return () => unsubscribeRelatedNews();
     }
-  }, [newsItem.Category]);
+  }, [newsItem.Tadmin]);
 
   const formattedDate = newsItem?.PublishDate?.toDate()?.toLocaleDateString(
     "ar",
@@ -146,14 +143,14 @@ const NewsDetails = () => {
           </div>
 
           {/* Display the related news section */}
-          {relatedNews.length > 0 && (
+          {relatedNews?.length > 0 && (
             <div className={classes.relatedNewsDiv}>
               <h2 className={classes.relatedNewsTitle}>الأخبار المرتبطة</h2>
 
               <div className={classes.newsTypeSlider}>
                 <ul className={classes.ul}>
                   <Slider {...newsTypesSliderSettings}>
-                    {relatedNews.map((relatedNewsItem) => (
+                    {relatedNews?.map((relatedNewsItem) => (
                       <li
                         key={relatedNewsItem.id}
                         className={classes.relatedNewsLi}

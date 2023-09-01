@@ -51,6 +51,24 @@ const useStyles = makeStyles((theme) => ({
             fontSize: '18px',
         },
     },
+
+    writerSignture: {
+        display: "flex",
+        alignItems: "center",
+        margin: '25px 0px'
+    },
+    profileWriter: {
+        width: "100px", 
+        height: "100px", 
+        borderRadius: "50%",
+        border: "3px solid #F9AE3B",
+    },
+    writerName: {
+        margin: 0,
+        fontSize: "14px", // Adjust the font size as needed
+        fontFamily: "GE_SS_Two_B !important",
+        marginRight: '10PX',
+    },
 }));
 
 export default useStyles;
