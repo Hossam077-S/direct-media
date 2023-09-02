@@ -381,11 +381,7 @@ const PodcastEntry = ({ distinctPodcast }) => {
                     <Button
                       variant="outlined"
                       onClick={handleCancel}
-                      sx={{
-                        backgroundColor: "transparent",
-                        color: "#2E3190",
-                        fontFamily: "GE_SS_Two_B !important",
-                      }}
+                      className={classes.cancelButton}
                     >
                       إلغاء
                     </Button>

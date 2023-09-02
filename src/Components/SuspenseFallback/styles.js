@@ -5,7 +5,7 @@ const useStyles = makeStyles(() => ({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: '25%'
+        minHeight: '100vh', // Ensure the spinner is centered vertically
     },
     
     spinner: {

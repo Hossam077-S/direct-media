@@ -488,9 +488,9 @@ const Home = () => {
                 </Slider>
               </div>
             ) : (
-              <Typography variant="body1" gutterBottom>
-                No programs available.
-              </Typography>
+              <div className={classes.programItems}>
+                <Skeleton variant="rectangular" height="100px" />
+              </div>
             )}
           </div>
           <div id="news" className={classes.newsTypesHeader}>
@@ -515,9 +515,9 @@ const Home = () => {
                     ))}
                   </Slider>
                 ) : (
-                  <Typography variant="body1" gutterBottom>
-                    No news available.
-                  </Typography>
+                  <div>
+                    <Skeleton variant="rectangular" height="100px" />
+                  </div>
                 )}
               </div>
             </div>
@@ -542,9 +542,9 @@ const Home = () => {
                     ))}
                   </Slider>
                 ) : (
-                  <Typography variant="body1" gutterBottom>
-                    No news available.
-                  </Typography>
+                  <div>
+                    <Skeleton variant="rectangular" height="100px" />
+                  </div>
                 )}
               </div>
             </div>
@@ -569,9 +569,9 @@ const Home = () => {
                     ))}
                   </Slider>
                 ) : (
-                  <Typography variant="body1" gutterBottom>
-                    No news available.
-                  </Typography>
+                  <div>
+                    <Skeleton variant="rectangular" height="100px" />
+                  </div>
                 )}
               </div>
             </div>
@@ -850,9 +850,9 @@ const Home = () => {
                 </Slider>
               </div>
             ) : (
-              <Typography variant="body1" gutterBottom>
-                No programs available.
-              </Typography>
+              <div className={classes.writerItems}>
+                <Skeleton variant="rectangular" height="100px" />
+              </div>
             )}
           </div>
         </div>
@@ -896,9 +896,9 @@ const Home = () => {
                 </Slider>
               </div>
             ) : (
-              <Typography variant="body1" gutterBottom>
-                No programs available.
-              </Typography>
+              <div className={classes.podcastContent}>
+                <Skeleton variant="rectangular" height="100px" />
+              </div>
             )}
           </div>
         </div>

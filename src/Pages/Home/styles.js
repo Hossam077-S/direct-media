@@ -2,16 +2,19 @@ import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles(() => ({
   container: {
-    width: "874px !important", 
+    width: "100%", 
+    maxWidth: '874px !important',
     padding: "0px !important", 
     marginTop: "23px !important",
 
     "@media (max-width: 768px)": {
       width: "90vw !important",
+      marginTop: "16px !important", // Adjust the margin as needed
+
     },
 
     "@media screen and (min-width: 768px) and (max-width: 1024px)": {
-      justifyContent: 'center',
+      width: "90vw !important",
     },
   },
   slicerDiv: {
@@ -323,6 +326,16 @@ const useStyles = makeStyles(() => ({
   
   programContainer: {
     paddingTop: '38px',
+
+    // Responsive flex direction for screens up to 768px
+    "@media (max-width: 768px)": {
+      flexDirection: 'column !important',
+    },
+
+    // Responsive justifyContent for screens between 768px and 1024px
+    "@media screen and (min-width: 768px) and (max-width: 1024px)": {
+      justifyContent: 'center',
+    },
   },
   programHeader: {
     position: 'relative',
@@ -335,17 +348,13 @@ const useStyles = makeStyles(() => ({
     position: 'absolute',
     backgroundColor: 'white',
     top:"-18px",
-    right: "45.4%",
+    left: "50%", // Center the text horizontally
+    transform: "translateX(-50%)", // Center the text horizontally
     paddingLeft: '7px',
     paddingRight: '7px',
     color: '#2E3190',
     fontSize: "23px !important",
     fontFamily: "GE_SS_Two_M !important",
-
-    "@media (max-width: 768px)": {
-      right: "34vw",
-    },
-
   },
   programSlider: {
     whiteSpace: 'nowrap', // Prevent items from wrapping to new lines
@@ -354,13 +363,11 @@ const useStyles = makeStyles(() => ({
   programItems: {
     marginTop: '27px',
     width: '100%',
-    
   },
   programImage: {
     width: "170px !important",
     height: "94.2px !important",
     
-
     "@media (max-width: 768px)": {
       width: "100% !important",
       height: "100% !important",
@@ -797,7 +804,7 @@ const useStyles = makeStyles(() => ({
 
     "@media (max-width: 768px)": {
       paddingLeft: '0px',
-      paddingBottom: '4%'
+      paddingBottom: '4%',
     },
 
     "& .slick-slider.slick-initialized":{
@@ -805,12 +812,12 @@ const useStyles = makeStyles(() => ({
       height: '258px',
 
       "@media  (max-width: 320px)": {
-        height: '110vw !important',
+        height: '100%',
       },
 
       "@media (max-width: 768px)": {
         width: '90vw',
-        height: '100vw',
+        height: '100%',
       },
 
       "@media screen and (min-width: 768px) and (max-width: 1024px)": {
@@ -828,7 +835,7 @@ const useStyles = makeStyles(() => ({
 
       "@media (max-width: 768px)": {
         bottom: "0%",
-        margin: '0px',
+        marginTop: '15px',
       },
     },
 
@@ -844,7 +851,7 @@ const useStyles = makeStyles(() => ({
         left: "unset",
         bottom: "0%",
         right: '8%',
-        marginTop: '0px'
+        marginTop: '15px'
       },
       "@media screen and (min-width: 768px) and (max-width: 1024px)": {
         right: '4%',
@@ -917,14 +924,13 @@ const useStyles = makeStyles(() => ({
 
   containerDiv3: {
     marginTop: '32px',
-    height: '89px',
-    width: '1000px !important',
-    backgroundColor: '#F0F0F0',
-
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'center',
+    overflow: 'hidden',
     
     "@media (max-width: 768px)": {
-      width: '90vw !important',
-      height: '100%',
+      height: 'auto', 
     },
   },
   videoImageDiv: {
@@ -932,10 +938,11 @@ const useStyles = makeStyles(() => ({
     justifyContent: 'center',
   },
   videoImage: {
+    width: '100%',
+    height: 'auto',
 
     "@media (max-width: 768px)": {
-      width: '90vw',
-      height: 'auto'
+      maxWidth: '100%',
     },
   },
 
@@ -945,7 +952,8 @@ const useStyles = makeStyles(() => ({
     marginTop: '74px',
   },
   writerContainer: {
-    width: '874px !important',
+    maxWidth: '874px !important',
+    width: '100%',
 
     "@media (max-width: 768px)": {
       width: '90vw !important',
@@ -962,16 +970,13 @@ const useStyles = makeStyles(() => ({
     position: 'absolute',
     backgroundColor: 'white',
     top:"-18px",
-    right: "45.4%",
+    left: "50%", // Center the text horizontally
+    transform: "translateX(-50%)", // Center the text horizontally
     paddingLeft: '7px',
     paddingRight: '7px',
     color: '#2E3190',
     fontSize: "23px !important",
     fontFamily: "GE_SS_Two_M !important",
-
-    "@media (max-width: 768px)": {
-      right: "33vw",
-    },
   },
 
   writerDetails: {
@@ -1040,8 +1045,9 @@ const useStyles = makeStyles(() => ({
     },
   },
   podcastContainer: {
-    width: '874px',
-
+    maxWidth: '874px',
+    width: '100%',
+    
     "@media (max-width: 768px)": {
       width: '90vw !important',
     },
@@ -1057,16 +1063,13 @@ const useStyles = makeStyles(() => ({
     position: 'absolute',
     backgroundColor: 'white',
     top:"-18px",
-    right: "43.5%",
+    left: "50%", // Center the text horizontally
+    transform: "translateX(-50%)", // Center the text horizontally
     paddingLeft: '7px',
     paddingRight: '7px',
     color: '#2E3190',
     fontSize: "23px !important",
     fontFamily: "GE_SS_Two_M !important",
-
-    "@media (max-width: 768px)": {
-      right: "27vw",
-    },
   },
   podcastMediaHeader: {
     marginTop: '47px',

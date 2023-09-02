@@ -236,7 +236,7 @@ const Header = () => {
       {/* Menu */}
       <Container className={classes.widthContainer}>
         <Grid container spacing={2} className={classes.gridContainer}>
-          <Grid item className={classes.gridMenu}>
+          <Grid item className={classes.menuContainer}>
             <NavLink to="/">
               <img src={logo} alt="Logo" className={classes.logoHeader} />
             </NavLink>
@@ -245,15 +245,25 @@ const Header = () => {
               flexItem
               className={classes.divider}
             />
-            <Hidden lgDown>
-              {menuItems.map((item, index) => (
-                <NavLink key={index} className={classes.linkMenu} to={item.to}>
-                  {item.name}
-                </NavLink>
-              ))}
+            <Hidden mdDown>
+              <div className={classes.menuItemsContainer}>
+                {menuItems.map((item, index) => (
+                  <NavLink
+                    key={index}
+                    className={classes.linkMenu}
+                    to={item.to}
+                  >
+                    {item.name}
+                  </NavLink>
+                ))}
+              </div>
             </Hidden>
             <Hidden mdUp>
-              <IconButton onClick={handleMenuOpen} size="large">
+              <IconButton
+                onClick={handleMenuOpen}
+                size="large"
+                className={classes.menuIcon}
+              >
                 <MenuIcon />
               </IconButton>
             </Hidden>

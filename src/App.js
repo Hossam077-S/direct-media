@@ -36,7 +36,7 @@ const [Admin] = [
 const App = () => {
   const MemoizedHome = useMemo(() => 
     // lazy(() => import('./Pages/Home/Home')), []
-    lazyWithDelay(() => import('./Pages/Home/Home'), 1600), [] // 2-second delay
+    lazyWithDelay(() => import('./Pages/Home/Home'), 1800), [] // 2-second delay
 
   );
 

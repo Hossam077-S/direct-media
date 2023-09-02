@@ -1,6 +1,6 @@
 import { makeStyles } from "@mui/styles";
 
-export default makeStyles((theme) => ({
+export default makeStyles(() => ({
   divHeader: {
     display: 'flex',
     flexDirection: 'column',
@@ -26,14 +26,7 @@ export default makeStyles((theme) => ({
 
     '@media screen and (min-width: 768px) and (max-width: 1024px)': {},
   },
-  widthContainer: {
-    width: '874px !important',
-    padding: '0px !important',
 
-    '@media (max-width: 768px)': {
-      width: '60vw !important',
-    },
-  },
   toolbar: {
     display: 'flex',
     paddingLeft: '0 !important',
@@ -182,32 +175,57 @@ export default makeStyles((theme) => ({
     color: '#2E3190 !important',
     fontSize: '13px !important',
   },
+
   //Menu
+  widthContainer: {
+    width: '874px !important',
+    padding: '0px !important',
+
+    '@media (max-width: 768px)': {
+      width: '60vw !important',
+    },
+  },
   gridContainer: {
     justifyContent: 'center',
     marginTop: '27px !important',
     marginBottom: '5px !important',
-
-    maxWidth: '874px', // Set the maximum width
-
+    maxWidth: '874px',
 
     '@media (max-width: 768px)': {
       justifyContent: 'center',
     },
   },
-  gridMenu: {
+  menuContainer: {
     display: 'flex',
     alignItems: 'center',
-    padding: '0px !important',
-
-    width: '100%', // Occupy the entire available width
-    justifyContent: 'space-between', // Space between items
+    justifyContent: 'space-between',
 
     '@media (max-width: 768px)': {
-      flexDirection: 'column', // Stack items vertically on smaller screens
+      flexDirection: 'column',
       alignItems: 'center',
     },
   },
+  menuItemsContainer: {
+    display: 'flex',
+    alignItems: 'center',
+
+    '@media (max-width: 768px)': {
+      flexDirection: 'column',
+      alignItems: 'center',
+      marginTop: '15px',
+    },
+    '@media (min-width: 769px) and (max-width: 1024px)': {
+      flexDirection: 'row',
+    },
+  },
+  menuIcon: {
+    display: 'none',
+
+    '@media (max-width: 768px)': {
+      display: 'block',
+    },
+  },
+
   divider: {
     backgroundColor: '#F9AE3B !important',
     width: '2px !important',

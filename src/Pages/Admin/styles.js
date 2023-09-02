@@ -4,10 +4,17 @@ import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles(() => ({
   container: {
-    width: "970px !important", 
+    width: "100%", // Set to 100% to make it responsive
+    maxWidth: "970px !important", // Limit maximum width for larger screens
+
     marginTop: "50px",
 
     flexgrow: 1,
+
+    "@media (max-width: 768px)": {
+      margin: "20px auto", // Adjust margin for smaller screens
+    }
+
   },
   containerDiv: {
     display: 'flex',
@@ -122,7 +129,8 @@ const useStyles = makeStyles(() => ({
     textAlign: "center",
     color: 'white',
     fontFamily: 'GE_SS_Two_M !important',
-    width: '874px',
+    maxWidth: '874px',
+    width: '100%',
     marginBottom: '10px',
   },
   imageFieldLabel2: {
@@ -148,6 +156,11 @@ const useStyles = makeStyles(() => ({
     backgroundColor: "#2E3190 !important",
     marginLeft: "8px !important",
     fontFamily: 'GE_SS_Two_M !important'
+  },
+  cancelButton: {
+    backgroundColor: "white",
+    color: "#2E3190",
+    fontFamily: "GE_SS_Two_B !important",
   },
   snackbarContent: {
     display: "flex",
@@ -196,6 +209,7 @@ const useStyles = makeStyles(() => ({
   selectedNewsTextCenter: {
     textAlign: "center !important",
   },
+
   popup: {
     position: "fixed",
     width: '100%',
@@ -218,12 +232,20 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     justifyContent: "flex-end",
     marginTop: '16px',
+
+    
+    "@media (max-width: 768px)": {
+      alignItems: 'center', 
+      marginTop: '8px', 
+    }
   },
+
   redAutocompleteInput: {
     "& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline": {
       borderColor: "red",
     },
   },
+
   options: {
     display: "flex",
     justifyContent: "center",
@@ -231,6 +253,7 @@ const useStyles = makeStyles(() => ({
     gap: "20px",
     margin: "20px 0",
     cursor: "pointer",
+
     "& span": {
       padding: "10px 20px",
       borderRadius: "5px",
@@ -253,16 +276,25 @@ const useStyles = makeStyles(() => ({
 
     "& .MuiTabs-flexContainer" : {
       justifyContent: 'center'
-    }
+    },
+
   },
   Tab: {
     fontSize: '20px !important',
     fontFamily: 'GE_SS_Two_L !important',
+
+    "@media (max-width: 768px)": {
+      fontSize: '14px !important',
+    },
   },
 
   writerItem: {
     display: 'flex',
     flexDirection: 'column',
+
+    "@media (max-width: 768px)": {
+      width: '90vw'
+    }
   },
   inputField: {
     marginBottom: '15px',

@@ -25,12 +25,11 @@
     max-height: 100% !important;
   }
 
-  @media screen and (min-width: 768px) and (max-width: 1024px) {
+  /* @media screen and (min-width: 768px) and (max-width: 1024px) {
     div#menu .MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation8 {
       right: 15rem;
     }
-
-  };
+  }; */
 
   @font-face {
     font-family: 'GE_SS_B';

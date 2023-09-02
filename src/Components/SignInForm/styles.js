@@ -2,7 +2,8 @@ import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles(() => ({
   container: {
-    width: "874px",
+    width: "100%", // Set to 100% to make it responsive
+    maxWidth: "874px", // Limit maximum width for larger screens
     margin: "130px auto",
     padding: "20px",
     backgroundColor: "#f5f5f5",
@@ -10,6 +11,11 @@ const useStyles = makeStyles(() => ({
     boxShadow: "0 2px 4px rgba(0, 0, 0, 0.1)",
     display: "flex",
     flexDirection: "column",
+
+    "@media (max-width: 768px)": {
+      margin: "50px auto",
+      padding: "10px", 
+    }
   },
   input: {
     width: "100%",
