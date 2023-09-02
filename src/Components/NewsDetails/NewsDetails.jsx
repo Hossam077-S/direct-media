@@ -75,9 +75,9 @@ const NewsDetails = () => {
 
   useEffect(() => {
     if (newsItem?.Tadmin?.length > 0) {
-      const titles = newsItem?.Tadmin?.map((item) => item);
+      const newsIDs = newsItem?.Tadmin?.map((item) => item);
 
-      const q = query(collection(db, "News"), where("Title", "in", titles));
+      const q = query(collection(db, "News"), where("NewsID", "in", newsIDs)); // Update to search by NewsID
 
       const unsubscribeRelatedNews = onSnapshot(q, (snapshot) => {
         const result = snapshot.docs.map((doc) => {

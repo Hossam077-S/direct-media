@@ -202,7 +202,10 @@ export const FirestoreProvider = ({ children }) => {
 
   useEffect(() => {
     const unsubscribe = onSnapshot(collection(db, "News"), (snapshot) => {
-      const relatedNewsOptions = snapshot.docs.map((doc) => doc.data().Title);
+      const relatedNewsOptions = snapshot.docs.map((doc) => ({
+        Title: doc.data().Title,
+        NewsID: doc.id,
+      }));
       setRelatedNewsOptions(relatedNewsOptions);
     });
 

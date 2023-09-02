@@ -175,7 +175,6 @@ const ArticlesEntry = ({ distinctWritersName }) => {
 
     // Get values from the refs
     const writerName = nameRef.current.value;
-
     const writerDesc = descRef.current.value;
 
     try {

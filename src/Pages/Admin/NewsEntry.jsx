@@ -8,6 +8,8 @@ import {
   ref,
   uploadBytesResumable,
   getDownloadURL,
+  updateDoc,
+  doc,
 } from "../../Utils/firebase";
 
 import { CacheProvider } from "@emotion/react";
@@ -107,7 +109,7 @@ const NewsEntry = ({
       if (value) {
         setSelectedNews((prevSelectedNews) => [
           ...prevSelectedNews,
-          { id: v4(), value: value },
+          { id: v4(), value: value.Title, NewsID: value.NewsID }, // Store both Title and NewsID
         ]);
       }
     }
@@ -142,14 +144,19 @@ const NewsEntry = ({
       uploadTask
         .then(async (snapshot) => {
           const downloadURL = await getDownloadURL(snapshot.ref);
-          return addDoc(collection(db, "News"), {
+
+          const docRef = await addDoc(collection(db, "News"), {
             ...formValues,
-            Tadmin: [...selectedNews.map((news) => news.value)],
+            Tadmin: [...selectedNews.map((news) => news.NewsID)],
             ImageURL: downloadURL,
           });
-        })
-        .then((docRef) => {
+
+          await updateDoc(doc(db, "News", docRef.id), {
+            NewsID: docRef.id,
+          });
+
           console.log("Document written with ID: ", docRef.id);
+
           setFormValues({
             Title: "",
             Description: "",
@@ -261,6 +268,7 @@ const NewsEntry = ({
                   }`}
                   options={relatedNewsOptions}
                   onChange={handleRelatedNewsSelect}
+                  getOptionLabel={(option) => option.Title} // Display the Title in the input
                   renderInput={(params) => (
                     <TextField
                       {...params}
