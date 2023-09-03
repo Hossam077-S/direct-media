@@ -51,6 +51,7 @@ const useStyles = makeStyles(() => ({
   previewTitle: {
     fontSize: "1.5rem",
     fontWeight: "bold",
+    color: 'white',
     marginBottom: '16px',
     fontFamily: 'GE_SS_Two_M !important'
   },

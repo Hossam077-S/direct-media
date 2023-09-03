@@ -107,7 +107,7 @@ const Admin = () => {
           </Tabs>
 
           {selectedAction === "إضافة" && <InsertForm {...insertFormProps} />}
-          {selectedAction === "تعديل" && <UpdateForm />}
+          {selectedAction === "تعديل" && <UpdateForm {...insertFormProps} />}
           {selectedAction === "حذف" && <DeleteForm />}
         </Container>
       ) : (

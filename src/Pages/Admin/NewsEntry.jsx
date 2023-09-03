@@ -405,7 +405,7 @@ const NewsEntry = ({
                       onClick={handleSave}
                       className={classes.saveButton}
                     >
-                      Save
+                      حفظ
                     </Button>
                     <Button
                       variant="outlined"
@@ -415,7 +415,7 @@ const NewsEntry = ({
                         color: "#2E3190",
                       }}
                     >
-                      Cancel
+                      إلغاء
                     </Button>
                   </div>
                 </div>
