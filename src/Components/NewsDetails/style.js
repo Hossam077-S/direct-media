@@ -57,6 +57,7 @@ const useStyles = makeStyles(() => ({
     },
     VideoDiv: {
       paddingTop: '10px',  
+      height: '54vw'
     },
     youtubeVideo: {
        width: '100% !important',
@@ -69,11 +70,6 @@ const useStyles = makeStyles(() => ({
        "@media (max-width: 768px)": {
         height: '100% !important',
        },
-      },
-    
-      "@media (max-width: 768px)": {
-       width: '90vw',
-       height: '100%',
       },
     },
 

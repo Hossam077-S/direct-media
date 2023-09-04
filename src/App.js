@@ -1,6 +1,9 @@
 import React, {useState, useEffect, Suspense, lazy, useMemo } from 'react';
 import { Routes, Route } from 'react-router-dom';
 
+import Cookies from 'js-cookie';
+
+
 import CookieConsent from "react-cookie-consent";
 import { lazyWithDelay } from './Utils/delayAndExecute'; // Import the utility functions
 
@@ -43,8 +46,9 @@ const App = () => {
   const [showCookieConsent, setShowCookieConsent] = useState(true);
 
   useEffect(() => {
-    const accepted = localStorage.getItem("cookieConsentAccepted");
-    if (accepted === "true") {
+    const myCookieValue = Cookies.get('useCookies');
+
+    if (myCookieValue) {
       setShowCookieConsent(false);
     }
 
@@ -52,7 +56,8 @@ const App = () => {
 
   const handleAcceptCookie = () => {
     setShowCookieConsent(false);
-    localStorage.setItem("cookieConsentAccepted", "true");
+    Cookies.set('useCookies', 'true');
+
   };
 
   return (
@@ -85,16 +90,11 @@ const App = () => {
         {showCookieConsent && (
           <CookieConsent
             debug={true}
-            location="bottom"
+            location="none"
             buttonText="نعم موافق"
-            cookieName="myAwesomeCookieName2"
-            style={{
-              background: "#FBAE3C",
-              fontFamily: "GE_SS_Two_M",
-              fontSize: "16px",
-              textAlign: "center",
-              lineHeight: "2",
-            }}
+            cookieName="useCookies"
+            overlay
+            overlayClasses="overlayclass"
             buttonStyle={{
               color: "white",
               background: "#2E3190",
@@ -112,7 +112,7 @@ const App = () => {
             </p>
           </CookieConsent>
 
-      )}
+        )}
     </Suspense>
   );
 };

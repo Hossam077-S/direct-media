@@ -79,7 +79,8 @@ const Admin = () => {
             >
               إضافة
             </span>
-            <span
+            {/* Need to be handle later */}
+            {/* <span
               className={selectedAction === "تعديل" ? classes.activeOption : ""}
               onClick={() => handleActionClick("تعديل")}
             >
@@ -90,7 +91,7 @@ const Admin = () => {
               onClick={() => handleActionClick("حذف")}
             >
               حذف
-            </span>
+            </span> */}
           </div>
 
           <Tabs

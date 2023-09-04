@@ -28,7 +28,7 @@ import PodcastBackground from "../../assests/PodcastBackground.gif";
 import arrowRColored from "../../assests/arrowRColored.gif";
 import arrowLColored from "../../assests/arrowLColored.gif";
 
-import videoDirectMedia from "../../assests/DirectMediaVideo.mp4";
+import videoDirectMedia from "../../assests/DMV.gif";
 
 import useStyles from "./styles";
 
@@ -796,16 +796,11 @@ const Home = () => {
       </div>
 
       <Container className={classes.containerDiv3}>
-        {" "}
         <div className={classes.videoImageDiv}>
-          <video
+          <img
             src={videoDirectMedia}
-            type="video/mp4"
-            alt="Video"
+            alt="GIF"
             className={classes.videoImage}
-            loop={true}
-            autoPlay={true}
-            muted // Add the muted attribute
           />
         </div>
       </Container>

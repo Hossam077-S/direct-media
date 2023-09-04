@@ -231,7 +231,7 @@ const useStyles = makeStyles(() => ({
 
     "@media (max-width: 768px)": {
       width: "90vw",
-      height: "118vw",
+      height: "auto",
     },
     
   },
@@ -752,7 +752,7 @@ const useStyles = makeStyles(() => ({
 
     "@media (max-width: 768px)": {
       width: "90vw",
-      height: "90vw",
+      height: "auto",
     },
   },
   title_dividerArticl: {
@@ -1030,8 +1030,8 @@ const useStyles = makeStyles(() => ({
   },
   podcastImage: {
     "@media (max-width: 768px)": {
-      width: '90vw',
-      height: '40vw',
+      width: '100%',
+      height: 'auto',
     },
   },
 
