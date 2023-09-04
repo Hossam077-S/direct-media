@@ -1,16 +1,14 @@
 import React, {useState, useEffect, Suspense, lazy, useMemo } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 
 import Cookies from 'js-cookie';
 
-
 import CookieConsent from "react-cookie-consent";
-import { lazyWithDelay } from './Utils/delayAndExecute'; // Import the utility functions
+import { lazyWithDelay } from './Utils/delayAndExecute';
 
 import { SuspenseFallback } from './Components/SuspenseFallback/SuspenseFallback';
 
 import './App.css';
-
 
 const [Header, Footer, NewsPage, NewsDetails, ProgramDetails, Writers, WriterDetails, ArticleDetails, PodcastDetails, Programs, Podcast ] = [
   'Header',
@@ -28,21 +26,22 @@ const [Header, Footer, NewsPage, NewsDetails, ProgramDetails, Writers, WriterDet
   lazy(() => import(`./Components/${component}/${component}`))
 );
 
-const [Admin] = [
+const [Admin, PrivacyPolicy] = [
   'Admin',
+  'PrivacyPolicy',
 ].map((page) =>
   // lazy(() => import(`./Pages/${page}/${page}`))
-  lazyWithDelay(() => import(`./Pages/${page}/${page}`), 2000) // 2-second delay
+  lazyWithDelay(() => import(`./Pages/${page}/${page}`), 2000)
 
 );
 
 const App = () => {
   const MemoizedHome = useMemo(() => 
-    // lazy(() => import('./Pages/Home/Home')), []
-    lazyWithDelay(() => import('./Pages/Home/Home'), 1800), [] // 2-second delay
+    lazyWithDelay(() => import('./Pages/Home/Home'), 2000), []
 
   );
 
+  const location = useLocation();
   const [showCookieConsent, setShowCookieConsent] = useState(true);
 
   useEffect(() => {
@@ -57,8 +56,11 @@ const App = () => {
   const handleAcceptCookie = () => {
     setShowCookieConsent(false);
     Cookies.set('useCookies', 'true');
-
   };
+
+    // Check if the user is on the PrivacyPolicy page
+    const decodedPathname = decodeURIComponent(location.pathname);
+    const isPrivacyPolicyPage = decodedPathname === '/سياسة-الخصوصية';
 
   return (
     <Suspense 
@@ -75,6 +77,7 @@ const App = () => {
 
           {/* Other routes */}
           <Route path="/admin" element={<Admin />} />
+          <Route path="/سياسة-الخصوصية" element={<PrivacyPolicy />} />
           <Route path="/newsPage/:category?" element={<NewsPage />} />
           <Route path="/news/:id" element={<NewsDetails />} />
           <Route path="/program/:id" element={<Programs />} />
@@ -87,7 +90,7 @@ const App = () => {
         </Routes>
       </div>
         <Footer />
-        {showCookieConsent && (
+        {showCookieConsent && !isPrivacyPolicyPage && (
           <CookieConsent
             debug={true}
             location="none"
@@ -108,7 +111,7 @@ const App = () => {
           >
             <p>
               موقعنا يستخدم ملفات تعريف الارتباط لتحسين تجربتك. باستخدام هذا الموقع، فإنك توافق على سياسة ملفات تعريف الارتباط.
-              <a href="/سياسة-الخصوصية">اطّلع على سياسة الخصوصية</a> لمعرفة المزيد.
+              <a href="/سياسة-الخصوصية" target="_blank">اطّلع على سياسة الخصوصية</a> لمعرفة المزيد.
             </p>
           </CookieConsent>
 
