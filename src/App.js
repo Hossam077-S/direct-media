@@ -55,7 +55,7 @@ const App = () => {
 
   const handleAcceptCookie = () => {
     setShowCookieConsent(false);
-    Cookies.set('useCookies', 'true');
+    Cookies.set('useCookies', 'true', { expires: 360 });
   };
 
     // Check if the user is on the PrivacyPolicy page
@@ -93,11 +93,9 @@ const App = () => {
         {showCookieConsent && !isPrivacyPolicyPage && (
           <CookieConsent
             debug={true}
-            location="none"
+            location="bottom"
             buttonText="نعم موافق"
             cookieName="useCookies"
-            overlay
-            overlayClasses="overlayclass"
             buttonStyle={{
               color: "white",
               background: "#2E3190",
