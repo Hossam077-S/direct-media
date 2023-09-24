@@ -39,6 +39,8 @@ export const FirestoreProvider = ({ children }) => {
         return x;
       });
 
+      result.sort((a, b) => b.PublishDate.toDate() - a.PublishDate.toDate());
+
       const ImportantNews = result.filter((m) => m.Category === "خبر عاجل");
       const pressNews = result.filter((m) => m.Category === "صحافة");
       const localNews = result.filter((m) => m.Category === "محلي");
@@ -72,11 +74,11 @@ export const FirestoreProvider = ({ children }) => {
       }
 
       setGrouppedData({
-        press: groupedPressNews,
+        press: groupedPressNews.reverse(),
         press2: groupedPressNews2,
-        local: groupedLocalNews,
+        local: groupedLocalNews.reverse(),
         local2: groupedLocalNews2,
-        inter: groupedInternationalNews,
+        inter: groupedInternationalNews.reverse(),
         inter2: groupedInternationalNews2,
         important: groupedImportantNews,
       });
@@ -161,6 +163,9 @@ export const FirestoreProvider = ({ children }) => {
 
           return x;
         });
+
+        result.sort((a, b) => b.PublishDate.toDate() - a.PublishDate.toDate());
+
         setPodcastData(result);
       }
     );

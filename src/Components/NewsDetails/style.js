@@ -18,6 +18,15 @@ const useStyles = makeStyles(() => ({
             fontSize: '28px',
         },
     },
+    Hashtag:{
+        fontSize: '14px',
+        fontFamily: "GE_SS_Two_B",
+        color: '#2E3190',
+        paddingBottom: '10px',
+        "@media (max-width: 768px)": {
+            fontSize: '12px',
+        },
+    },
     Date_Share: {
         display: 'flex',
         flexDirection: 'row',
@@ -55,22 +64,18 @@ const useStyles = makeStyles(() => ({
             fontSize: '18px',
         },
     },
-    VideoDiv: {
-      paddingTop: '10px',  
-      height: '54vw'
+    videoDiv: {
+        position: 'relative',
+        overflow: 'hidden',
+        paddingTop: '56.25%', /* 16:9 Aspect Ratio (9 / 16 * 100) */
     },
     youtubeVideo: {
-       width: '100% !important',
-       height: '100% !important',
-
-      "& iframe": {
-       width: "100% !important",
-       height: '30vw !important',
-
-       "@media (max-width: 768px)": {
-        height: '100% !important',
-       },
-      },
+        width: '100% !important',
+        '& iframe': {
+          width: '100%',
+          height: '100%',
+          border: 'none', // Remove iframe border
+        },
     },
 
     relatedNewsDiv: {

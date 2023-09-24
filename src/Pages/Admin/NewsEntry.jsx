@@ -100,7 +100,9 @@ const NewsEntry = ({
   const form = useRef();
 
   const handleRelatedNewsSelect = (event, value) => {
-    const isAlreadySelected = selectedNews.some((news) => news.value === value);
+    const isAlreadySelected = selectedNews.some(
+      (news) => news?.NewsID === value?.NewsID
+    );
 
     if (isAlreadySelected) {
       setIsAlreadySelected(true);

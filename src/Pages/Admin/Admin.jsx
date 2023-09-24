@@ -110,7 +110,7 @@ const Admin = () => {
 
           {selectedAction === "إضافة" && <InsertForm {...insertFormProps} />}
           {selectedAction === "تعديل" && <UpdateForm {...insertFormProps} />}
-          {selectedAction === "حذف" && <DeleteForm />}
+          {selectedAction === "حذف" && <DeleteForm {...insertFormProps} />}
         </Container>
       ) : (
         <SignInForm setLogin={setLogin} />

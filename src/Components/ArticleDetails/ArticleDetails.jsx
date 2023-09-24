@@ -4,6 +4,7 @@ import { useLocation, useParams } from "react-router-dom";
 import { db, getDoc, doc } from "../../Utils/firebase";
 
 import useStyles from "./style";
+import TimeDifferenceComponent from "../TimeDifference/TimeDifferenceComponent";
 
 const ArticleDetails = () => {
   const location = useLocation();
@@ -26,16 +27,6 @@ const ArticleDetails = () => {
     setLoading(false);
   }, [id]);
 
-  const formattedDate = newsItem?.PublishDate?.toDate()?.toLocaleDateString(
-    "ar",
-    {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    }
-  );
-
   if (loading) {
     return <div className={classes.container}>Loading...</div>;
   }
@@ -53,7 +44,15 @@ const ArticleDetails = () => {
               className={classes.newsDetailsImage}
             />
           </div>
-          <div className={classes.Date}>{formattedDate}</div>
+          <div className={classes.Date}>
+            {newsItem.PublishDate instanceof Date ? (
+              <TimeDifferenceComponent
+                publishDate={newsItem.PublishDate.toDate()}
+              />
+            ) : (
+              <TimeDifferenceComponent publishDate={newsItem.PublishDate} />
+            )}
+          </div>
           <div className={classes.Description}>{newsItem?.Content}</div>
           <div className={classes.writerSignture}>
             <img

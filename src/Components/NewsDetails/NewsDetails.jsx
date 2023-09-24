@@ -21,6 +21,7 @@ import ReactPlayer from "react-player";
 import ShareButton from "../../Components/ShareButton/ShareButton";
 
 import useStyles from "./style";
+import TimeDifferenceComponent from "../TimeDifference/TimeDifferenceComponent";
 
 const NewsDetails = () => {
   const classes = useStyles();
@@ -77,7 +78,7 @@ const NewsDetails = () => {
     if (newsItem?.Tadmin?.length > 0) {
       const newsIDs = newsItem?.Tadmin?.map((item) => item);
 
-      const q = query(collection(db, "News"), where("NewsID", "in", newsIDs)); // Update to search by NewsID
+      const q = query(collection(db, "News"), where("NewsID", "in", newsIDs));
 
       const unsubscribeRelatedNews = onSnapshot(q, (snapshot) => {
         const result = snapshot.docs.map((doc) => {
@@ -90,22 +91,13 @@ const NewsDetails = () => {
       });
       return () => unsubscribeRelatedNews();
     }
-  }, [newsItem.Tadmin]);
-
-  const formattedDate = newsItem?.PublishDate?.toDate()?.toLocaleDateString(
-    "ar",
-    {
-      weekday: "long",
-      day: "numeric",
-      month: "long",
-      year: "numeric",
-    }
-  );
+  }, [newsItem]);
 
   return (
     <>
       <div className={classes.container}>
         <div className={classes.Title}>{newsItem?.Title} </div>
+        <div className={classes.Hashtag}>{newsItem?.Hashtag} </div>
         <div className={classes.Content}>
           <div className={classes.ImageDiv}>
             <img
@@ -115,7 +107,15 @@ const NewsDetails = () => {
             />
           </div>
           <div className={classes.Date_Share}>
-            <div className={classes.Date}>{formattedDate}</div>
+            <div className={classes.Date}>
+              {newsItem?.PublishDate instanceof Date ? (
+                <TimeDifferenceComponent
+                  publishDate={newsItem?.PublishDate?.toDate()}
+                />
+              ) : (
+                <TimeDifferenceComponent publishDate={newsItem?.PublishDate} />
+              )}
+            </div>
             <div className={classes.shareButtons}>
               {socialMedia.map((category) => (
                 <ShareButton
@@ -166,7 +166,10 @@ const NewsDetails = () => {
                           <Link
                             to={`/news/${relatedNewsItem.id}`}
                             className={classes.relatedNewsLink}
-                            onClick={() => window.scrollTo(0, 0)}
+                            onClick={() => {
+                              window.scrollTo(0, 0);
+                              setRelatedNews([]);
+                            }}
                           >
                             <h3 className={classes.relatedTitle}>
                               {relatedNewsItem.Title}
@@ -176,7 +179,16 @@ const NewsDetails = () => {
                             {relatedNewsItem.Description}
                           </p>
                           <p className={classes.relatedDate}>
-                            {relatedNewsItem.PublishDate.toDate().toLocaleDateString(
+                            {relatedNewsItem.PublishDate instanceof Date ? (
+                              <TimeDifferenceComponent
+                                publishDate={relatedNewsItem.PublishDate.toDate()}
+                              />
+                            ) : (
+                              <TimeDifferenceComponent
+                                publishDate={relatedNewsItem.PublishDate}
+                              />
+                            )}
+                            {/* {relatedNewsItem.PublishDate.toDate().toLocaleDateString(
                               "ar",
                               {
                                 weekday: "long",
@@ -184,7 +196,7 @@ const NewsDetails = () => {
                                 month: "long",
                                 year: "numeric",
                               }
-                            )}
+                            )} */}
                           </p>
                         </div>
                       </li>

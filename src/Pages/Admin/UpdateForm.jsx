@@ -330,7 +330,6 @@ const UpdateForm = (insertFormProps) => {
               </CacheProvider>
             </form>
           </div>
-
           <SnackbarComponent
             snackbar={snackbar}
             setSnackbar={setSnackbar}

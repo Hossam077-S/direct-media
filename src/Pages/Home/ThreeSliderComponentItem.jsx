@@ -7,25 +7,7 @@ import Dotdotdot from "react-dotdotdot";
 
 import useStyles from "./styles";
 import LazyImage from "../../Components/LazyImage/LazyImage";
-
-const getTimeDifferenceString = (publishDate) => {
-  const currentTime = new Date();
-  const timeDifference = currentTime - publishDate;
-  const minutesDifference = Math.round(timeDifference / (1000 * 60));
-  const hoursDifference = Math.round(minutesDifference / 60);
-
-  if (hoursDifference >= 24) {
-    return publishDate.toDate().toLocaleDateString("ar", {
-      day: "numeric",
-      month: "numeric",
-      year: "numeric",
-    });
-  } else if (hoursDifference >= 1) {
-    return `منذ ${hoursDifference} ساعة`;
-  } else {
-    return `منذ ${minutesDifference} دقيقة`;
-  }
-};
+import TimeDifferenceComponent from "../../Components/TimeDifference/TimeDifferenceComponent";
 
 const ThreeSliderComponentItem = ({ index, item, id }) => {
   const classes = useStyles();
@@ -50,9 +32,11 @@ const ThreeSliderComponentItem = ({ index, item, id }) => {
         </Typography>
         <Typography gutterBottom className={classes.sliderThreeTypeAndDate}>
           {item.Category} -{" "}
-          {item.PublishDate instanceof Date
-            ? getTimeDifferenceString(item.PublishDate.toDate())
-            : getTimeDifferenceString(item.PublishDate)}
+          {item.PublishDate instanceof Date ? (
+            <TimeDifferenceComponent publishDate={item.PublishDate.toDate()} />
+          ) : (
+            <TimeDifferenceComponent publishDate={item.PublishDate} />
+          )}
         </Typography>
       </div>
     </div>

@@ -173,10 +173,11 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     flexWrap: "wrap",
     alignItems: "center",
+    marginTop: "10px", // Add some top margin for spacing
   },
   selectedNewsItem: {
     backgroundColor: "#2E3190",
-    borderRadius: '8%',
+    borderRadius: '2%',
     padding: '8px',
     marginBottom: '12px',
     marginLeft: 5,
@@ -189,13 +190,18 @@ const useStyles = makeStyles(() => ({
     transition: "transform 0.8s",
     transformStyle: "preserve-3d",
     perspective: "1000px",
+    minWidth: "100px", // Set a minimum width for each selected news item
+    flex: "0 0 auto", // Allow items to shrink on smaller screens
+
   },
   selectedNewsText: {
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
-    maxWidth: "120px", // Adjust the maximum width as needed
+    maxWidth: "100%", // Adjust the maximum width as needed
     backfaceVisibility: "hidden",
+    textAlign: "center", // Center the text
+
   },
   selectedNewsItemHover: {
     "&:hover": {
