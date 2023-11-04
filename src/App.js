@@ -37,8 +37,7 @@ const [Admin, PrivacyPolicy] = [
 
 const App = () => {
   const MemoizedHome = useMemo(() => 
-    lazy(() => import(`./Pages/Home/Home`))
-    // lazyWithDelay(() => import('./Pages/Home/Home'), 2000), []
+    lazyWithDelay(() => import('./Pages/Home/Home'), 1000), []
 
   );
 

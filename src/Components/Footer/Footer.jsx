@@ -80,6 +80,9 @@ const Footer = () => {
                 </React.Fragment>
               ))}
             </Typography>
+            <Link to="/admin" className={classes.menuLink}>
+              - تسجيل الدخول
+            </Link>
           </div>
         </div>
         <div className={classes.botFooter}>
