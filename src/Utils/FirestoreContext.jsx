@@ -24,6 +24,8 @@ export const FirestoreProvider = ({ children }) => {
   const [latestProgram, setLatestProgram] = useState(null);
 
   const [relatedNewsOptions, setRelatedNewsOptions] = useState([]);
+  const [articlesOptions, setArticlesOptions] = useState([]);
+
   const [distinctNewsCategory, setDistinctNewsCategory] = useState([]);
   const [distinctProgram, setDistinctPrograms] = useState([]);
   const [distinctPodcast, setDistinctPodcast] = useState([]);
@@ -154,17 +156,23 @@ export const FirestoreProvider = ({ children }) => {
           x.id = doc.id;
 
           if (x.YouTubeURL) {
-            const videoUrl = new URL(x?.YouTubeURL);
-
-            const videoId = videoUrl?.searchParams.get("v");
-
-            x.thumbnailUrl = `https://img.youtube.com/vi/${videoId}/sddefault.jpg`;
+            try {
+              const videoUrl = new URL(x?.YouTubeURL);
+              const videoId = videoUrl.searchParams.get("v");
+              x.thumbnailUrl = `https://img.youtube.com/vi/${videoId}/sddefault.jpg`;
+            } catch (error) {
+              console.error("Error parsing YouTube URL:", error);
+            }
           }
 
           return x;
         });
 
-        result.sort((a, b) => b.PublishDate.toDate() - a.PublishDate.toDate());
+        result.sort((a, b) => {
+          const dateA = a.PublishDate ? a.PublishDate.toDate() : new Date(0);
+          const dateB = b.PublishDate ? b.PublishDate.toDate() : new Date(0);
+          return dateB - dateA;
+        });
 
         setPodcastData(result);
       }
@@ -206,13 +214,24 @@ export const FirestoreProvider = ({ children }) => {
   }, [groupedProgramsData]);
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "News"), (snapshot) => {
+    const unsubscribeNews = onSnapshot(collection(db, "News"), (snapshot) => {
       const relatedNewsOptions = snapshot.docs.map((doc) => ({
         Title: doc.data().Title,
         NewsID: doc.id,
       }));
       setRelatedNewsOptions(relatedNewsOptions);
     });
+
+    const unsubscribeArticles = onSnapshot(
+      collection(db, "Articles"),
+      (snapshot) => {
+        const ArticleOptions = snapshot.docs.map((doc) => ({
+          Title: doc.data().Text,
+          ArticleID: doc.id,
+        }));
+        setArticlesOptions(ArticleOptions);
+      }
+    );
 
     const unsubscribeCategory = onSnapshot(
       collection(db, "Categories"),
@@ -278,7 +297,8 @@ export const FirestoreProvider = ({ children }) => {
     });
 
     return () => {
-      unsubscribe();
+      unsubscribeNews();
+      unsubscribeArticles();
       unsubscribeCategory();
       unsubscribeProgram();
       unsubscribePodcast();
@@ -301,6 +321,7 @@ export const FirestoreProvider = ({ children }) => {
         groupedProgramsData,
 
         relatedNewsOptions,
+        articlesOptions,
         distinctNewsCategory,
         distinctProgram,
         distinctPodcast,

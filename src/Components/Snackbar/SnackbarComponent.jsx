@@ -25,7 +25,7 @@ const SnackbarComponent = ({
 
   return (
     <div>
-      <Snackbar open={snackbar} autoHideDuration={4000} onClose={handleClose}>
+      <Snackbar open={snackbar} autoHideDuration={2000} onClose={handleClose}>
         <Alert
           onClose={handleClose}
           severity={error ? "error" : "success"}

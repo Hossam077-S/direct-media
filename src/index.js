@@ -7,12 +7,15 @@ import App from './App';
 import './index.css';
 
 import { FirestoreProvider } from './Utils/FirestoreContext';
+// import RootComponent from './RootComponent';
 
 ReactDOM.render( 
   <Router>
-    <FirestoreProvider>
-      <App /> 
-    </FirestoreProvider>
+    {/* <RootComponent> */}
+      <FirestoreProvider>
+        <App /> 
+      </FirestoreProvider>
+    {/* </RootComponent> */}
   </Router>,
   document.getElementById('root')
 );

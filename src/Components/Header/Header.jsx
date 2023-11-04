@@ -30,7 +30,7 @@ import { prefixer } from "stylis";
 
 import { Search as SearchIcon } from "@mui/icons-material";
 import { BsFacebook, BsYoutube } from "react-icons/bs";
-import { AiFillTwitterCircle } from "react-icons/ai";
+import { FaXTwitter } from "react-icons/fa6";
 import { FaInstagram, FaTiktok } from "react-icons/fa";
 
 import MenuIcon from "@mui/icons-material/Menu";
@@ -140,19 +140,57 @@ const Header = () => {
 
             {/* Social Media Icons */}
             <Box className={classes.socialmediaiconbox}>
-              <IconButton className={classes.fButton} size="large">
+              <IconButton
+                className={classes.fButton}
+                size="large"
+                onClick={() =>
+                  window.open(
+                    "https://www.facebook.com/directmedialb?mibextid=LQQJ4d/"
+                  )
+                }
+              >
                 <BsFacebook className={classes.fIcon} />
               </IconButton>
-              <IconButton className={classes.IButton} size="large">
+              <IconButton
+                className={classes.IButton}
+                size="large"
+                onClick={() =>
+                  window.open(
+                    "https://www.instagram.com/directmlb/?igshid=OGQ5ZDc2ODk2ZA%3D%3D/"
+                  )
+                }
+              >
                 <FaInstagram className={classes.IIcon} />
               </IconButton>
-              <IconButton size="large">
-                <AiFillTwitterCircle className={classes.TWIcon} />
+              <IconButton
+                className={classes.TWButton}
+                size="large"
+                onClick={() =>
+                  window.open("https://twitter.com/directMdLb?s=20")
+                }
+              >
+                <FaXTwitter className={classes.TWIcon} />
               </IconButton>
-              <IconButton className={classes.TButton} size="large">
+              <IconButton
+                className={classes.TButton}
+                size="large"
+                onClick={() =>
+                  window.open(
+                    "https://www.tiktok.com/@directmedialeb?_t=8gwxHijGGwh&_r=1"
+                  )
+                }
+              >
                 <FaTiktok className={classes.TIcon} />
               </IconButton>
-              <IconButton className={classes.YButton} size="large">
+              <IconButton
+                className={classes.YButton}
+                size="large"
+                onClick={() =>
+                  window.open(
+                    "https://youtube.com/@directmedialb6728?si=W_PJ_wCQqcE0gjSD"
+                  )
+                }
+              >
                 <BsYoutube className={classes.YIcon} />
               </IconButton>
             </Box>

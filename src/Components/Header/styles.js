@@ -138,12 +138,17 @@ export default makeStyles(() => ({
   },
   //Social Media Icon
   fButton: {
-    marginLeft: '4px !important',
+    marginLeft: '0px',
   },
   IButton: {
     backgroundColor: 'white !important',
     padding: '4px !important',
     marginleft: '2px !important',
+  },
+  TWButton: {
+    backgroundColor: 'white !important',
+    padding: '2px !important',
+    margin: '10px !important',
   },
   TButton: {
     backgroundColor: 'white !important',
@@ -163,9 +168,8 @@ export default makeStyles(() => ({
     fontSize: '13px !important',
   },
   TWIcon: {
-    fontSize: '24px !important',
-    color: 'white !important',
-    marginLeft: '2px !important',
+    fontSize: '18px !important',
+    color: '#2E3190 !important',
   },
   TIcon: {
     color: '#2E3190 !important',

@@ -102,7 +102,7 @@ const useStyles = makeStyles(() => ({
         
     },
     fButton:{
-        marginLeft: "1px !important",
+        marginLeft: "0px",
     },
     IButton:{
         backgroundColor: "white !important",
@@ -118,6 +118,11 @@ const useStyles = makeStyles(() => ({
         marginRight: "9px !important",
         padding: "3.2px !important",
     },
+    TWButton:{
+        backgroundColor: 'white !important',
+        padding: '2px !important',
+        margin: '10px !important',
+    },
     fIcon:{
         fontSize: "15px !important",
         color: "white !important"
@@ -127,8 +132,8 @@ const useStyles = makeStyles(() => ({
         fontSize: "8.8px !important"
     },
     TWIcon:{
-        fontSize: "17px !important",
-        color: "white !important",
+        fontSize: "12px !important",
+        color: "#2E3190 !important",
         marginLeft: "0px !important",
     },
     TIcon:{

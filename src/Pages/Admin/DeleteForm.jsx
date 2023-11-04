@@ -10,6 +10,7 @@ import {
   query,
   ref,
   storage,
+  updateDoc,
   where,
 } from "../../Utils/firebase";
 
@@ -65,7 +66,7 @@ const DeleteForm = (insertFormProps) => {
   });
 
   const [loading, setLoading] = useState(false);
-  const [selectedNews, setSelectedNews] = useState([]);
+  const [selectedListRemove, setSelectedListRemove] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [snackbar, setSnackbar] = useState(false);
 
@@ -76,14 +77,14 @@ const DeleteForm = (insertFormProps) => {
     setShowPopup(true);
   };
 
-  const handleDelete = async (event) => {
+  const handleDeleteNews = async (event) => {
     event.preventDefault();
 
     try {
       setLoading(true);
 
       const querySnapshot = await getDocs(
-        query(collection(db, "News"), where("NewsID", "==", selectedNews))
+        query(collection(db, "News"), where("NewsID", "==", selectedListRemove))
       );
 
       if (!querySnapshot.empty) {
@@ -108,26 +109,235 @@ const DeleteForm = (insertFormProps) => {
         const referencingNewsQuerySnapshot = await getDocs(
           query(
             collection(db, "News"),
-            where("Tadmin", "array-contains", selectedNews)
+            where("Tadmin", "array-contains", selectedListRemove)
           )
         );
 
-        referencingNewsQuerySnapshot.docs.forEach((docSnapshot) => {
+        referencingNewsQuerySnapshot.docs.forEach(async (docSnapshot) => {
           const docRef = doc(db, "News", docSnapshot.id);
 
-          const updatedRelatedNews = arrayRemove(selectedNews);
+          // Get the current value of relatedNews
+          const updatedRelatedNews = arrayRemove(selectedListRemove);
+
+          // Update relatedNews field
+          await updateDoc(docRef, { relatedNews: updatedRelatedNews });
         });
 
         console.log("News deleted successfully!");
 
+        setSnackbar(true);
+        setShowPopup(false);
         setLoading(false);
-        setSelectedNews(null);
+        setSelectedListRemove(null);
       } else {
         console.error("Error getting news data: Not Found");
+        setSnackbar(false);
         setLoading(false);
       }
     } catch (error) {
       console.error("Error Deleting news data: ", error);
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteArticles = async (event) => {
+    event.preventDefault();
+
+    try {
+      setLoading(true);
+
+      const querySnapshot = await getDocs(
+        query(
+          collection(db, "Articles"),
+          where("ArticleID", "==", selectedListRemove)
+        )
+      );
+
+      if (!querySnapshot.empty) {
+        const selectedDoc = querySnapshot.docs[0];
+
+        const selectedData = querySnapshot.docs[0].data();
+
+        const imageRef = ref(storage, `${selectedData.ImageURL}`);
+
+        await deleteDoc(selectedDoc.ref);
+
+        if (imageRef) {
+          try {
+            await deleteObject(imageRef);
+            console.log("Image deleted successfully");
+          } catch (error) {
+            console.error("Error deleting image:", error);
+          }
+        }
+
+        // Remove Related Writers
+        const referencingNewsQuerySnapshot = await getDocs(
+          query(
+            collection(db, "Writers"),
+            where("ArticleID", "array-contains", selectedListRemove)
+          )
+        );
+
+        referencingNewsQuerySnapshot.docs.forEach(async (docSnapshot) => {
+          const docRef = doc(db, "Writers", docSnapshot.id);
+
+          // Get the current value of relatedNews
+          const updatedWriter = arrayRemove(selectedListRemove);
+
+          // Update relatedNews field
+          await updateDoc(docRef, { ArticleID: updatedWriter });
+        });
+
+        console.log("Articles deleted successfully!");
+
+        setSnackbar(true);
+        setShowPopup(false);
+        setLoading(false);
+        setSelectedListRemove(null);
+      } else {
+        console.error("Error getting Articles data: Not Found");
+        setSnackbar(false);
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error("Error Deleting Articles data: ", error);
+      setLoading(false);
+    }
+  };
+
+  const handleDeletePrograms = async (event) => {
+    event.preventDefault();
+
+    try {
+      setLoading(true);
+
+      const querySnapshot = await getDocs(
+        query(
+          collection(db, "Programs"),
+          where("ProgramID", "==", selectedListRemove)
+        )
+      );
+
+      let Episodes = [];
+
+      if (!querySnapshot.empty) {
+        const selectedDoc = querySnapshot.docs[0];
+
+        const selectedData = querySnapshot.docs[0].data();
+
+        Episodes = querySnapshot.docs[0].data().ProgramsID;
+
+        const imageRef = ref(storage, selectedData["Image URL"]);
+
+        await deleteDoc(selectedDoc.ref);
+
+        if (imageRef) {
+          try {
+            await deleteObject(imageRef);
+            console.log("Image deleted successfully");
+          } catch (error) {
+            console.error("Error deleting image:", error);
+          }
+        }
+
+        console.log(Episodes);
+
+        for (const episodeID of Episodes) {
+          const querySnapshot = await getDocs(
+            query(
+              collection(db, "ProgramsEpisodes"),
+              where("EpisodeID", "==", episodeID)
+            )
+          );
+
+          if (!querySnapshot.empty) {
+            const selectedEpisodeDoc = querySnapshot.docs[0];
+            await deleteDoc(selectedEpisodeDoc.ref);
+          }
+        }
+
+        console.log("Program deleted successfully!");
+
+        setSnackbar(true);
+        setShowPopup(false);
+        setLoading(false);
+        setSelectedListRemove(null);
+      } else {
+        console.error("Error getting Articles data: Not Found");
+        setSnackbar(false);
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error("Error Deleting Articles data: ", error);
+      setLoading(false);
+    }
+  };
+
+  const handleDeletePodcast = async (event) => {
+    event.preventDefault();
+
+    try {
+      setLoading(true);
+
+      const querySnapshot = await getDocs(
+        query(
+          collection(db, "Podcast"),
+          where("PodcastID", "==", selectedListRemove)
+        )
+      );
+
+      let Episodes = [];
+
+      if (!querySnapshot.empty) {
+        const selectedDoc = querySnapshot.docs[0];
+
+        const selectedData = querySnapshot.docs[0].data();
+
+        Episodes = querySnapshot.docs[0].data().PodcastsID;
+
+        const imageRefImage = ref(storage, `${selectedData.ImageURL}`);
+        const imageRefCover = ref(storage, `${selectedData.CoverImage}`);
+
+        await deleteDoc(selectedDoc.ref);
+
+        if (imageRefImage) {
+          try {
+            await deleteObject(imageRefImage);
+            await deleteObject(imageRefCover);
+            console.log("Images deleted successfully");
+          } catch (error) {
+            console.error("Error deleting images:", error);
+          }
+        }
+
+        for (const episodeID of Episodes) {
+          const querySnapshot = await getDocs(
+            query(
+              collection(db, "PodcastEpisodes"),
+              where("EpisodeID", "==", episodeID)
+            )
+          );
+
+          if (!querySnapshot.empty) {
+            const selectedEpisodeDoc = querySnapshot.docs[0];
+            await deleteDoc(selectedEpisodeDoc.ref);
+          }
+        }
+
+        console.log("Podcast deleted successfully!");
+
+        setSnackbar(true);
+        setShowPopup(false);
+        setLoading(false);
+        setSelectedListRemove(null);
+      } else {
+        console.error("Error getting Podcast data: Not Found");
+        setSnackbar(false);
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error("Error Deleting Podcast data: ", error);
       setLoading(false);
     }
   };
@@ -155,7 +365,7 @@ const DeleteForm = (insertFormProps) => {
                     options={insertFormProps.relatedNewsOptions}
                     onChange={(event, newValue) => {
                       if (newValue) {
-                        setSelectedNews(newValue?.NewsID);
+                        selectedListRemove(newValue?.NewsID);
                       }
                     }}
                     getOptionLabel={(option) => option.Title}
@@ -186,7 +396,7 @@ const DeleteForm = (insertFormProps) => {
                         <div className={classes.popupButtons}>
                           <Button
                             variant="contained"
-                            onClick={handleDelete}
+                            onClick={handleDeleteNews}
                             className={classes.saveButton}
                           >
                             نعم
@@ -210,25 +420,225 @@ const DeleteForm = (insertFormProps) => {
             snackbar={snackbar}
             setSnackbar={setSnackbar}
             error={false}
-            Message={"تم حذف بنجاح"}
+            Message={"تم حذف الخبر بنجاح"}
           />
         </React.Suspense>
       )}
-
       {insertFormProps.activeTab === 1 && (
         <React.Suspense
           fallback={<insertFormProps.SuspenseFallback cName="progress" />}
-        ></React.Suspense>
+        >
+          <div className={classes.TextFieldDiv}>
+            <form ref={formRef} onSubmit={handleSubmit}>
+              <CacheProvider value={cacheRtl}>
+                <ThemeProvider theme={theme}>
+                  <Autocomplete
+                    className={classes.autocomplete}
+                    options={insertFormProps.articlesOptions}
+                    onChange={(event, newValue) => {
+                      if (newValue) {
+                        setSelectedListRemove(newValue?.ArticleID);
+                      }
+                    }}
+                    getOptionLabel={(option) => option.Title}
+                    required
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        name="Articles"
+                        label="المقال"
+                        variant="outlined"
+                        className={classes.textFieldSelect}
+                      />
+                    )}
+                  />
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    className={classes.submitButton}
+                  >
+                    حذف
+                  </Button>
+                  {showPopup && (
+                    <div className={classes.popup}>
+                      <div className={classes.popupContent}>
+                        <p className={classes.previewTitle}>
+                          هل أنت متأكد من الحذف؟
+                        </p>
+                        <div className={classes.popupButtons}>
+                          <Button
+                            variant="contained"
+                            onClick={handleDeleteArticles}
+                            className={classes.saveButton}
+                          >
+                            نعم
+                          </Button>
+                          <Button
+                            variant="outlined"
+                            onClick={handleCancel}
+                            className={classes.cancelButton}
+                          >
+                            إلغاء
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </ThemeProvider>
+              </CacheProvider>
+            </form>
+          </div>
+          <SnackbarComponent
+            snackbar={snackbar}
+            setSnackbar={setSnackbar}
+            error={false}
+            Message={"تم حذف المقال بنجاح"}
+          />
+        </React.Suspense>
       )}
       {insertFormProps.activeTab === 2 && (
         <React.Suspense
           fallback={<insertFormProps.SuspenseFallback cName="progress" />}
-        ></React.Suspense>
+        >
+          <div className={classes.TextFieldDiv}>
+            <form ref={formRef} onSubmit={handleSubmit}>
+              <CacheProvider value={cacheRtl}>
+                <ThemeProvider theme={theme}>
+                  <Autocomplete
+                    className={classes.autocomplete}
+                    options={insertFormProps.distinctProgram}
+                    onChange={(event, newValue) => {
+                      if (newValue) {
+                        setSelectedListRemove(newValue?.id);
+                      }
+                    }}
+                    getOptionLabel={(option) => option.title}
+                    required
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        name="Programs"
+                        label="البرامج"
+                        variant="outlined"
+                        className={classes.textFieldSelect}
+                      />
+                    )}
+                  />
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    className={classes.submitButton}
+                  >
+                    حذف
+                  </Button>
+                  {showPopup && (
+                    <div className={classes.popup}>
+                      <div className={classes.popupContent}>
+                        <p className={classes.previewTitle}>
+                          هل أنت متأكد من الحذف؟
+                        </p>
+                        <div className={classes.popupButtons}>
+                          <Button
+                            variant="contained"
+                            onClick={handleDeletePrograms}
+                            className={classes.saveButton}
+                          >
+                            نعم
+                          </Button>
+                          <Button
+                            variant="outlined"
+                            onClick={handleCancel}
+                            className={classes.cancelButton}
+                          >
+                            إلغاء
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </ThemeProvider>
+              </CacheProvider>
+            </form>
+          </div>
+          <SnackbarComponent
+            snackbar={snackbar}
+            setSnackbar={setSnackbar}
+            error={false}
+            Message={"تم حذف البرنامج بنجاح"}
+          />
+        </React.Suspense>
       )}
       {insertFormProps.activeTab === 3 && (
         <React.Suspense
           fallback={<insertFormProps.SuspenseFallback cName="progress" />}
-        ></React.Suspense>
+        >
+          <div className={classes.TextFieldDiv}>
+            <form ref={formRef} onSubmit={handleSubmit}>
+              <CacheProvider value={cacheRtl}>
+                <ThemeProvider theme={theme}>
+                  <Autocomplete
+                    className={classes.autocomplete}
+                    options={insertFormProps.distinctPodcast}
+                    onChange={(event, newValue) => {
+                      if (newValue) {
+                        setSelectedListRemove(newValue?.id);
+                      }
+                    }}
+                    getOptionLabel={(option) => option.title}
+                    required
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        name="Podcast"
+                        label="البودكاست"
+                        variant="outlined"
+                        className={classes.textFieldSelect}
+                      />
+                    )}
+                  />
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    className={classes.submitButton}
+                  >
+                    حذف
+                  </Button>
+                  {showPopup && (
+                    <div className={classes.popup}>
+                      <div className={classes.popupContent}>
+                        <p className={classes.previewTitle}>
+                          هل أنت متأكد من الحذف؟
+                        </p>
+                        <div className={classes.popupButtons}>
+                          <Button
+                            variant="contained"
+                            onClick={handleDeletePodcast}
+                            className={classes.saveButton}
+                          >
+                            نعم
+                          </Button>
+                          <Button
+                            variant="outlined"
+                            onClick={handleCancel}
+                            className={classes.cancelButton}
+                          >
+                            إلغاء
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </ThemeProvider>
+              </CacheProvider>
+            </form>
+          </div>
+          <SnackbarComponent
+            snackbar={snackbar}
+            setSnackbar={setSnackbar}
+            error={false}
+            Message={"تم حذف البودكاست بنجاح"}
+          />
+        </React.Suspense>
       )}
     </div>
   );

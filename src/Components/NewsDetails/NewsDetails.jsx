@@ -93,13 +93,108 @@ const NewsDetails = () => {
     }
   }, [newsItem]);
 
+  const checkMetaTagLength = (content, maxLength) => {
+    if (content && content.length > maxLength) {
+      return content.slice(0, maxLength); // Truncate the content
+    }
+    return content;
+  };
+
+  useEffect(() => {
+    const descriptionMeta = document.querySelector('meta[name="description"]');
+    if (descriptionMeta) {
+      descriptionMeta.setAttribute(
+        "content",
+        checkMetaTagLength(newsItem.Description, 155)
+      );
+    }
+    const ogTitleMeta = document.querySelector('meta[property="og:title"]');
+    if (ogTitleMeta) {
+      ogTitleMeta.setAttribute(
+        "content",
+        checkMetaTagLength(newsItem.Title, 35)
+      );
+    }
+    const ogUrlMeta = document.querySelector('meta[property="og:url"]');
+    if (ogUrlMeta) {
+      ogUrlMeta.setAttribute("content", window.location.href);
+    }
+    const ogHashtagsMeta = document.querySelector(
+      'meta[property="og:hashtags"]'
+    );
+    if (ogHashtagsMeta) {
+      ogHashtagsMeta.setAttribute("content", newsItem.Hashtag);
+    }
+    const ogDescriptionMeta = document.querySelector(
+      'meta[property="og:description"]'
+    );
+    if (ogDescriptionMeta) {
+      ogDescriptionMeta.setAttribute(
+        "content",
+        checkMetaTagLength(newsItem.Description, 65)
+      );
+    }
+    const ogKeywordsMeta = document.querySelector(
+      'meta[property="og:keywords"]'
+    );
+    if (ogKeywordsMeta) {
+      ogKeywordsMeta.setAttribute(
+        "content",
+        checkMetaTagLength(newsItem.Title, 65)
+      );
+    }
+    const ogImageMeta = document.querySelector('meta[property="og:image"]');
+    if (ogImageMeta) {
+      ogImageMeta.setAttribute("content", newsItem.ImageURL);
+    }
+    const ogImageSourceMeta = document.querySelector(
+      'meta[property="og:image:secure_url"]'
+    );
+    if (ogImageSourceMeta) {
+      ogImageSourceMeta.setAttribute("content", newsItem.ImageURL);
+    }
+    const ogImageSrcMeta = document.querySelector('link[rel="image_src"]');
+    if (ogImageSrcMeta) {
+      ogImageSrcMeta.setAttribute("href", newsItem.ImageURL);
+    }
+    const ogTwitterCardMeta = document.querySelector(
+      'meta[name="twitter:card"]'
+    );
+    if (ogTwitterCardMeta) {
+      ogTwitterCardMeta.setAttribute("content", newsItem.ImageURL);
+    }
+    const ogTwitterImageMeta = document.querySelector(
+      'meta[name="twitter:image"]'
+    );
+    if (ogTwitterImageMeta) {
+      ogTwitterImageMeta.setAttribute("content", newsItem.ImageURL);
+    }
+    const ogTwitterTitleMeta = document.querySelector(
+      'meta[name="twitter:title"]'
+    );
+    if (ogTwitterTitleMeta) {
+      ogTwitterTitleMeta.setAttribute(
+        "content",
+        checkMetaTagLength(newsItem.Title, 35)
+      );
+    }
+    const ogTwitterDescriptionMeta = document.querySelector(
+      'meta[name="twitter:description"]'
+    );
+    if (ogTwitterDescriptionMeta) {
+      ogTwitterDescriptionMeta.setAttribute(
+        "content",
+        checkMetaTagLength(newsItem.Description, 65)
+      );
+    }
+  }, [newsItem]);
+
   return (
     <>
       <div className={classes.container}>
         <div className={classes.Title}>{newsItem?.Title} </div>
-        <div className={classes.Hashtag}>{newsItem?.Hashtag} </div>
-        <div className={classes.Content}>
-          <div className={classes.ImageDiv}>
+        <div className={classes.ImageDiv}>
+          <div className={classes.Content}>
             <img
               src={newsItem?.ImageURL}
               alt={newsItem?.Title}
@@ -129,17 +224,26 @@ const NewsDetails = () => {
           </div>
 
           <div className={classes.Description}>
-            <span style={{ fontFamily: "GE_SS_Two_M" }}>
-              {newsItem?.Category}
-            </span>{" "}
-            - {newsItem?.Description}
+            {newsItem.Category ? (
+              <span style={{ fontFamily: "GE_SS_Two_M" }}>
+                {newsItem.Category} - {newsItem.Description}
+              </span>
+            ) : (
+              ""
+            )}
           </div>
+          <div className={classes.Hashtag}>{newsItem?.Hashtag} </div>
+
           <div className={classes.VideoDiv}>
-            <ReactPlayer
-              url={newsItem?.YoutubeLink}
-              className={classes.youtubeVideo}
-              controls
-            />
+            {newsItem.YoutubeLink ? (
+              <ReactPlayer
+                url={newsItem?.YoutubeLink}
+                className={classes.youtubeVideo}
+                controls
+              />
+            ) : (
+              ""
+            )}
           </div>
 
           {/* Display the related news section */}
@@ -175,9 +279,6 @@ const NewsDetails = () => {
                               {relatedNewsItem.Title}
                             </h3>
                           </Link>
-                          <p className={classes.relatedDescription}>
-                            {relatedNewsItem.Description}
-                          </p>
                           <p className={classes.relatedDate}>
                             {relatedNewsItem.PublishDate instanceof Date ? (
                               <TimeDifferenceComponent

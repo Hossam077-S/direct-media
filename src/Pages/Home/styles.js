@@ -18,10 +18,10 @@ const useStyles = makeStyles(() => ({
     },
   },
   slicerDiv: {
-    height: "43px",
     overflow: "hidden",
     border: "1px solid",
     borderColor: "#2E3190",
+    maxHeight: '43px',
 
     "& .MuiStack-root.css-1d9cypr-MuiStack-root": {
       alignItems: 'flex-start'
@@ -33,8 +33,11 @@ const useStyles = makeStyles(() => ({
   },
   importantNewsDiv: {
     display: 'flex',
-    flexDirection: 'column',
-    width: '716px',
+    maxWidth: '716px',
+
+    "& .slick-track": {
+      top: '20px !important',
+    },
 
     "& .slick-next": {
       position: 'absolute',
@@ -87,7 +90,6 @@ const useStyles = makeStyles(() => ({
   },
   typoTitle: {
     marginRight: "15px !important",
-    marginTop: '1% !important',
     fontFamily: "GE_SS_Two_M !important",
     fontSize: "17.33px !important",
     color: '#2C3690',
@@ -117,8 +119,7 @@ const useStyles = makeStyles(() => ({
     }
   },
   ImportantNewsImage: {
-    width: "157px",
-    marginTop: '-1px',
+    objectFit: 'contain',
     "@media (max-width: 768px)": {
       width: "110px",
       height: "53px",
@@ -130,7 +131,6 @@ const useStyles = makeStyles(() => ({
     paddingTop: '5px',
   },
   importantNewSkeleton: {
-      height: "2vw !important",
       marginLeft: "10%",
       marginRight: "1%",
 

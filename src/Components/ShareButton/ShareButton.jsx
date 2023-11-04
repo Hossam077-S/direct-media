@@ -5,6 +5,7 @@ import useStyles from "./styles";
 
 const ShareButton = ({ socialMedia, url, Hashtags, Title }) => {
   const classes = useStyles();
+
   const handleShare = () => {
     let link = encodeURI(url);
     let msg = encodeURIComponent(Title);
@@ -12,7 +13,7 @@ const ShareButton = ({ socialMedia, url, Hashtags, Title }) => {
 
     switch (socialMedia) {
       case "facebook":
-        url = `https://www.facebook.com/share.php?u=${link}`;
+        url = `https://www.facebook.com/sharer/sharer.php?u=${link}`;
         break;
       case "twitter":
         url = `https://twitter.com/share?&url=${link}&text=${msg}&hashtags=${hash}`;
@@ -47,14 +48,16 @@ const ShareButton = ({ socialMedia, url, Hashtags, Title }) => {
     }
   };
 
-  return (
-    <button
-      className={`${classes.shareButton} ${classes[socialMedia]}`}
-      onClick={handleShare}
-    >
-      {getIcon()}
-    </button>
-  );
+  if (Title) {
+    return (
+      <button
+        className={`${classes.shareButton} ${classes[socialMedia]}`}
+        onClick={handleShare}
+      >
+        {getIcon()}
+      </button>
+    );
+  } else return null;
 };
 
 export default ShareButton;

@@ -28,11 +28,20 @@ const NewsPage = () => {
     };
   }, []);
 
+  // Function to compare dates for sorting
+  const compareDates = (a, b) => {
+    const dateA = a.PublishDate.toDate();
+    const dateB = b.PublishDate.toDate();
+    return dateB - dateA;
+  };
+
+  const sortedNewsData = [...newsData].sort(compareDates);
+
   // Filter news items based on the selected category
   const filteredNews =
     category === "كل الأخبار"
-      ? newsData
-      : newsData.filter((newsItem) => newsItem.Category === category);
+      ? sortedNewsData
+      : sortedNewsData.filter((newsItem) => newsItem.Category === category);
 
   return (
     <div className={classes.container}>
@@ -52,7 +61,9 @@ const NewsPage = () => {
                   to={"/news/" + newsItem.id}
                   className={classes.LinkInnerPages}
                 >
-                  <h2 className={classes.newsTitle}>{newsItem.Title}</h2>
+                  <h2 className={classes.newsTitle}>
+                    <Dotdotdot clamp={5}>{newsItem.Title}</Dotdotdot>
+                  </h2>
                 </Link>
                 <p className={classes.newsDescription}>
                   <Dotdotdot clamp={5}>{newsItem.Description}</Dotdotdot>

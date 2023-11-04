@@ -87,6 +87,7 @@ const NewsEntry = ({
     YoutubeLink: "",
     ImageURL: "",
     Hashtag: "",
+    Source: "",
     Tadmin: [],
     PublishDate: new Date(),
   });
@@ -167,6 +168,7 @@ const NewsEntry = ({
             YoutubeLink: "",
             ImageURL: "",
             Hashtag: "",
+            Source: "",
             Tadmin: [],
             PublishDate: new Date(),
           });
@@ -194,6 +196,7 @@ const NewsEntry = ({
       Category: form.current.Category.value,
       YoutubeLink: form.current.YoutubeLink.value,
       Hashtag: form.current.Hashtag.value,
+      Source: form.current.Source.value,
       PublishDate: new Date(),
     });
     setShowPopup(true);
@@ -281,7 +284,6 @@ const NewsEntry = ({
                     />
                   )}
                 />
-
                 {selectedNews.length > 0 && (
                   <div className={classes.selectedNewsContainer}>
                     {selectedNews.map((news) => (
@@ -311,6 +313,13 @@ const NewsEntry = ({
                 <TextField
                   label="الهاشتاغ"
                   name="Hashtag"
+                  type="text"
+                  variant="outlined"
+                  className={classes.textField}
+                />
+                <TextField
+                  label="المصدر"
+                  name="Source"
                   type="text"
                   variant="outlined"
                   className={classes.textField}
@@ -397,6 +406,12 @@ const NewsEntry = ({
                             الهاشتاغ:{" "}
                           </span>
                           {formValues.Hashtag}
+                        </p>
+                      )}
+                      {formValues.Source && (
+                        <p className={classes.previewItem}>
+                          <span className={classes.previewLabel}>المصدر: </span>
+                          {formValues.Source}
                         </p>
                       )}
                     </div>

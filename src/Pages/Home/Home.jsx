@@ -281,6 +281,10 @@ const Home = () => {
     setHoverIndex(-1);
   };
 
+  function truncate(source, size) {
+    return source.length > size ? source.slice(0, size - 1) + "…" : source;
+  }
+
   return (
     <>
       <Container className={classes.container}>
@@ -308,9 +312,7 @@ const Home = () => {
                         className={classes.LinkInnerPages}
                       >
                         <Typography key={index} className={classes.typoTitle}>
-                          <span>
-                            <Dotdotdot clamp={2}>{newsItem.Title}</Dotdotdot>
-                          </span>
+                          <span>{truncate(newsItem.Title, 65)}</span>
                         </Typography>
                       </Link>
                     </div>

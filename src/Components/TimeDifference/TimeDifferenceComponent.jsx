@@ -10,8 +10,6 @@ const TimeDifferenceComponent = ({ publishDate }) => {
     const minutesDifference = Math.floor(timeDifference / (1000 * 60));
     const hoursDifference = Math.floor(minutesDifference / 60);
 
-    console.log(hoursDifference);
-
     if (hoursDifference >= 24) {
       return publishDateObject.toLocaleDateString("ar", {
         weekday: "long",
@@ -21,9 +19,9 @@ const TimeDifferenceComponent = ({ publishDate }) => {
       });
     } else if (hoursDifference >= 1) {
       return `منذ ${hoursDifference} ساعة`;
-    } else {
+    } else if (hoursDifference < 1) {
       return `منذ ${minutesDifference} دقيقة`;
-    }
+    } else return ``;
   };
 
   const timeString = getTimeDifferenceString(publishDate);

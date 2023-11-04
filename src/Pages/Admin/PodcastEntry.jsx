@@ -11,6 +11,7 @@ import {
   ref,
   getDownloadURL,
   storage,
+  arrayUnion,
 } from "../../Utils/firebase";
 
 import { CacheProvider } from "@emotion/react";
@@ -91,6 +92,8 @@ const PodcastEntry = ({ distinctPodcast }) => {
   const handleSave = async (event) => {
     event.preventDefault();
 
+    const relatedPodcastsID = form.current.Name.value;
+
     try {
       setLoading(true);
 
@@ -107,12 +110,16 @@ const PodcastEntry = ({ distinctPodcast }) => {
         EpisodeID: docRef.id,
       });
 
+      await updateDoc(doc(db, "Podcast", relatedPodcastsID), {
+        PodcastsID: arrayUnion(docRef.id),
+      });
+
       console.log("Document written with ID: ", docRef.id);
 
       setFormValues({
         Title: "",
         YouTubeURL: "",
-        PublishDate: serverTimestamp(),
+        PublishDate: "",
       });
       setLoading(false);
       setSnackbar(true);
@@ -204,8 +211,12 @@ const PodcastEntry = ({ distinctPodcast }) => {
         CoverImage: downloadURLCover,
         ImageURL: downloadURLImage,
         Title: PodcastName,
-        ProgramsID: [],
+        PodcastsID: [],
         PublishDate: serverTimestamp(),
+      });
+
+      await updateDoc(doc(db, "Podcast", docRef.id), {
+        PodcastID: docRef.id,
       });
 
       console.log("Document written with ID: ", docRef.id);
@@ -233,20 +244,20 @@ const PodcastEntry = ({ distinctPodcast }) => {
             <div className={classes.TextFieldDiv}>
               <FormControl fullWidth required>
                 <InputLabel
-                  id="programName-label"
+                  id="podcastName-label"
                   className={classes.labelText}
                 >
                   إسم البوكاست
                 </InputLabel>
                 <Select
-                  labelId="programName-label"
-                  name="Title"
+                  labelId="podcastName-label"
+                  name="Name"
                   defaultValue=""
                   className={classes.textFieldSelect}
                 >
-                  {distinctPodcast?.map((program, index) => (
-                    <MenuItem key={index} value={program.id}>
-                      {program.title}
+                  {distinctPodcast?.map((podcast, index) => (
+                    <MenuItem key={index} value={podcast.id}>
+                      {podcast.title}
                     </MenuItem>
                   ))}
                 </Select>
@@ -335,7 +346,7 @@ const PodcastEntry = ({ distinctPodcast }) => {
                     <input
                       type="text"
                       ref={nameRef}
-                      placeholder="إسم البرنامج"
+                      placeholder="إسم البودكاست"
                       className={classes.inputField}
                     />
 

@@ -23,6 +23,7 @@ const Admin = () => {
 
   const {
     relatedNewsOptions,
+    articlesOptions,
     distinctNewsCategory,
     distinctWritersName,
     distinctProgram,
@@ -62,6 +63,7 @@ const Admin = () => {
     PodcastEntryLazy: PodcastEntryLazy,
     distinctNewsCategory: distinctNewsCategory,
     relatedNewsOptions: relatedNewsOptions,
+    articlesOptions: articlesOptions,
     categories: categories,
     distinctWritersName: distinctWritersName,
     distinctProgram: distinctProgram,
@@ -86,13 +88,13 @@ const Admin = () => {
               onClick={() => handleActionClick("تعديل")}
             >
               تعديل
-            </span>
+            </span> */}
             <span
               className={selectedAction === "حذف" ? classes.activeOption : ""}
               onClick={() => handleActionClick("حذف")}
             >
               حذف
-            </span> */}
+            </span>
           </div>
 
           <Tabs

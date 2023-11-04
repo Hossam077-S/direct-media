@@ -10,6 +10,10 @@ import TimeDifferenceComponent from "../../Components/TimeDifference/TimeDiffere
 const NewsTypeSliderItem = ({ Item, ItemIndex }) => {
   const classes = useStyles();
 
+  function truncate(source, size) {
+    return source.length > size ? source.slice(0, size - 1) + "…" : source;
+  }
+
   return (
     <>
       {Item.map((newsItem, index) => (
@@ -29,7 +33,7 @@ const NewsTypeSliderItem = ({ Item, ItemIndex }) => {
                 className={classes.LinkInnerPages}
               >
                 <Typography className={classes.newsTypeSliderText}>
-                  {newsItem.Title}
+                  <span>{truncate(newsItem.Title, 80)}</span>
                 </Typography>
               </Link>
               <Typography className={classes.newsTypeSliderDate}>

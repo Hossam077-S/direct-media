@@ -186,6 +186,10 @@ const ProgramsEntry = ({ distinctProgram }) => {
           PublishDate: serverTimestamp(),
         });
 
+        await updateDoc(doc(db, "Programs", docRef.id), {
+          ProgramID: docRef.id,
+        });
+
         console.log("Document written with ID: ", docRef.id);
 
         setLoading(false);

@@ -37,7 +37,8 @@ const [Admin, PrivacyPolicy] = [
 
 const App = () => {
   const MemoizedHome = useMemo(() => 
-    lazyWithDelay(() => import('./Pages/Home/Home'), 2000), []
+    lazy(() => import(`./Pages/Home/Home`))
+    // lazyWithDelay(() => import('./Pages/Home/Home'), 2000), []
 
   );
 
@@ -71,7 +72,6 @@ const App = () => {
       <div className="main-container">
         <Header />
         <Routes>
-
           {/* Render the MemoizedHome component */}
           <Route exact path="/" element={<MemoizedHome />} />
 
