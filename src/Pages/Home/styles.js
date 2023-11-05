@@ -17,6 +17,7 @@ const useStyles = makeStyles(() => ({
       width: "90vw !important",
     },
   },
+  
   slicerDiv: {
     overflow: "hidden",
     border: "1px solid",
@@ -31,76 +32,6 @@ const useStyles = makeStyles(() => ({
       height: "55px",
     }
   },
-  importantNewsDiv: {
-    display: 'flex',
-    maxWidth: '716px',
-
-    "& .slick-track": {
-      top: '20px !important',
-    },
-
-    "& .slick-next": {
-      position: 'absolute',
-      top: "40%", 
-      right: "92% !important",
-      opacity: "0.4",
-      zIndex: 1,  
-      width: '14px',
-      height: '14px',
-
-      "@media (max-width: 768px)": {
-        top: "55%", 
-      },
-      "@media screen and (min-width: 768px) and (max-width: 1024px)": {
-        right: "100% !important",
-      },
-    },
-    
-    "& .slick-prev": {
-      position: "absolute",
-      top: "40%", 
-      left: "20px",
-      opacity: "0.4",
-      zIndex: 1,
-      width: '14px',
-      height: '14px',
-
-      "@media (max-width: 768px)": {
-        top: "55%", 
-      },
-
-      "@media screen and (min-width: 768px) and (max-width: 1024px)": {
-        right: "100% !important",
-      },
-    },
-
-    "@media (max-width: 768px)": {
-      width: 'auto',
-      flexGrow: 1,
-    }
-  },
-  importantNewsSliderItem: {
-    position: 'relative',
-    height: '43px',
-    direction: 'rtl',
-
-    "@media (max-width: 768px)": {
-      height: '43px',
-    }
-  },
-  typoTitle: {
-    marginRight: "15px !important",
-    fontFamily: "GE_SS_Two_M !important",
-    fontSize: "17.33px !important",
-    color: '#2C3690',
-
-    "@media (max-width: 768px)": {
-      fontSize: "12px !important",
-      marginTop: '2% !important',
-      marginRight: "0px !important",
-      textAlign: 'center',
-    }
-  },
   imageDiv: {
     display: "flex",
     alignItems: "center",
@@ -112,6 +43,8 @@ const useStyles = makeStyles(() => ({
     color: "white",
     fontFamily: "GE_SS_Two_M !important",
     fontSize: "17.33px !important",
+    zIndex: 2, // Ensure it's above the image if they overlap
+
 
     "@media (max-width: 768px)": {
       fontSize: "15px !important",

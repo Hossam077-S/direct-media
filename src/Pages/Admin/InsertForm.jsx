@@ -8,8 +8,8 @@ const InsertForm = (insertFormProps) => {
           fallback={<insertFormProps.SuspenseFallback cName="progress" />}
         >
           <insertFormProps.NewsEntryLazy
-            distinctNewsCategory={insertFormProps.distinctNewsCategory}
-            relatedNewsOptions={insertFormProps.relatedNewsOptions}
+            distinctNewsCategory={insertFormProps.NewsCategory}
+            relatedNewsOptions={insertFormProps.NewsOptions}
             categories={insertFormProps.categories}
           />
         </React.Suspense>
@@ -19,7 +19,7 @@ const InsertForm = (insertFormProps) => {
           fallback={<insertFormProps.SuspenseFallback cName="progress" />}
         >
           <insertFormProps.ArticlesEntryLazy
-            distinctWritersName={insertFormProps.distinctWritersName}
+            distinctWritersName={insertFormProps.WritersName}
           />
         </React.Suspense>
       )}
@@ -28,7 +28,7 @@ const InsertForm = (insertFormProps) => {
           fallback={<insertFormProps.SuspenseFallback cName="progress" />}
         >
           <insertFormProps.ProgramsEntryLazy
-            distinctProgram={insertFormProps.distinctProgram}
+            distinctProgram={insertFormProps.ProgramsName}
           />
         </React.Suspense>
       )}
@@ -37,7 +37,7 @@ const InsertForm = (insertFormProps) => {
           fallback={<insertFormProps.SuspenseFallback cName="progress" />}
         >
           <insertFormProps.PodcastEntryLazy
-            distinctPodcast={insertFormProps.distinctPodcast}
+            distinctPodcast={insertFormProps.PodcastsName}
           />
         </React.Suspense>
       )}

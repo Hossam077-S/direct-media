@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { Link } from "react-router-dom";
 
@@ -18,8 +18,6 @@ import {
 
 import rectangleShape from "../../assests/rect-tri.gif";
 import rectangle2Shape from "../../assests/reactangle.gif";
-import arrowINup from "../../assests/arrowINup.gif";
-import arrowINdown from "../../assests/arrowINdown.gif";
 import arrowLeft from "../../assests/arrowLeft.gif";
 import arrowRight from "../../assests/arrowRight.gif";
 import arrowThreeLeft from "../../assests/arrowThreeLeft.gif";
@@ -33,74 +31,59 @@ import videoDirectMedia from "../../assests/DMV.gif";
 import useStyles from "./styles";
 
 import Slider from "react-slick";
-import Dotdotdot from "react-dotdotdot";
+// import Dotdotdot from "react-dotdotdot";
 
 import NewsTypeSliderItem from "./newsTypeSliderItem";
 import ThreeSliderComponentItem from "./ThreeSliderComponentItem";
 
-import FirestoreContext from "../../Utils/FirestoreContext";
+import FirestoreContext from "../../Utils/FirestoreContext2";
 import VideoComponent from "../../Components/VideoComponent/VideoComponent";
+import VerticalSlider from "../../Components/VerticalSlider/VerticalSlider";
+
 import LazyImage from "../../Components/LazyImage/LazyImage";
 import TimeDifferenceComponent from "../../Components/TimeDifference/TimeDifferenceComponent";
 
 const Home = () => {
   const classes = useStyles();
-
   const {
-    newsData,
     programsData,
     writersData,
     articlesData,
-    podcastData,
+    podcastDataEpisodes,
     groupedData,
-    latestProgram,
     groupedProgramsData,
+    loading,
   } = useContext(FirestoreContext);
 
   const [hoverIndex, setHoverIndex] = useState(-1);
+  const [latestProgram, setLatestProgram] = useState(null);
 
-  const importantNew = {
-    dots: false,
-    infinite: true,
-    speed: 1500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    vertical: true,
-    pauseOnHover: true,
-    verticalSwiping: true,
-    autoplay: true,
-    rtl: true,
-    autoplaySpeed: 4000,
-    arrows: true,
-    prevArrow: <img src={arrowINup} alt={"arrowLeft"} />,
-    nextArrow: <img src={arrowINdown} alt={"arrowLeft"} />,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-          prevArrow: <></>,
-          nextArrow: <></>,
-        },
-      },
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 3,
-          prevArrow: <></>,
-          nextArrow: <></>,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          prevArrow: <></>,
-          nextArrow: <></>,
-        },
-      },
-    ],
-  };
+  useEffect(() => {
+    const sortedPrograms = groupedProgramsData.programs?.sort((a, b) => {
+      return new Date(a.PublishDate) - new Date(b.PublishDate);
+    });
+
+    const latestProgram = sortedPrograms?.[sortedPrograms.length - 1];
+
+    if (latestProgram && latestProgram.YoutubeLink) {
+      let videoId, thumbnailUrl;
+      const videoUrl = new URL(latestProgram?.YoutubeLink);
+      const isShortsVideo = videoUrl.pathname.includes("/shorts/");
+
+      if (isShortsVideo) {
+        videoId = videoUrl.pathname.split("/shorts/")[1];
+      } else {
+        videoId = videoUrl.searchParams.get("v");
+      }
+
+      if (videoId) {
+        thumbnailUrl = `https://img.youtube.com/vi/${videoId}/sddefault.jpg`;
+      }
+
+      setLatestProgram({ ...latestProgram, videoId, thumbnailUrl });
+    }
+  }, [groupedProgramsData]);
+
   const allNewsSlider = {
     dots: false,
     infinite: true,
@@ -285,6 +268,11 @@ const Home = () => {
     return source.length > size ? source.slice(0, size - 1) + "…" : source;
   }
 
+  // If you want to display a loading state for all data, check if any of them is still loading
+  if (Object.values(loading).some((isLoading) => isLoading)) {
+    return <div>Loading all data...</div>;
+  }
+
   return (
     <>
       <Container className={classes.container}>
@@ -299,44 +287,18 @@ const Home = () => {
                 className={classes.ImportantNewsImage}
               />
             </div>
-            {Object.keys(groupedData).length > 0 ? (
-              <div className={classes.importantNewsDiv}>
-                <Slider {...importantNew}>
-                  {groupedData.important.map((newsItem, index) => (
-                    <div
-                      key={index}
-                      className={classes.importantNewsSliderItem}
-                    >
-                      <Link
-                        to={"news/" + newsItem.id}
-                        className={classes.LinkInnerPages}
-                      >
-                        <Typography key={index} className={classes.typoTitle}>
-                          <span>{truncate(newsItem.Title, 65)}</span>
-                        </Typography>
-                      </Link>
-                    </div>
-                  ))}
-                </Slider>
-              </div>
-            ) : (
-              <div className={classes.importantNewSkeletonDiv}>
-                <Skeleton
-                  variant="text"
-                  className={classes.importantNewSkeleton}
-                />
-              </div>
-            )}
+            <div>
+              <VerticalSlider newsItems={groupedData?.important} />
+            </div>
           </Stack>
         </div>
-
         {/* First Slider */}
         <Stack direction="row" className={classes.gridSlidersContainer}>
           {/* Render the News images slider */}
-          {newsData.length > 0 ? (
+          {groupedData?.limitedNews ? (
             <div className={classes.newsImageDiv}>
               <Slider {...allNewsSlider}>
-                {newsData.map((newsItem, index) => (
+                {groupedData?.limitedNews?.map((newsItem, index) => (
                   <div key={index} className={classes.sliderItem}>
                     <>
                       <LazyImage
@@ -367,11 +329,7 @@ const Home = () => {
                             gutterBottom
                             className={classes.sliderNewsDescription}
                           >
-                            <span>
-                              <Dotdotdot clamp={2}>
-                                {newsItem.Description}
-                              </Dotdotdot>
-                            </span>
+                            <span>{truncate(newsItem.Description, 120)}</span>
                           </Typography>
                           <Typography className={classes.sliderArticlDate}>
                             {newsItem.PublishDate instanceof Date ? (
@@ -494,9 +452,9 @@ const Home = () => {
                 </Link>
               </div>
               <div className={classes.newsTypeSlider}>
-                {newsData.length > 0 ? (
+                {groupedData?.local ? (
                   <Slider {...newsTypesSliderSettings}>
-                    {groupedData.local.map((newsItem, index) => (
+                    {groupedData?.local.map((newsItem, index) => (
                       <div key={index}>
                         <NewsTypeSliderItem Item={newsItem} ItemIndex={index} />
                       </div>
@@ -521,9 +479,9 @@ const Home = () => {
                 />
               </div>
               <div className={classes.newsTypeSlider}>
-                {newsData.length > 0 ? (
+                {groupedData?.press ? (
                   <Slider {...newsTypesSliderSettings}>
-                    {groupedData.press.map((newsItem, index) => (
+                    {groupedData?.press.map((newsItem, index) => (
                       <div key={index}>
                         <NewsTypeSliderItem Item={newsItem} ItemIndex={index} />
                       </div>
@@ -548,9 +506,9 @@ const Home = () => {
                 />
               </div>
               <div className={classes.newsTypeSlider}>
-                {newsData.length > 0 ? (
+                {groupedData?.inter ? (
                   <Slider {...newsTypesSliderSettings}>
-                    {groupedData.inter.map((newsItem, index) => (
+                    {groupedData?.inter.map((newsItem, index) => (
                       <div key={index}>
                         <NewsTypeSliderItem Item={newsItem} ItemIndex={index} />
                       </div>
@@ -571,12 +529,11 @@ const Home = () => {
       <div className={classes.containerDiv2}>
         <Container className={classes.container2}>
           <Stack direction="row" spacing={4}>
-            {newsData.length > 0 ? (
+            {groupedData?.sport ? (
               <div>
                 <div className={classes.articlImageDiv}>
-                  {/* Need Just filter */}
                   <Slider {...allNewsSlider}>
-                    {newsData.map((newsItem, index) => (
+                    {groupedData?.sport?.map((newsItem, index) => (
                       <div key={index} className={classes.sliderItem}>
                         <>
                           <LazyImage
@@ -622,7 +579,7 @@ const Home = () => {
                 <div className={classes.threeNewsContainer}>
                   <div className={classes.newsThreeSlider}>
                     <Slider {...threeTypeSlider}>
-                      {groupedData.press2.map((newsItem, index) => (
+                      {groupedData?.press2?.map((newsItem, index) => (
                         <div key={index}>
                           <ThreeSliderComponentItem
                             index={index}
@@ -635,7 +592,7 @@ const Home = () => {
                   </div>
                   <div className={classes.newsThreeSlider}>
                     <Slider {...threeTypeSlider}>
-                      {groupedData.local2.map((newsItem, index) => (
+                      {groupedData?.local2?.map((newsItem, index) => (
                         <div key={index}>
                           <ThreeSliderComponentItem
                             index={index}
@@ -648,7 +605,7 @@ const Home = () => {
                   </div>
                   <div className={classes.newsThreeSlider}>
                     <Slider {...threeTypeSlider}>
-                      {groupedData.inter2.map((newsItem, index) => (
+                      {groupedData?.inter2?.map((newsItem, index) => (
                         <div key={index}>
                           <ThreeSliderComponentItem
                             index={index}
@@ -682,7 +639,7 @@ const Home = () => {
                   كتّاب المنصّة
                 </Typography>
               </div>
-              {Object.keys(writersData).length > 0 ? (
+              {writersData?.length > 0 ? (
                 <div className={classes.articlContentDiv}>
                   <div className={classes.articlImage_Divider}>
                     <List className={classes.newsList}>
@@ -727,9 +684,7 @@ const Home = () => {
                                             className={classes.articleContent}
                                           >
                                             <span>
-                                              <Dotdotdot clamp={2}>
-                                                {articleItem.Text}
-                                              </Dotdotdot>
+                                              {truncate(articleItem.Text, 65)}
                                             </span>
                                           </Typography>
                                         </Link>
@@ -856,10 +811,10 @@ const Home = () => {
             </Link>
           </div>
           <div className={classes.podcastMediaHeader}>
-            {podcastData?.length > 0 ? (
+            {podcastDataEpisodes?.length > 0 ? (
               <div className={classes.podcastMediaItems}>
                 <Slider {...podcastSettings}>
-                  {podcastData?.map((podcast, index) => (
+                  {podcastDataEpisodes?.map((podcast, index) => (
                     <div className={classes.podcastContent} key={index}>
                       <VideoComponent
                         videoUrl={podcast.YouTubeURL}

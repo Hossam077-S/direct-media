@@ -6,7 +6,7 @@ import App from './App';
 
 import './index.css';
 
-import { FirestoreProvider } from './Utils/FirestoreContext';
+import { FirestoreProvider } from './Utils/FirestoreContext2';
 // import RootComponent from './RootComponent';
 
 ReactDOM.render( 

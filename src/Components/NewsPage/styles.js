@@ -41,4 +41,7 @@ export default makeStyles(() => ({
       textDecorationColor: '#F9AE3B'
     }
   },
+  pagination: {
+    marginTop: '10%'
+  }
 }));

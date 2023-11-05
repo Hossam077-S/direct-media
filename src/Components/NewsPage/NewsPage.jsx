@@ -1,32 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { db, collection, onSnapshot } from "../../Utils/firebase";
+import FirestoreContext from "../../Utils/FirestoreContext2";
 
-import Dotdotdot from "react-dotdotdot";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
+
+import RTL from "../RTL/RTL";
 
 import useStyles from "./styles";
 
 const NewsPage = () => {
   const classes = useStyles();
-
+  const { newsData } = useContext(FirestoreContext);
   const { category } = useParams();
-  const [newsData, setNewsData] = useState([]);
 
-  useEffect(() => {
-    const unsubscribeNews = onSnapshot(collection(db, "News"), (snapshot) => {
-      const result = snapshot.docs.map((doc) => {
-        const x = doc.data();
-        x.id = doc.id;
-        return x;
-      });
-
-      setNewsData(result);
-    });
-
-    return () => {
-      unsubscribeNews();
-    };
-  }, []);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [newsPerPage] = useState(10); // Number of news per page
 
   // Function to compare dates for sorting
   const compareDates = (a, b) => {
@@ -43,37 +32,74 @@ const NewsPage = () => {
       ? sortedNewsData
       : sortedNewsData.filter((newsItem) => newsItem.Category === category);
 
+  useEffect(() => {
+    // This will reset the page to 1 when the category changes
+    setCurrentPage(1);
+  }, [category]); // <- This ensures the effect runs when 'category' changes
+
+  // Pagination handling
+  const handleChangePage = (event, value) => {
+    setCurrentPage(value);
+  };
+
+  const indexOfLastNews = currentPage * newsPerPage;
+  const indexOfFirstNews = indexOfLastNews - newsPerPage;
+  const currentNews = filteredNews.slice(indexOfFirstNews, indexOfLastNews);
+
+  // Calculate the total number of pages
+  const count = Math.ceil(filteredNews.length / newsPerPage);
+
+  function truncate(source, size) {
+    return source.length > size ? source.slice(0, size - 1) + "…" : source;
+  }
+
   return (
-    <div className={classes.container}>
-      {filteredNews.length === 0 ? (
-        <p>لا يوجد أخبار {category}.</p>
-      ) : (
-        <div className={classes.newsList}>
-          {filteredNews.map((newsItem, index) => (
-            <div key={index} className={classes.newsItem}>
-              <img
-                src={newsItem.ImageURL}
-                alt={newsItem.Title}
-                className={classes.newsImage}
-              />
-              <div className={classes.newsContent}>
-                <Link
-                  to={"/news/" + newsItem.id}
-                  className={classes.LinkInnerPages}
-                >
-                  <h2 className={classes.newsTitle}>
-                    <Dotdotdot clamp={5}>{newsItem.Title}</Dotdotdot>
-                  </h2>
-                </Link>
-                <p className={classes.newsDescription}>
-                  <Dotdotdot clamp={5}>{newsItem.Description}</Dotdotdot>
-                </p>
-              </div>
+    <RTL>
+      <div className={classes.container}>
+        {filteredNews.length === 0 ? (
+          <p>لا يوجد أخبار {category}.</p>
+        ) : (
+          <>
+            <div className={classes.newsList}>
+              {currentNews.map((newsItem, index) => (
+                <div key={index} className={classes.newsItem}>
+                  <img
+                    src={newsItem.ImageURL}
+                    alt={newsItem.Title}
+                    className={classes.newsImage}
+                  />
+                  <div className={classes.newsContent}>
+                    <Link
+                      to={"/news/" + newsItem.id}
+                      className={classes.LinkInnerPages}
+                    >
+                      <h2 className={classes.newsTitle}>
+                        <span>{truncate(newsItem.Title, 65)}</span>
+                      </h2>
+                    </Link>
+                    <p className={classes.newsDescription}>
+                      {truncate(newsItem.Description, 100)}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      )}
-    </div>
+            <Stack
+              spacing={2}
+              alignItems="center"
+              className={classes.pagination}
+            >
+              <Pagination
+                count={count}
+                page={currentPage}
+                onChange={handleChangePage}
+                color="primary"
+              />
+            </Stack>
+          </>
+        )}
+      </div>
+    </RTL>
   );
 };
 

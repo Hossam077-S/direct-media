@@ -3,7 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import useStyles from "./styles";
 
 import { Container, Tab, Tabs } from "@mui/material";
-import FirestoreContext from "../../Utils/FirestoreContext";
+import FirestoreContext from "../../Utils/FirestoreContext2";
 
 import { SuspenseFallback } from "../../Components/SuspenseFallback/SuspenseFallback";
 
@@ -21,13 +21,19 @@ const PodcastEntryLazy = React.lazy(() => import("./PodcastEntry"));
 const Admin = () => {
   const [login, setLogin] = useState(false);
 
+  const [NewsOptions, setNewsOptions] = useState([]);
+  const [articlesOptions, setArticlesOptions] = useState([]);
+  const [ProgramsName, setProgramsName] = useState([]);
+  const [PodcastsName, setPodcastsName] = useState([]);
+  const [WritersName, setWritersName] = useState([]);
+
   const {
-    relatedNewsOptions,
-    articlesOptions,
-    distinctNewsCategory,
-    distinctWritersName,
-    distinctProgram,
-    distinctPodcast,
+    newsData,
+    programsData,
+    writersData,
+    articlesData,
+    podcastData,
+    newsCategoreis,
   } = useContext(FirestoreContext);
 
   const categories = [
@@ -40,6 +46,54 @@ const Admin = () => {
 
   const [activeTab, setActiveTab] = useState(0);
   const [selectedAction, setSelectedAction] = useState("إضافة");
+
+  useEffect(() => {
+    // For news titles and distinct categories
+    if (newsData) {
+      const newsTitles = newsData.map((news) => ({
+        title: news.Title,
+        id: news.NewsID,
+      }));
+
+      setNewsOptions(newsTitles);
+    }
+
+    // For article titles
+    if (articlesData) {
+      const articleTitles = articlesData.map((article) => ({
+        title: article.Text,
+        id: article.ArticleID,
+      }));
+      setArticlesOptions(articleTitles);
+    }
+
+    // For program names
+    if (programsData) {
+      const programNames = programsData.map((program) => ({
+        title: program.Title,
+        id: program.ProgramID,
+      }));
+      setProgramsName(programNames);
+    }
+
+    // For podcast names
+    if (podcastData) {
+      const podcastNames = podcastData.map((podcast) => ({
+        title: podcast.Title,
+        id: podcast.PodcastID,
+      }));
+      setPodcastsName(podcastNames);
+    }
+
+    // For writer names
+    if (writersData) {
+      const writerNames = writersData.map((writer) => ({
+        title: writer.Name,
+        id: writer.WriterID,
+      }));
+      setWritersName(writerNames);
+    }
+  }, [newsData, articlesData, programsData, podcastData, writersData]); // Re-run when this data changes
 
   useEffect(() => {
     const userString = localStorage.getItem("user");
@@ -61,13 +115,13 @@ const Admin = () => {
     ArticlesEntryLazy: ArticlesEntryLazy,
     ProgramsEntryLazy: ProgramsEntryLazy,
     PodcastEntryLazy: PodcastEntryLazy,
-    distinctNewsCategory: distinctNewsCategory,
-    relatedNewsOptions: relatedNewsOptions,
+    NewsCategory: newsCategoreis,
+    NewsOptions: NewsOptions,
     articlesOptions: articlesOptions,
     categories: categories,
-    distinctWritersName: distinctWritersName,
-    distinctProgram: distinctProgram,
-    distinctPodcast: distinctPodcast,
+    WritersName: WritersName,
+    ProgramsName: ProgramsName,
+    PodcastsName: PodcastsName,
   };
 
   return (

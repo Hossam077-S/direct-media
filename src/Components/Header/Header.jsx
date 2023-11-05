@@ -39,10 +39,10 @@ import logo from "../../assests/logo.gif";
 
 import useStyles from "./styles";
 
-import FirestoreContext from "../../Utils/FirestoreContext";
+import FirestoreContext from "../../Utils/FirestoreContext2";
 
 const Header = () => {
-  const { searchNews } = useContext(FirestoreContext);
+  const { newsData } = useContext(FirestoreContext);
 
   const menuItems = [
     { name: "كل الأخبار", to: "/newsPage/كل الأخبار" },
@@ -219,7 +219,7 @@ const Header = () => {
                     <ThemeProvider theme={theme}>
                       <Autocomplete
                         className={classes.inputbasebigger}
-                        options={searchNews}
+                        options={newsData}
                         getOptionLabel={(news) => news.Title}
                         onChange={handleSearchInputChange}
                         renderInput={(params) => (

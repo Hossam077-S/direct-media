@@ -244,7 +244,7 @@ const ArticlesEntry = ({ distinctWritersName }) => {
                     >
                       {distinctWritersName.map((writer, index) => (
                         <MenuItem key={index} value={writer.id}>
-                          {writer.name}
+                          {writer.title}
                         </MenuItem>
                       ))}
                     </Select>

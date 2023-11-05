@@ -1,0 +1,101 @@
+:root {
+    --white: #fff;
+    --primary: #2E3190;
+    --secondary: #FBAE3C;
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: "GE_SS_Two_M";
+    font-size: 18px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  button {
+    cursor: pointer;
+  }
+  
+  .carousel-wrapper {
+    background: var(--white);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .title-and-controls {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    height: 43px; /* Your specified height */
+  }
+  
+/* Title with overflow hidden to manage varying content length */
+  .title {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-left: 40px; /* Space for arrows */
+    margin-right: 10px; /* Space for arrows */
+
+  }
+  
+  .controls {
+    display: flex;
+    flex-shrink: 0;
+  }
+  
+  .carousel-button {
+    max-width: 50px;
+    background: var(--white);
+    border: none;
+  }
+  
+  /* Link styling */
+  .title a {
+    text-decoration: none;
+    color: var(--primary);
+  }
+  .title a:hover {
+    color: var(--secondary);
+  }
+
+  .carousel-item {
+    position: absolute;
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    opacity: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    animation: dropdown 0.5s ease forwards;
+
+  }
+  
+  .carousel-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Styling for the icons */
+.carousel-button svg {
+    fill: var(--primary);
+  }
+  
+  /* Keyframes for drop-down animation */
+@keyframes dropdown {
+    0% {
+      transform: translateY(-100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }

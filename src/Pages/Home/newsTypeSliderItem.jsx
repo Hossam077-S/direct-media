@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { Typography } from "@mui/material";
 
 import useStyles from "./styles";
-import LazyImage from "../../Components/LazyImage/LazyImage";
+// import LazyImage from "../../Components/LazyImage/LazyImage";
 import TimeDifferenceComponent from "../../Components/TimeDifference/TimeDifferenceComponent";
 
 const NewsTypeSliderItem = ({ Item, ItemIndex }) => {
@@ -22,7 +22,7 @@ const NewsTypeSliderItem = ({ Item, ItemIndex }) => {
           className={classes.newsTypeSliderItems}
         >
           <div className={classes.newsTypeSliderItem}>
-            <LazyImage
+            <img
               src={newsItem.ImageURL}
               alt={newsItem.Title}
               className={classes.newsTypeSliderImage}

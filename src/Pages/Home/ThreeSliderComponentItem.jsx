@@ -3,14 +3,16 @@ import { Link } from "react-router-dom";
 
 import { Typography } from "@mui/material";
 
-import Dotdotdot from "react-dotdotdot";
-
 import useStyles from "./styles";
 import LazyImage from "../../Components/LazyImage/LazyImage";
 import TimeDifferenceComponent from "../../Components/TimeDifference/TimeDifferenceComponent";
 
 const ThreeSliderComponentItem = ({ index, item, id }) => {
   const classes = useStyles();
+
+  function truncate(source, size) {
+    return source.length > size ? source.slice(0, size - 1) + "…" : source;
+  }
 
   return (
     <div key={index} className={classes.ThreeSlider}>
@@ -26,9 +28,7 @@ const ThreeSliderComponentItem = ({ index, item, id }) => {
           </Typography>
         </Link>
         <Typography gutterBottom className={classes.sliderThreeDescription}>
-          <span>
-            <Dotdotdot clamp={3}>{item.Description}</Dotdotdot>
-          </span>
+          <span>{truncate(item.Description, 160)}</span>
         </Typography>
         <Typography gutterBottom className={classes.sliderThreeTypeAndDate}>
           {item.Category} -{" "}

@@ -112,7 +112,7 @@ const NewsEntry = ({
       if (value) {
         setSelectedNews((prevSelectedNews) => [
           ...prevSelectedNews,
-          { id: v4(), value: value.Title, NewsID: value.NewsID }, // Store both Title and NewsID
+          { id: v4(), value: value.title, NewsID: value.id }, // Store both Title and NewsID
         ]);
       }
     }
@@ -210,6 +210,7 @@ const NewsEntry = ({
     return <SuspenseFallback cName="progress" />;
   }
 
+  console.log(relatedNewsOptions);
   return (
     <div className={classes.containerDiv}>
       <form className={classes.form} ref={form} onSubmit={handleSubmit}>
@@ -273,7 +274,7 @@ const NewsEntry = ({
                   }`}
                   options={relatedNewsOptions}
                   onChange={handleRelatedNewsSelect}
-                  getOptionLabel={(option) => option.Title} // Display the Title in the input
+                  getOptionLabel={(option) => option.title} // Display the Title in the input
                   renderInput={(params) => (
                     <TextField
                       {...params}

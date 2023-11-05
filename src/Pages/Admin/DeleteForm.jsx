@@ -362,13 +362,13 @@ const DeleteForm = (insertFormProps) => {
                 <ThemeProvider theme={theme}>
                   <Autocomplete
                     className={classes.autocomplete}
-                    options={insertFormProps.relatedNewsOptions}
+                    options={insertFormProps.NewsOptions}
                     onChange={(event, newValue) => {
                       if (newValue) {
-                        selectedListRemove(newValue?.NewsID);
+                        setSelectedListRemove(newValue?.id);
                       }
                     }}
-                    getOptionLabel={(option) => option.Title}
+                    getOptionLabel={(option) => option.title}
                     required
                     renderInput={(params) => (
                       <TextField
@@ -437,10 +437,10 @@ const DeleteForm = (insertFormProps) => {
                     options={insertFormProps.articlesOptions}
                     onChange={(event, newValue) => {
                       if (newValue) {
-                        setSelectedListRemove(newValue?.ArticleID);
+                        setSelectedListRemove(newValue?.id);
                       }
                     }}
-                    getOptionLabel={(option) => option.Title}
+                    getOptionLabel={(option) => option.title}
                     required
                     renderInput={(params) => (
                       <TextField
@@ -506,7 +506,7 @@ const DeleteForm = (insertFormProps) => {
                 <ThemeProvider theme={theme}>
                   <Autocomplete
                     className={classes.autocomplete}
-                    options={insertFormProps.distinctProgram}
+                    options={insertFormProps.ProgramsName}
                     onChange={(event, newValue) => {
                       if (newValue) {
                         setSelectedListRemove(newValue?.id);
@@ -578,7 +578,7 @@ const DeleteForm = (insertFormProps) => {
                 <ThemeProvider theme={theme}>
                   <Autocomplete
                     className={classes.autocomplete}
-                    options={insertFormProps.distinctPodcast}
+                    options={insertFormProps.PodcastsName}
                     onChange={(event, newValue) => {
                       if (newValue) {
                         setSelectedListRemove(newValue?.id);
