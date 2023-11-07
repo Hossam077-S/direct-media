@@ -8,6 +8,8 @@ import {
   where,
 } from "../Utils/firebase";
 
+import { SuspenseFallback } from "../Components/SuspenseFallback/SuspenseFallback";
+
 const FirestoreContext = createContext();
 
 export const FirestoreProvider = ({ children }) => {
@@ -135,7 +137,7 @@ export const FirestoreProvider = ({ children }) => {
 
   return (
     <FirestoreContext.Provider value={{ ...data, loading }}>
-      {allDataLoaded ? children : "جاري التحميل..."}
+      {allDataLoaded ? children : <SuspenseFallback cName="dots" />}
     </FirestoreContext.Provider>
   );
 };
