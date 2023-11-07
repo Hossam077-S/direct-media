@@ -1,19 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 import { Link, useParams } from "react-router-dom";
 
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
-
-import {
-  db,
-  collection,
-  doc,
-  getDoc,
-  onSnapshot,
-  query,
-  where,
-} from "../../Utils/firebase";
 
 import Slider from "react-slick";
 
@@ -22,9 +12,13 @@ import ShareButton from "../../Components/ShareButton/ShareButton";
 
 import useStyles from "./style";
 import TimeDifferenceComponent from "../TimeDifference/TimeDifferenceComponent";
+import { SuspenseFallback } from "../SuspenseFallback/SuspenseFallback";
+import FirestoreContext from "../../Utils/FirestoreContext2";
 
 const NewsDetails = () => {
   const classes = useStyles();
+
+  const { newsData } = useContext(FirestoreContext);
 
   const socialMedia = [
     { value: "facebook" },
@@ -36,6 +30,7 @@ const NewsDetails = () => {
   const { id } = useParams();
   const [newsItem, setNewsItem] = useState({});
   const [relatedNews, setRelatedNews] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const newsTypesSliderSettings = {
     dots: false,
@@ -65,33 +60,32 @@ const NewsDetails = () => {
     ],
   };
 
-  // Getting Data from firebase
   useEffect(() => {
-    const q = doc(db, "News", id);
+    const news = newsData?.find((news) => news.id === id);
 
-    getDoc(q).then((docSnap) => {
-      setNewsItem(docSnap.data());
-    });
-  }, [id]);
+    if (news) {
+      setNewsItem(news);
+    } else {
+      console.log("Writer not found");
+    }
+
+    setLoading(false);
+  }, [id, newsData]);
 
   useEffect(() => {
     if (newsItem?.Tadmin?.length > 0) {
-      const newsIDs = newsItem?.Tadmin?.map((item) => item);
+      // Get an array of IDs from the current newsItem's Tadmin field
+      const newsIDs = newsItem.Tadmin;
 
-      const q = query(collection(db, "News"), where("NewsID", "in", newsIDs));
+      // Filter the newsData using the array of IDs from the current newsItem
+      const relatedNewsItems = newsData.filter((news) =>
+        newsIDs.includes(news.NewsID)
+      );
 
-      const unsubscribeRelatedNews = onSnapshot(q, (snapshot) => {
-        const result = snapshot.docs.map((doc) => {
-          const x = doc.data();
-          x.id = doc.id;
-          return x;
-        });
-
-        setRelatedNews(result);
-      });
-      return () => unsubscribeRelatedNews();
+      // Update the state with the filtered related news items
+      setRelatedNews(relatedNewsItems);
     }
-  }, [newsItem]);
+  }, [newsItem, newsData]); // Depend on newsItem and newsData
 
   const checkMetaTagLength = (content, maxLength) => {
     if (content && content.length > maxLength) {
@@ -189,6 +183,10 @@ const NewsDetails = () => {
       );
     }
   }, [newsItem]);
+
+  if (loading) {
+    return <SuspenseFallback cName="dots" />;
+  }
 
   return (
     <>

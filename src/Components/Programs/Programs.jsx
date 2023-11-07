@@ -14,6 +14,7 @@ import { Divider } from "@mui/material";
 import Slider from "react-slick";
 
 import VideoComponent from "../../Components/VideoComponent/VideoComponent";
+import { SuspenseFallback } from "../SuspenseFallback/SuspenseFallback";
 import FirestoreContext from "../../Utils/FirestoreContext2";
 
 const Programs = () => {
@@ -121,11 +122,8 @@ const Programs = () => {
       : "";
 
   if (loading) {
-    // While loading, display a loading message or spinner
-    return <div className={classes.container}>Loading...</div>;
+    return <SuspenseFallback cName="dots" />;
   }
-
-  console.log(ProgramEposide);
 
   return (
     <>

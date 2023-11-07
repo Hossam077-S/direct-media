@@ -10,6 +10,7 @@ import arrowRColored from "../../assests/arrowRColored.gif";
 import arrowLColored from "../../assests/arrowLColored.gif";
 
 import VideoComponent from "../../Components/VideoComponent/VideoComponent";
+import { SuspenseFallback } from "../SuspenseFallback/SuspenseFallback";
 import FirestoreContext from "../../Utils/FirestoreContext2";
 
 import useStyles from "./style";
@@ -82,7 +83,7 @@ const PodcastDetails = () => {
   }, [podcastItem?.PodcastsID, podcastDataEpisodes]);
 
   if (loading) {
-    return <div className={classes.container}>Loading...</div>;
+    return <SuspenseFallback cName="dots" />;
   }
 
   return (
