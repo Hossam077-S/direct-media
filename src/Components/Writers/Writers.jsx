@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
-
-import { collection, db, onSnapshot } from "../../Utils/firebase";
+import React, { useContext } from "react";
+import FirestoreContext from "../../Utils/FirestoreContext2";
 
 import { Link } from "react-router-dom";
 
@@ -10,32 +9,12 @@ import useStyles from "./styles";
 
 const Writers = () => {
   const classes = useStyles();
-
-  const [writersItem, setWritersItem] = useState([]);
-
-  useEffect(() => {
-    const unsubscribeWriters = onSnapshot(
-      collection(db, "Writers"),
-      (snapshot) => {
-        const result = snapshot.docs.map((doc) => {
-          const x = doc.data();
-          x.id = doc.id;
-          return x;
-        });
-
-        setWritersItem(result);
-      }
-    );
-
-    return () => {
-      unsubscribeWriters();
-    };
-  }, []);
+  const { writersData } = useContext(FirestoreContext);
 
   return (
     <div className={classes.container}>
       <div className={classes.newsList}>
-        {writersItem?.map((writer, index) => (
+        {writersData?.map((writer, index) => (
           <div key={index} className={classes.writer}>
             <img
               src={writer.ProfileImage}
@@ -44,6 +23,7 @@ const Writers = () => {
             />
             <div className={classes.newsContent}>
               <Link
+                state={writer}
                 to={"/writer/" + writer.id}
                 className={classes.LinkInnerPages}
               >

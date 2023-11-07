@@ -52,11 +52,10 @@ const useStyles = makeStyles(() => ({
     }
   },
   ImportantNewsImage: {
-    objectFit: 'contain',
+    objectFit: 'fill',
     "@media (max-width: 768px)": {
       width: "110px",
-      height: "53px",
-      marginTop: '0px',
+      height: "43px",
     }
   },
   importantNewSkeletonDiv: {

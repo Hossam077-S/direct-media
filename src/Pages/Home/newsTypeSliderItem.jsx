@@ -16,15 +16,15 @@ const NewsTypeSliderItem = ({ Item, ItemIndex }) => {
 
   return (
     <>
-      {Item.map((newsItem, index) => (
+      {Item?.map((newsItem, index) => (
         <div
           key={ItemIndex * 5 + index}
           className={classes.newsTypeSliderItems}
         >
           <div className={classes.newsTypeSliderItem}>
             <img
-              src={newsItem.ImageURL}
-              alt={newsItem.Title}
+              src={newsItem?.ImageURL}
+              alt={newsItem?.Title}
               className={classes.newsTypeSliderImage}
             />
             <div>

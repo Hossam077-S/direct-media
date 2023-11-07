@@ -210,7 +210,6 @@ const NewsEntry = ({
     return <SuspenseFallback cName="progress" />;
   }
 
-  console.log(relatedNewsOptions);
   return (
     <div className={classes.containerDiv}>
       <form className={classes.form} ref={form} onSubmit={handleSubmit}>

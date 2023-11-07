@@ -86,6 +86,7 @@ const App = () => {
       </div>
     </Suspense>
   );
+
 };
 
 export default App;

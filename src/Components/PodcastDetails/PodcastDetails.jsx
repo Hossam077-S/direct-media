@@ -1,17 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
 
 import { useParams } from "react-router-dom";
-import {
-  collection,
-  db,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  where,
-} from "../../Utils/firebase";
 
 import Slider from "react-slick";
 
@@ -19,6 +10,7 @@ import arrowRColored from "../../assests/arrowRColored.gif";
 import arrowLColored from "../../assests/arrowLColored.gif";
 
 import VideoComponent from "../../Components/VideoComponent/VideoComponent";
+import FirestoreContext from "../../Utils/FirestoreContext2";
 
 import useStyles from "./style";
 
@@ -27,14 +19,17 @@ const PodcastDetails = () => {
 
   const { id } = useParams();
 
+  const { podcastData, podcastDataEpisodes } = useContext(FirestoreContext);
+
   const [podcastItem, setPodcastItem] = useState({});
   const [podcastEp, setPodcastEp] = useState({});
+  const [loading, setLoading] = useState(true);
 
   const podcastSettings = {
     dots: false,
     infinite: true,
     speed: 1200,
-    slidesToShow: 3,
+    slidesToShow: podcastItem?.length > 3 ? 3 : podcastItem?.length,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 6000,
@@ -60,42 +55,35 @@ const PodcastDetails = () => {
   };
 
   useEffect(() => {
-    const q = doc(db, "Podcast", id);
+    const podcasts = podcastData?.find((podcast) => podcast.id === id);
 
-    getDoc(q).then((docSnap) => {
-      setPodcastItem(docSnap.data());
-    });
-  }, [id]);
+    if (podcasts) {
+      setPodcastItem(podcasts);
+    } else {
+      console.log("program not found");
+    }
+
+    setLoading(false);
+  }, [id, podcastData]);
 
   useEffect(() => {
-    const fetchPodcastEpisodes = async () => {
-      if (podcastItem?.PodcastsID?.length > 0) {
-        const productsID = podcastItem.PodcastsID;
+    // Check if podcastItem and podcastDataEpisodes are available
+    if (podcastItem?.PodcastsID && podcastDataEpisodes) {
+      const episodeIds = new Set(podcastItem.PodcastsID);
 
-        const q = query(
-          collection(db, "PodcastEpisodes"),
-          where("EpisodeID", "in", productsID)
-        );
-        const querySnapshot = await getDocs(q);
+      // Filter episodes from context using the IDs from podcastItem
+      const episodes = podcastDataEpisodes.filter((episode) =>
+        episodeIds.has(episode.EpisodeID)
+      );
 
-        const podcastEpisodes = querySnapshot.docs.map((doc) => doc.data());
+      setPodcastEp(episodes);
+    }
+    setLoading(false);
+  }, [podcastItem?.PodcastsID, podcastDataEpisodes]);
 
-        // Loop through the fetched episodes to update thumbnail URLs
-        const episodesWithThumbnails = podcastEpisodes.map((episode) => {
-          if (episode.YouTubeURL) {
-            const videoUrl = new URL(episode.YouTubeURL);
-            const videoId = videoUrl?.searchParams.get("v");
-            episode.thumbnailUrl = `https://img.youtube.com/vi/${videoId}/sddefault.jpg`;
-          }
-          return episode;
-        });
-
-        setPodcastEp(episodesWithThumbnails);
-      }
-    };
-
-    fetchPodcastEpisodes();
-  }, [podcastItem.PodcastsID]);
+  if (loading) {
+    return <div className={classes.container}>Loading...</div>;
+  }
 
   return (
     <>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import PropTypes from "prop-types";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
@@ -7,21 +7,30 @@ import "./styles.css";
 const VerticalSlider = ({ newsItems, interval = 5000 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  useEffect(() => {
-    const autoplay = setInterval(() => {
+  let autoplayRef = useRef(null); // Create a ref to store the interval ID
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const startAutoplay = useCallback(() => {
+    clearInterval(autoplayRef.current); // Clear any existing intervals
+    autoplayRef.current = setInterval(() => {
       setActiveIndex((prevIndex) => (prevIndex + 1) % newsItems.length);
     }, interval);
+  });
 
-    return () => clearInterval(autoplay);
-  }, [newsItems.length, interval]);
+  useEffect(() => {
+    startAutoplay(); // Start the autoplay when the component mounts
+    return () => clearInterval(autoplayRef.current); // Cleanup the interval when the component unmounts
+  }, [newsItems.length, interval, startAutoplay]);
 
   const handleClick = (direction) => {
     setActiveIndex((prevIndex) => {
-      if (direction === "next") {
-        return (prevIndex + 1) % newsItems.length;
-      } else {
-        return (prevIndex - 1 + newsItems.length) % newsItems.length;
-      }
+      const newIndex =
+        direction === "next"
+          ? (prevIndex + 1) % newsItems.length
+          : (prevIndex - 1 + newsItems.length) % newsItems.length;
+
+      startAutoplay(); // Reset the autoplay interval
+      return newIndex;
     });
   };
 
@@ -33,8 +42,8 @@ const VerticalSlider = ({ newsItems, interval = 5000 }) => {
     <div className="carousel-wrapper">
       <div className="title-and-controls">
         <div className="title">
-          <a href={`/news/${newsItems[activeIndex].id}`}>
-            {truncate(newsItems[activeIndex].Title, 65)}
+          <a href={`/news/${newsItems[activeIndex].id}`} key={activeIndex}>
+            {truncate(newsItems[activeIndex].Title, 70)}
           </a>
         </div>
         <div className="controls">

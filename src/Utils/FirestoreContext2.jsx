@@ -18,6 +18,7 @@ export const FirestoreProvider = ({ children }) => {
     articles: true,
     podcasts: true,
     podcastsEpisodes: true,
+    programsEpisodes: true,
     newsCategoreis: true,
   });
 
@@ -28,6 +29,7 @@ export const FirestoreProvider = ({ children }) => {
     articlesData: [],
     podcastData: [],
     podcastDataEpisodes: [],
+    programsDataEpisodes: [],
     groupedData: {},
     groupedProgramsData: {},
     newsCategoreis: [],
@@ -46,6 +48,7 @@ export const FirestoreProvider = ({ children }) => {
     const unsubscribeArticles = subscribeToArticles(updateData);
     const unsubscribePodcast = subscribeToPodcasts(updateData);
     const unsubscribePodcastEpisodes = subscribeToPodcastsEpisodes(updateData);
+    const unsubscribeProgramsEpisodes = subscribeToProgramsEpisodes(updateData);
     const unsubscribeNewsCategory = subscribeToNewsCategory(updateData);
 
     // Cleanup function to unsubscribe from collections
@@ -56,6 +59,7 @@ export const FirestoreProvider = ({ children }) => {
       unsubscribeArticles();
       unsubscribePodcast();
       unsubscribePodcastEpisodes();
+      unsubscribeProgramsEpisodes();
       unsubscribeNewsCategory();
     };
   }, []);
@@ -113,6 +117,14 @@ export const FirestoreProvider = ({ children }) => {
     });
   };
 
+  const subscribeToProgramsEpisodes = (updateData) => {
+    return onSnapshot(collection(db, "ProgramsEpisodes"), async (snapshot) => {
+      const processedPrograms = await processPorogramssDataEpisodes(snapshot); // Wait for the data to be processed
+      updateData("programsDataEpisodes", processedPrograms);
+      setLoading((prev) => ({ ...prev, programsEpisodes: false }));
+    });
+  };
+
   const subscribeToNewsCategory = (updateData) => {
     return onSnapshot(collection(db, "Categories"), async (snapshot) => {
       const processedCategories = await processCategoriesData(snapshot); // You would define processArticlesData
@@ -123,7 +135,7 @@ export const FirestoreProvider = ({ children }) => {
 
   return (
     <FirestoreContext.Provider value={{ ...data, loading }}>
-      {allDataLoaded ? children : "Loading..."}
+      {allDataLoaded ? children : "جاري التحميل..."}
     </FirestoreContext.Provider>
   );
 };
@@ -163,6 +175,8 @@ function processNewsData(snapshot) {
     return grouped;
   };
 
+  const p1 = groupNewsByNumber(pressNews, 5);
+
   // Function to slice the number of items in an array
   const sliceItems = (newsArray, numberOfItems) => {
     return newsArray.slice(0, numberOfItems);
@@ -170,7 +184,7 @@ function processNewsData(snapshot) {
 
   // Group news by categories with the specified number of items
   const groupedData = {
-    press: groupNewsByNumber(pressNews, 5),
+    press: p1,
     press2: pressNews,
     local: groupNewsByNumber(localNews, 5),
     local2: localNews,
@@ -293,6 +307,52 @@ async function processPodcastsDataEpisodes(snapshot) {
         data.thumbnailUrl = `https://img.youtube.com/vi/${videoId}/sddefault.jpg`;
       } catch (error) {
         console.error("Error parsing YouTube URL:", error);
+      }
+    }
+
+    episodes.push({
+      id: doc.id,
+      ...data,
+    });
+  });
+
+  episodes.sort((a, b) => {
+    const dateA = a.PublishDate ? a.PublishDate.toDate() : new Date(0);
+    const dateB = b.PublishDate ? b.PublishDate.toDate() : new Date(0);
+    return dateB - dateA;
+  });
+
+  return episodes;
+}
+
+async function processPorogramssDataEpisodes(snapshot) {
+  const episodes = [];
+
+  // Loop over each document in the snapshot
+  snapshot.forEach((doc) => {
+    const data = doc.data();
+
+    if (data.YoutubeLink) {
+      try {
+        let videoId;
+        const videoUrl = new URL(data.YoutubeLink);
+        const isShortsVideo = videoUrl.pathname.includes("/shorts/");
+
+        if (isShortsVideo) {
+          videoId = videoUrl.pathname.split("/shorts/")[1];
+        } else if (videoUrl.hostname === "youtu.be") {
+          videoId = videoUrl.pathname.split("/")[1];
+        } else {
+          videoId = videoUrl.searchParams.get("v");
+        }
+
+        if (videoId) {
+          data.thumbnailUrl = `https://img.youtube.com/vi/${videoId}/sddefault.jpg`;
+        } else {
+          console.log("There is error in the URL: " + videoId);
+        }
+      } catch (error) {
+        console.error("Error parsing YouTube Link:", error);
       }
     }
 

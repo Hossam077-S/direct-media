@@ -1,16 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
-import {
-  db,
-  query,
-  collection,
-  where,
-  getDocs,
-  doc,
-  getDoc,
-} from "../../Utils/firebase";
 
 import { useParams } from "react-router-dom";
 
@@ -24,11 +14,14 @@ import { Divider } from "@mui/material";
 import Slider from "react-slick";
 
 import VideoComponent from "../../Components/VideoComponent/VideoComponent";
+import FirestoreContext from "../../Utils/FirestoreContext2";
 
 const Programs = () => {
-  const classes = useStyles();
-
   const { id } = useParams();
+
+  const { programsData, programsDataEpisodes } = useContext(FirestoreContext);
+
+  const classes = useStyles();
 
   const [programItem, setProgramItem] = useState({});
   const [ProgramEposide, setProgramEposide] = useState([]);
@@ -90,57 +83,32 @@ const Programs = () => {
     ],
   };
 
-  // Getting Data from firebase
   useEffect(() => {
-    const q = doc(db, "Programs", id);
+    const programs = programsData?.find((program) => program.id === id);
 
-    getDoc(q).then((docSnap) => {
-      setProgramItem(docSnap.data());
-    });
-  }, [id]);
+    if (programs) {
+      setProgramItem(programs);
+    } else {
+      console.log("program not found");
+    }
+
+    setLoading(false);
+  }, [id, programsData]);
 
   useEffect(() => {
-    const fetchProgramEpisodes = async () => {
-      if (programItem?.ProgramsID && programItem.ProgramsID.length > 0) {
-        const episodeIds = programItem.ProgramsID;
+    // Check if programItem and programsDataEpisodes are available
+    if (programItem?.ProgramsID && programsDataEpisodes) {
+      const episodeIds = new Set(programItem.ProgramsID);
 
-        const q = query(
-          collection(db, "ProgramsEpisodes"),
-          where("EpisodeID", "in", episodeIds)
-        );
-        const querySnapshot = await getDocs(q);
+      // Filter episodes from context using the IDs from programItem
+      const episodes = programsDataEpisodes.filter((episode) =>
+        episodeIds.has(episode.EpisodeID)
+      );
 
-        const episodes = querySnapshot.docs.map((doc) => doc.data());
-
-        // Loop through the fetched episodes to update thumbnail URLs
-        const episodesWithThumbnails = episodes.map((episode) => {
-          if (episode.YoutubeLink) {
-            let videoId;
-            const videoUrl = new URL(episode.YoutubeLink);
-            const isShortsVideo = videoUrl.pathname.includes("/shorts/");
-
-            if (isShortsVideo) {
-              videoId = videoUrl.pathname.split("/shorts/")[1];
-            } else {
-              videoId = videoUrl.searchParams.get("v");
-            }
-
-            if (videoId) {
-              episode.thumbnailUrl = `https://img.youtube.com/vi/${videoId}/sddefault.jpg`;
-            }
-          }
-          return episode;
-        });
-
-        setProgramEposide(episodesWithThumbnails);
-        setLoading(false);
-      } else {
-        setLoading(false);
-      }
-    };
-
-    fetchProgramEpisodes();
-  }, [programItem?.ProgramsID]);
+      setProgramEposide(episodes);
+    }
+    setLoading(false);
+  }, [programItem?.ProgramsID, programsDataEpisodes]);
 
   const formattedDate =
     ProgramEposide?.PublishDate instanceof String
@@ -156,6 +124,8 @@ const Programs = () => {
     // While loading, display a loading message or spinner
     return <div className={classes.container}>Loading...</div>;
   }
+
+  console.log(ProgramEposide);
 
   return (
     <>

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 
-import { collection, db, onSnapshot } from "../../Utils/firebase";
+import FirestoreContext from "../../Utils/FirestoreContext2";
 
 import { Link } from "react-router-dom";
 
@@ -11,31 +11,12 @@ import useStyles from "./style";
 const ProgramDetails = () => {
   const classes = useStyles();
 
-  const [programItem, setProgramItem] = useState([]);
-
-  useEffect(() => {
-    const unsubscribeProgrames = onSnapshot(
-      collection(db, "Programs"),
-      (snapshot) => {
-        const result = snapshot.docs.map((doc) => {
-          const x = doc.data();
-          x.id = doc.id;
-          return x;
-        });
-
-        setProgramItem(result);
-      }
-    );
-
-    return () => {
-      unsubscribeProgrames();
-    };
-  }, []);
+  const { programsData } = useContext(FirestoreContext);
 
   return (
     <div className={classes.container}>
       <div className={classes.newsList}>
-        {programItem.map((program, index) => (
+        {programsData.map((program, index) => (
           <div key={index} className={classes.program}>
             <img
               src={program["Image URL"]}

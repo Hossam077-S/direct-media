@@ -25,8 +25,9 @@ export default makeStyles(() => ({
   newsImage: {
     width: "50%",
     height: "auto",
-    objectFit: "contain",
+    objectFit: "fill",
     borderRadius: '50%',
+    aspectRatio: '1/1',
     border: '2px solid #F9AE3B',
 
     transition: 'transform 0.3s, border-color 0.3s',

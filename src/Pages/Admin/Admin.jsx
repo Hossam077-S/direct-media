@@ -96,6 +96,7 @@ const Admin = () => {
   }, [newsData, articlesData, programsData, podcastData, writersData]); // Re-run when this data changes
 
   useEffect(() => {
+    console.log("Admin local stoarge UseEffect");
     const userString = localStorage.getItem("user");
     if (userString) {
       setLogin(true);

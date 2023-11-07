@@ -10,7 +10,6 @@
   
   body {
     font-family: "GE_SS_Two_M";
-    font-size: 18px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
@@ -40,9 +39,26 @@
     text-overflow: ellipsis;
     margin-left: 40px; /* Space for arrows */
     margin-right: 10px; /* Space for arrows */
+    font-size: 16px;
 
+    /* Responsive adjustments for tablets */
+    @media (max-width: 768px) {
+      font-size: 14px; /* Slightly smaller font size */
+      margin-left: 20px; /* Less space for arrows */
+      margin-right: 5px; /* Less space for arrows */
+    }
+
+    /* Responsive adjustments for mobile */
+    @media (max-width: 480px) {
+      font-size: 10px; /* Even smaller font size for mobile */
+      margin-right: 5px; /* Keep consistent space for arrows */
+      white-space: normal; /* Allow wrapping */
+      text-overflow: clip; /* Default clipping */
+      line-height: 1.2em; /* Line height to match the height for two lines */
+
+    }
   }
-  
+
   .controls {
     display: flex;
     flex-shrink: 0;
@@ -58,6 +74,8 @@
   .title a {
     text-decoration: none;
     color: var(--primary);
+    display: block; /* Block display to allow animation */
+    animation: dropdown 2.5s ease forwards;
   }
   .title a:hover {
     color: var(--secondary);
@@ -74,8 +92,6 @@
     left: 0;
     right: 0;
     bottom: 0;
-    animation: dropdown 0.5s ease forwards;
-
   }
   
   .carousel-item.visible {

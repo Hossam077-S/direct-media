@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import { collection, db, onSnapshot } from "../../Utils/firebase";
+import FirestoreContext from "../../Utils/FirestoreContext2";
 
 import { Divider } from "@mui/material";
 
@@ -15,13 +15,14 @@ import { Link } from "react-router-dom";
 
 const Podcast = () => {
   const classes = useStyles();
-  const [podcastData, setPodcastData] = useState([]);
+
+  const { podcastData } = useContext(FirestoreContext);
 
   const podcastSettings = {
     dots: false,
     infinite: true,
     speed: 1200,
-    slidesToShow: 3,
+    slidesToShow: podcastData?.length > 3 ? 3 : podcastData?.length,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 6000,
@@ -42,26 +43,6 @@ const Podcast = () => {
       },
     ],
   };
-
-  // Getting Data from firebase
-  useEffect(() => {
-    const unsubscribeNews = onSnapshot(
-      collection(db, "Podcast"),
-      (snapshot) => {
-        const result = snapshot.docs.map((doc) => {
-          const x = doc.data();
-          x.id = doc.id;
-          return x;
-        });
-
-        setPodcastData(result);
-      }
-    );
-
-    return () => {
-      unsubscribeNews();
-    };
-  }, []);
 
   return (
     <div className={classes.podcastContainer}>

@@ -1,62 +1,54 @@
-import React, { useEffect, useState } from "react";
-
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import {
-  collection,
-  db,
-  doc,
-  getDoc,
-  getDocs,
-  query,
-  where,
-} from "../../Utils/firebase";
 
 import useStyles from "./style";
 import { Divider } from "@mui/material";
+import { SuspenseFallback } from "../SuspenseFallback/SuspenseFallback";
+import FirestoreContext from "../../Utils/FirestoreContext2";
 
 const WriterDetails = () => {
   const { id } = useParams();
 
+  const { articlesData, writersData } = useContext(FirestoreContext);
+
   const classes = useStyles();
 
-  const [writerItem, setWriterItem] = useState({});
+  const [writerItem, setWrtierItem] = useState(null);
   const [wrtierArticle, setWrtierArticle] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Getting Data from firebase
   useEffect(() => {
-    const q = doc(db, "Writers", id);
+    // Find the writer with the same id from the writers data context
+    const writers = writersData?.find((writer) => writer.id === id);
 
-    getDoc(q).then((docSnap) => {
-      setWriterItem(docSnap.data());
-    });
-  }, [id]);
+    if (writers) {
+      setWrtierItem(writers);
+    } else {
+      console.log("Writer not found");
+    }
+
+    setLoading(false);
+  }, [id, writersData]);
 
   useEffect(() => {
-    const fetchProgramEpisodes = async () => {
+    const findWriterArticles = () => {
       if (writerItem?.ArticleID?.length > 0) {
-        const wArticle = writerItem.ArticleID;
-
-        const q = query(
-          collection(db, "Articles"),
-          where("ArticleID", "in", wArticle)
-        );
-        const querySnapshot = await getDocs(q);
-
-        const wArticles = querySnapshot.docs.map((doc) => doc.data());
+        // Assuming ArticleID is an array of IDs.
+        const wArticles = writerItem.ArticleID.map((id) =>
+          articlesData.find((article) => article.id === id)
+        ).filter((article) => article != null); // This will remove any undefined entries if an article wasn't found.
 
         setWrtierArticle(wArticles);
-        setLoading(false);
       }
+      setLoading(false);
     };
 
-    fetchProgramEpisodes();
-  }, [writerItem?.ArticleID]);
+    findWriterArticles();
+  }, [writerItem?.ArticleID, articlesData]);
 
   if (loading) {
-    return <div className={classes.container}>Loading...</div>;
+    return <SuspenseFallback cName="dots" />;
   }
-
   return (
     <div className={classes.container}>
       <div className={classes.Content}>
@@ -83,11 +75,11 @@ const WriterDetails = () => {
         {/* List of Episodes */}
         <div className={classes.EpisodesList}>
           <p className={classes.EpisodesHeaderTitle}>المقالات</p>
-          {wrtierArticle.length === 0 ? (
+          {wrtierArticle?.length === 0 ? (
             <p>لا يوجد اي مقالات.</p>
           ) : (
             <ul className={classes.EpisodesUL}>
-              {wrtierArticle.map((wArticle) => (
+              {wrtierArticle?.map((wArticle) => (
                 <Link
                   to={"/article/" + wArticle.ArticleID}
                   state={writerItem}

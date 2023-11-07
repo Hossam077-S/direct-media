@@ -100,6 +100,7 @@ const NewsDetails = () => {
     return content;
   };
 
+  // change meta
   useEffect(() => {
     const descriptionMeta = document.querySelector('meta[name="description"]');
     if (descriptionMeta) {

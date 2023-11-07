@@ -31,7 +31,6 @@ import videoDirectMedia from "../../assests/DMV.gif";
 import useStyles from "./styles";
 
 import Slider from "react-slick";
-// import Dotdotdot from "react-dotdotdot";
 
 import NewsTypeSliderItem from "./newsTypeSliderItem";
 import ThreeSliderComponentItem from "./ThreeSliderComponentItem";
@@ -58,8 +57,10 @@ const Home = () => {
   const [hoverIndex, setHoverIndex] = useState(-1);
   const [latestProgram, setLatestProgram] = useState(null);
 
+  console.log(groupedProgramsData);
+
   useEffect(() => {
-    const sortedPrograms = groupedProgramsData.programs?.sort((a, b) => {
+    const sortedPrograms = groupedProgramsData?.sort((a, b) => {
       return new Date(a.PublishDate) - new Date(b.PublishDate);
     });
 
@@ -140,6 +141,8 @@ const Home = () => {
   const newsTypesSliderSettings = {
     dots: false,
     infinite: true,
+    autoplay: true,
+    autoplaySpeed: 8000,
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: true,
@@ -208,7 +211,7 @@ const Home = () => {
     dots: false,
     infinite: true,
     speed: 900,
-    slidesToShow: 4,
+    slidesToShow: writersData.length > 4 ? 4 : writersData.length,
     slidesToScroll: 1,
     rtl: true,
     pauseOnHover: true,
@@ -362,7 +365,7 @@ const Home = () => {
             <div className={classes.imageDiv2}>
               <Typography className={classes.imageTitle2}>
                 <Link
-                  to={"program/z4yIpPQkFYkH36oaLwL0"}
+                  to={"program/OxYOStFyaNReBE9D6oBJ"}
                   className={classes.LinkInnerPages}
                 >
                   قضية بدقيقة
