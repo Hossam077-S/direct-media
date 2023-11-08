@@ -57,8 +57,6 @@ const Home = () => {
   const [hoverIndex, setHoverIndex] = useState(-1);
   const [latestProgram, setLatestProgram] = useState(null);
 
-  console.log(groupedProgramsData);
-
   useEffect(() => {
     const sortedPrograms = groupedProgramsData?.sort((a, b) => {
       return new Date(a.PublishDate) - new Date(b.PublishDate);
@@ -455,7 +453,7 @@ const Home = () => {
               <div className={classes.newsTypeSlider}>
                 {groupedData?.local ? (
                   <Slider {...newsTypesSliderSettings}>
-                    {groupedData?.local.map((newsItem, index) => (
+                    {groupedData?.local?.map((newsItem, index) => (
                       <div key={index}>
                         <NewsTypeSliderItem Item={newsItem} ItemIndex={index} />
                       </div>

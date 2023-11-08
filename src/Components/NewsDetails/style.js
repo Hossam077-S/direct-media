@@ -64,6 +64,15 @@ const useStyles = makeStyles(() => ({
             fontSize: '18px',
         },
     },
+    Source: {
+        fontSize: '14px',
+        fontFamily: "GE_SS_Two_M",
+        paddingBottom: '25px',
+
+        "@media (max-width: 768px)": {
+            fontSize: '12px',
+        },
+    },
     videoDiv: {
         position: 'relative',
         overflow: 'hidden',

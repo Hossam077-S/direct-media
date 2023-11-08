@@ -232,6 +232,7 @@ const NewsDetails = () => {
             )}
           </div>
           <div className={classes.Hashtag}>{newsItem?.Hashtag} </div>
+          <div className={classes.Source}>{newsItem?.Source}</div>
 
           <div className={classes.VideoDiv}>
             {newsItem.YoutubeLink ? (
@@ -244,7 +245,6 @@ const NewsDetails = () => {
               ""
             )}
           </div>
-
           {/* Display the related news section */}
           {relatedNews?.length > 0 && (
             <div className={classes.relatedNewsDiv}>

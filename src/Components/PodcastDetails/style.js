@@ -8,6 +8,7 @@ const useStyles = makeStyles(() => ({
         '@media screen and (max-width: 500px)' : {
             width: 'auto',
             padding: "0 15px",
+            minHeight: 'calc(100vh - 500px)', // Adjust 40px based on your header/footer height
         }
     },
     CoverDiv: {
@@ -20,7 +21,7 @@ const useStyles = makeStyles(() => ({
       },
     },
     CoverImage: {
-      width : '100%'
+      width : '80%'
     },
 
     podcastMediaHeader: {

@@ -20,9 +20,12 @@ const useStyles = makeStyles(() => ({
     newsDetailsImage: {
         width: '173px',
         height: 'auto',
+        borderRadius: '50%',
+        border: '2px solid #F9AE3B',
+        aspectRatio: '1/1',
+        objectFit: "fill",
 
         "@media (max-width: 768px)": {
-            width: 'auto',
             height: 'auto',
         },
     },

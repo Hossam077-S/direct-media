@@ -177,8 +177,6 @@ function processNewsData(snapshot) {
     return grouped;
   };
 
-  const p1 = groupNewsByNumber(pressNews, 5);
-
   // Function to slice the number of items in an array
   const sliceItems = (newsArray, numberOfItems) => {
     return newsArray.slice(0, numberOfItems);
@@ -186,7 +184,7 @@ function processNewsData(snapshot) {
 
   // Group news by categories with the specified number of items
   const groupedData = {
-    press: p1,
+    press: groupNewsByNumber(pressNews, 5),
     press2: pressNews,
     local: groupNewsByNumber(localNews, 5),
     local2: localNews,

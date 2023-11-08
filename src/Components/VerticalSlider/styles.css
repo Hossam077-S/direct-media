@@ -50,7 +50,7 @@
 
     /* Responsive adjustments for mobile */
     @media (max-width: 480px) {
-      font-size: 10px; /* Even smaller font size for mobile */
+      font-size: 11px; /* Even smaller font size for mobile */
       margin-right: 5px; /* Keep consistent space for arrows */
       white-space: normal; /* Allow wrapping */
       text-overflow: clip; /* Default clipping */
