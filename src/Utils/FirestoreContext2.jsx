@@ -166,16 +166,8 @@ function processNewsData(snapshot) {
   const localNews = newsItems.filter((m) => m.Category === "محلي");
   const internationalNews = newsItems.filter((m) => m.Category === "دولي");
   const sport = newsItems.filter((m) => m.Category === "رياضة");
-
-  // Function to group news by a given number of items
-  const groupNewsByNumber = (newsArray, numberOfItems) => {
-    const grouped = [];
-    const copyOfNews = [...newsArray]; // make a copy to not mutate the original array
-    while (copyOfNews.length > 0) {
-      grouped.push(copyOfNews.splice(0, numberOfItems));
-    }
-    return grouped;
-  };
+  const weather = newsItems.filter((m) => m.Category === "طقس");
+  const report = newsItems.filter((m) => m.Category === "عالمية");
 
   // Function to slice the number of items in an array
   const sliceItems = (newsArray, numberOfItems) => {
@@ -184,13 +176,12 @@ function processNewsData(snapshot) {
 
   // Group news by categories with the specified number of items
   const groupedData = {
-    press: groupNewsByNumber(pressNews, 5),
-    press2: pressNews,
-    local: groupNewsByNumber(localNews, 5),
-    local2: localNews,
-    inter: groupNewsByNumber(internationalNews, 5),
-    inter2: internationalNews,
     important: ImportantNews,
+    press: pressNews,
+    local: localNews,
+    inter: internationalNews,
+    weather: weather,
+    report: report,
     sport: sliceItems(sport, 20),
     limitedNews: sliceItems(newsItems, 20),
   };

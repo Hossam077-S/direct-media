@@ -1,0 +1,104 @@
+:root {
+    --white: #fff;
+    --primary: #2E3190;
+    --secondary: #FBAE3C;
+  }
+
+.news-slider {
+    display: flex;
+    flex-direction: column;
+    max-width: 233px;
+    margin-top: 25px;
+  }
+  
+  .news-items {
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.5s ease;
+    width: 233px;
+  }
+  
+  .news-item {
+    display: flex;
+  }
+  
+  .news-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 233px;
+    animation: slide 2.5s ease forwards;
+
+  }
+  
+  .news-title {
+    font-size: 10px;
+    font-family:  'GE_SS_Two_M';
+    color: #2E3190;
+    padding-right: 10px;
+
+  }
+  
+  .date {
+    font-size: 8px;
+    padding-right: 10px;
+    color: #2E3190;
+  }
+  
+  .news-image img {
+    width: 75px; /* Adjust as needed */
+    height: 75px;
+    object-fit: cover;
+    animation: re-slide 2.5s ease forwards;
+
+  }
+  
+  .news-controls {
+    display: flex;
+  }
+
+  .carousel-button-news {
+    max-width: 30px;
+    background: var(--white);
+    border: 1px solid #DCDCDC;
+    margin-top: 10px;
+    /* box-shadow: -4px 4px 3px rgba(0, 0, 0, 0.1); x-offset, y-offset, blur-radius, color */
+  }
+
+  .carousel-button-news:hover {
+    background: var(--secondary);
+    border: 1px solid #DCDCDC;
+  }
+
+  .carousel-button-news.next {
+    margin-right: 4px;
+  }
+
+
+/* Styling for the icons */
+.carousel-button-news svg {
+    fill: var(--primary);
+  }
+
+@keyframes slide {
+    0% {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+}
+
+@keyframes re-slide {
+    0% {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+}

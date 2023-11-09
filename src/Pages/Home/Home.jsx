@@ -32,7 +32,6 @@ import useStyles from "./styles";
 
 import Slider from "react-slick";
 
-import NewsTypeSliderItem from "./newsTypeSliderItem";
 import ThreeSliderComponentItem from "./ThreeSliderComponentItem";
 
 import FirestoreContext from "../../Utils/FirestoreContext2";
@@ -41,6 +40,7 @@ import VerticalSlider from "../../Components/VerticalSlider/VerticalSlider";
 
 import LazyImage from "../../Components/LazyImage/LazyImage";
 import TimeDifferenceComponent from "../../Components/TimeDifference/TimeDifferenceComponent";
+import NewsSlider from "../../Components/NewsSlider/NewsSlider";
 
 const Home = () => {
   const classes = useStyles();
@@ -121,47 +121,6 @@ const Home = () => {
     rtl: true,
     pauseOnHover: true,
     autoplaySpeed: 2000,
-    responsive: [
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: 1,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-        },
-      },
-    ],
-  };
-  const newsTypesSliderSettings = {
-    dots: false,
-    infinite: true,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    arrows: true,
-    pauseOnHover: true,
-    rtl: true,
-    prevArrow: (
-      <img
-        src={arrowThreeLeft}
-        alt={"arrowThreeLeft"}
-        width="14px"
-        height="14px"
-      />
-    ),
-    nextArrow: (
-      <img
-        src={arrowThreeRight}
-        alt={"arrowThreeRight"}
-        width="14px"
-        height="14px"
-      />
-    ),
-    lazyLoad: true,
-    variableWidth: false,
     responsive: [
       {
         breakpoint: 768,
@@ -267,7 +226,6 @@ const Home = () => {
     return source.length > size ? source.slice(0, size - 1) + "…" : source;
   }
 
-  // If you want to display a loading state for all data, check if any of them is still loading
   if (Object.values(loading).some((isLoading) => isLoading)) {
     return <div>Loading all data...</div>;
   }
@@ -452,13 +410,7 @@ const Home = () => {
               </div>
               <div className={classes.newsTypeSlider}>
                 {groupedData?.local ? (
-                  <Slider {...newsTypesSliderSettings}>
-                    {groupedData?.local?.map((newsItem, index) => (
-                      <div key={index}>
-                        <NewsTypeSliderItem Item={newsItem} ItemIndex={index} />
-                      </div>
-                    ))}
-                  </Slider>
+                  <NewsSlider newsItems={groupedData?.local} />
                 ) : (
                   <div>
                     <Skeleton variant="rectangular" height="100px" />
@@ -479,13 +431,7 @@ const Home = () => {
               </div>
               <div className={classes.newsTypeSlider}>
                 {groupedData?.press ? (
-                  <Slider {...newsTypesSliderSettings}>
-                    {groupedData?.press.map((newsItem, index) => (
-                      <div key={index}>
-                        <NewsTypeSliderItem Item={newsItem} ItemIndex={index} />
-                      </div>
-                    ))}
-                  </Slider>
+                  <NewsSlider newsItems={groupedData?.press} />
                 ) : (
                   <div>
                     <Skeleton variant="rectangular" height="100px" />
@@ -506,13 +452,7 @@ const Home = () => {
               </div>
               <div className={classes.newsTypeSlider}>
                 {groupedData?.inter ? (
-                  <Slider {...newsTypesSliderSettings}>
-                    {groupedData?.inter.map((newsItem, index) => (
-                      <div key={index}>
-                        <NewsTypeSliderItem Item={newsItem} ItemIndex={index} />
-                      </div>
-                    ))}
-                  </Slider>
+                  <NewsSlider newsItems={groupedData?.inter} />
                 ) : (
                   <div>
                     <Skeleton variant="rectangular" height="100px" />
@@ -578,7 +518,7 @@ const Home = () => {
                 <div className={classes.threeNewsContainer}>
                   <div className={classes.newsThreeSlider}>
                     <Slider {...threeTypeSlider}>
-                      {groupedData?.press2?.map((newsItem, index) => (
+                      {groupedData?.weather?.map((newsItem, index) => (
                         <div key={index}>
                           <ThreeSliderComponentItem
                             index={index}
@@ -591,7 +531,7 @@ const Home = () => {
                   </div>
                   <div className={classes.newsThreeSlider}>
                     <Slider {...threeTypeSlider}>
-                      {groupedData?.local2?.map((newsItem, index) => (
+                      {groupedData?.report?.map((newsItem, index) => (
                         <div key={index}>
                           <ThreeSliderComponentItem
                             index={index}
@@ -604,7 +544,7 @@ const Home = () => {
                   </div>
                   <div className={classes.newsThreeSlider}>
                     <Slider {...threeTypeSlider}>
-                      {groupedData?.inter2?.map((newsItem, index) => (
+                      {groupedData?.inter?.map((newsItem, index) => (
                         <div key={index}>
                           <ThreeSliderComponentItem
                             index={index}

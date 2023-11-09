@@ -163,7 +163,8 @@ const useStyles = makeStyles(() => ({
 
     "@media (max-width: 768px)": {
       width: "90vw",
-      height: "auto",
+      height: "90vw",
+      objectFit: 'cover',
     },
     
   },
@@ -302,7 +303,7 @@ const useStyles = makeStyles(() => ({
     
     "@media (max-width: 768px)": {
       width: "100% !important",
-      height: "100% !important",
+      height: "188px !important",
     },
   },
 
@@ -351,99 +352,6 @@ const useStyles = makeStyles(() => ({
     fontFamily: 'GE_SS_Two_M !important',
     backgroundColor: "white",
     paddingLeft: '10px',
-  },
-  newsTypeSlider: {
-    position: 'relative',
-    display: 'flex',
-    flexDirection: 'column',
-    marginTop: '16px',
-
-    "@media (max-width: 768px)": {
-      paddingBottom: '20px',
-      marginTop: '25px',
-    },
-
-    "& .slick-list": {
-      width: '228px',
-
-      "@media (max-width: 768px)": {
-        width: '90vw',
-      },
-    },
-
-    "& .slick-next": {
-      position: 'relative',
-      top: '20px',
-      left: '213px',
-      backgroundColor: '#DCDCDC !important',
-      padding: '1px',
-
-      "@media (max-width: 768px)": {
-        position: 'absolute',
-        top: 'unset',
-        left: 'unset',
-        bottom: '-10%',
-        right: '0%',
-      },
-
-    },
-    "& .slick-prev": {
-      position: 'relative',
-      top: "100%",
-      left: "82%",
-      backgroundColor: '#DCDCDC !important',
-      padding: '1px',
-
-      "@media (max-width: 768px)": {
-        position: 'absolute',
-        top: 'unset',
-        left: 'unset',
-        bottom: '-10%',
-        right: '8%',
-      },
-
-    },
-  },
-  newsTypeSliderItem: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'start',
-    justifyContent: 'flex-start',
-    paddingBottom: "3.4px",
-    direction: 'rtl',
-    height: 'auto'
-  },
-  newsTypeSliderItems: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  newsTypeSliderText: {
-    paddingTop: '10px',
-    paddingRight: '10px',
-    fontSize: '10px !important',
-    fontFamily: 'GE_SS_Two_M !important',
-
-    "@media (max-width: 768px)": {
-      fontSize: '12px !important',
-    },
-
-  },
-  newsTypeSliderDate: {
-    paddingRight: '10px',
-    marginTop: '10px',
-  },
-  newsTypeSliderDateWord: {
-    fontSize: '8px !important',
-    fontFamily: 'GE_SS_Two_M !important',
-  },
-  newsTypeSliderDateText: {
-    fontSize: '8px !important',
-    fontFamily: 'GE_SS_Two_M !important',
-    color: '#2E3190'
-  },
-  newsTypeSliderImage: {
-    width: '75px !important',
-    height: '75px !important',
   },
 
   containerDiv2: {
@@ -804,7 +712,8 @@ const useStyles = makeStyles(() => ({
     
     "@media (max-width: 768px)": {
       width: '100%',
-      height: '100%',
+      height: '245px',
+      objectFit: "cover",
     },
 
   },

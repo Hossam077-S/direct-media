@@ -28,8 +28,8 @@ const menuItems = [
     url: "/newsPage/رياضة",
   },
   {
-    title: "الطقس",
-    url: "/newsPage/الطقس",
+    title: "طقس",
+    url: "/newsPage/طقس",
   },
   {
     title: "صحافة",

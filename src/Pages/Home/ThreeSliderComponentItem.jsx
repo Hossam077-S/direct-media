@@ -28,7 +28,7 @@ const ThreeSliderComponentItem = ({ index, item, id }) => {
           </Typography>
         </Link>
         <Typography gutterBottom className={classes.sliderThreeDescription}>
-          <span>{truncate(item.Description, 160)}</span>
+          <span>{truncate(item.Description, 90)}</span>
         </Typography>
         <Typography gutterBottom className={classes.sliderThreeTypeAndDate}>
           {item.Category} -{" "}

@@ -55,7 +55,6 @@
       white-space: normal; /* Allow wrapping */
       text-overflow: clip; /* Default clipping */
       line-height: 1.2em; /* Line height to match the height for two lines */
-
     }
   }
 
