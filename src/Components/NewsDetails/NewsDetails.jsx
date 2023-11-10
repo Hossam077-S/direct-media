@@ -14,6 +14,7 @@ import useStyles from "./style";
 import TimeDifferenceComponent from "../TimeDifference/TimeDifferenceComponent";
 import { SuspenseFallback } from "../SuspenseFallback/SuspenseFallback";
 import FirestoreContext from "../../Utils/FirestoreContext2";
+import MetaDecorator from "../MetaDecorator/MetaDecorator";
 
 const NewsDetails = () => {
   const classes = useStyles();
@@ -87,109 +88,18 @@ const NewsDetails = () => {
     }
   }, [newsItem, newsData]); // Depend on newsItem and newsData
 
-  const checkMetaTagLength = (content, maxLength) => {
-    if (content && content.length > maxLength) {
-      return content.slice(0, maxLength); // Truncate the content
-    }
-    return content;
-  };
-
-  // change meta
-  useEffect(() => {
-    const descriptionMeta = document.querySelector('meta[name="description"]');
-    if (descriptionMeta) {
-      descriptionMeta.setAttribute(
-        "content",
-        checkMetaTagLength(newsItem.Description, 155)
-      );
-    }
-    const ogTitleMeta = document.querySelector('meta[property="og:title"]');
-    if (ogTitleMeta) {
-      ogTitleMeta.setAttribute(
-        "content",
-        checkMetaTagLength(newsItem.Title, 35)
-      );
-    }
-    const ogUrlMeta = document.querySelector('meta[property="og:url"]');
-    if (ogUrlMeta) {
-      ogUrlMeta.setAttribute("content", window.location.href);
-    }
-    const ogHashtagsMeta = document.querySelector(
-      'meta[property="og:hashtags"]'
-    );
-    if (ogHashtagsMeta) {
-      ogHashtagsMeta.setAttribute("content", newsItem.Hashtag);
-    }
-    const ogDescriptionMeta = document.querySelector(
-      'meta[property="og:description"]'
-    );
-    if (ogDescriptionMeta) {
-      ogDescriptionMeta.setAttribute(
-        "content",
-        checkMetaTagLength(newsItem.Description, 65)
-      );
-    }
-    const ogKeywordsMeta = document.querySelector(
-      'meta[property="og:keywords"]'
-    );
-    if (ogKeywordsMeta) {
-      ogKeywordsMeta.setAttribute(
-        "content",
-        checkMetaTagLength(newsItem.Title, 65)
-      );
-    }
-    const ogImageMeta = document.querySelector('meta[property="og:image"]');
-    if (ogImageMeta) {
-      ogImageMeta.setAttribute("content", newsItem.ImageURL);
-    }
-    const ogImageSourceMeta = document.querySelector(
-      'meta[property="og:image:secure_url"]'
-    );
-    if (ogImageSourceMeta) {
-      ogImageSourceMeta.setAttribute("content", newsItem.ImageURL);
-    }
-    const ogImageSrcMeta = document.querySelector('link[rel="image_src"]');
-    if (ogImageSrcMeta) {
-      ogImageSrcMeta.setAttribute("href", newsItem.ImageURL);
-    }
-    const ogTwitterCardMeta = document.querySelector(
-      'meta[name="twitter:card"]'
-    );
-    if (ogTwitterCardMeta) {
-      ogTwitterCardMeta.setAttribute("content", newsItem.ImageURL);
-    }
-    const ogTwitterImageMeta = document.querySelector(
-      'meta[name="twitter:image"]'
-    );
-    if (ogTwitterImageMeta) {
-      ogTwitterImageMeta.setAttribute("content", newsItem.ImageURL);
-    }
-    const ogTwitterTitleMeta = document.querySelector(
-      'meta[name="twitter:title"]'
-    );
-    if (ogTwitterTitleMeta) {
-      ogTwitterTitleMeta.setAttribute(
-        "content",
-        checkMetaTagLength(newsItem.Title, 35)
-      );
-    }
-    const ogTwitterDescriptionMeta = document.querySelector(
-      'meta[name="twitter:description"]'
-    );
-    if (ogTwitterDescriptionMeta) {
-      ogTwitterDescriptionMeta.setAttribute(
-        "content",
-        checkMetaTagLength(newsItem.Description, 65)
-      );
-    }
-  }, [newsItem]);
-
   if (loading) {
     return <SuspenseFallback cName="dots" />;
   }
 
   return (
     <>
+      <MetaDecorator
+        Title={newsItem?.Title}
+        Description={newsItem?.Description}
+        ImageURL={newsItem?.ImageURL}
+        Hashtags={newsItem?.Hashtags}
+      />
       <div className={classes.container}>
         <div className={classes.Title}>{newsItem?.Title} </div>
         <div className={classes.ImageDiv}>
