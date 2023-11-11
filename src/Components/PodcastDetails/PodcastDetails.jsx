@@ -14,6 +14,7 @@ import { SuspenseFallback } from "../SuspenseFallback/SuspenseFallback";
 import FirestoreContext from "../../Utils/FirestoreContext2";
 
 import useStyles from "./style";
+import MetaTags from "../MetaTags/MetaTags";
 
 const PodcastDetails = () => {
   const classes = useStyles();
@@ -88,6 +89,14 @@ const PodcastDetails = () => {
 
   return (
     <>
+      <MetaTags
+        title="Podcast Details"
+        titleName={podcastItem?.Title || "Podcast Details"}
+        description={podcastItem?.Title}
+        imageUrl={podcastItem?.CoverImage}
+        url={window.location.href}
+        hashtags="#News #Programs #Podcasts #Categories #Sport #War"
+      />
       <div className={classes.container}>
         <div className={classes.CoverDiv}>
           <img

@@ -1,36 +1,26 @@
-import React from 'react';
-import { hydrate, render } from "react-dom";
-import { BrowserRouter as Router} from 'react-router-dom';
+import React from "react";
+import ReactDOM from "react-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 
-import App from './App';
+import { HelmetProvider } from "react-helmet-async";
 
-import './index.css';
+import { FirestoreProvider } from "./Utils/FirestoreContext2";
 
-import { FirestoreProvider } from './Utils/FirestoreContext2';
 // import RootComponent from './RootComponent';
 
+import App from "./App";
 
-// const APP = (  
-// <Router>
-//   {/* <RootComponent> */}
-//     <FirestoreProvider>
-//       <App /> 
-//     </FirestoreProvider>
-//   {/* </RootComponent> */}
-// </Router>)
+import "./index.css";
 
-const APP = (
+ReactDOM.render(
   <Router>
-    <FirestoreProvider>
-      <App />
-    </FirestoreProvider>
-  </Router>
+    {/* <RootComponent> */}
+    <HelmetProvider>
+      <FirestoreProvider>
+        <App />
+      </FirestoreProvider>
+    </HelmetProvider>
+    {/* </RootComponent> */}
+  </Router>,
+  document.getElementById("root")
 );
-
- 
-const rootElement = document.getElementById("root");
-if (rootElement.hasChildNodes()) {
-  hydrate(APP, rootElement);
-} else {
-  render(APP, rootElement);
-}

@@ -8,6 +8,7 @@ import Stack from "@mui/material/Stack";
 import RTL from "../RTL/RTL";
 
 import useStyles from "./styles";
+import MetaTags from "../MetaTags/MetaTags";
 
 const NewsPage = () => {
   const classes = useStyles();
@@ -55,6 +56,14 @@ const NewsPage = () => {
 
   return (
     <RTL>
+      <MetaTags
+        title="News Page"
+        titleName="Discover News"
+        description="Explore and descover the world"
+        imageUrl="https://firebasestorage.googleapis.com/v0/b/directmedia-6b77f.appspot.com/o/Logo%2FAsset%201.png?alt=media&token=3af7b936-abda-4c0b-9718-a4a5a013bf83"
+        url={window.location.href}
+        hashtags="#News #Programs #Podcasts #Categories #Sport #War"
+      />
       <div className={classes.container}>
         {filteredNews.length === 0 ? (
           <p>لا يوجد أخبار {category}.</p>

@@ -12,6 +12,7 @@ import podcastLogo from "../../assests/podcastLogo.gif";
 
 import useStyles from "./style";
 import { Link } from "react-router-dom";
+import MetaTags from "../MetaTags/MetaTags";
 
 const Podcast = () => {
   const classes = useStyles();
@@ -46,6 +47,15 @@ const Podcast = () => {
 
   return (
     <div className={classes.podcastContainer}>
+      <MetaTags
+        title="Podcasts Page"
+        titleName="Discover Podcasts"
+        description="هو مجموعة أو سلسلة من الأوامر تعطى للحاسوب لتنفيد مهمة معينة في إطار
+        زمني..."
+        imageUrl={podcastLogo}
+        url={window.location.href}
+        hashtags="#News #Programs #Podcasts #Categories #Sport #War"
+      />
       <div className={classes.imageContainer}>
         <img
           src={podcastLogo}

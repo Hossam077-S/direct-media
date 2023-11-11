@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import Dotdotdot from "react-dotdotdot";
 
 import useStyles from "./style";
+import MetaTags from "../MetaTags/MetaTags";
 
 const ProgramDetails = () => {
   const classes = useStyles();
@@ -15,6 +16,14 @@ const ProgramDetails = () => {
 
   return (
     <div className={classes.container}>
+      <MetaTags
+        title="Programs Page"
+        titleName="Discover Programs"
+        description="Explore and discover all the programs that we have!"
+        imageUrl="https://firebasestorage.googleapis.com/v0/b/directmedia-6b77f.appspot.com/o/Logo%2FAsset%201.png?alt=media&token=3af7b936-abda-4c0b-9718-a4a5a013bf83"
+        url={window.location.href}
+        hashtags="#News #Programs #Podcasts #Categories #Sport #War"
+      />
       <div className={classes.newsList}>
         {programsData.map((program, index) => (
           <div key={index} className={classes.program}>

@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import Dotdotdot from "react-dotdotdot";
 
 import useStyles from "./styles";
+import MetaTags from "../MetaTags/MetaTags";
 
 const Writers = () => {
   const classes = useStyles();
@@ -13,6 +14,14 @@ const Writers = () => {
 
   return (
     <div className={classes.container}>
+      <MetaTags
+        title="Writer Page"
+        titleName="Discover the writers"
+        description="Explore and descover the world"
+        imageUrl="https://firebasestorage.googleapis.com/v0/b/directmedia-6b77f.appspot.com/o/Logo%2FAsset%201.png?alt=media&token=3af7b936-abda-4c0b-9718-a4a5a013bf83"
+        url={window.location.href}
+        hashtags="#News #Programs #Podcasts #Categories #Sport #War"
+      />
       <div className={classes.newsList}>
         {writersData?.map((writer, index) => (
           <div key={index} className={classes.writer}>

@@ -14,7 +14,7 @@ import useStyles from "./style";
 import TimeDifferenceComponent from "../TimeDifference/TimeDifferenceComponent";
 import { SuspenseFallback } from "../SuspenseFallback/SuspenseFallback";
 import FirestoreContext from "../../Utils/FirestoreContext2";
-import MetaDecorator from "../MetaDecorator/MetaDecorator";
+import MetaTags from "../MetaTags/MetaTags";
 
 const NewsDetails = () => {
   const classes = useStyles();
@@ -25,7 +25,7 @@ const NewsDetails = () => {
     { value: "facebook" },
     { value: "twitter" },
     { value: "telegram" },
-    { value: "whatsupp" },
+    { value: "whatsapp" },
   ];
 
   const { id } = useParams();
@@ -94,11 +94,13 @@ const NewsDetails = () => {
 
   return (
     <>
-      <MetaDecorator
-        Title={newsItem?.Title}
-        Description={newsItem?.Description}
-        ImageURL={newsItem?.ImageURL}
-        Hashtags={newsItem?.Hashtags}
+      <MetaTags
+        title="News Details"
+        titleName={newsItem?.Title}
+        description={newsItem?.Description}
+        imageUrl={newsItem?.ImageURL}
+        url={window.location.href}
+        hashtags={newsItem?.Hashtag}
       />
       <div className={classes.container}>
         <div className={classes.Title}>{newsItem?.Title} </div>

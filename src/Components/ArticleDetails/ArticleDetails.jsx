@@ -5,6 +5,7 @@ import useStyles from "./style";
 import TimeDifferenceComponent from "../TimeDifference/TimeDifferenceComponent";
 import ShareButton from "../ShareButton/ShareButton";
 import FirestoreContext from "../../Utils/FirestoreContext2";
+import MetaTags from "../MetaTags/MetaTags";
 
 const ArticleDetails = () => {
   const location = useLocation();
@@ -39,12 +40,24 @@ const ArticleDetails = () => {
     setLoading(false);
   }, [id, articlesData]);
 
+  function truncate(source, size) {
+    return source.length > size ? source.slice(0, size - 1) + "…" : source;
+  }
+
   if (loading) {
     return <div className={classes.container}>...يتم التحميل</div>;
   }
 
   return (
     <>
+      <MetaTags
+        title="Article Details"
+        titleName={articleInfo?.Text}
+        description={truncate(articleInfo?.Content, 65)}
+        imageUrl={articleInfo?.ImageURL}
+        url={window.location.href}
+        hashtags="#News #Programs #Podcasts #Categories #Sport #War"
+      />
       <div className={classes.container}>
         <div className={classes.Title}>{articleInfo?.Text}</div>
 

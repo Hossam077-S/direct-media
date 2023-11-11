@@ -5,6 +5,7 @@ import useStyles from "./style";
 import { Divider } from "@mui/material";
 import { SuspenseFallback } from "../SuspenseFallback/SuspenseFallback";
 import FirestoreContext from "../../Utils/FirestoreContext2";
+import MetaTags from "../MetaTags/MetaTags";
 
 const WriterDetails = () => {
   const { id } = useParams();
@@ -51,6 +52,14 @@ const WriterDetails = () => {
   }
   return (
     <div className={classes.container}>
+      <MetaTags
+        title="Writer Details"
+        titleName={writerItem?.Name}
+        description={writerItem?.Description}
+        imageUrl={writerItem?.ProfileImage}
+        url={window.location.href}
+        hashtags="#News #Programs #Podcasts #Categories #Sport #War"
+      />
       <div className={classes.Content}>
         <div className={classes.ImageDiv}>
           <img

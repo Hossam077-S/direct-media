@@ -18,7 +18,7 @@ const ShareButton = ({ socialMedia, url, Hashtags, Title }) => {
       case "twitter":
         url = `https://twitter.com/share?&url=${link}&text=${msg}&hashtags=${hash}`;
         break;
-      case "whatsupp":
+      case "whatsapp":
         url = `https://api.whatsapp.com/send?text=${msg}%20${link}`;
         break;
       case "telegram":
@@ -41,7 +41,7 @@ const ShareButton = ({ socialMedia, url, Hashtags, Title }) => {
         return <FaTwitter />;
       case "telegram":
         return <FaTelegram />;
-      case "whatsupp":
+      case "whatsapp":
         return <FaWhatsapp />;
       default:
         return null;

@@ -16,6 +16,7 @@ import Slider from "react-slick";
 import VideoComponent from "../../Components/VideoComponent/VideoComponent";
 import { SuspenseFallback } from "../SuspenseFallback/SuspenseFallback";
 import FirestoreContext from "../../Utils/FirestoreContext2";
+import MetaTags from "../MetaTags/MetaTags";
 
 const Programs = () => {
   const { id } = useParams();
@@ -127,6 +128,14 @@ const Programs = () => {
 
   return (
     <>
+      <MetaTags
+        title="Program Details"
+        titleName={programItem?.Title}
+        description={programItem?.Description}
+        imageUrl={programItem?.["Image URL"]}
+        url={window.location.href}
+        hashtags="#News #Programs #Podcasts #Categories #Sport #War"
+      />
       <div className={classes.container}>
         <div className={classes.Content}>
           <div className={classes.ImageDiv}>
