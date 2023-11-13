@@ -81,6 +81,16 @@
     fill: var(--primary);
   }
 
+.link-news-pages {
+    text-decoration: none;
+    color: #2E3190;
+}
+
+.link-news-pages:hover {
+  text-decoration: underline;
+  text-decoration-color: #F9AE3B;
+}
+
 @keyframes slide {
     0% {
       transform: translateX(-100%);

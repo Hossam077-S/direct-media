@@ -14,7 +14,6 @@ import useStyles from "./style";
 import TimeDifferenceComponent from "../TimeDifference/TimeDifferenceComponent";
 import { SuspenseFallback } from "../SuspenseFallback/SuspenseFallback";
 import FirestoreContext from "../../Utils/FirestoreContext2";
-import MetaTags from "../MetaTags/MetaTags";
 
 const NewsDetails = () => {
   const classes = useStyles();
@@ -94,14 +93,6 @@ const NewsDetails = () => {
 
   return (
     <>
-      <MetaTags
-        title="News Details"
-        titleName={newsItem?.Title}
-        description={newsItem?.Description}
-        imageUrl={newsItem?.ImageURL}
-        url={window.location.href}
-        hashtags={newsItem?.Hashtag}
-      />
       <div className={classes.container}>
         <div className={classes.Title}>{newsItem?.Title} </div>
         <div className={classes.ImageDiv}>
@@ -137,7 +128,12 @@ const NewsDetails = () => {
           <div className={classes.Description}>
             {newsItem.Category ? (
               <span style={{ fontFamily: "GE_SS_Two_M" }}>
-                {newsItem.Category} - {newsItem.Description}
+                {newsItem.Category}:{" "}
+                <span
+                  dangerouslySetInnerHTML={{
+                    __html: newsItem.Description,
+                  }}
+                />
               </span>
             ) : (
               ""

@@ -54,7 +54,7 @@ const Header = () => {
     { name: "بودكاست", to: "/podcasts" },
   ];
 
-  const currentDate = new Date().toLocaleDateString("ar", {
+  const currentDate = new Date().toLocaleDateString("ar-EG", {
     weekday: "long",
     day: "numeric",
     month: "long",

@@ -87,7 +87,11 @@ const NewsPage = () => {
                       </h2>
                     </Link>
                     <p className={classes.newsDescription}>
-                      {truncate(newsItem.Description, 100)}
+                      <span
+                        dangerouslySetInnerHTML={{
+                          __html: truncate(newsItem.Description, 120),
+                        }}
+                      />
                     </p>
                   </div>
                 </div>

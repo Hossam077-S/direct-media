@@ -34,6 +34,7 @@ import {
 import { SuspenseFallback } from "../../Components/SuspenseFallback/SuspenseFallback";
 import ConvertImageWebp from "./ConvertImageWebp";
 import SnackbarComponent from "../../Components/Snackbar/SnackbarComponent";
+import { Editor } from "@tinymce/tinymce-react";
 
 const ArticlesEntry = ({ distinctWritersName }) => {
   const classes = useStyles();
@@ -75,7 +76,6 @@ const ArticlesEntry = ({ distinctWritersName }) => {
     WriterID: "",
     ArticleID: "",
     Text: "",
-    Content: "",
     ImageURL: "",
     Hashtag: "",
     PublishDate: new Date(),
@@ -85,11 +85,13 @@ const ArticlesEntry = ({ distinctWritersName }) => {
   const [snackbar, setSnackbar] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [showPopupWriter, setShowPopupWriter] = useState(false);
+  const [editorContent, setEditorContent] = useState("");
 
   const form = useRef();
 
   const nameRef = useRef(null);
   const descRef = useRef(null);
+  const editorRef = useRef(null);
 
   const handleImageChange = async (event) => {
     const file = event.target.files[0];
@@ -114,6 +116,7 @@ const ArticlesEntry = ({ distinctWritersName }) => {
 
         const docRef = await addDoc(collection(db, "Articles"), {
           ...formValues,
+          Content: editorContent,
           ImageURL: downloadURL,
         });
 
@@ -134,11 +137,11 @@ const ArticlesEntry = ({ distinctWritersName }) => {
           WriterID: "",
           ArticleID: "",
           Text: "",
-          Content: "",
           ImageURL: "",
           Hashtag: "",
           PublishDate: new Date(),
         });
+        setEditorContent("");
         setLoading(false);
         setSnackbar(true);
         setShowPopup(false);
@@ -151,10 +154,11 @@ const ArticlesEntry = ({ distinctWritersName }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    const content = editorRef.current.getContent();
+    setEditorContent(content);
     setFormValues({
       WriterID: form.current.WriterID.value,
       Text: form.current.Text.value,
-      Content: form.current.Content.value,
       Hashtag: form.current.Hashtag.value,
       PublishDate: new Date(),
     });
@@ -217,6 +221,10 @@ const ArticlesEntry = ({ distinctWritersName }) => {
     setShowPopupWriter(false);
   };
 
+  function truncate(source, size) {
+    return source.length > size ? source.slice(0, size - 1) + "…" : source;
+  }
+
   if (loading) {
     return <SuspenseFallback cName="progress" />;
   }
@@ -258,13 +266,43 @@ const ArticlesEntry = ({ distinctWritersName }) => {
                   className={classes.textField}
                   required
                 />
-                <TextField
-                  label="نص المقال"
-                  name="Content"
-                  type="text"
-                  variant="outlined"
-                  className={classes.textField}
-                  multiline
+                <Editor
+                  apiKey="1thbepflowaqt327jgk300c6yn0xl54vbz0efjjicrirei9e"
+                  onInit={(evt, editor) => (editorRef.current = editor)}
+                  initialValue="<p>أدخل النص الوصفي هنا.</p>"
+                  init={{
+                    height: 500,
+                    width: "95%",
+                    directionality: "rtl", // Set text direction to right-to-left
+                    menubar: false,
+                    plugins: [
+                      "advlist",
+                      "autolink",
+                      "lists",
+                      "link",
+                      "image",
+                      "charmap",
+                      "preview",
+                      "anchor",
+                      "searchreplace",
+                      "visualblocks",
+                      "code",
+                      "fullscreen",
+                      "insertdatetime",
+                      "media",
+                      "table",
+                      "code",
+                      "help",
+                      "wordcount",
+                    ],
+                    toolbar:
+                      "undo redo | blocks | " +
+                      "bold italic forecolor | alignleft aligncenter " +
+                      "alignright alignjustify | bullist numlist outdent indent | " +
+                      "removeformat | help",
+                    content_style:
+                      "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                  }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -330,10 +368,14 @@ const ArticlesEntry = ({ distinctWritersName }) => {
                           {formValues.Text}
                         </p>
                       )}
-                      {formValues.Content && (
+                      {editorRef && (
                         <p className={classes.previewItem}>
                           <span className={classes.previewLabel}>الوصف: </span>
-                          {formValues.Content}
+                          <span
+                            dangerouslySetInnerHTML={{
+                              __html: truncate(editorContent, 100),
+                            }}
+                          />
                         </p>
                       )}
                       {formValues.Hashtag && (
@@ -345,25 +387,25 @@ const ArticlesEntry = ({ distinctWritersName }) => {
                         </p>
                       )}
                     </div>
-                  </div>
-                  <div className={classes.popupButtonContainer}>
-                    <Button
-                      variant="contained"
-                      onClick={handleSave}
-                      className={classes.saveButton}
-                    >
-                      Save
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      onClick={handleCancel}
-                      sx={{
-                        backgroundColor: "transparent",
-                        color: "#2E3190",
-                      }}
-                    >
-                      Cancel
-                    </Button>
+                    <div className={classes.popupButtonContainer}>
+                      <Button
+                        variant="contained"
+                        onClick={handleSave}
+                        className={classes.saveButton}
+                      >
+                        حفظ
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        onClick={handleCancel}
+                        sx={{
+                          backgroundColor: "transparent",
+                          color: "#2E3190",
+                        }}
+                      >
+                        إلغاء
+                      </Button>
+                    </div>
                   </div>
                 </div>
               )}
@@ -400,22 +442,22 @@ const ArticlesEntry = ({ distinctWritersName }) => {
                       onChange={handleImageChange}
                       className={classes.imageField}
                     />
-                  </div>
-                  <div className={classes.popupButtonContainer}>
-                    <Button
-                      variant="contained"
-                      onClick={handleSaveWriter}
-                      className={classes.saveButton}
-                    >
-                      حفظ
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      onClick={handleCancel}
-                      className={classes.cancelButton}
-                    >
-                      إلغاء
-                    </Button>
+                    <div className={classes.popupButtonContainer}>
+                      <Button
+                        variant="contained"
+                        onClick={handleSaveWriter}
+                        className={classes.saveButton}
+                      >
+                        حفظ
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        onClick={handleCancel}
+                        className={classes.cancelButton}
+                      >
+                        إلغاء
+                      </Button>
+                    </div>
                   </div>
                 </div>
               )}

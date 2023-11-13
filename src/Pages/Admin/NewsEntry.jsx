@@ -1,5 +1,7 @@
 import React, { useState, useRef } from "react";
 
+import { Editor } from "@tinymce/tinymce-react";
+
 import {
   storage,
   db,
@@ -81,7 +83,6 @@ const NewsEntry = ({
 
   const [formValues, setFormValues] = useState({
     Title: "",
-    Description: "",
     NewsType: "",
     Category: "",
     YoutubeLink: "",
@@ -97,8 +98,10 @@ const NewsEntry = ({
   const [selectedNews, setSelectedNews] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
   const [isAlreadySelected, setIsAlreadySelected] = useState(false);
+  const [editorContent, setEditorContent] = useState("");
 
   const form = useRef();
+  const editorRef = useRef(null);
 
   const handleRelatedNewsSelect = (event, value) => {
     const isAlreadySelected = selectedNews.some(
@@ -136,7 +139,6 @@ const NewsEntry = ({
 
     try {
       setLoading(true);
-
       const timestamp = Date.now(); // Get the current timestamp
       const storageRef = ref(
         storage,
@@ -150,6 +152,7 @@ const NewsEntry = ({
 
           const docRef = await addDoc(collection(db, "News"), {
             ...formValues,
+            Description: editorContent,
             Tadmin: [...selectedNews.map((news) => news.NewsID)],
             ImageURL: downloadURL,
           });
@@ -162,7 +165,6 @@ const NewsEntry = ({
 
           setFormValues({
             Title: "",
-            Description: "",
             NewsType: "",
             Category: "",
             YoutubeLink: "",
@@ -172,6 +174,7 @@ const NewsEntry = ({
             Tadmin: [],
             PublishDate: new Date(),
           });
+          setEditorContent("");
           setSelectedNews([]);
           setLoading(false);
           setSnackbar(true);
@@ -189,9 +192,10 @@ const NewsEntry = ({
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    const content = editorRef.current.getContent();
+    setEditorContent(content);
     setFormValues({
       Title: form.current.Title.value,
-      Description: form.current.Description.value,
       NewsType: "خبر",
       Category: form.current.Category.value,
       YoutubeLink: form.current.YoutubeLink.value,
@@ -205,6 +209,10 @@ const NewsEntry = ({
   const handleCancel = () => {
     setShowPopup(false);
   };
+
+  function truncate(source, size) {
+    return source.length > size ? source.slice(0, size - 1) + "…" : source;
+  }
 
   if (loading) {
     return <SuspenseFallback cName="progress" />;
@@ -257,13 +265,43 @@ const NewsEntry = ({
                   className={classes.textField}
                   required
                 />
-                <TextField
-                  label="نص الخبر"
-                  name="Description"
-                  type="text"
-                  variant="outlined"
-                  className={classes.textField}
-                  multiline
+                <Editor
+                  apiKey="1thbepflowaqt327jgk300c6yn0xl54vbz0efjjicrirei9e"
+                  onInit={(evt, editor) => (editorRef.current = editor)}
+                  initialValue="<p>أدخل النص الوصفي هنا.</p>"
+                  init={{
+                    height: 500,
+                    width: "95%",
+                    directionality: "rtl", // Set text direction to right-to-left
+                    menubar: false,
+                    plugins: [
+                      "advlist",
+                      "autolink",
+                      "lists",
+                      "link",
+                      "image",
+                      "charmap",
+                      "preview",
+                      "anchor",
+                      "searchreplace",
+                      "visualblocks",
+                      "code",
+                      "fullscreen",
+                      "insertdatetime",
+                      "media",
+                      "table",
+                      "code",
+                      "help",
+                      "wordcount",
+                    ],
+                    toolbar:
+                      "undo redo | blocks | " +
+                      "bold italic forecolor | alignleft aligncenter " +
+                      "alignright alignjustify | bullist numlist outdent indent | " +
+                      "removeformat | help",
+                    content_style:
+                      "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                  }}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -370,10 +408,14 @@ const NewsEntry = ({
                           {formValues.Title}
                         </p>
                       )}
-                      {formValues.Description && (
+                      {editorRef && (
                         <p className={classes.previewItem}>
                           <span className={classes.previewLabel}>الوصف: </span>
-                          {formValues.Description}
+                          <span
+                            dangerouslySetInnerHTML={{
+                              __html: truncate(editorContent, 100),
+                            }}
+                          />
                         </p>
                       )}
                       {formValues.NewsType && (
@@ -415,25 +457,25 @@ const NewsEntry = ({
                         </p>
                       )}
                     </div>
-                  </div>
-                  <div className={classes.popupButtonContainer}>
-                    <Button
-                      variant="contained"
-                      onClick={handleSave}
-                      className={classes.saveButton}
-                    >
-                      حفظ
-                    </Button>
-                    <Button
-                      variant="outlined"
-                      onClick={handleCancel}
-                      sx={{
-                        backgroundColor: "transparent",
-                        color: "#2E3190",
-                      }}
-                    >
-                      إلغاء
-                    </Button>
+                    <div className={classes.popupButtonContainer}>
+                      <Button
+                        variant="contained"
+                        onClick={handleSave}
+                        className={classes.saveButton}
+                      >
+                        حفظ
+                      </Button>
+                      <Button
+                        variant="outlined"
+                        onClick={handleCancel}
+                        sx={{
+                          backgroundColor: "transparent",
+                          color: "#2E3190",
+                        }}
+                      >
+                        إلغاء
+                      </Button>
+                    </div>
                   </div>
                 </div>
               )}

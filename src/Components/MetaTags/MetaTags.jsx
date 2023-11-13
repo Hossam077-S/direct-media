@@ -24,7 +24,7 @@ const MetaTags = ({
       <meta property="og:keywords" content={description} />
       <meta property="og:type" content="website" />
       <meta property="og:url" content={url} />
-      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:card" content={imageUrl} />
       <meta name="twitter:title" content={titleName} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={imageUrl} />

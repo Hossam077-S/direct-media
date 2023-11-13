@@ -24,7 +24,7 @@ const ArticleDetails = () => {
     { value: "facebook" },
     { value: "twitter" },
     { value: "telegram" },
-    { value: "whatsupp" },
+    { value: "whatsapp" },
   ];
 
   useEffect(() => {
@@ -92,8 +92,14 @@ const ArticleDetails = () => {
               ))}
             </div>
           </div>
-          <div className={classes.Description}>{articleInfo?.Content}</div>
-          <div className={classes.writerSignature}>
+          <div className={classes.Description}>
+            <span
+              dangerouslySetInnerHTML={{
+                __html: articleInfo?.Content,
+              }}
+            />
+          </div>
+          <div className={classes.writerSignture}>
             {writerItem ? (
               <>
                 <img

@@ -1,6 +1,8 @@
 import React from "react";
 import { Container, Typography } from "@mui/material";
 
+import MetaTags from "../../Components/MetaTags/MetaTags";
+
 import useStyles from "./styles";
 
 function PrivacyPolicy() {
@@ -8,6 +10,14 @@ function PrivacyPolicy() {
 
   return (
     <Container maxWidth="md" className={classes.container}>
+      <MetaTags
+        title="Writer Page"
+        titleName="Discover the our privacy"
+        description="Explore and descover the world"
+        imageUrl="https://firebasestorage.googleapis.com/v0/b/directmedia-6b77f.appspot.com/o/Logo%2FAsset%201.png?alt=media&token=3af7b936-abda-4c0b-9718-a4a5a013bf83"
+        url={window.location.href}
+        hashtags="#News #Programs #Podcasts #Categories #Sport #War"
+      />
       <Typography variant="h4" gutterBottom className={classes.TypoHeader}>
         سياسة الخصوصية
       </Typography>

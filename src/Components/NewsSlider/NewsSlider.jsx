@@ -6,6 +6,7 @@ import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
 import "./style.css";
+import { Link } from "react-router-dom";
 
 const NewsSlider = ({ newsItems }) => {
   const [currentStartIndex, setCurrentStartIndex] = useState(0);
@@ -36,7 +37,11 @@ const NewsSlider = ({ newsItems }) => {
               <img src={item.ImageURL} alt={item.title} />
             </div>
             <div className="news-content">
-              <div className="news-title">{item.Title}</div>
+              <div className="news-title">
+                <Link to={"news/" + item.id} className="link-news-pages">
+                  {item.Title}
+                </Link>
+              </div>
               <div className="date">
                 {" "}
                 {item.PublishDate instanceof Date ? (

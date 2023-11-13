@@ -1,82 +1,81 @@
 import { makeStyles } from "@mui/styles";
 
-
 const useStyles = makeStyles((theme) => ({
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-        flexGrow: 1,
+  container: {
+    display: "flex",
+    flexDirection: "column",
+    flexGrow: 1,
 
-        maxWidth: '874px',
-        margin: '60px auto',
-        '@media screen and (max-width: 500px)' : {
-            width: 'auto',
-            padding: "0 15px",
-        }
+    maxWidth: "874px",
+    margin: "60px auto",
+    "@media screen and (max-width: 500px)": {
+      width: "auto",
+      padding: "0 15px",
     },
-    Title: {
-        fontSize: '38px',
-        fontFamily: "GE_SS_Two_B",
-        paddingBottom: '25px',
+  },
+  Title: {
+    fontSize: "38px",
+    fontFamily: "GE_SS_Two_B",
+    paddingBottom: "25px",
 
-        "@media (max-width: 768px)": {
-            fontSize: '28px',
-        },
+    "@media (max-width: 768px)": {
+      fontSize: "28px",
     },
-    Date_Share: {
-        display: 'flex',
-        flexDirection: 'row',
-        justifyContent: 'space-between'
-    },
-    Date: {
-        fontFamily: "GE_SS_Two_L",
-        fontSize: "15px",
-        padding: "5px 0",
+  },
+  Date_Share: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  Date: {
+    fontFamily: "GE_SS_Two_L",
+    fontSize: "15px",
+    padding: "5px 0",
 
-        "@media (max-width: 768px)": {
-            fontSize: '12px',
-        },
+    "@media (max-width: 768px)": {
+      fontSize: "12px",
     },
-    shareButtons:{
-        display: 'flex',
-    },
-    newsDetailsImage: {
-        width: '100%',
-        height: 'auto',
+  },
+  shareButtons: {
+    display: "flex",
+  },
+  newsDetailsImage: {
+    width: "100%",
+    height: "auto",
 
-        "@media (max-width: 768px)": {
-            width: '90vw',
-            height: 'auto',
-            textAlign: 'center',
-        },
+    "@media (max-width: 768px)": {
+      width: "90vw",
+      height: "auto",
+      textAlign: "center",
     },
-    Description: {
-        fontSize: '25px',
-        fontFamily: "GE_SS_Two_L",
-        paddingTop: '10px',
+  },
+  Description: {
+    fontSize: "25px",
+    fontFamily: "GE_SS_Two_L",
+    paddingTop: "10px",
 
-        "@media (max-width: 768px)": {
-            fontSize: '18px',
-        },
+    "@media (max-width: 768px)": {
+      fontSize: "18px",
     },
+  },
 
-    writerSignture: {
-        display: "flex",
-        alignItems: "center",
-        margin: '25px 0px'
-    },
-    profileWriter: {
-        width: "100px", 
-        height: "100px", 
-        borderRadius: "50%",
-        border: "3px solid #F9AE3B",
-    },
-    writerName: {
-        margin: 0,
-        fontSize: "14px", // Adjust the font size as needed
-        fontFamily: "GE_SS_Two_B !important",
-        marginRight: '10PX',
-    },
+  writerSignture: {
+    display: "flex",
+    alignItems: "center",
+    margin: "25px 0px",
+  },
+  profileWriter: {
+    width: "100px",
+    height: "100px",
+    borderRadius: "50%",
+    border: "3px solid #F9AE3B",
+  },
+  writerName: {
+    margin: 0,
+    fontSize: "14px", // Adjust the font size as needed
+    fontFamily: "GE_SS_Two_B !important",
+    marginRight: "10PX",
+  },
 }));
 
 export default useStyles;

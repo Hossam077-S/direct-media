@@ -295,7 +295,11 @@ const Home = () => {
                             gutterBottom
                             className={classes.sliderNewsDescription}
                           >
-                            <span>{truncate(newsItem.Description, 120)}</span>
+                            <span
+                              dangerouslySetInnerHTML={{
+                                __html: truncate(newsItem.Description, 120),
+                              }}
+                            />
                           </Typography>
                           <Typography className={classes.sliderArticlDate}>
                             {newsItem.PublishDate instanceof Date ? (
