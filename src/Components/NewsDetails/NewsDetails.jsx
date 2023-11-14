@@ -140,7 +140,9 @@ const NewsDetails = () => {
             )}
           </div>
           <div className={classes.Hashtag}>{newsItem?.Hashtag} </div>
-          <div className={classes.Source}>{newsItem?.Source}</div>
+          <div className={classes.Source}>
+            {newsItem.Source && <span>{"المصدر: " + newsItem.Source}</span>}
+          </div>
 
           <div className={classes.VideoDiv}>
             {newsItem.YoutubeLink ? (

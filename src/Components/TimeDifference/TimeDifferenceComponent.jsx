@@ -18,9 +18,9 @@ const TimeDifferenceComponent = ({ publishDate }) => {
         year: "numeric",
       });
     } else if (hoursDifference >= 1) {
-      return `منذ ${hoursDifference} ساعة`;
+      return `منذ ${hoursDifference.toLocaleString("en-US")} ساعة`;
     } else if (hoursDifference < 1) {
-      return `منذ ${minutesDifference} دقيقة`;
+      return `منذ ${minutesDifference.toLocaleString("en-US")} دقيقة`;
     } else return ``;
   };
 

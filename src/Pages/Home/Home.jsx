@@ -166,6 +166,7 @@ const Home = () => {
   const writersSettings = {
     dots: false,
     infinite: true,
+    autoplay: true,
     speed: 900,
     slidesToShow: writersData.length > 4 ? 4 : writersData.length,
     slidesToScroll: 1,

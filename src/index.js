@@ -8,17 +8,17 @@ import "./index.css";
 
 import { FirestoreProvider } from "./Utils/FirestoreContext2";
 import { HelmetProvider } from "react-helmet-async";
-// import RootComponent from './RootComponent';
+import RootComponent from "./RootComponent";
 
 ReactDOM.render(
   <Router>
-    {/* <RootComponent> */}
-    <HelmetProvider>
-      <FirestoreProvider>
-        <App />
-      </FirestoreProvider>
-    </HelmetProvider>
-    {/* </RootComponent> */}
+    <RootComponent>
+      <HelmetProvider>
+        <FirestoreProvider>
+          <App />
+        </FirestoreProvider>
+      </HelmetProvider>
+    </RootComponent>
   </Router>,
   document.getElementById("root")
 );

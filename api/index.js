@@ -188,7 +188,7 @@ app.get("/article/:id", async (req, res) => {
           `<title>Article Details</title>`
         )
         .replace("__META_OG_TITLE__", truncate(article.Text, 55))
-        .replace("__META_OG_TITLE_T__", truncate(article.Text, 55))
+        .replace("__META_OG_TITLE_T__", truncate(article.Text, 35))
 
         .replace("__META_OG_DESCRIPTION__", truncate(article.Content, 65))
         .replace("__META_DESCRIPTION__", truncate(article.Content, 65))
@@ -198,7 +198,6 @@ app.get("/article/:id", async (req, res) => {
         .replace("__META_OG_IMAGE_2__", imageUrlToUse)
         .replace("__META_OG_IMAGE_3__", imageUrlToUse)
         .replace("__META_OG_IMAGE_T__", imageUrlToUse)
-        .replace("__META_OG_IMAGE_TCARD__", imageUrlToUse)
 
         .replace("__META_OG_IMAGE_WIDTH__", "1200")
         .replace("__META_OG_IMAGE_HEIGHT__", "630")

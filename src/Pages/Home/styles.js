@@ -821,9 +821,10 @@ const useStyles = makeStyles(() => ({
     },
   },
   writerImage: {
-    width: "166px",
-    height: "166px",
-
+    width: "98%",
+    height: "98%",
+    objectFit: "cover",
+    aspectRatio: "1/1",
     transition: "transform .2s",
 
     "&:hover": {
@@ -836,7 +837,6 @@ const useStyles = makeStyles(() => ({
     color: "#2E3190",
     fontSize: "17.3px !important",
     fontFamily: "GE_SS_Two_L !important",
-    marginRight: "38px !important",
     textAlign: "center",
 
     "@media (max-width: 768px)": {

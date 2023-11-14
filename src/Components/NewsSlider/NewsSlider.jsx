@@ -28,6 +28,10 @@ const NewsSlider = ({ newsItems }) => {
     currentStartIndex + 5
   );
 
+  function truncate(source, size) {
+    return source.length > size ? source.slice(0, size - 1) + "…" : source;
+  }
+
   return (
     <div className="news-slider">
       <div className="news-items">
@@ -39,7 +43,7 @@ const NewsSlider = ({ newsItems }) => {
             <div className="news-content">
               <div className="news-title">
                 <Link to={"news/" + item.id} className="link-news-pages">
-                  {item.Title}
+                  {truncate(item.Title, 40)}
                 </Link>
               </div>
               <div className="date">
