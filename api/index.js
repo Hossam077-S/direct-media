@@ -7,7 +7,38 @@ const admin = require("firebase-admin");
 const axios = require("axios");
 const sharp = require("sharp");
 
+// const puppeteer = require("puppeteer");
+
+// function isCrawler(userAgent) {
+//   // Simple check for common crawler user agents
+//   const crawlerUserAgents = /googlebot|bingbot|yandex|baiduspider/i;
+//   return crawlerUserAgents.test(userAgent);
+// }
+
+// async function renderPageForCrawlers(req, res, next) {
+//   if (isCrawler(req.headers["user-agent"])) {
+//     const url = `https://www.directmedialb.com${req.originalUrl}`;
+
+//     const browser = await puppeteer.launch();
+//     const page = await browser.newPage();
+//     await page.goto(url, { waitUntil: "networkidle2" });
+
+//     const content = await page.content();
+//     await browser.close();
+
+//     return res.send(content);
+//   } else {
+//     next();
+//   }
+// }
+
 // If using environment variable for the service account
+
+// const prerender = require("prerender-node").set(
+//   "prerenderToken",
+//   "4CngKWD2GFrBVevrfJmX"
+// );
+
 const serviceAccountPath = path.join(
   __dirname,
   "../serviceAccountKey/serviceAccountKey.json"
@@ -26,7 +57,11 @@ admin.initializeApp({
 const PORT = process.env.PORT || 8080;
 const indexPath = path.resolve(__dirname, "..", "build", "index.html");
 
+// app.use(renderPageForCrawlers);
+// app.use(prerender);
+
 // static resources should just be served as they are
+
 app.use(
   express.static(path.resolve(__dirname, "..", "build"), { maxAge: "30d" })
 );
@@ -137,7 +172,7 @@ app.get("/news/:id", async (req, res) => {
         .replace("__META_OG_IMAGE_WIDTH__", "1200")
         .replace("__META_OG_IMAGE_HEIGHT__", "630")
 
-        .replace("__META_OG_HASHTAGS__", news.Hashtag)
+        .replace("__META_OG_HASHTAGS__", news.Hashtag || "#أخبار")
         .replace("__META_OG_KEYWORDS__", news.Title)
 
         .replace("__META_OG_URL__", fullUrl)
@@ -188,7 +223,7 @@ app.get("/article/:id", async (req, res) => {
           `<title>Article Details</title>`
         )
         .replace("__META_OG_TITLE__", truncate(article.Text, 55))
-        .replace("__META_OG_TITLE_T__", truncate(article.Text, 35))
+        .replace("__META_OG_TITLE_T__", "Direct Media")
 
         .replace("__META_OG_DESCRIPTION__", truncate(article.Content, 65))
         .replace("__META_DESCRIPTION__", truncate(article.Content, 65))
@@ -202,7 +237,7 @@ app.get("/article/:id", async (req, res) => {
         .replace("__META_OG_IMAGE_WIDTH__", "1200")
         .replace("__META_OG_IMAGE_HEIGHT__", "630")
 
-        .replace("__META_OG_HASHTAGS__", article.Hashtag)
+        .replace("__META_OG_HASHTAGS__", article.Hashtag || "#أخبار")
         .replace("__META_OG_KEYWORDS__", article.Text)
 
         .replace("__META_OG_URL__", fullUrl)

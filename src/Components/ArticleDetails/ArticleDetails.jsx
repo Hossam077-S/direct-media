@@ -3,7 +3,7 @@ import { useLocation, useParams } from "react-router-dom";
 
 import useStyles from "./style";
 import TimeDifferenceComponent from "../TimeDifference/TimeDifferenceComponent";
-import ShareButton from "../ShareButton/ShareButton";
+import ShareButton from "../ShareButton/ShareButtonV2";
 import FirestoreContext from "../../Utils/FirestoreContext2";
 import MetaTags from "../MetaTags/MetaTags";
 
@@ -26,6 +26,10 @@ const ArticleDetails = () => {
     { value: "telegram" },
     { value: "whatsapp" },
   ];
+
+  useEffect(() => {
+    window.location.reload();
+  }, []);
 
   useEffect(() => {
     // Find the article with the same id from the articles data context

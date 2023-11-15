@@ -8,7 +8,7 @@ import "slick-carousel/slick/slick.css";
 import Slider from "react-slick";
 
 import ReactPlayer from "react-player";
-import ShareButton from "../../Components/ShareButton/ShareButton";
+import ShareButton from "../../Components/ShareButton/ShareButtonV2";
 
 import useStyles from "./style";
 import TimeDifferenceComponent from "../TimeDifference/TimeDifferenceComponent";
@@ -59,6 +59,10 @@ const NewsDetails = () => {
       },
     ],
   };
+
+  useEffect(() => {
+    window.location.reload();
+  }, []);
 
   useEffect(() => {
     const news = newsData?.find((news) => news.id === id);

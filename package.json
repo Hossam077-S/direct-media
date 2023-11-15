@@ -30,6 +30,8 @@
     "js-cookie": "^3.0.5",
     "jss-rtl": "^0.3.0",
     "lodash": "^4.17.21",
+    "prerender-node": "^3.7.0",
+    "puppeteer": "^21.5.2",
     "react": "^17.0.2",
     "react-cookie-consent": "^8.0.1",
     "react-dom": "^17.0.2",

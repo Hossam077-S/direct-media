@@ -6,9 +6,9 @@ export default makeStyles(() => ({
     border: "none",
     cursor: "pointer",
     margin: "0 5px",
-    fontSize: "20px",
+    fontSize: "30px",
     color: "#2E3190",
-    transition: "color 0.3s",
+    transition: "color 0.3s, transform 0.3s",
     outline: "none",
     display: "flex",
     alignItems: "center",
@@ -17,15 +17,7 @@ export default makeStyles(() => ({
     borderRadius: "50%",
     "&:hover": {
       color: "#F9AE3B",
+      transform: "scale(1.1)",
     },
-  },
-  facebook: {
-    // Add specific styles for Facebook button
-  },
-  instagram: {
-    // Add specific styles for Instagram button
-  },
-  twitter: {
-    // Add specific styles for Twitter button
   },
 }));
