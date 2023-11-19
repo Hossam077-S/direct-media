@@ -299,7 +299,7 @@ const ArticlesEntry = ({ distinctWritersName }) => {
                       "undo redo | blocks | " +
                       "bold italic forecolor | alignleft aligncenter " +
                       "alignright alignjustify | bullist numlist outdent indent | " +
-                      "removeformat | help",
+                      "removeformat | image | help",
                     content_style:
                       "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
                   }}

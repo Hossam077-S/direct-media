@@ -6,6 +6,7 @@ import {
   deleteDoc,
   deleteObject,
   doc,
+  getDoc,
   getDocs,
   query,
   ref,
@@ -67,6 +68,9 @@ const DeleteForm = (insertFormProps) => {
 
   const [loading, setLoading] = useState(false);
   const [selectedListRemove, setSelectedListRemove] = useState([]);
+  const [selectedListRemoveWriters, setSelectedListRemoveWriters] = useState(
+    []
+  );
   const [showPopup, setShowPopup] = useState(false);
   const [snackbar, setSnackbar] = useState(false);
 
@@ -140,68 +144,137 @@ const DeleteForm = (insertFormProps) => {
     }
   };
 
-  const handleDeleteArticles = async (event) => {
+  const handleDeleteArticles_Writers = async (event) => {
     event.preventDefault();
 
     try {
       setLoading(true);
 
-      const querySnapshot = await getDocs(
-        query(
-          collection(db, "Articles"),
-          where("ArticleID", "==", selectedListRemove)
-        )
-      );
-
-      if (!querySnapshot.empty) {
-        const selectedDoc = querySnapshot.docs[0];
-
-        const selectedData = querySnapshot.docs[0].data();
-
-        const imageRef = ref(storage, `${selectedData.ImageURL}`);
-
-        await deleteDoc(selectedDoc.ref);
-
-        if (imageRef) {
-          try {
-            await deleteObject(imageRef);
-            console.log("Image deleted successfully");
-          } catch (error) {
-            console.error("Error deleting image:", error);
-          }
-        }
-
-        // Remove Related Writers
-        const referencingNewsQuerySnapshot = await getDocs(
+      // Deleting Article
+      if (selectedListRemove.length > 0) {
+        const querySnapshot = await getDocs(
           query(
-            collection(db, "Writers"),
-            where("ArticleID", "array-contains", selectedListRemove)
+            collection(db, "Articles"),
+            where("ArticleID", "==", selectedListRemove)
           )
         );
 
-        referencingNewsQuerySnapshot.docs.forEach(async (docSnapshot) => {
-          const docRef = doc(db, "Writers", docSnapshot.id);
+        if (!querySnapshot.empty) {
+          const selectedDoc = querySnapshot.docs[0];
 
-          // Get the current value of relatedNews
-          const updatedWriter = arrayRemove(selectedListRemove);
+          const selectedData = querySnapshot.docs[0].data();
 
-          // Update relatedNews field
-          await updateDoc(docRef, { ArticleID: updatedWriter });
-        });
+          const imageRef = ref(storage, `${selectedData.ImageURL}`);
 
-        console.log("Articles deleted successfully!");
+          await deleteDoc(selectedDoc.ref);
 
-        setSnackbar(true);
-        setShowPopup(false);
-        setLoading(false);
-        setSelectedListRemove(null);
-      } else {
-        console.error("Error getting Articles data: Not Found");
-        setSnackbar(false);
-        setLoading(false);
+          if (imageRef) {
+            try {
+              await deleteObject(imageRef);
+              console.log("Image deleted successfully");
+            } catch (error) {
+              console.error("Error deleting image:", error);
+            }
+          }
+
+          // Remove Related Writers
+          const referencingNewsQuerySnapshot = await getDocs(
+            query(
+              collection(db, "Writers"),
+              where("ArticleID", "array-contains", selectedListRemoveWriters)
+            )
+          );
+
+          referencingNewsQuerySnapshot.docs.forEach(async (docSnapshot) => {
+            const docRef = doc(db, "Writers", docSnapshot.id);
+
+            // Get the current value of relatedNews
+            const updatedWriter = arrayRemove(selectedListRemove);
+
+            // Update relatedNews field
+            await updateDoc(docRef, { ArticleID: updatedWriter });
+          });
+
+          console.log("Articles deleted successfully!");
+
+          setSnackbar(true);
+          setShowPopup(false);
+          setLoading(false);
+          setSelectedListRemove(null);
+        } else {
+          console.error("Error getting Articles data: Not Found");
+          setSnackbar(false);
+          setLoading(false);
+        }
+      }
+
+      // Deleting Writer
+      if (selectedListRemoveWriters.length > 0) {
+        const querySnapshotWriters = await getDocs(
+          query(
+            collection(db, "Writers"),
+            where("WriterID", "==", selectedListRemoveWriters)
+          )
+        );
+
+        if (!querySnapshotWriters.empty) {
+          const selectedDoc = querySnapshotWriters.docs[0];
+
+          const selectedData = querySnapshotWriters.docs[0].data();
+
+          const imageRef = ref(storage, `${selectedData.ProfileImage}`);
+
+          const relatedArticles = selectedData.ArticleID;
+
+          await deleteDoc(selectedDoc.ref);
+
+          if (imageRef) {
+            try {
+              await deleteObject(imageRef);
+              console.log("Image deleted successfully");
+            } catch (error) {
+              console.error("Error deleting image:", error);
+            }
+          }
+
+          // Remove Related Articles
+          for (const articleId of relatedArticles) {
+            // Fetch the article document
+            const articleRef = doc(db, "Articles", articleId);
+            const articleDoc = await getDoc(articleRef);
+
+            if (articleDoc.exists()) {
+              const articleData = articleDoc.data();
+
+              // Delete the image from Firebase Storage
+              const articleImageRef = ref(storage, articleData.ImageURL);
+              try {
+                await deleteObject(articleImageRef);
+                console.log("Article image deleted successfully");
+              } catch (error) {
+                console.error("Error deleting article image:", error);
+              }
+
+              // Delete the article document
+              await deleteDoc(articleRef);
+              console.log("Related Article deleted successfully");
+            }
+          }
+
+          console.log("Writer deleted successfully!");
+
+          setSnackbar(true);
+          setShowPopup(false);
+          setLoading(false);
+          setSelectedListRemove(null);
+        } else {
+          console.error("Error getting Writers data: Not Found");
+          setSnackbar(false);
+          setLoading(false);
+        }
       }
     } catch (error) {
-      console.error("Error Deleting Articles data: ", error);
+      console.error("Error Deleting data: ", error);
       setLoading(false);
     }
   };
@@ -452,6 +525,27 @@ const DeleteForm = (insertFormProps) => {
                       />
                     )}
                   />
+                  <span>أو</span>
+                  <Autocomplete
+                    className={classes.autocomplete}
+                    options={insertFormProps.WritersName}
+                    onChange={(event, writers) => {
+                      if (writers) {
+                        setSelectedListRemoveWriters(writers?.id);
+                      }
+                    }}
+                    getOptionLabel={(option) => option.title}
+                    required
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        name="Writers"
+                        label="الكتاب"
+                        variant="outlined"
+                        className={classes.textFieldSelect}
+                      />
+                    )}
+                  />
                   <Button
                     variant="contained"
                     type="submit"
@@ -468,7 +562,7 @@ const DeleteForm = (insertFormProps) => {
                         <div className={classes.popupButtons}>
                           <Button
                             variant="contained"
-                            onClick={handleDeleteArticles}
+                            onClick={handleDeleteArticles_Writers}
                             className={classes.saveButton}
                           >
                             نعم

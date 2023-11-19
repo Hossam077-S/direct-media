@@ -28,10 +28,6 @@ const ArticleDetails = () => {
   ];
 
   useEffect(() => {
-    window.location.reload();
-  }, []);
-
-  useEffect(() => {
     // Find the article with the same id from the articles data context
     const article = articlesData.find((article) => article.id === id);
 

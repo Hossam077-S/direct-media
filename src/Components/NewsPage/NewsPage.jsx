@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import FirestoreContext from "../../Utils/FirestoreContext2";
 
 import Pagination from "@mui/material/Pagination";
@@ -78,14 +78,14 @@ const NewsPage = () => {
                     className={classes.newsImage}
                   />
                   <div className={classes.newsContent}>
-                    <Link
-                      to={"/news/" + newsItem.id}
+                    <a
+                      href={"/news/" + newsItem.id}
                       className={classes.LinkInnerPages}
                     >
                       <h2 className={classes.newsTitle}>
                         <span>{truncate(newsItem.Title, 65)}</span>
                       </h2>
-                    </Link>
+                    </a>
                     <p className={classes.newsDescription}>
                       <span
                         dangerouslySetInnerHTML={{

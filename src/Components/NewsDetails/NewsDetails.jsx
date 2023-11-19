@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
@@ -26,7 +26,6 @@ const NewsDetails = () => {
     { value: "telegram" },
     { value: "whatsapp" },
   ];
-
   const { id } = useParams();
   const [newsItem, setNewsItem] = useState({});
   const [relatedNews, setRelatedNews] = useState([]);
@@ -61,16 +60,12 @@ const NewsDetails = () => {
   };
 
   useEffect(() => {
-    window.location.reload();
-  }, []);
-
-  useEffect(() => {
     const news = newsData?.find((news) => news.id === id);
 
     if (news) {
       setNewsItem(news);
     } else {
-      console.log("Writer not found");
+      console.log("News not found");
     }
 
     setLoading(false);
@@ -180,8 +175,8 @@ const NewsDetails = () => {
                           />
                         </div>
                         <div className={classes.relatedNewsContent}>
-                          <Link
-                            to={`/news/${relatedNewsItem.id}`}
+                          <a
+                            href={`/news/${relatedNewsItem.id}`}
                             className={classes.relatedNewsLink}
                             onClick={() => {
                               window.scrollTo(0, 0);
@@ -191,7 +186,7 @@ const NewsDetails = () => {
                             <h3 className={classes.relatedTitle}>
                               {relatedNewsItem.Title}
                             </h3>
-                          </Link>
+                          </a>
                           <p className={classes.relatedDate}>
                             {relatedNewsItem.PublishDate instanceof Date ? (
                               <TimeDifferenceComponent

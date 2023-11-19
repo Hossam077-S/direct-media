@@ -280,8 +280,8 @@ const Home = () => {
                           className={classes.SliderDivider}
                         />
                         <div className={classes.sliderContent}>
-                          <Link
-                            to={"news/" + newsItem.id}
+                          <a
+                            href={"news/" + newsItem.id}
                             className={classes.LinkInnerPages}
                           >
                             <Typography
@@ -290,7 +290,7 @@ const Home = () => {
                             >
                               {newsItem.Title}
                             </Typography>
-                          </Link>
+                          </a>
                           <Typography
                             variant="body1"
                             gutterBottom
