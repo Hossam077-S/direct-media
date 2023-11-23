@@ -174,6 +174,7 @@ const NewsEntry = ({
             Tadmin: [],
             PublishDate: new Date(),
           });
+
           setEditorContent("");
           setSelectedNews([]);
           setLoading(false);

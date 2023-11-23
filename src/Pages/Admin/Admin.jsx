@@ -106,6 +106,7 @@ const Admin = () => {
 
   const handleActionClick = (action) => {
     setSelectedAction(action);
+    setActiveTab(0); // Reset to the first tab when action changes
   };
 
   const insertFormProps = {
@@ -135,14 +136,12 @@ const Admin = () => {
             >
               إضافة
             </span>
-            {/* Need to be handle later */}
-
-            {/* <span
+            <span
               className={selectedAction === "تعديل" ? classes.activeOption : ""}
               onClick={() => handleActionClick("تعديل")}
             >
               تعديل
-            </span> */}
+            </span>
             <span
               className={selectedAction === "حذف" ? classes.activeOption : ""}
               onClick={() => handleActionClick("حذف")}
@@ -151,18 +150,31 @@ const Admin = () => {
             </span>
           </div>
 
-          <Tabs
-            value={activeTab}
-            onChange={(event, newValue) => setActiveTab(newValue)}
-            indicatorColor="primary"
-            textColor="primary"
-            className={classes.Tabs}
-          >
-            <Tab className={classes.Tab} label="خبر" />
-            <Tab className={classes.Tab} label="مقال" />
-            <Tab className={classes.Tab} label="برنامج" />
-            <Tab className={classes.Tab} label="بودكاست" />
-          </Tabs>
+          {selectedAction !== "تعديل" ? (
+            <Tabs
+              value={activeTab}
+              onChange={(event, newValue) => setActiveTab(newValue)}
+              indicatorColor="primary"
+              textColor="primary"
+              className={classes.Tabs}
+            >
+              <Tab className={classes.Tab} label="خبر" />
+              <Tab className={classes.Tab} label="مقال" />
+              <Tab className={classes.Tab} label="برنامج" />
+              <Tab className={classes.Tab} label="بودكاست" />
+            </Tabs>
+          ) : (
+            <Tabs
+              value={activeTab}
+              onChange={(event, newValue) => setActiveTab(newValue)}
+              indicatorColor="primary"
+              textColor="primary"
+              className={classes.Tabs}
+            >
+              <Tab className={classes.Tab} label="خبر" />
+              <Tab className={classes.Tab} label="مقال" />
+            </Tabs>
+          )}
 
           {selectedAction === "إضافة" && <InsertForm {...insertFormProps} />}
           {selectedAction === "تعديل" && <UpdateForm {...insertFormProps} />}

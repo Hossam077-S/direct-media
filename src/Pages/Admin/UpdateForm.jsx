@@ -1,22 +1,25 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
+
+import { Editor } from "@tinymce/tinymce-react";
+
 import {
-  collection,
   db,
   deleteObject,
   doc,
-  getDocs,
   getDownloadURL,
-  query,
   ref,
   storage,
   updateDoc,
   uploadBytesResumable,
-  where,
 } from "../../Utils/firebase";
 
 import {
   Autocomplete,
   Button,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
   TextField,
   ThemeProvider,
   createTheme,
@@ -32,8 +35,14 @@ import SnackbarComponent from "../../Components/Snackbar/SnackbarComponent";
 import { SuspenseFallback } from "../../Components/SuspenseFallback/SuspenseFallback";
 import ConvertImageWebp from "./ConvertImageWebp";
 
+import FirestoreContext from "../../Utils/FirestoreContext2";
+
+import { v4 } from "uuid";
+
 const UpdateForm = (insertFormProps) => {
   const classes = useStyles();
+
+  const { newsData, articlesData } = useContext(FirestoreContext);
 
   const { convertedImage, convertImageToWebP } = ConvertImageWebp();
 
@@ -70,42 +79,147 @@ const UpdateForm = (insertFormProps) => {
 
   const [formData, setFormData] = useState({
     Title: "",
-    Description: "",
+    NewsType: "",
+    Category: "",
     YoutubeLink: "",
+    ImageURL: "",
     Hashtag: "",
+    Source: "",
+    Tadmin: [],
+    PublishDate: new Date(),
+  });
+
+  const [formValues, setFormValues] = useState({
+    WriterID: "",
+    ArticleID: "",
+    Text: "",
+    ImageURL: "",
+    Hashtag: "",
+    PublishDate: new Date(),
   });
 
   const [loading, setLoading] = useState(false);
   const [selectedNews, setSelectedNews] = useState([]);
+  const [selectedRelatedNews, setSelectedRelatedNews] = useState([]);
+  const [editorContent, setEditorContent] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+
+  const [selectedArticle, setSelectedArticle] = useState([]);
+  const [selectedWriter, setSelectedWriter] = useState("");
+
+  const [isAlreadySelected, setIsAlreadySelected] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [snackbar, setSnackbar] = useState(false);
   const [oldImage, setOldImage] = useState("");
 
   const formRef = useRef();
+  const editorRef = useRef(null);
 
   const handleImageChange = async (event) => {
     const file = event.target.files[0];
     await convertImageToWebP(file, "image");
   };
 
+  const handleRelatedNewsSelect = (event, value) => {
+    const isAlreadySelected = selectedRelatedNews.some(
+      (news) => news?.NewsID === value?.NewsID
+    );
+
+    if (isAlreadySelected) {
+      setIsAlreadySelected(true);
+    } else {
+      setIsAlreadySelected(false);
+      if (value) {
+        setSelectedRelatedNews((prevSelectedNews) => [
+          ...prevSelectedNews,
+          { id: v4(), value: value.title, NewsID: value.id }, // Store both Title and NewsID
+        ]);
+      }
+    }
+  };
+
+  const handleRemoveSelectedNews = (index) => {
+    setSelectedRelatedNews((prevSelectedNews) => {
+      const updatedSelectedNews = [...prevSelectedNews];
+      updatedSelectedNews.splice(index, 1);
+      return updatedSelectedNews;
+    });
+  };
+
+  // Function to fetch related news titles based on their IDs
+  const fetchRelatedNewsTitles = async (relatedNewsIds) => {
+    if (!relatedNewsIds || relatedNewsIds.length === 0) {
+      return [];
+    }
+
+    const relatedNewsPromises = relatedNewsIds.map(async (id) => {
+      // Assuming newsData is an array of all news items
+      const relatedNewsItem = newsData?.find((item) => item.NewsID === id);
+      return { id: v4(), value: relatedNewsItem?.Title, NewsID: id };
+    });
+
+    return Promise.all(relatedNewsPromises);
+  };
+
   const handleGetNewsSelected = async (value) => {
-    setSelectedNews(value?.NewsID);
+    setSelectedNews(value?.id);
+    formRef.current.Title.value = "";
+    setSelectedCategory("");
+    formRef.current.YoutubeLink.value = "";
+    formRef.current.Hashtag.value = "";
+    formRef.current.Source.value = "";
+
     try {
-      const querySnapshot = await getDocs(
-        query(collection(db, "News"), where("NewsID", "==", value.NewsID))
-      );
+      const news = newsData?.find((news) => news.id === value.id);
 
       // Check if any documents match the selected NewsID
-      if (!querySnapshot.empty) {
-        const selectedNewsData = querySnapshot.docs[0].data();
-
+      if (!news.empty) {
         // Use formRef to access form elements and set data
-        formRef.current.Title.value = selectedNewsData.Title || "";
-        formRef.current.Description.value = selectedNewsData.Description || "";
-        formRef.current.YoutubeLink.value = selectedNewsData.YoutubeLink || "";
-        formRef.current.Hashtag.value = selectedNewsData.Hashtag || "";
+        formRef.current.Title.value = news.Title || "";
+        setSelectedCategory(news.Category || "");
+        formRef.current.YoutubeLink.value = news.YoutubeLink || "";
+        formRef.current.Hashtag.value = news.Hashtag || "";
+        formRef.current.Source.value = news.Source || "";
 
-        setOldImage(selectedNewsData.ImageURL);
+        // Fetch and set related news
+        const relatedNews = await fetchRelatedNewsTitles(news.Tadmin);
+        setSelectedRelatedNews(relatedNews);
+
+        // Use `setContent` to update the editor's content
+        if (editorRef.current) {
+          editorRef.current.setContent(news.Description || "");
+        }
+
+        setOldImage(news.ImageURL);
+      } else {
+        console.error("Error getting news data: Not Found");
+      }
+    } catch (error) {
+      console.error("Error getting news data: ", error);
+    }
+  };
+
+  const handleGetArticleSelected = async (value) => {
+    setSelectedArticle(value?.ArticleID);
+    setSelectedWriter("");
+    formRef.current.artTitle.value = "";
+    formRef.current.Hashtag.value = "";
+
+    try {
+      const article = articlesData?.find((article) => article.id === value.id);
+      // Check if any documents match the selected ArticleID
+      if (!article.empty) {
+        // Use formRef to access form elements and set data
+        formRef.current.artTitle.value = article.Text || "";
+        setSelectedWriter(article.WriterID);
+        formRef.current.Hashtag.value = article.Hashtag || "";
+
+        // Use `setContent` to update the editor's content
+        if (editorRef.current) {
+          editorRef.current.setContent(article.Content || "");
+        }
+
+        setOldImage(article.ImageURL);
       } else {
         console.error("Error getting news data: Not Found");
       }
@@ -116,11 +230,14 @@ const UpdateForm = (insertFormProps) => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    setEditorContent(editorRef.current.getContent());
     setFormData({
       Title: formRef.current.Title.value,
-      Description: formRef.current.Description.value,
+      NewsType: "خبر",
+      Category: formRef.current.Category.value,
       YoutubeLink: formRef.current.YoutubeLink.value,
       Hashtag: formRef.current.Hashtag.value,
+      Source: formRef.current.Source.value,
       PublishDate: new Date(),
     });
 
@@ -151,6 +268,8 @@ const UpdateForm = (insertFormProps) => {
             const docRef = doc(db, "News", selectedNews);
             await updateDoc(docRef, {
               ...formData,
+              Description: editorContent,
+              Tadmin: [...selectedRelatedNews.map((news) => news.NewsID)],
               ImageURL: downloadURL,
             });
 
@@ -169,12 +288,19 @@ const UpdateForm = (insertFormProps) => {
 
             setFormData({
               Title: "",
-              Description: "",
+              NewsType: "",
+              Category: "",
               YoutubeLink: "",
+              ImageURL: "",
               Hashtag: "",
+              Source: "",
+              Tadmin: [],
             });
 
+            setSelectedRelatedNews([]);
+            setEditorContent("");
             setSelectedNews(null);
+            setSelectedCategory("");
             setSnackbar(true);
             setShowPopup(false);
             setLoading(false);
@@ -185,18 +311,132 @@ const UpdateForm = (insertFormProps) => {
           });
       } else {
         const docRef = doc(db, "News", selectedNews);
-        await updateDoc(docRef, formData);
+        await updateDoc(docRef, {
+          ...formData,
+          Description: editorContent, // Include editor content
+          Tadmin: [...selectedRelatedNews.map((news) => news.NewsID)], // Include related news IDs
+        });
 
         console.log("Document updated successfully!:", selectedNews);
 
         setFormData({
           Title: "",
-          Description: "",
+          NewsType: "",
+          Category: "",
           YoutubeLink: "",
+          ImageURL: "",
+          Hashtag: "",
+          Source: "",
+          Tadmin: [],
+        });
+
+        setSelectedRelatedNews([]);
+        setEditorContent("");
+        setSelectedNews(null);
+        setSelectedCategory("");
+        setSnackbar(true);
+        setShowPopup(false);
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error("Error updating document: ", error);
+      setLoading(false);
+    }
+  };
+
+  const handleSubmitArt = async (event) => {
+    event.preventDefault();
+    setEditorContent(editorRef.current.getContent());
+    setFormValues({
+      Text: formRef.current.artTitle.value,
+      WriterID: selectedWriter,
+      Hashtag: formRef.current.Hashtag.value,
+      PublishDate: new Date(),
+    });
+
+    setShowPopup(true);
+  };
+
+  const handleUpdateArt = async (event) => {
+    event.preventDefault();
+
+    try {
+      setLoading(true);
+
+      const timestamp = Date.now(); // Get the current timestamp
+      const storageRef = ref(
+        storage,
+        `news_images/${timestamp}` // Append the timestamp to the image name
+      );
+
+      const imageRef = ref(storage, oldImage);
+
+      if (convertedImage) {
+        const uploadTask = uploadBytesResumable(storageRef, convertedImage);
+
+        uploadTask
+          .then(async (snapshot) => {
+            const downloadURL = await getDownloadURL(snapshot.ref);
+
+            const docRef = doc(db, "Articles", selectedArticle);
+            await updateDoc(docRef, {
+              ...formValues,
+              Content: editorContent,
+              ImageURL: downloadURL,
+            });
+
+            // Optionally, you can delete the old image if needed
+            if (oldImage) {
+              try {
+                // Delete the image
+                await deleteObject(imageRef);
+                console.log("Image deleted successfully");
+              } catch (error) {
+                console.error("Error deleting image:", error);
+              }
+            }
+
+            console.log("Document updated successfully!:", selectedNews);
+
+            setFormData({
+              WriterID: "",
+              ArticleID: "",
+              Text: "",
+              ImageURL: "",
+              Hashtag: "",
+            });
+
+            setEditorContent("");
+            setSelectedArticle(null);
+            setSelectedWriter("");
+            setSnackbar(true);
+            setShowPopup(false);
+            setLoading(false);
+          })
+          .catch((error) => {
+            console.error("Error adding document: ", error);
+            setLoading(false);
+          });
+      } else {
+        const docRef = doc(db, "Articles", selectedArticle);
+        await updateDoc(docRef, {
+          ...formValues,
+          Content: editorContent, // Include editor content
+        });
+
+        console.log("Document updated successfully!:", selectedNews);
+
+        setFormData({
+          WriterID: "",
+          ArticleID: "",
+          Text: "",
+          ImageURL: "",
           Hashtag: "",
         });
 
-        setSelectedNews(null);
+        setEditorContent("");
+        setSelectedArticle(null);
+        setSelectedWriter("");
         setSnackbar(true);
         setShowPopup(false);
         setLoading(false);
@@ -227,24 +467,55 @@ const UpdateForm = (insertFormProps) => {
                 <ThemeProvider theme={theme}>
                   <Autocomplete
                     className={classes.autocomplete}
-                    options={insertFormProps.relatedNewsOptions}
+                    options={insertFormProps.NewsOptions}
                     onChange={(event, newValue) => {
                       if (newValue) {
                         handleGetNewsSelected(newValue);
                       }
                     }}
-                    getOptionLabel={(option) => option.Title}
+                    getOptionLabel={(option) => option.title}
                     required
                     renderInput={(params) => (
                       <TextField
                         {...params}
-                        name="RelatedNews"
+                        name="News"
                         label="الأخبار"
                         variant="outlined"
                         className={classes.textFieldSelect}
                       />
                     )}
                   />
+                  <FormControl fullWidth required>
+                    <InputLabel
+                      id="category-label"
+                      className={classes.labelText}
+                    >
+                      تصنيف الخبر
+                    </InputLabel>
+                    <Select
+                      labelId="category-label"
+                      type="select"
+                      name="Category"
+                      className={classes.textFieldSelect}
+                      value={selectedCategory} // Controlled by state
+                      onChange={(e) => setSelectedCategory(e.target.value)} // Update state on change
+                    >
+                      {insertFormProps.NewsCategory.length > 0
+                        ? insertFormProps.NewsCategory.map((category) => (
+                            <MenuItem key={category.id} value={category.title}>
+                              {category.title}
+                            </MenuItem>
+                          ))
+                        : insertFormProps.categories.map((category) => (
+                            <MenuItem
+                              key={category.value}
+                              value={category.value}
+                            >
+                              {category.label}
+                            </MenuItem>
+                          ))}
+                    </Select>
+                  </FormControl>
                   <TextField
                     label="عنوان الخبر"
                     name="Title"
@@ -253,22 +524,86 @@ const UpdateForm = (insertFormProps) => {
                     className={classes.textField}
                     required
                   />
-                  <TextField
-                    label="نص الخبر"
-                    name="Description"
-                    type="text"
-                    variant="outlined"
-                    className={classes.textField}
-                    multiline
-                    required
+                  <Editor
+                    apiKey="1thbepflowaqt327jgk300c6yn0xl54vbz0efjjicrirei9e"
+                    onInit={(evt, editor) => (editorRef.current = editor)}
+                    initialValue={editorRef.current}
+                    init={{
+                      height: 500,
+                      width: "95%",
+                      directionality: "rtl", // Set text direction to right-to-left
+                      menubar: false,
+                      plugins: [
+                        "advlist",
+                        "autolink",
+                        "lists",
+                        "link",
+                        "image",
+                        "charmap",
+                        "preview",
+                        "anchor",
+                        "searchreplace",
+                        "visualblocks",
+                        "code",
+                        "fullscreen",
+                        "insertdatetime",
+                        "media",
+                        "table",
+                        "code",
+                        "help",
+                        "wordcount",
+                      ],
+                      toolbar:
+                        "undo redo | blocks | " +
+                        "bold italic forecolor | alignleft aligncenter " +
+                        "alignright alignjustify | bullist numlist outdent indent | " +
+                        "removeformat | image | help",
+                      content_style:
+                        "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                    }}
                   />
+                  <Autocomplete
+                    className={`${classes.autocomplete} ${
+                      isAlreadySelected ? classes.redAutocompleteInput : ""
+                    }`}
+                    options={insertFormProps.NewsOptions}
+                    onChange={handleRelatedNewsSelect}
+                    getOptionLabel={(option) => option.title} // Display the Title in the input
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        name="RelatedNews"
+                        label="البحث عن الأخبار المرتبطة"
+                        variant="outlined"
+                        className={classes.textFieldSelect}
+                      />
+                    )}
+                  />
+                  {selectedRelatedNews.length > 0 && (
+                    <div className={classes.selectedNewsContainer}>
+                      {selectedRelatedNews.map((news) => (
+                        <li
+                          key={news.id}
+                          className={`${classes.selectedNewsItem} ${classes.selectedNewsItemHover}`}
+                          onClick={() => handleRemoveSelectedNews(news.id)}
+                        >
+                          <div
+                            className={`${classes.selectedNewsItemContent} ${classes.selectedNewsItemFront}`}
+                          >
+                            <div className={classes.selectedNewsText}>
+                              {news.value} X
+                            </div>
+                          </div>
+                        </li>
+                      ))}
+                    </div>
+                  )}
                   <TextField
                     label="رابط الفيديو"
                     name="YoutubeLink"
                     type="text"
                     variant="outlined"
                     className={classes.textField}
-                    required
                   />
                   <TextField
                     label="الهاشتاغ"
@@ -276,7 +611,13 @@ const UpdateForm = (insertFormProps) => {
                     type="text"
                     variant="outlined"
                     className={classes.textField}
-                    required
+                  />
+                  <TextField
+                    label="المصدر"
+                    name="Source"
+                    type="text"
+                    variant="outlined"
+                    className={classes.textField}
                   />
                   <div className={classes.imageFieldContainer}>
                     <label
@@ -334,7 +675,7 @@ const UpdateForm = (insertFormProps) => {
             snackbar={snackbar}
             setSnackbar={setSnackbar}
             error={false}
-            Message={"تم التعديل بنجاح"}
+            Message={"تم التعديل الخبر بنجاح"}
           />
         </React.Suspense>
       )}
@@ -342,17 +683,164 @@ const UpdateForm = (insertFormProps) => {
       {insertFormProps.activeTab === 1 && (
         <React.Suspense
           fallback={<insertFormProps.SuspenseFallback cName="progress" />}
-        ></React.Suspense>
-      )}
-      {insertFormProps.activeTab === 2 && (
-        <React.Suspense
-          fallback={<insertFormProps.SuspenseFallback cName="progress" />}
-        ></React.Suspense>
-      )}
-      {insertFormProps.activeTab === 3 && (
-        <React.Suspense
-          fallback={<insertFormProps.SuspenseFallback cName="progress" />}
-        ></React.Suspense>
+        >
+          <div className={classes.TextFieldDiv}>
+            <form ref={formRef} onSubmit={handleSubmitArt}>
+              <CacheProvider value={cacheRtl}>
+                <ThemeProvider theme={theme}>
+                  <Autocomplete
+                    className={classes.autocomplete}
+                    options={insertFormProps.articlesOptions}
+                    onChange={(event, articleValue) => {
+                      if (articleValue) {
+                        handleGetArticleSelected(articleValue);
+                      }
+                    }}
+                    getOptionLabel={(option) => option.title}
+                    required
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        name="Article"
+                        label="المقال"
+                        variant="outlined"
+                        className={classes.textFieldSelect}
+                      />
+                    )}
+                  />
+                  <FormControl fullWidth required>
+                    <InputLabel
+                      id="programName-label"
+                      className={classes.labelText}
+                    >
+                      إسم الكاتب
+                    </InputLabel>
+                    <Select
+                      labelId="programName-label"
+                      name="WriterID"
+                      className={classes.textFieldSelect}
+                      value={selectedWriter} // Controlled by state
+                      onChange={(e) => setSelectedWriter(e.target.value)} // Update state on change
+                    >
+                      {insertFormProps.WritersName.map((writer, index) => (
+                        <MenuItem key={index} value={writer.id}>
+                          {writer.title}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                  <TextField
+                    label="عنوان المقال"
+                    name="artTitle"
+                    type="text"
+                    variant="outlined"
+                    className={classes.textField}
+                    required
+                  />
+                  <Editor
+                    apiKey="1thbepflowaqt327jgk300c6yn0xl54vbz0efjjicrirei9e"
+                    onInit={(evt, editor) => (editorRef.current = editor)}
+                    initialValue={editorRef.current}
+                    init={{
+                      height: 500,
+                      width: "95%",
+                      directionality: "rtl", // Set text direction to right-to-left
+                      menubar: false,
+                      plugins: [
+                        "advlist",
+                        "autolink",
+                        "lists",
+                        "link",
+                        "image",
+                        "charmap",
+                        "preview",
+                        "anchor",
+                        "searchreplace",
+                        "visualblocks",
+                        "code",
+                        "fullscreen",
+                        "insertdatetime",
+                        "media",
+                        "table",
+                        "code",
+                        "help",
+                        "wordcount",
+                      ],
+                      toolbar:
+                        "undo redo | blocks | " +
+                        "bold italic forecolor | alignleft aligncenter " +
+                        "alignright alignjustify | bullist numlist outdent indent | " +
+                        "removeformat | image | help",
+                      content_style:
+                        "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                    }}
+                  />
+                  <TextField
+                    label="الهاشتاغ"
+                    name="Hashtag"
+                    type="text"
+                    variant="outlined"
+                    className={classes.textField}
+                  />
+                  <div className={classes.imageFieldContainer}>
+                    <label
+                      htmlFor="image-upload"
+                      className={classes.imageFieldLabel2}
+                    >
+                      تعديل الصورة
+                    </label>
+                    <input
+                      id="image-upload"
+                      type="file"
+                      name="artImageURL"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className={classes.imageField}
+                    />
+                  </div>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    className={classes.submitButton}
+                  >
+                    تحديث
+                  </Button>
+                  {showPopup && (
+                    <div className={classes.popup}>
+                      <div className={classes.popupContent}>
+                        <p className={classes.previewTitle}>
+                          هل أنت متأكد من التعديل؟
+                        </p>
+                        <div className={classes.popupButtons}>
+                          <Button
+                            variant="contained"
+                            onClick={handleUpdateArt}
+                            className={classes.saveButton}
+                          >
+                            نعم
+                          </Button>
+                          <Button
+                            variant="outlined"
+                            onClick={handleCancel}
+                            className={classes.cancelButton}
+                          >
+                            إلغاء
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </ThemeProvider>
+              </CacheProvider>
+            </form>
+          </div>
+          <SnackbarComponent
+            snackbar={snackbar}
+            setSnackbar={setSnackbar}
+            error={false}
+            Message={"تم التعديل المقال بنجاح"}
+          />
+        </React.Suspense>
       )}
     </div>
   );
