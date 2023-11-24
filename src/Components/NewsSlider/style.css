@@ -2,6 +2,8 @@
     --white: #fff;
     --primary: #2E3190;
     --secondary: #FBAE3C;
+    --main-font: 'AL_Jaz_Bold';
+    --second-font: 'AL_Jaz_Regular';
   }
 
 .news-slider {
@@ -34,15 +36,19 @@
   
   .news-title {
     font-size: 15px;
-    font-family:  'GE_SS_Two_M';
-    color: #2E3190;
+    font-family: var(--main-font);
+    color: var(--primary);
     padding-right: 10px;
   }
   
   .date {
-    font-size: 8px;
     padding-right: 10px;
     color: #2E3190;
+  }
+
+  .date-text {
+    font-size: 10px;
+    font-family: var(--second-font) !important;
   }
   
   .news-image img {

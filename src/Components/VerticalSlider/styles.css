@@ -2,6 +2,7 @@
     --white: #fff;
     --primary: #2E3190;
     --secondary: #FBAE3C;
+    --main-font: 'AL_Jaz_Bold';
   }
   
   * {
@@ -9,7 +10,7 @@
   }
   
   body {
-    font-family: "GE_SS_Two_M";
+    font-family:  var(--main-font);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }

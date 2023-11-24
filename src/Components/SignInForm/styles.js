@@ -1,5 +1,9 @@
 import { makeStyles } from "@mui/styles";
 
+// Define the fonts
+const mainFont = "AL_Jaz_Bold";
+const secondFont = "AL_Jaz_Regular";
+
 const useStyles = makeStyles(() => ({
   container: {
     width: "100%", // Set to 100% to make it responsive
@@ -14,8 +18,8 @@ const useStyles = makeStyles(() => ({
 
     "@media (max-width: 768px)": {
       margin: "50px auto",
-      padding: "10px", 
-    }
+      padding: "10px",
+    },
   },
   input: {
     width: "100%",
@@ -25,7 +29,7 @@ const useStyles = makeStyles(() => ({
     borderRadius: "4px",
     outline: "none",
     fontSize: "16px",
-    fontFamily: "GE_SS_Two_L",
+    fontFamily: `${secondFont}`,
   },
   checkbox: {
     marginBottom: "10px",
@@ -33,7 +37,7 @@ const useStyles = makeStyles(() => ({
     alignItems: "center",
     gap: "5px",
     fontSize: "16px",
-    fontFamily: "GE_SS_Two_L",
+    fontFamily: `${mainFont}`,
   },
   button: {
     backgroundColor: "#2E3190",
@@ -44,13 +48,12 @@ const useStyles = makeStyles(() => ({
     cursor: "pointer",
     transition: "background-color 0.2s",
     fontSize: "18px",
-    fontFamily: "GE_SS_Two_M",
+    fontFamily: `${mainFont}`,
 
     "&:hover": {
       backgroundColor: "#1E2278",
     },
   },
-
 }));
 
 export default useStyles;

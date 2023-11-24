@@ -31,46 +31,18 @@
     }
   }; */
 
+
   @font-face {
-    font-family: 'GE_SS_B';
-    src: url('./fonts/GE SS Text Bold.otf') format('truetype');
+    font-family: 'AL_Jaz_Bold';
+    src: url('./fonts/AL-JAZEERA-ARABIC-BOLD.TTF') format('truetype');
   }
 
   @font-face {
-    font-family: 'GE_SS_L';
-    src: url('./fonts/GE SS Text Light.otf') format('truetype');
+    font-family: 'AL_Jaz_Regular';
+    src: url('./fonts/AL-JAZEERA-ARABIC-REGULAR.TTF') format('truetype');
   }
 
   @font-face {
-    font-family: 'GE_SS_M';
-    src: url('./fonts/GE SS Text Medium.otf') format('truetype');
-  }
-
-  @font-face {
-    font-family: 'GE_SS_Two_L';
-    src: url('./fonts/GE SS Two Light2.otf') format('truetype');
-  }
-    
-  @font-face {
-    font-family: 'GE_SS_Two_B';
-    src: url('./fonts/GE SS Two Bold2.otf') format('truetype');
-  }
-
-  @font-face {
-    font-family: 'GE_SS_Two_Li';
-    src: url('./fonts/GESSTwoLightItalic.otf') format('truetype');
-  }
-
-  @font-face {
-    font-family: 'MP_R';
-    src: url('./fonts/MyriadPro-Regular.otf') format('truetype');
-  }
-
-  @font-face {
-    font-family: 'GE_SS_Two_M';
-    src: url('./fonts/GE SS Two Medium2.otf') format('truetype');
-  }
-  @font-face {
-    font-family: 'GE_SS_Two_Mi';
-    src: url('./fonts/GESSTwoMediumItalic.otf') format('truetype');
+    font-family: 'AL_Jaz_Light';
+    src: url('./fonts/AL-JAZEERA-ARABIC-LIGHT.TTF') format('truetype');
   }

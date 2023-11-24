@@ -1,5 +1,9 @@
 import { makeStyles } from "@mui/styles";
 
+// Define the fonts
+const mainFont = "AL_Jaz_Bold";
+const secondFont = "AL_Jaz_Regular";
+
 export default makeStyles(() => ({
   container: {
     width: "100%",
@@ -26,19 +30,19 @@ export default makeStyles(() => ({
     paddingTop: "10px",
   },
   newsTitle: {
-    fontFamily: 'GE_SS_Two_B !important',
+    fontFamily: `${mainFont} !important`,
     paddingBottom: "10px",
   },
   newsDescription: {
-    fontFamily: 'GE_SS_Two_L !important',
+    fontFamily: `${secondFont} !important`,
   },
   LinkInnerPages: {
-    textDecoration: 'none',
-    color: 'black',
+    textDecoration: "none",
+    color: "black",
 
     "&:hover": {
-      textDecoration: 'underline',
-      textDecorationColor: '#F9AE3B'
-    }
+      textDecoration: "underline",
+      textDecorationColor: "#F9AE3B",
+    },
   },
 }));

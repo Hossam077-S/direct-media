@@ -24,13 +24,13 @@ const ThreeSliderComponentItem = ({ index, item, id }) => {
       <div className={classes.title_description_threeSlider}>
         <Link to={"news/" + id} className={classes.LinkInnerPages}>
           <Typography gutterBottom className={classes.sliderThreeTitle}>
-            {item.Title}
+            {truncate(item.Title, 35)}
           </Typography>
         </Link>
         <Typography gutterBottom className={classes.sliderThreeDescription}>
           <span
             dangerouslySetInnerHTML={{
-              __html: truncate(item.Description, 120),
+              __html: truncate(item.Description, 90),
             }}
           />
         </Typography>

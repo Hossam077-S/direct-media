@@ -90,8 +90,6 @@ const UpdateForm = (insertFormProps) => {
   });
 
   const [formValues, setFormValues] = useState({
-    WriterID: "",
-    ArticleID: "",
     Text: "",
     ImageURL: "",
     Hashtag: "",
@@ -105,7 +103,6 @@ const UpdateForm = (insertFormProps) => {
   const [selectedCategory, setSelectedCategory] = useState("");
 
   const [selectedArticle, setSelectedArticle] = useState([]);
-  const [selectedWriter, setSelectedWriter] = useState("");
 
   const [isAlreadySelected, setIsAlreadySelected] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -200,8 +197,7 @@ const UpdateForm = (insertFormProps) => {
   };
 
   const handleGetArticleSelected = async (value) => {
-    setSelectedArticle(value?.ArticleID);
-    setSelectedWriter("");
+    setSelectedArticle(value?.id);
     formRef.current.artTitle.value = "";
     formRef.current.Hashtag.value = "";
 
@@ -211,7 +207,6 @@ const UpdateForm = (insertFormProps) => {
       if (!article.empty) {
         // Use formRef to access form elements and set data
         formRef.current.artTitle.value = article.Text || "";
-        setSelectedWriter(article.WriterID);
         formRef.current.Hashtag.value = article.Hashtag || "";
 
         // Use `setContent` to update the editor's content
@@ -301,6 +296,7 @@ const UpdateForm = (insertFormProps) => {
             setEditorContent("");
             setSelectedNews(null);
             setSelectedCategory("");
+            setOldImage("");
             setSnackbar(true);
             setShowPopup(false);
             setLoading(false);
@@ -334,6 +330,7 @@ const UpdateForm = (insertFormProps) => {
         setEditorContent("");
         setSelectedNews(null);
         setSelectedCategory("");
+        setOldImage("");
         setSnackbar(true);
         setShowPopup(false);
         setLoading(false);
@@ -349,7 +346,6 @@ const UpdateForm = (insertFormProps) => {
     setEditorContent(editorRef.current.getContent());
     setFormValues({
       Text: formRef.current.artTitle.value,
-      WriterID: selectedWriter,
       Hashtag: formRef.current.Hashtag.value,
       PublishDate: new Date(),
     });
@@ -399,8 +395,6 @@ const UpdateForm = (insertFormProps) => {
             console.log("Document updated successfully!:", selectedNews);
 
             setFormData({
-              WriterID: "",
-              ArticleID: "",
               Text: "",
               ImageURL: "",
               Hashtag: "",
@@ -408,7 +402,7 @@ const UpdateForm = (insertFormProps) => {
 
             setEditorContent("");
             setSelectedArticle(null);
-            setSelectedWriter("");
+            setOldImage("");
             setSnackbar(true);
             setShowPopup(false);
             setLoading(false);
@@ -427,8 +421,6 @@ const UpdateForm = (insertFormProps) => {
         console.log("Document updated successfully!:", selectedNews);
 
         setFormData({
-          WriterID: "",
-          ArticleID: "",
           Text: "",
           ImageURL: "",
           Hashtag: "",
@@ -436,7 +428,7 @@ const UpdateForm = (insertFormProps) => {
 
         setEditorContent("");
         setSelectedArticle(null);
-        setSelectedWriter("");
+        setOldImage("");
         setSnackbar(true);
         setShowPopup(false);
         setLoading(false);
@@ -531,7 +523,7 @@ const UpdateForm = (insertFormProps) => {
                     init={{
                       height: 500,
                       width: "95%",
-                      directionality: "rtl", // Set text direction to right-to-left
+                      directionality: "rtl",
                       menubar: false,
                       plugins: [
                         "advlist",
@@ -552,12 +544,13 @@ const UpdateForm = (insertFormProps) => {
                         "code",
                         "help",
                         "wordcount",
+                        "directionality",
                       ],
                       toolbar:
                         "undo redo | blocks | " +
                         "bold italic forecolor | alignleft aligncenter " +
                         "alignright alignjustify | bullist numlist outdent indent | " +
-                        "removeformat | image | help",
+                        "removeformat | image | ltr rtl | help",
                       content_style:
                         "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
                     }}
@@ -708,27 +701,6 @@ const UpdateForm = (insertFormProps) => {
                       />
                     )}
                   />
-                  <FormControl fullWidth required>
-                    <InputLabel
-                      id="programName-label"
-                      className={classes.labelText}
-                    >
-                      إسم الكاتب
-                    </InputLabel>
-                    <Select
-                      labelId="programName-label"
-                      name="WriterID"
-                      className={classes.textFieldSelect}
-                      value={selectedWriter} // Controlled by state
-                      onChange={(e) => setSelectedWriter(e.target.value)} // Update state on change
-                    >
-                      {insertFormProps.WritersName.map((writer, index) => (
-                        <MenuItem key={index} value={writer.id}>
-                          {writer.title}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
                   <TextField
                     label="عنوان المقال"
                     name="artTitle"
@@ -765,12 +737,13 @@ const UpdateForm = (insertFormProps) => {
                         "code",
                         "help",
                         "wordcount",
+                        "directionality",
                       ],
                       toolbar:
                         "undo redo | blocks | " +
                         "bold italic forecolor | alignleft aligncenter " +
                         "alignright alignjustify | bullist numlist outdent indent | " +
-                        "removeformat | image | help",
+                        "removeformat | image | ltr rtl | help",
                       content_style:
                         "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
                     }}

@@ -273,7 +273,7 @@ const NewsEntry = ({
                   init={{
                     height: 500,
                     width: "95%",
-                    directionality: "rtl", // Set text direction to right-to-left
+                    directionality: "rtl",
                     menubar: false,
                     plugins: [
                       "advlist",
@@ -294,12 +294,13 @@ const NewsEntry = ({
                       "code",
                       "help",
                       "wordcount",
+                      "directionality",
                     ],
                     toolbar:
                       "undo redo | blocks | " +
                       "bold italic forecolor | alignleft aligncenter " +
                       "alignright alignjustify | bullist numlist outdent indent | " +
-                      "removeformat | image | help",
+                      "removeformat | image | ltr rtl | help",
                     content_style:
                       "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
                   }}

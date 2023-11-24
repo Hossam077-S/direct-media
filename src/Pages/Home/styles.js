@@ -1,5 +1,9 @@
 import { makeStyles } from "@mui/styles";
 
+// Define the fonts
+const mainFont = "AL_Jaz_Bold";
+const secondFont = "AL_Jaz_Regular";
+
 const useStyles = makeStyles(() => ({
   container: {
     width: "100%",
@@ -35,18 +39,20 @@ const useStyles = makeStyles(() => ({
     display: "flex",
     alignItems: "center",
     justifyContent: "start",
+    position: "relative",
   },
   imageTitle: {
     position: "absolute",
-    paddingRight: "2%",
+    top: "15%",
+    right: "20%",
     color: "white",
-    fontFamily: "GE_SS_Two_M !important",
+    fontFamily: `${mainFont} !important`,
     fontSize: "17.33px !important",
     zIndex: 2, // Ensure it's above the image if they overlap
 
     "@media (max-width: 768px)": {
       fontSize: "15px !important",
-      paddingRight: "5%",
+      right: "15%",
     },
   },
   ImportantNewsImage: {
@@ -113,12 +119,12 @@ const useStyles = makeStyles(() => ({
   },
   imageTitle2: {
     position: "absolute",
-    top: "12%",
-    left: "11%",
+    top: "8%",
+    left: "13%",
     textAlign: "center",
     color: "#2E3190",
     fontSize: "23px !important",
-    fontFamily: "GE_SS_Two_M !important",
+    fontFamily: `${mainFont} !important`,
 
     "@media (max-width: 768px)": {},
   },
@@ -198,7 +204,7 @@ const useStyles = makeStyles(() => ({
   },
   sliderNewsTitle: {
     color: "white",
-    fontFamily: "GE_SS_Two_B !important",
+    fontFamily: `${mainFont} !important`,
     fontSize: "22px !important",
 
     textAlign: "right",
@@ -215,7 +221,7 @@ const useStyles = makeStyles(() => ({
   sliderNewsDescription: {
     color: "white",
 
-    fontFamily: "GE_SS_Two_L !important",
+    fontFamily: `${mainFont} !important`,
     fontSize: "18px !important",
     lineHeight: "1.2 !important",
 
@@ -244,10 +250,11 @@ const useStyles = makeStyles(() => ({
     height: "102px",
     alignItems: "center",
     justifyContent: "center",
+    maxWidth: "874px",
   },
   adsText: {
-    fontSize: "38.7px !important",
-    fontFamily: "GE_SS_Two_M !important",
+    fontSize: "40px !important",
+    fontFamily: `${mainFont} !important`,
     color: "#2E3190",
   },
 
@@ -274,14 +281,14 @@ const useStyles = makeStyles(() => ({
   programText: {
     position: "absolute",
     backgroundColor: "white",
-    top: "-18px",
+    top: "-20px",
     left: "50%", // Center the text horizontally
     transform: "translateX(-50%)", // Center the text horizontally
     paddingLeft: "7px",
     paddingRight: "7px",
     color: "#2E3190",
     fontSize: "23px !important",
-    fontFamily: "GE_SS_Two_M !important",
+    fontFamily: `${mainFont} !important`,
   },
   programSlider: {
     whiteSpace: "nowrap", // Prevent items from wrapping to new lines
@@ -339,11 +346,11 @@ const useStyles = makeStyles(() => ({
   },
   globalText: {
     position: "absolute",
-    top: "-17px",
+    top: "-20px",
     right: 0,
     color: "#2E3190",
     fontSize: "23px !important",
-    fontFamily: "GE_SS_Two_M !important",
+    fontFamily: `${mainFont} !important`,
     backgroundColor: "white",
     paddingLeft: "10px",
   },
@@ -392,7 +399,7 @@ const useStyles = makeStyles(() => ({
   },
   articlTitleHeader: {
     fontSize: "32.9px !important",
-    fontFamily: "GE_SS_Two_M !important",
+    fontFamily: `${mainFont} !important`,
     color: "#FFFFFF",
     textAlign: "center",
     "@media (max-width: 768px)": {
@@ -401,7 +408,7 @@ const useStyles = makeStyles(() => ({
   },
   articlTitleParg: {
     fontSize: "22.2px !important",
-    fontFamily: "GE_SS_Two_L !important",
+    fontFamily: `${secondFont} !important`,
     color: "#FFFFFF",
     textAlign: "center",
 
@@ -485,7 +492,7 @@ const useStyles = makeStyles(() => ({
   articleContent: {
     color: "white",
     fontSize: "12px !important",
-    fontFamily: "GE_SS_Two_B !important",
+    fontFamily: `${mainFont} !important`,
     textAlign: "right",
 
     "@media (max-width: 768px)": {
@@ -496,7 +503,7 @@ const useStyles = makeStyles(() => ({
     marginLeft: "21px !important",
     color: "white",
     fontSize: "8.4px !important",
-    fontFamily: "GE_SS_Two_L !important",
+    fontFamily: `${secondFont} !important`,
 
     "@media (max-width: 768px)": {
       fontSize: "10px !important",
@@ -596,7 +603,7 @@ const useStyles = makeStyles(() => ({
   },
   sliderArticlTitle: {
     color: "white",
-    fontFamily: "GE_SS_Two_M !important",
+    fontFamily: `${mainFont} !important`,
     fontSize: "15px !important",
     animation: "$slideInTitle 2s ease-in-out",
     textAlign: "right",
@@ -607,7 +614,7 @@ const useStyles = makeStyles(() => ({
   },
   sliderArticlDate: {
     color: "white",
-    fontFamily: "GE_SS_Two_L !important",
+    fontFamily: `${secondFont} !important`,
     fontSize: "10px !important",
     animation: "$slideInTitle 2s ease-in-out",
     textAlign: "right",
@@ -715,8 +722,8 @@ const useStyles = makeStyles(() => ({
     },
   },
   sliderThreeTitle: {
-    fontSize: "10px !important",
-    fontFamily: "GE_SS_Two_M !important",
+    fontSize: "12px !important",
+    fontFamily: `${mainFont} !important`,
     textAlign: "right",
 
     "@media (max-width: 768px)": {
@@ -724,8 +731,8 @@ const useStyles = makeStyles(() => ({
     },
   },
   sliderThreeDescription: {
-    fontSize: "8px !important",
-    fontFamily: "GE_SS_Two_L !important",
+    fontSize: "10px !important",
+    fontFamily: `${secondFont} !important`,
     textAlign: "right",
     flexGrow: 1,
     lineHeight: 1.5,
@@ -736,8 +743,8 @@ const useStyles = makeStyles(() => ({
     },
   },
   sliderThreeTypeAndDate: {
-    fontSize: "7px !important",
-    fontFamily: "GE_SS_Two_M !important",
+    fontSize: "8px !important",
+    fontFamily: `${mainFont} !important`,
     color: "#CACACA",
     direction: "rtl",
   },
@@ -793,14 +800,14 @@ const useStyles = makeStyles(() => ({
   writerText: {
     position: "absolute",
     backgroundColor: "white",
-    top: "-18px",
+    top: "-20px",
     left: "50%", // Center the text horizontally
     transform: "translateX(-50%)", // Center the text horizontally
     paddingLeft: "7px",
     paddingRight: "7px",
     color: "#2E3190",
     fontSize: "23px !important",
-    fontFamily: "GE_SS_Two_M !important",
+    fontFamily: `${mainFont} !important`,
   },
 
   writerDetails: {
@@ -836,7 +843,7 @@ const useStyles = makeStyles(() => ({
     paddingTop: "12px",
     color: "#2E3190",
     fontSize: "17.3px !important",
-    fontFamily: "GE_SS_Two_L !important",
+    fontFamily: `${secondFont} !important`,
     textAlign: "center",
 
     "@media (max-width: 768px)": {
@@ -894,7 +901,7 @@ const useStyles = makeStyles(() => ({
     paddingRight: "7px",
     color: "#2E3190",
     fontSize: "23px !important",
-    fontFamily: "GE_SS_Two_M !important",
+    fontFamily: `${mainFont} !important`,
   },
   podcastMediaHeader: {
     marginTop: "47px",

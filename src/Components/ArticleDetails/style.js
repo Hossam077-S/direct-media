@@ -1,5 +1,9 @@
 import { makeStyles } from "@mui/styles";
 
+// Define the fonts
+const mainFont = "AL_Jaz_Bold";
+const secondFont = "AL_Jaz_Regular";
+
 const useStyles = makeStyles((theme) => ({
   container: {
     display: "flex",
@@ -15,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
   Title: {
     fontSize: "38px",
-    fontFamily: "GE_SS_Two_B",
+    fontFamily: `${mainFont} !important`,
     paddingBottom: "25px",
 
     "@media (max-width: 768px)": {
@@ -28,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
   },
   Date: {
-    fontFamily: "GE_SS_Two_L",
+    fontFamily: `${mainFont} !important`,
     fontSize: "15px",
     padding: "5px 0",
 
@@ -51,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
   },
   Description: {
     fontSize: "25px",
-    fontFamily: "GE_SS_Two_L",
+    fontFamily: `${secondFont} !important`,
     paddingTop: "10px",
 
     "@media (max-width: 768px)": {
@@ -73,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
   writerName: {
     margin: 0,
     fontSize: "14px", // Adjust the font size as needed
-    fontFamily: "GE_SS_Two_B !important",
+    fontFamily: `${mainFont} !important`,
     marginRight: "10PX",
   },
 }));

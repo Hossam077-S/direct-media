@@ -43,18 +43,20 @@ const NewsSlider = ({ newsItems }) => {
             <div className="news-content">
               <div className="news-title">
                 <Link to={"news/" + item.id} className="link-news-pages">
-                  {truncate(item.Title, 40)}
+                  {truncate(item.Title, 35)}
                 </Link>
               </div>
               <div className="date">
-                {" "}
-                {item.PublishDate instanceof Date ? (
-                  <TimeDifferenceComponent
-                    publishDate={item.PublishDate.toDate()}
-                  />
-                ) : (
-                  <TimeDifferenceComponent publishDate={item.PublishDate} />
-                )}
+                <p className="date-text">
+                  {" "}
+                  {item.PublishDate instanceof Date ? (
+                    <TimeDifferenceComponent
+                      publishDate={item.PublishDate.toDate()}
+                    />
+                  ) : (
+                    <TimeDifferenceComponent publishDate={item.PublishDate} />
+                  )}
+                </p>
               </div>
             </div>
           </div>

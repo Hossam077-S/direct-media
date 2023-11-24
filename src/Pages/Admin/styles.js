@@ -1,6 +1,8 @@
 import { makeStyles } from "@mui/styles";
 
-// Need Responsive
+// Define the fonts
+const mainFont = "AL_Jaz_Bold";
+const secondFont = "AL_Jaz_Regular";
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -37,7 +39,7 @@ const useStyles = makeStyles(() => ({
     marginTop: "8px",
     color: "white",
     fontWeight: "bold",
-    fontFamily: "GE_SS_Two_M !important",
+    fontFamily: `${mainFont} !important`,
   },
   previewContainer: {
     border: `1px gray`,
@@ -52,7 +54,7 @@ const useStyles = makeStyles(() => ({
     fontWeight: "bold",
     color: "white",
     marginBottom: "16px",
-    fontFamily: "GE_SS_Two_M !important",
+    fontFamily: `${mainFont} !important`,
   },
   previewImage: {
     width: "50%",
@@ -71,7 +73,7 @@ const useStyles = makeStyles(() => ({
   previewLabel: {
     fontWeight: "bold",
     marginRight: "8px",
-    fontFamily: "GE_SS_Two_M !important",
+    fontFamily: `${mainFont} !important`,
   },
   form: {
     display: "flex",
@@ -92,18 +94,18 @@ const useStyles = makeStyles(() => ({
     flexWrap: "wrap",
     width: "95%",
     marginLeft: "5% !important",
-    fontFamily: "GE_SS_Two_L !important",
+    fontFamily: `${secondFont} !important`,
   },
   textFieldSelect: {
     marginBottom: "15px !important",
     flexWrap: "wrap",
     marginLeft: "5% !important",
-    fontFamily: "GE_SS_Two_L !important",
+    fontFamily: `${secondFont} !important`,
   },
   labelText: {
     backgroundColor: "white",
     paddingRight: "3px !important",
-    fontFamily: "GE_SS_Two_L !important",
+    fontFamily: `${secondFont} !important`,
   },
   fieldContainer: {
     display: "flex",
@@ -132,7 +134,7 @@ const useStyles = makeStyles(() => ({
     cursor: "pointer",
     textAlign: "center",
     color: "white",
-    fontFamily: "GE_SS_Two_M !important",
+    fontFamily: `${mainFont} !important`,
     maxWidth: "874px",
     width: "100%",
     marginBottom: "10px",
@@ -146,25 +148,25 @@ const useStyles = makeStyles(() => ({
     cursor: "pointer",
     textAlign: "center",
     color: "white",
-    fontFamily: "GE_SS_Two_M !important",
+    fontFamily: `${mainFont} !important`,
   },
   submitButton: {
     alignSelf: "flex-end",
     marginTop: "5px !important",
     backgroundColor: "#2E3190 !important",
     width: "95%",
-    fontFamily: "GE_SS_Two_M !important",
+    fontFamily: `${mainFont} !important`,
   },
   saveButton: {
     alignSelf: "flex-end",
     backgroundColor: "#2E3190 !important",
     marginLeft: "8px !important",
-    fontFamily: "GE_SS_Two_M !important",
+    fontFamily: `${mainFont} !important`,
   },
   cancelButton: {
     backgroundColor: "white",
     color: "#2E3190",
-    fontFamily: "GE_SS_Two_B !important",
+    fontFamily: `${mainFont} !important`,
   },
   snackbarContent: {
     display: "flex",
@@ -267,7 +269,7 @@ const useStyles = makeStyles(() => ({
       backgroundColor: "#2E3190",
       color: "white",
       fontSize: "18px",
-      fontFamily: "GE_SS_Two_M",
+      fontFamily: `${mainFont} !important`,
       "&:hover": {
         backgroundColor: "#1E237C",
       },
@@ -287,7 +289,7 @@ const useStyles = makeStyles(() => ({
   },
   Tab: {
     fontSize: "20px !important",
-    fontFamily: "GE_SS_Two_L !important",
+    fontFamily: `${mainFont} !important`,
 
     "@media (max-width: 768px)": {
       fontSize: "14px !important",
@@ -305,7 +307,7 @@ const useStyles = makeStyles(() => ({
   inputField: {
     marginBottom: "15px",
     fontSize: "15px",
-    fontFamily: "GE_SS_Two_L !important",
+    fontFamily: `${secondFont} !important`,
     height: "30px",
     padding: "0px 5px",
   },

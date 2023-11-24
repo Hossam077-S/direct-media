@@ -1,5 +1,9 @@
 import { makeStyles } from "@mui/styles";
 
+// Define the fonts
+const mainFont = "AL_Jaz_Bold";
+const secondFont = "AL_Jaz_Regular";
+
 const useStyles = makeStyles(() => ({
   container: {
     maxWidth: "874px",
@@ -11,7 +15,7 @@ const useStyles = makeStyles(() => ({
   },
   Title: {
     fontSize: "38px",
-    fontFamily: "GE_SS_Two_B",
+    fontFamily: `${mainFont}`,
     paddingBottom: "25px",
 
     "@media (max-width: 768px)": {
@@ -20,7 +24,7 @@ const useStyles = makeStyles(() => ({
   },
   Hashtag: {
     fontSize: "14px",
-    fontFamily: "GE_SS_Two_B",
+    fontFamily: `${mainFont}`,
     color: "#2E3190",
     paddingBottom: "10px",
     "@media (max-width: 768px)": {
@@ -33,7 +37,7 @@ const useStyles = makeStyles(() => ({
     justifyContent: "space-between",
   },
   Date: {
-    fontFamily: "GE_SS_Two_L",
+    fontFamily: `${secondFont}`,
     fontSize: "15px",
     padding: "5px 0",
 
@@ -57,7 +61,7 @@ const useStyles = makeStyles(() => ({
   },
   Description: {
     fontSize: "25px",
-    fontFamily: "GE_SS_Two_L",
+    fontFamily: `${secondFont}`,
     padding: "15px 0",
     overflow: "hidden",
 
@@ -67,7 +71,7 @@ const useStyles = makeStyles(() => ({
   },
   Source: {
     fontSize: "14px",
-    fontFamily: "GE_SS_Two_M",
+    fontFamily: `${mainFont}`,
     paddingBottom: "25px",
 
     "@media (max-width: 768px)": {
@@ -99,7 +103,7 @@ const useStyles = makeStyles(() => ({
     },
   },
   relatedNewsTitle: {
-    fontFamily: "GE_SS_Two_B",
+    fontFamily: `${mainFont}`,
     paddingBottom: "15px",
   },
   relatedNewsLi: {
@@ -137,17 +141,17 @@ const useStyles = makeStyles(() => ({
   },
   relatedTitle: {
     fontSize: "18px",
-    fontFamily: "GE_SS_Two_M",
+    fontFamily: `${mainFont}`,
     paddingBottom: "5px",
   },
   relatedDescription: {
     fontSize: "12px",
-    fontFamily: "GE_SS_Two_L",
+    fontFamily: `${secondFont}`,
     paddingBottom: "5px",
   },
   relatedDate: {
     fontSize: "10px",
-    fontFamily: "GE_SS_L",
+    fontFamily: `${secondFont}`,
     paddingBottom: "5px",
   },
 }));
