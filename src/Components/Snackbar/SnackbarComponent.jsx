@@ -31,7 +31,7 @@ const SnackbarComponent = ({
           severity={error ? "error" : "success"}
           sx={{ width: "100%", textAlign: "left" }}
         >
-          <p style={{ padding: "0px 10px", fontFamily: "GE_SS_Two_M" }}>
+          <p style={{ padding: "0px 10px", fontFamily: "AL_Jaz_Bold" }}>
             {error ? errorMessage : Message}
           </p>
         </Alert>

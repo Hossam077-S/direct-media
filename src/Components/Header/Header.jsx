@@ -79,7 +79,7 @@ const Header = () => {
       },
     },
     typography: {
-      fontFamily: "GE_SS_TWO_L",
+      fontFamily: "AL_Jaz_Regular",
       fontSize: 14,
       fontWeightBold: 700,
     },

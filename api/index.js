@@ -7,37 +7,7 @@ const admin = require("firebase-admin");
 const axios = require("axios");
 const sharp = require("sharp");
 
-// const puppeteer = require("puppeteer");
-
-// function isCrawler(userAgent) {
-//   // Simple check for common crawler user agents
-//   const crawlerUserAgents = /googlebot|bingbot|yandex|baiduspider/i;
-//   return crawlerUserAgents.test(userAgent);
-// }
-
-// async function renderPageForCrawlers(req, res, next) {
-//   if (isCrawler(req.headers["user-agent"])) {
-//     const url = `https://www.directmedialb.com${req.originalUrl}`;
-
-//     const browser = await puppeteer.launch();
-//     const page = await browser.newPage();
-//     await page.goto(url, { waitUntil: "networkidle2" });
-
-//     const content = await page.content();
-//     await browser.close();
-
-//     return res.send(content);
-//   } else {
-//     next();
-//   }
-// }
-
-// If using environment variable for the service account
-
-// const prerender = require("prerender-node").set(
-//   "prerenderToken",
-//   "4CngKWD2GFrBVevrfJmX"
-// );
+const sanitizeHtml = require("sanitize-html");
 
 const serviceAccountPath = path.join(
   __dirname,
@@ -154,15 +124,20 @@ app.get("/news/:id", async (req, res) => {
 
       const imageUrlToUse = processedImageUrl || news.ImageURL;
 
+      const textDescription = sanitizeHtml(truncate(news.Description, 65), {
+        allowedTags: [], // Allow no tags
+        allowedAttributes: {}, // Allow no attributes
+      });
+
       // inject meta tags
       htmlData = htmlData
         .replace("<title>Direct Media</title>", `<title>News Details</title>`)
         .replace("__META_OG_TITLE__", truncate(news.Title, 55))
         .replace("__META_OG_TITLE_T__", truncate(news.Title, 55))
 
-        .replace("__META_OG_DESCRIPTION__", truncate(news.Description, 65))
-        .replace("__META_DESCRIPTION__", truncate(news.Description, 65))
-        .replace("__META_DESCRIPTION_T__", truncate(news.Description, 65))
+        .replace("__META_OG_DESCRIPTION__", textDescription)
+        .replace("__META_DESCRIPTION__", textDescription)
+        .replace("__META_DESCRIPTION_T__", textDescription)
 
         .replace("__META_OG_IMAGE_1__", imageUrlToUse)
         .replace("__META_OG_IMAGE_2__", imageUrlToUse)
@@ -216,6 +191,11 @@ app.get("/article/:id", async (req, res) => {
 
       const imageUrlToUse = processedImageUrl || article.ImageURL;
 
+      const textDescription = sanitizeHtml(truncate(article.Content, 65), {
+        allowedTags: [], // Allow no tags
+        allowedAttributes: {}, // Allow no attributes
+      });
+
       // inject meta tags
       htmlData = htmlData
         .replace(
@@ -225,9 +205,9 @@ app.get("/article/:id", async (req, res) => {
         .replace("__META_OG_TITLE__", truncate(article.Text, 55))
         .replace("__META_OG_TITLE_T__", "Direct Media")
 
-        .replace("__META_OG_DESCRIPTION__", truncate(article.Content, 65))
-        .replace("__META_DESCRIPTION__", truncate(article.Content, 65))
-        .replace("__META_DESCRIPTION_T__", truncate(article.Content, 65))
+        .replace("__META_OG_DESCRIPTION__", textDescription)
+        .replace("__META_DESCRIPTION__", textDescription)
+        .replace("__META_DESCRIPTION_T__", textDescription)
 
         .replace("__META_OG_IMAGE_1__", imageUrlToUse)
         .replace("__META_OG_IMAGE_2__", imageUrlToUse)

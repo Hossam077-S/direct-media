@@ -297,12 +297,12 @@ const NewsEntry = ({
                       "directionality",
                     ],
                     toolbar:
-                      "undo redo | blocks | " +
+                      "formatselect | undo redo | blocks | " +
                       "bold italic forecolor | alignleft aligncenter " +
                       "alignright alignjustify | bullist numlist outdent indent | " +
                       "removeformat | image | ltr rtl | help",
                     content_style:
-                      "body { font-family:Helvetica,Arial,sans-serif; font-size:14px }",
+                      "body { font-family:AL_Jaz_Regular; font-size:14px }",
                   }}
                 />
               </Grid>

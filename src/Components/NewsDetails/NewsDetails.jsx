@@ -126,7 +126,7 @@ const NewsDetails = () => {
 
           <div className={classes.Description}>
             {newsItem.Category ? (
-              <span style={{ fontFamily: "GE_SS_Two_M" }}>
+              <span>
                 {newsItem.Category}:{" "}
                 <span
                   dangerouslySetInnerHTML={{
