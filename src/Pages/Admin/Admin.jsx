@@ -5,7 +5,7 @@ import useStyles from "./styles";
 import { Container, Tab, Tabs } from "@mui/material";
 import FirestoreContext from "../../Utils/FirestoreContext2";
 
-import { SuspenseFallback } from "../../Components/SuspenseFallback/SuspenseFallback";
+import { SuspenseFallback2 } from "../../Components/SuspenseFallback/SuspenseFallback2";
 
 import SignInForm from "../../Components/SignInForm/SignInForm";
 
@@ -111,7 +111,7 @@ const Admin = () => {
 
   const insertFormProps = {
     activeTab: activeTab,
-    SuspenseFallback: SuspenseFallback,
+    SuspenseFallback: SuspenseFallback2,
     NewsEntryLazy: NewsEntryLazy,
     ArticlesEntryLazy: ArticlesEntryLazy,
     ProgramsEntryLazy: ProgramsEntryLazy,

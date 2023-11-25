@@ -6,7 +6,7 @@ import CookieConsent from "react-cookie-consent";
 // Lazy loaded components
 import { lazy } from "react";
 
-import { SuspenseFallback } from "./Components/SuspenseFallback/SuspenseFallback";
+import { SuspenseFallback2 } from "./Components/SuspenseFallback/SuspenseFallback2";
 
 import "./App.css";
 
@@ -55,7 +55,7 @@ const App = () => {
   const isPrivacyPolicyPage = decodedPathname === "/سياسة-الخصوصية";
 
   return (
-    <Suspense fallback={<SuspenseFallback cName="dots" />}>
+    <Suspense fallback={<SuspenseFallback2 cName="dots" />}>
       <div className="main-container">
         <Header />
         <Routes>
