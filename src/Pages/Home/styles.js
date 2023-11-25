@@ -242,21 +242,22 @@ const useStyles = makeStyles(() => ({
     },
   },
 
-  adsContainer: {
-    display: "flex",
-    backgroundColor: "#F1F1F1",
-    marginTop: "33px",
-    width: "100%",
-    height: "102px",
-    alignItems: "center",
-    justifyContent: "center",
-    maxWidth: "874px",
-  },
-  adsText: {
-    fontSize: "40px !important",
-    fontFamily: `${mainFont} !important`,
-    color: "#2E3190",
-  },
+  //ads
+  // adsContainer: {
+  //   display: "flex",
+  //   backgroundColor: "#F1F1F1",
+  //   marginTop: "33px",
+  //   width: "100%",
+  //   height: "102px",
+  //   alignItems: "center",
+  //   justifyContent: "center",
+  //   maxWidth: "874px",
+  // },
+  // adsText: {
+  //   fontSize: "40px !important",
+  //   fontFamily: `${mainFont} !important`,
+  //   color: "#2E3190",
+  // },
 
   programContainer: {
     paddingTop: "38px",

@@ -367,11 +367,11 @@ const Home = () => {
         </Stack>
 
         {/* Ads */}
-        <div className={classes.adsContainer}>
+        {/* <div className={classes.adsContainer}>
           <Typography className={classes.adsText}>
             إعــــــــــــــــــــــلان
           </Typography>
-        </div>
+        </div> */}
 
         {/* Programs & ThreeSlider */}
         <div id="programs" className={classes.programContainer}>
@@ -390,8 +390,8 @@ const Home = () => {
               <div className={classes.programItems}>
                 <Slider {...programSettings}>
                   {programsData?.map((newsItem, index) => (
-                    <Link
-                      to={"program/" + newsItem.id}
+                    <a
+                      href={"program/" + newsItem.id}
                       className={classes.LinkInnerPages}
                       key={index}
                     >
@@ -400,7 +400,7 @@ const Home = () => {
                         alt={newsItem.Title}
                         className={classes.programImage}
                       />
-                    </Link>
+                    </a>
                   ))}
                 </Slider>
               </div>
@@ -496,8 +496,8 @@ const Home = () => {
                           />
                           <div className={classes.sliderDetailsDiv2}>
                             <div className={classes.title_dividerArticl}>
-                              <Link
-                                to={"news/" + newsItem.id}
+                              <a
+                                href={"news/" + newsItem.id}
                                 className={classes.LinkInnerPages}
                               >
                                 <Typography
@@ -505,7 +505,7 @@ const Home = () => {
                                 >
                                   {newsItem.Title}
                                 </Typography>
-                              </Link>
+                              </a>
                               <Typography className={classes.sliderArticlDate}>
                                 {newsItem.PublishDate instanceof Date ? (
                                   <TimeDifferenceComponent
@@ -626,8 +626,8 @@ const Home = () => {
                                       ];
                                     if (articleItem.ArticleID === articleID) {
                                       return (
-                                        <Link
-                                          to={"article/" + articleItem.id}
+                                        <a
+                                          href={"article/" + articleItem.id}
                                           state={writerItem}
                                           className={classes.LinkInnerPages}
                                           key={index}
@@ -640,7 +640,7 @@ const Home = () => {
                                               {truncate(articleItem.Text, 65)}
                                             </span>
                                           </Typography>
-                                        </Link>
+                                        </a>
                                       );
                                     }
                                     return null;

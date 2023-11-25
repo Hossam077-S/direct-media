@@ -6,7 +6,6 @@ import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 
 import "./style.css";
-import { Link } from "react-router-dom";
 
 const NewsSlider = ({ newsItems }) => {
   const [currentStartIndex, setCurrentStartIndex] = useState(0);
@@ -42,9 +41,9 @@ const NewsSlider = ({ newsItems }) => {
             </div>
             <div className="news-content">
               <div className="news-title">
-                <Link to={"news/" + item.id} className="link-news-pages">
+                <a href={"news/" + item.id} className="link-news-pages">
                   {truncate(item.Title, 35)}
-                </Link>
+                </a>
               </div>
               <div className="date">
                 <p className="date-text">

@@ -34,6 +34,10 @@ const PodcastDetails = lazy(() =>
 const Programs = lazy(() => import(`./Components/Programs/Programs`));
 const Podcast = lazy(() => import(`./Components/Podcast/Podcast`));
 
+const NotFoundPage = lazy(() =>
+  import(`./Components/NotFoundPage/NotFoundPage`)
+);
+
 const App = () => {
   const location = useLocation();
   // Initialize state with the result of the cookie check
@@ -67,6 +71,7 @@ const App = () => {
           <Route path="/article/:id" element={<ArticleDetails />} />
           <Route path="/podcast/:id" element={<PodcastDetails />} />
           <Route path="/podcasts" element={<Podcast />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
         <Footer />
         {showCookieConsent && !isPrivacyPolicyPage && (

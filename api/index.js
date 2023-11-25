@@ -27,11 +27,6 @@ admin.initializeApp({
 const PORT = process.env.PORT || 8080;
 const indexPath = path.resolve(__dirname, "..", "build", "index.html");
 
-// app.use(renderPageForCrawlers);
-// app.use(prerender);
-
-// static resources should just be served as they are
-
 app.use(
   express.static(path.resolve(__dirname, "..", "build"), { maxAge: "30d" })
 );
@@ -230,6 +225,11 @@ app.get("/article/:id", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "..", "build", "index.html"));
+});
+
 // listening...
 app.listen(PORT, (error) => {
   if (error) {

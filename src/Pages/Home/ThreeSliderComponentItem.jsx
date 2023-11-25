@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 
 import { Typography } from "@mui/material";
 
@@ -22,11 +21,11 @@ const ThreeSliderComponentItem = ({ index, item, id }) => {
         className={classes.threenewsImage}
       />
       <div className={classes.title_description_threeSlider}>
-        <Link to={"news/" + id} className={classes.LinkInnerPages}>
+        <a href={"news/" + id} className={classes.LinkInnerPages}>
           <Typography gutterBottom className={classes.sliderThreeTitle}>
             {truncate(item.Title, 35)}
           </Typography>
-        </Link>
+        </a>
         <Typography gutterBottom className={classes.sliderThreeDescription}>
           <span
             dangerouslySetInnerHTML={{
