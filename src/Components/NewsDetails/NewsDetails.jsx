@@ -12,7 +12,7 @@ import ShareButton from "../../Components/ShareButton/ShareButtonV2";
 
 import useStyles from "./style";
 import TimeDifferenceComponent from "../TimeDifference/TimeDifferenceComponent";
-import { SuspenseFallback } from "../SuspenseFallback/SuspenseFallback";
+import { SuspenseFallback2 } from "../SuspenseFallback/SuspenseFallback2";
 import FirestoreContext from "../../Utils/FirestoreContext2";
 
 const NewsDetails = () => {
@@ -87,7 +87,7 @@ const NewsDetails = () => {
   }, [newsItem, newsData]); // Depend on newsItem and newsData
 
   if (loading) {
-    return <SuspenseFallback cName="dots" />;
+    return <SuspenseFallback2 cName="dots" />;
   }
 
   return (

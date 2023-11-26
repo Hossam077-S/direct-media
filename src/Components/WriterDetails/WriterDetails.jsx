@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 
 import useStyles from "./style";
 import { Divider } from "@mui/material";
-import { SuspenseFallback } from "../SuspenseFallback/SuspenseFallback";
+import { SuspenseFallback2 } from "../SuspenseFallback/SuspenseFallback2";
 import FirestoreContext from "../../Utils/FirestoreContext2";
 import MetaTags from "../MetaTags/MetaTags";
 
@@ -48,7 +48,7 @@ const WriterDetails = () => {
   }, [writerItem?.ArticleID, articlesData]);
 
   if (loading) {
-    return <SuspenseFallback cName="dots" />;
+    return <SuspenseFallback2 cName="dots" />;
   }
   return (
     <div className={classes.container}>

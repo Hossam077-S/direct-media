@@ -226,6 +226,25 @@ app.get("/article/:id", async (req, res) => {
   }
 });
 
+app.get("/", (req, res) => {
+  fs.readFile(indexPath, "utf8", (err, htmlData) => {
+    if (err) {
+      console.error("Error during file reading", err);
+      return res.status(404).end();
+    }
+    // inject meta tags
+    htmlData = htmlData
+      .replace("__META_OG_TITLE__", "Direct Media")
+      .replace("__META_OG_TITLE_T__", "Direct Media")
+
+      .replace("__META_OG_DESCRIPTION__", "Description")
+      .replace("__META_DESCRIPTION__", "Description")
+      .replace("__META_DESCRIPTION_T__", "Description");
+
+    return res.send(htmlData);
+  });
+});
+
 app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "..", "build", "index.html"));
 });

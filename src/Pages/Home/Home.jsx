@@ -42,6 +42,7 @@ import LazyImage from "../../Components/LazyImage/LazyImage";
 import TimeDifferenceComponent from "../../Components/TimeDifference/TimeDifferenceComponent";
 import NewsSlider from "../../Components/NewsSlider/NewsSlider";
 import MetaTags from "../../Components/MetaTags/MetaTags";
+import { SuspenseFallback2 } from "../../Components/SuspenseFallback/SuspenseFallback2";
 
 const Home = () => {
   const classes = useStyles();
@@ -52,11 +53,33 @@ const Home = () => {
     podcastDataEpisodes,
     groupedData,
     groupedProgramsData,
-    loading,
   } = useContext(FirestoreContext);
 
   const [hoverIndex, setHoverIndex] = useState(-1);
   const [latestProgram, setLatestProgram] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (
+      programsData &&
+      writersData &&
+      articlesData &&
+      podcastDataEpisodes &&
+      groupedData &&
+      groupedProgramsData
+    ) {
+      setLoading(false);
+    } else {
+      console.log("Error getting data");
+    }
+  }, [
+    programsData,
+    writersData,
+    articlesData,
+    podcastDataEpisodes,
+    groupedData,
+    groupedProgramsData,
+  ]);
 
   useEffect(() => {
     const sortedPrograms = groupedProgramsData?.sort((a, b) => {
@@ -228,8 +251,8 @@ const Home = () => {
     return source.length > size ? source.slice(0, size - 1) + "…" : source;
   }
 
-  if (Object.values(loading).some((isLoading) => isLoading)) {
-    return <div>Loading all data...</div>;
+  if (loading) {
+    return <SuspenseFallback2 cName="dots" />;
   }
 
   return (
@@ -280,8 +303,8 @@ const Home = () => {
                           className={classes.SliderDivider}
                         />
                         <div className={classes.sliderContent}>
-                          <a
-                            href={"news/" + newsItem.id}
+                          <Link
+                            to={"news/" + newsItem.id}
                             className={classes.LinkInnerPages}
                           >
                             <Typography
@@ -290,7 +313,7 @@ const Home = () => {
                             >
                               {newsItem.Title}
                             </Typography>
-                          </a>
+                          </Link>
                           <Typography
                             variant="body1"
                             gutterBottom
@@ -390,8 +413,8 @@ const Home = () => {
               <div className={classes.programItems}>
                 <Slider {...programSettings}>
                   {programsData?.map((newsItem, index) => (
-                    <a
-                      href={"program/" + newsItem.id}
+                    <Link
+                      to={"program/" + newsItem.id}
                       className={classes.LinkInnerPages}
                       key={index}
                     >
@@ -400,7 +423,7 @@ const Home = () => {
                         alt={newsItem.Title}
                         className={classes.programImage}
                       />
-                    </a>
+                    </Link>
                   ))}
                 </Slider>
               </div>
@@ -496,8 +519,8 @@ const Home = () => {
                           />
                           <div className={classes.sliderDetailsDiv2}>
                             <div className={classes.title_dividerArticl}>
-                              <a
-                                href={"news/" + newsItem.id}
+                              <Link
+                                to={"news/" + newsItem.id}
                                 className={classes.LinkInnerPages}
                               >
                                 <Typography
@@ -505,7 +528,7 @@ const Home = () => {
                                 >
                                   {newsItem.Title}
                                 </Typography>
-                              </a>
+                              </Link>
                               <Typography className={classes.sliderArticlDate}>
                                 {newsItem.PublishDate instanceof Date ? (
                                   <TimeDifferenceComponent
@@ -626,8 +649,8 @@ const Home = () => {
                                       ];
                                     if (articleItem.ArticleID === articleID) {
                                       return (
-                                        <a
-                                          href={"article/" + articleItem.id}
+                                        <Link
+                                          to={"article/" + articleItem.id}
                                           state={writerItem}
                                           className={classes.LinkInnerPages}
                                           key={index}
@@ -640,7 +663,7 @@ const Home = () => {
                                               {truncate(articleItem.Text, 65)}
                                             </span>
                                           </Typography>
-                                        </a>
+                                        </Link>
                                       );
                                     }
                                     return null;

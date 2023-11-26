@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import FirestoreContext from "../../Utils/FirestoreContext2";
 
 import Pagination from "@mui/material/Pagination";
@@ -10,6 +10,9 @@ import RTL from "../RTL/RTL";
 import useStyles from "./styles";
 import MetaTags from "../MetaTags/MetaTags";
 
+import { SuspenseFallback2 } from "../SuspenseFallback/SuspenseFallback2";
+import LazyImage from "../LazyImage/LazyImage";
+
 const NewsPage = () => {
   const classes = useStyles();
   const { newsData } = useContext(FirestoreContext);
@@ -17,6 +20,8 @@ const NewsPage = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [newsPerPage] = useState(10); // Number of news per page
+  const [sortedNewsData, setSortedNewsData] = useState();
+  const [loading, setLoading] = useState(true);
 
   // Function to compare dates for sorting
   const compareDates = (a, b) => {
@@ -25,13 +30,21 @@ const NewsPage = () => {
     return dateB - dateA;
   };
 
-  const sortedNewsData = [...newsData].sort(compareDates);
+  useEffect(() => {
+    if (newsData) {
+      setSortedNewsData([...newsData].sort(compareDates));
+    } else {
+      console.log("There is no news yet");
+    }
+
+    setLoading(false);
+  }, [newsData]);
 
   // Filter news items based on the selected category
   const filteredNews =
     category === "كل الأخبار"
       ? sortedNewsData
-      : sortedNewsData.filter((newsItem) => newsItem.Category === category);
+      : sortedNewsData?.filter((newsItem) => newsItem?.Category === category);
 
   useEffect(() => {
     // This will reset the page to 1 when the category changes
@@ -45,13 +58,17 @@ const NewsPage = () => {
 
   const indexOfLastNews = currentPage * newsPerPage;
   const indexOfFirstNews = indexOfLastNews - newsPerPage;
-  const currentNews = filteredNews.slice(indexOfFirstNews, indexOfLastNews);
+  const currentNews = filteredNews?.slice(indexOfFirstNews, indexOfLastNews);
 
   // Calculate the total number of pages
-  const count = Math.ceil(filteredNews.length / newsPerPage);
+  const count = Math.ceil(filteredNews?.length / newsPerPage);
 
   function truncate(source, size) {
     return source.length > size ? source.slice(0, size - 1) + "…" : source;
+  }
+
+  if (loading) {
+    return <SuspenseFallback2 cName="dots" />;
   }
 
   return (
@@ -65,27 +82,32 @@ const NewsPage = () => {
         hashtags="#News #Programs #Podcasts #Categories #Sport #War"
       />
       <div className={classes.container}>
-        {filteredNews.length === 0 ? (
+        {filteredNews?.length === 0 ? (
           <p>لا يوجد أخبار {category}.</p>
         ) : (
           <>
             <div className={classes.newsList}>
-              {currentNews.map((newsItem, index) => (
+              {currentNews?.map((newsItem, index) => (
                 <div key={index} className={classes.newsItem}>
-                  <img
+                  {/* <img
+                    src={newsItem.ImageURL}
+                    alt={newsItem.Title}
+                    className={classes.newsImage}
+                  /> */}
+                  <LazyImage
                     src={newsItem.ImageURL}
                     alt={newsItem.Title}
                     className={classes.newsImage}
                   />
                   <div className={classes.newsContent}>
-                    <a
-                      href={"/news/" + newsItem.id}
+                    <Link
+                      to={"/news/" + newsItem.id}
                       className={classes.LinkInnerPages}
                     >
                       <h2 className={classes.newsTitle}>
                         <span>{truncate(newsItem.Title, 65)}</span>
                       </h2>
-                    </a>
+                    </Link>
                     <p className={classes.newsDescription}>
                       <span
                         dangerouslySetInnerHTML={{
