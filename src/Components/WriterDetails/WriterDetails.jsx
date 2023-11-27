@@ -91,7 +91,6 @@ const WriterDetails = () => {
               {wrtierArticle?.map((wArticle) => (
                 <Link
                   to={"/article/" + wArticle.ArticleID}
-                  state={writerItem}
                   className={classes.LinkInnerPages}
                 >
                   <li

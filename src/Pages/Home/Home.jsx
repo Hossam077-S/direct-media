@@ -41,7 +41,6 @@ import VerticalSlider from "../../Components/VerticalSlider/VerticalSlider";
 import LazyImage from "../../Components/LazyImage/LazyImage";
 import TimeDifferenceComponent from "../../Components/TimeDifference/TimeDifferenceComponent";
 import NewsSlider from "../../Components/NewsSlider/NewsSlider";
-import MetaTags from "../../Components/MetaTags/MetaTags";
 import { SuspenseFallback2 } from "../../Components/SuspenseFallback/SuspenseFallback2";
 
 const Home = () => {
@@ -257,14 +256,6 @@ const Home = () => {
 
   return (
     <>
-      <MetaTags
-        title="Direct Media"
-        titleName="Direct Media Webiste"
-        description="Explore all news in the world"
-        imageUrl="https://firebasestorage.googleapis.com/v0/b/directmedia-6b77f.appspot.com/o/Logo%2FAsset%201.png?alt=media&token=3af7b936-abda-4c0b-9718-a4a5a013bf83"
-        url={window.location.href}
-        hashtags="#News #Programs #Podcasts #Categories #Sport #War"
-      />
       <Container className={classes.container}>
         {/* Latest News */}
         <div id="latest-news" className={classes.slicerDiv}>
@@ -651,7 +642,6 @@ const Home = () => {
                                       return (
                                         <Link
                                           to={"article/" + articleItem.id}
-                                          state={writerItem}
                                           className={classes.LinkInnerPages}
                                           key={index}
                                         >

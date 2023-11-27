@@ -86,6 +86,8 @@ const ArticlesEntry = ({ distinctWritersName }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [showPopupWriter, setShowPopupWriter] = useState(false);
   const [editorContent, setEditorContent] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [error, setError] = useState(false);
 
   const form = useRef();
 
@@ -174,7 +176,7 @@ const ArticlesEntry = ({ distinctWritersName }) => {
     setShowPopupWriter(true);
   };
 
-  const handleSaveWriter = (event) => {
+  const handleSaveWriter = async (event) => {
     event.preventDefault();
 
     // Get values from the refs
@@ -183,6 +185,23 @@ const ArticlesEntry = ({ distinctWritersName }) => {
 
     try {
       setLoading(true);
+
+      // Check if a writer with the same name already exists in distinctWritersName
+      const writerExists = distinctWritersName.some(
+        (writer) => writer.title === writerName
+      );
+
+      if (writerExists) {
+        console.log("A writer with the same name already exists.");
+
+        setErrorMessage("كاتب بنفس الأسم موجود بالفعل");
+        setSnackbar(true);
+        setError(true);
+        setShowPopupWriter(false);
+
+        setLoading(false);
+        return; // Exit the function
+      }
 
       const timestamp = Date.now(); // Get the current timestamp
       const storageRef = ref(
@@ -466,12 +485,21 @@ const ArticlesEntry = ({ distinctWritersName }) => {
           </ThemeProvider>
         </CacheProvider>
       </form>
-      <SnackbarComponent
-        snackbar={snackbar}
-        setSnackbar={setSnackbar}
-        error={false}
-        Message={"تم التحميل بنجاح"}
-      />
+      {error ? (
+        <SnackbarComponent
+          snackbar={snackbar}
+          setSnackbar={setSnackbar}
+          error={error}
+          errorMessage={errorMessage}
+        />
+      ) : (
+        <SnackbarComponent
+          snackbar={snackbar}
+          setSnackbar={setSnackbar}
+          error={false}
+          Message={"تم التحميل بنجاح"}
+        />
+      )}
     </div>
   );
 };

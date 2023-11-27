@@ -62,6 +62,15 @@ const useStyles = makeStyles((theme) => ({
       fontSize: "18px",
     },
   },
+  Hashtag: {
+    fontSize: "14px",
+    fontFamily: `${mainFont}`,
+    color: "#2E3190",
+    paddingBottom: "10px",
+    "@media (max-width: 768px)": {
+      fontSize: "12px",
+    },
+  },
 
   writerSignture: {
     display: "flex",

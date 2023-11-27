@@ -127,25 +127,52 @@ app.get("/news/:id", async (req, res) => {
       // inject meta tags
       htmlData = htmlData
         .replace("<title>Direct Media</title>", `<title>News Details</title>`)
-        .replace("__META_OG_TITLE__", truncate(news.Title, 55))
-        .replace("__META_OG_TITLE_T__", truncate(news.Title, 55))
+        .replace(
+          "Direct Media - Your Source for News",
+          truncate(news.Title, 55)
+        )
+        .replace(
+          "Direct Media - Your Source for News - Tweet",
+          truncate(news.Title, 55)
+        )
 
-        .replace("__META_OG_DESCRIPTION__", textDescription)
-        .replace("__META_DESCRIPTION__", textDescription)
-        .replace("__META_DESCRIPTION_T__", textDescription)
+        .replace(
+          "اكتشف آخر الأخبار والتحليلات العميقة في عالم الإعلام مع مصدرك الموثوق للأخبار المحلية والعالمية - Direct Media",
+          textDescription
+        )
+        .replace(
+          "ابق على اطلاع بأحدث الأخبار والرؤى الإعلامية",
+          textDescription
+        )
+        .replace(
+          "ابق على اطلاع بأحدث الأخبار والرؤى الإعلامية - Direct Media",
+          textDescription
+        )
 
-        .replace("__META_OG_IMAGE_1__", imageUrlToUse)
-        .replace("__META_OG_IMAGE_2__", imageUrlToUse)
-        .replace("__META_OG_IMAGE_3__", imageUrlToUse)
+        .replace(
+          "https://firebasestorage.googleapis.com/v0/b/directmedia-6b77f.appspot.com/o/Logo%2FAsset%201.png?alt=media&token=3af7b936-abda-4c0b-9718-a4a5a013bf83",
+          imageUrlToUse
+        )
+        .replace(
+          "https://firebasestorage.googleapis.com/v0/b/directmedia-6b77f.appspot.com/o/Logo%2FWhiteLogo.gif?alt=media&token=2de8da7f-7257-4946-abdf-693190eb67cf",
+          imageUrlToUse
+        )
+        .replace(
+          "https://firebasestorage.googleapis.com/v0/b/directmedia-6b77f.appspot.com/o/Logo%2FpodcastLogo.gif?alt=media&token=d92b7eb6-b228-4153-8bc2-3cb646248e43",
+          imageUrlToUse
+        )
         .replace("__META_OG_IMAGE_T__", imageUrlToUse)
 
-        .replace("__META_OG_IMAGE_WIDTH__", "1200")
-        .replace("__META_OG_IMAGE_HEIGHT__", "630")
+        .replace("1200", "1200")
+        .replace("630", "630")
 
-        .replace("__META_OG_HASHTAGS__", news.Hashtag || "#أخبار")
-        .replace("__META_OG_KEYWORDS__", news.Title)
+        .replace("#News #Articles #Podcasts #Writers", news.Hashtag || "#أخبار")
+        .replace(
+          "News, Articles, Podcasts, Writers, World, Lebanon, Sport",
+          news.Title
+        )
 
-        .replace("__META_OG_URL__", fullUrl)
+        .replace("https://www.directmedialb.com", fullUrl)
         .replace("__META_OG_URL_CANO__", fullUrl);
 
       return res.send(htmlData);
@@ -197,25 +224,55 @@ app.get("/article/:id", async (req, res) => {
           "<title>Direct Media</title>",
           `<title>Article Details</title>`
         )
-        .replace("__META_OG_TITLE__", truncate(article.Text, 55))
-        .replace("__META_OG_TITLE_T__", "Direct Media")
+        .replace(
+          "Direct Media - Your Source for News",
+          truncate(article.Text, 55)
+        )
+        .replace(
+          "Direct Media - Your Source for News - Tweet",
+          truncate(article.Text, 55)
+        )
 
-        .replace("__META_OG_DESCRIPTION__", textDescription)
-        .replace("__META_DESCRIPTION__", textDescription)
-        .replace("__META_DESCRIPTION_T__", textDescription)
+        .replace(
+          "اكتشف آخر الأخبار والتحليلات العميقة في عالم الإعلام مع مصدرك الموثوق للأخبار المحلية والعالمية - Direct Media",
+          textDescription
+        )
+        .replace(
+          "ابق على اطلاع بأحدث الأخبار والرؤى الإعلامية",
+          textDescription
+        )
+        .replace(
+          "ابق على اطلاع بأحدث الأخبار والرؤى الإعلامية - Direct Media",
+          textDescription
+        )
 
-        .replace("__META_OG_IMAGE_1__", imageUrlToUse)
-        .replace("__META_OG_IMAGE_2__", imageUrlToUse)
-        .replace("__META_OG_IMAGE_3__", imageUrlToUse)
+        .replace(
+          "https://firebasestorage.googleapis.com/v0/b/directmedia-6b77f.appspot.com/o/Logo%2FAsset%201.png?alt=media&token=3af7b936-abda-4c0b-9718-a4a5a013bf83",
+          imageUrlToUse
+        )
+        .replace(
+          "https://firebasestorage.googleapis.com/v0/b/directmedia-6b77f.appspot.com/o/Logo%2FWhiteLogo.gif?alt=media&token=2de8da7f-7257-4946-abdf-693190eb67cf",
+          imageUrlToUse
+        )
+        .replace(
+          "https://firebasestorage.googleapis.com/v0/b/directmedia-6b77f.appspot.com/o/Logo%2FpodcastLogo.gif?alt=media&token=d92b7eb6-b228-4153-8bc2-3cb646248e43",
+          imageUrlToUse
+        )
         .replace("__META_OG_IMAGE_T__", imageUrlToUse)
 
-        .replace("__META_OG_IMAGE_WIDTH__", "1200")
-        .replace("__META_OG_IMAGE_HEIGHT__", "630")
+        .replace("1200", "1200")
+        .replace("630", "630")
 
-        .replace("__META_OG_HASHTAGS__", article.Hashtag || "#أخبار")
-        .replace("__META_OG_KEYWORDS__", article.Text)
+        .replace(
+          "#News #Articles #Podcasts #Writers",
+          article.Hashtag || "#أخبار"
+        )
+        .replace(
+          "News, Articles, Podcasts, Writers, World, Lebanon, Sport",
+          article.Text
+        )
 
-        .replace("__META_OG_URL__", fullUrl)
+        .replace("https://www.directmedialb.com", fullUrl)
         .replace("__META_OG_URL_CANO__", fullUrl);
 
       return res.send(htmlData);
@@ -224,25 +281,6 @@ app.get("/article/:id", async (req, res) => {
     console.error("Error fetching document: ", error);
     res.status(500).send("Internal Server Error");
   }
-});
-
-app.get("/", (req, res) => {
-  fs.readFile(indexPath, "utf8", (err, htmlData) => {
-    if (err) {
-      console.error("Error during file reading", err);
-      return res.status(404).end();
-    }
-    // inject meta tags
-    htmlData = htmlData
-      .replace("__META_OG_TITLE__", "Direct Media")
-      .replace("__META_OG_TITLE_T__", "Direct Media")
-
-      .replace("__META_OG_DESCRIPTION__", "Description")
-      .replace("__META_DESCRIPTION__", "Description")
-      .replace("__META_DESCRIPTION_T__", "Description");
-
-    return res.send(htmlData);
-  });
 });
 
 app.get("*", (req, res) => {

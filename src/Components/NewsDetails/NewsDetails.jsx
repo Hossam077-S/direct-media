@@ -59,6 +59,11 @@ const NewsDetails = () => {
     ],
   };
 
+  const isValidYoutubeUrl = (url) => {
+    const regex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/;
+    return regex.test(url);
+  };
+
   useEffect(() => {
     const news = newsData?.find((news) => news.id === id);
 
@@ -144,9 +149,9 @@ const NewsDetails = () => {
           </div>
 
           <div className={classes.VideoDiv}>
-            {newsItem.YoutubeLink ? (
+            {newsItem.YoutubeLink && isValidYoutubeUrl(newsItem.YoutubeLink) ? (
               <ReactPlayer
-                url={newsItem?.YoutubeLink}
+                url={newsItem.YoutubeLink}
                 className={classes.youtubeVideo}
                 controls
               />

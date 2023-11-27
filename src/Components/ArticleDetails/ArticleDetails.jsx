@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import useStyles from "./style";
 import TimeDifferenceComponent from "../TimeDifference/TimeDifferenceComponent";
@@ -8,15 +8,13 @@ import FirestoreContext from "../../Utils/FirestoreContext2";
 import MetaTags from "../MetaTags/MetaTags";
 
 const ArticleDetails = () => {
-  const location = useLocation();
   const { id } = useParams();
 
-  const { articlesData } = useContext(FirestoreContext);
+  const { articlesData, writersData } = useContext(FirestoreContext);
 
   const [loading, setLoading] = useState(true);
   const [articleInfo, setArticleInfo] = useState(null);
-
-  const writerItem = location.state || {};
+  const [writerItem, setWriterItem] = useState(null);
 
   const classes = useStyles();
 
@@ -28,17 +26,35 @@ const ArticleDetails = () => {
   ];
 
   useEffect(() => {
+    setLoading(true);
+
+    // Check if articlesData and writersData are loaded
+    if (!articlesData || !writersData) {
+      console.log("Data is still loading");
+      setLoading(false);
+      return;
+    }
+
     // Find the article with the same id from the articles data context
-    const article = articlesData.find((article) => article.id === id);
+    const article = articlesData.find((a) => a.id === id);
 
     if (article) {
       setArticleInfo(article);
+
+      // Find the writer using the WriterID from the found article
+      const writer = writersData.find((w) => w.id === article.WriterID);
+
+      if (writer) {
+        setWriterItem(writer);
+      } else {
+        console.log(`Writer with ID ${article.WriterID} not found`);
+      }
     } else {
-      console.log("Article not found");
+      console.log(`Article with ID ${id} not found`);
     }
 
     setLoading(false);
-  }, [id, articlesData]);
+  }, [id, articlesData, writersData]);
 
   function truncate(source, size) {
     return source.length > size ? source.slice(0, size - 1) + "…" : source;
@@ -99,15 +115,16 @@ const ArticleDetails = () => {
               }}
             />
           </div>
+          <div className={classes.Hashtag}>{articleInfo?.Hashtag}</div>
           <div className={classes.writerSignture}>
             {writerItem ? (
               <>
                 <img
-                  src={writerItem.ProfileImage}
-                  alt={writerItem.Name}
+                  src={writerItem?.ProfileImage}
+                  alt={writerItem?.Name}
                   className={classes.profileWriter}
                 />
-                <p className={classes.writerName}>{writerItem.Name}</p>
+                <p className={classes.writerName}>{writerItem?.Name}</p>
               </>
             ) : (
               ""
