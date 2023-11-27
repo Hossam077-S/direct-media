@@ -42,6 +42,7 @@ import LazyImage from "../../Components/LazyImage/LazyImage";
 import TimeDifferenceComponent from "../../Components/TimeDifference/TimeDifferenceComponent";
 import NewsSlider from "../../Components/NewsSlider/NewsSlider";
 import { SuspenseFallback2 } from "../../Components/SuspenseFallback/SuspenseFallback2";
+import { analytics, logEvent } from "../../Utils/firebase";
 
 const Home = () => {
   const classes = useStyles();
@@ -253,6 +254,11 @@ const Home = () => {
   if (loading) {
     return <SuspenseFallback2 cName="dots" />;
   }
+
+  logEvent(analytics, "page_view", {
+    page_title: "Homepage",
+    page_location: "home",
+  });
 
   return (
     <>

@@ -4,6 +4,12 @@ import { Container, Typography } from "@mui/material";
 import MetaTags from "../../Components/MetaTags/MetaTags";
 
 import useStyles from "./styles";
+import { analytics, logEvent } from "../../Utils/firebase";
+
+logEvent(analytics, "page_view", {
+  page_title: "PrivacyPolicy",
+  page_location: "privacy",
+});
 
 function PrivacyPolicy() {
   const classes = useStyles();

@@ -1,8 +1,31 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, getDocs, getDoc, onSnapshot, documentId, query, where, doc, updateDoc, arrayUnion, serverTimestamp, deleteDoc, arrayRemove } from "firebase/firestore";
-import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject  } from "firebase/storage";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  getDoc,
+  onSnapshot,
+  documentId,
+  query,
+  where,
+  doc,
+  updateDoc,
+  arrayUnion,
+  serverTimestamp,
+  deleteDoc,
+  arrayRemove,
+} from "firebase/firestore";
+import {
+  getStorage,
+  ref,
+  uploadBytesResumable,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
+import { getAnalytics, logEvent } from "firebase/analytics";
 
 // Add your Firebase configuration object here
 const firebaseConfig = {
@@ -18,6 +41,9 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
+// Initialize Firebase Analytics
+const analytics = getAnalytics(app);
+
 // Get Firestore instance
 const db = getFirestore(app);
 
@@ -28,4 +54,29 @@ const storage = getStorage(app);
 const auth = getAuth(app);
 
 // Other exports
-export { storage, db, collection, addDoc, ref, uploadBytesResumable, deleteObject, getDownloadURL, getDocs, onSnapshot, documentId, query, where, doc, getDoc, updateDoc, arrayUnion, serverTimestamp, signInWithEmailAndPassword, deleteDoc, arrayRemove, auth };
+export {
+  storage,
+  db,
+  collection,
+  addDoc,
+  ref,
+  uploadBytesResumable,
+  deleteObject,
+  getDownloadURL,
+  getDocs,
+  onSnapshot,
+  documentId,
+  query,
+  where,
+  doc,
+  getDoc,
+  updateDoc,
+  arrayUnion,
+  serverTimestamp,
+  signInWithEmailAndPassword,
+  deleteDoc,
+  arrayRemove,
+  auth,
+  analytics,
+  logEvent,
+};

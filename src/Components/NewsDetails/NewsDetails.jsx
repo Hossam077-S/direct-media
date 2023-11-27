@@ -14,6 +14,7 @@ import useStyles from "./style";
 import TimeDifferenceComponent from "../TimeDifference/TimeDifferenceComponent";
 import { SuspenseFallback2 } from "../SuspenseFallback/SuspenseFallback2";
 import FirestoreContext from "../../Utils/FirestoreContext2";
+import { analytics, logEvent } from "../../Utils/firebase";
 
 const NewsDetails = () => {
   const classes = useStyles();
@@ -94,6 +95,11 @@ const NewsDetails = () => {
   if (loading) {
     return <SuspenseFallback2 cName="dots" />;
   }
+
+  logEvent(analytics, "page_view", {
+    page_title: "NewsDetails",
+    page_location: "News",
+  });
 
   return (
     <>
