@@ -1,5 +1,6 @@
 import { makeStyles } from "@mui/styles";
 
+const mainFont = "AL_Jaz_Bold";
 const secondFont = "AL_Jaz_Regular";
 
 const useStyles = makeStyles(() => ({
@@ -90,48 +91,24 @@ const useStyles = makeStyles(() => ({
     position: "relative",
     display: "flex !important",
     justifyContent: "center",
+    flexDirection: "column",
+  },
+  episodeTitle: {
+    position: "absolute",
+    paddingRight: "3px",
+    width: "100%",
+    maxWidth: "208px",
+    fontFamily: `${mainFont}`,
+    fontSize: "16px",
+    color: "#2E3190",
+    background: "rgba(255,255,255,0.5)",
+    backdropFilter: "blur(5px)",
+    zIndex: 1,
+    top: 0,
   },
   episodeYoutubeVideo: {
     width: "208px !important",
     height: "370px !important",
-
-    "& iframe": {
-      width: "100%",
-      height: "100%",
-    },
-
-    "@media (max-width: 768px)": {
-      width: "90vw",
-    },
-  },
-
-  EpisodesSliderDiv2: {
-    width: "auto",
-    higeht: "auto",
-
-    "@media (max-width: 768px)": {
-      width: "90vw",
-    },
-
-    "& .slick-track": {
-      direction: "rtl",
-      width: "auto",
-      height: "auto !important",
-    },
-
-    "& .slick-initialized .slick-slide": {
-      "@media (max-width: 768px)": {
-        display: "flex",
-        justifyContent: "center",
-      },
-    },
-  },
-  episodeContent2: {
-    position: "relative",
-  },
-  episodeYoutubeVideo2: {
-    width: "auto !important",
-    height: "330px !important",
 
     "& iframe": {
       width: "100%",

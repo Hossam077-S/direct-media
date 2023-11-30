@@ -31,6 +31,7 @@ const NewsDetails = () => {
   const [newsItem, setNewsItem] = useState({});
   const [relatedNews, setRelatedNews] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [videoError, setVideoError] = useState(false);
 
   const newsTypesSliderSettings = {
     dots: false,
@@ -58,11 +59,6 @@ const NewsDetails = () => {
         },
       },
     ],
-  };
-
-  const isValidYoutubeUrl = (url) => {
-    const regex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.?be)\/.+$/;
-    return regex.test(url);
   };
 
   useEffect(() => {
@@ -155,11 +151,12 @@ const NewsDetails = () => {
           </div>
 
           <div className={classes.VideoDiv}>
-            {newsItem.YoutubeLink && isValidYoutubeUrl(newsItem.YoutubeLink) ? (
+            {newsItem?.YoutubeLink && !videoError ? (
               <ReactPlayer
                 url={newsItem.YoutubeLink}
                 className={classes.youtubeVideo}
                 controls
+                onError={() => setVideoError(true)}
               />
             ) : (
               ""
@@ -208,15 +205,6 @@ const NewsDetails = () => {
                                 publishDate={relatedNewsItem.PublishDate}
                               />
                             )}
-                            {/* {relatedNewsItem.PublishDate.toDate().toLocaleDateString(
-                              "ar",
-                              {
-                                weekday: "long",
-                                day: "numeric",
-                                month: "long",
-                                year: "numeric",
-                              }
-                            )} */}
                           </p>
                         </div>
                       </li>

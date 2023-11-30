@@ -2,36 +2,36 @@ import { makeStyles } from "@mui/styles";
 
 const useStyles = makeStyles(() => ({
   youtubeVideo: {
-    width: '205px !important',
-    height: '364px !important',
-    cursor: 'pointer',
-    objectFit: 'cover',
+    width: "205px !important",
+    height: "364px !important",
+    cursor: "pointer",
+    objectFit: "cover",
 
     "& iframe": {
       width: "205px !important",
-      height: '100%',
-  
+      height: "100%",
+
       "@media (max-width: 768px)": {
-        width: '90vw !important',
+        width: "90vw !important",
       },
     },
 
     "@media (max-width: 768px)": {
-      width: '90vw !important',
+      width: "90vw !important",
     },
   },
   podcastYoutubeVideo: {
-    width: '244px !important',
-    height: '244px !important',
-    cursor: 'pointer',
-    
+    width: "244px !important",
+    height: "244px !important",
+    cursor: "pointer",
+
     "& iframe": {
       width: "100%",
-      height: '100%',
+      height: "100%",
     },
 
     "@media (max-width: 768px)": {
-      width: '90vw',
+      width: "90vw",
     },
   },
 
@@ -51,35 +51,20 @@ const useStyles = makeStyles(() => ({
     fontSize: "50px !important",
     color: "#fff",
   },
-  
+
   episodeYoutubeVideo: {
-    width: '208px !important',
-    height: '370px !important',
-    objectFit: 'cover',
+    width: "208px !important",
+    height: "370px !important",
+    objectFit: "cover",
 
     "& iframe": {
       width: "100%",
-      height: '100%',
+      height: "100%",
     },
 
     "@media (max-width: 768px)": {
-      width: '90vw',
-    },  
-  },
-
-  episodeYoutubeVideo2: {
-    width: 'auto !important',
-    height: '330px !important',
-    objectFit: 'cover',
-
-    "& iframe": {
-      width: "100%",
-      height: '100%',
+      width: "90vw",
     },
-
-    "@media (max-width: 768px)": {
-      width: '90vw',
-    },  
   },
 }));
 

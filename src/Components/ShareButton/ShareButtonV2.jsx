@@ -1,7 +1,7 @@
 import React from "react";
 import {
   FacebookShareButton,
-  TwitterShareButton,
+  // TwitterShareButton,
   WhatsappShareButton,
   TelegramShareButton,
 } from "react-share";
@@ -27,14 +27,25 @@ const ShareButtonV2 = ({ socialMedia, url, Hashtags, Title }) => {
           </FacebookShareButton>
         );
       case "twitter":
+        const twitterShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+          Title
+        )}&url=${encodeURIComponent(url)}&hashtags=${Hashtags}`;
         return (
-          <TwitterShareButton
-            {...commonProps}
-            title={Title}
-            hashtags={Hashtags.split(",")}
+          // <TwitterShareButton
+          //   {...commonProps}
+          //   title={Title}
+          //   hashtags={Hashtags.split(",")}
+          // >
+          //   <FaXTwitter className={classes.shareButton} />
+          // </TwitterShareButton>
+          <a
+            href={twitterShareUrl}
+            className={`${classes.shareButton} ${classes.twitter}`}
+            target="_blank"
+            rel="noopener noreferrer"
           >
-            <FaXTwitter className={classes.shareButton} />
-          </TwitterShareButton>
+            <FaXTwitter className={classes.shareIcon} />
+          </a>
         );
       case "whatsapp":
         return (

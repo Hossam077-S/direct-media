@@ -95,6 +95,8 @@ const Home = () => {
 
       if (isShortsVideo) {
         videoId = videoUrl.pathname.split("/shorts/")[1];
+      } else if (videoUrl.hostname === "youtu.be") {
+        videoId = videoUrl.pathname.split("/")[1];
       } else {
         videoId = videoUrl.searchParams.get("v");
       }
@@ -214,7 +216,8 @@ const Home = () => {
     dots: false,
     infinite: true,
     speed: 900,
-    slidesToShow: 3,
+    slidesToShow:
+      podcastDataEpisodes?.length > 3 ? 3 : podcastDataEpisodes?.length,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 6000,

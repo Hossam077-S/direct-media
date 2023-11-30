@@ -285,17 +285,26 @@ async function processPodcastsData(snapshot) {
 async function processPodcastsDataEpisodes(snapshot) {
   const episodes = [];
 
-  // Loop over each document in the snapshot
   snapshot.forEach((doc) => {
     const data = doc.data();
 
-    // Check if YouTubeURL exists for the current episodes and try to extract the thumbnail
     if (data.YouTubeURL) {
       try {
         const videoUrl = new URL(data.YouTubeURL);
-        const videoId = videoUrl.searchParams.get("v");
-        // Assign the thumbnail URL directly to the data object
-        data.thumbnailUrl = `https://img.youtube.com/vi/${videoId}/sddefault.jpg`;
+        const isShortsVideo = videoUrl.pathname.includes("/shorts/");
+        let videoId;
+
+        if (isShortsVideo) {
+          videoId = videoUrl.pathname.split("/shorts/")[1];
+        } else if (videoUrl.hostname === "youtu.be") {
+          videoId = videoUrl.pathname.split("/")[1];
+        } else {
+          videoId = videoUrl.searchParams.get("v");
+        }
+
+        if (videoId) {
+          data.thumbnailUrl = `https://img.youtube.com/vi/${videoId}/sddefault.jpg`;
+        }
       } catch (error) {
         console.error("Error parsing YouTube URL:", error);
       }

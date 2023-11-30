@@ -20,4 +20,7 @@ export default makeStyles(() => ({
       transform: "scale(1.1)",
     },
   },
+  twitter: {
+    fontSize: "19px",
+  },
 }));

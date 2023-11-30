@@ -33,7 +33,7 @@ const Programs = () => {
     dots: false,
     infinite: true,
     speed: 1200,
-    slidesToShow: 3,
+    slidesToShow: ProgramEposide?.length > 3 ? 3 : ProgramEposide?.length,
     slidesToScroll: 1,
     autoplay: true,
     arrows: true,
@@ -53,33 +53,6 @@ const Programs = () => {
         breakpoint: 480,
         settings: {
           slidesToShow: 1,
-        },
-      },
-    ],
-  };
-
-  const episodeSettings2 = {
-    dots: false,
-    infinite: true,
-    speed: 1200,
-    slidesToShow: programItem?.ProgramsID?.length,
-    slidesToScroll: 1,
-    vertical: true,
-    autoplay: true,
-    autoplaySpeed: 6000,
-    rtl: true,
-    pauseOnHover: true,
-    responsive: [
-      {
-        breakpoint: 768,
-        settings: {
-          slidesToShow: programItem?.ProgramsID?.length,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: programItem?.ProgramsID?.length,
         },
       },
     ],
@@ -160,38 +133,28 @@ const Programs = () => {
 
           {/* List of Episodes */}
           <div className={classes.Date}>{formattedDate}</div>
+
           <div className={classes.EpisodesList}>
-            {ProgramEposide.length === 0 ? (
-              <p>لا يوجد أي حلقات.</p>
-            ) : id === "z4yIpPQkFYkH36oaLwL0" ? (
-              <div className={classes.EpisodesSliderDiv}>
-                <Slider {...episodeSettings}>
-                  {ProgramEposide.map((episode) => (
-                    <div className={classes.episodeContent} key={episode.id}>
-                      <VideoComponent
-                        videoUrl={episode?.YoutubeLink}
-                        thumbnailUrl={episode?.thumbnailUrl}
-                        cName="episodeYoutubeVideo"
-                      />
-                    </div>
-                  ))}
-                </Slider>
-              </div>
-            ) : (
-              <div className={classes.EpisodesSliderDiv2}>
-                <Slider {...episodeSettings2}>
-                  {ProgramEposide.map((episode) => (
-                    <div className={classes.episodeContent2} key={episode.id}>
-                      <VideoComponent
-                        videoUrl={episode?.YoutubeLink}
-                        thumbnailUrl={episode?.thumbnailUrl}
-                        cName="episodeYoutubeVideo2"
-                      />
-                    </div>
-                  ))}
-                </Slider>
-              </div>
-            )}
+            <div className={classes.EpisodesList}>
+              {ProgramEposide.length === 0 ? (
+                <p>لا يوجد أي حلقات.</p>
+              ) : (
+                <div className={classes.EpisodesSliderDiv}>
+                  <Slider {...episodeSettings}>
+                    {ProgramEposide.map((episode) => (
+                      <div className={classes.episodeContent} key={episode.id}>
+                        <p className={classes.episodeTitle}>{episode.Title}</p>
+                        <VideoComponent
+                          videoUrl={episode?.YoutubeLink}
+                          thumbnailUrl={episode?.thumbnailUrl}
+                          cName="episodeYoutubeVideo"
+                        />
+                      </div>
+                    ))}
+                  </Slider>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

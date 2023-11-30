@@ -31,7 +31,8 @@ const PodcastDetails = () => {
     dots: false,
     infinite: true,
     speed: 1200,
-    slidesToShow: podcastItem?.length > 3 ? 3 : podcastItem?.length,
+    slidesToShow:
+      podcastDataEpisodes?.length > 3 ? 3 : podcastDataEpisodes?.length,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 6000,
@@ -62,7 +63,7 @@ const PodcastDetails = () => {
     if (podcasts) {
       setPodcastItem(podcasts);
     } else {
-      console.log("program not found");
+      console.log("pdocast not found");
     }
 
     setLoading(false);
@@ -81,7 +82,7 @@ const PodcastDetails = () => {
       setPodcastEp(episodes);
     }
     setLoading(false);
-  }, [podcastItem?.PodcastsID, podcastDataEpisodes]);
+  }, [podcastItem, podcastDataEpisodes]);
 
   if (loading) {
     return <SuspenseFallback cName="dots" />;
@@ -112,6 +113,7 @@ const PodcastDetails = () => {
                 <Slider {...podcastSettings}>
                   {podcastEp?.map((podcast, index) => (
                     <div className={classes.podcastContent} key={index}>
+                      <p className={classes.episodeTitle}>{podcast.Title}</p>
                       <VideoComponent
                         videoUrl={podcast?.YouTubeURL}
                         thumbnailUrl={podcast?.thumbnailUrl}
