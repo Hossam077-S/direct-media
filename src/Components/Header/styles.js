@@ -250,7 +250,7 @@ export default makeStyles(() => ({
 
     "@media (max-width: 768px)": {
       width: "150px",
-      height: "40px",
+      height: "auto",
     },
   },
   linkMenu: {
