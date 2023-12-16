@@ -151,7 +151,7 @@ const DeleteForm = (insertFormProps) => {
       setLoading(true);
 
       // Deleting Article
-      if (selectedListRemove.length > 0) {
+      if (selectedListRemove?.length > 0) {
         const querySnapshot = await getDocs(
           query(
             collection(db, "Articles"),
@@ -181,7 +181,7 @@ const DeleteForm = (insertFormProps) => {
           const referencingNewsQuerySnapshot = await getDocs(
             query(
               collection(db, "Writers"),
-              where("ArticleID", "array-contains", selectedListRemoveWriters)
+              where("ArticleID", "array-contains", selectedListRemove)
             )
           );
 
@@ -209,7 +209,7 @@ const DeleteForm = (insertFormProps) => {
       }
 
       // Deleting Writer
-      if (selectedListRemoveWriters.length > 0) {
+      if (selectedListRemoveWriters?.length > 0) {
         const querySnapshotWriters = await getDocs(
           query(
             collection(db, "Writers"),
