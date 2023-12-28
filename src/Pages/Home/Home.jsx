@@ -82,11 +82,24 @@ const Home = () => {
   ]);
 
   useEffect(() => {
-    const sortedPrograms = groupedProgramsData?.sort((a, b) => {
-      return new Date(a.PublishDate) - new Date(b.PublishDate);
+    console.log(groupedProgramsData);
+    const sortedPrograms = [...groupedProgramsData]?.sort((a, b) => {
+      const dateA = a.PublishDate.toDate();
+      const dateB = b.PublishDate.toDate();
+
+      if (dateA < dateB) return -1;
+      if (dateA > dateB) return 1;
+
+      // If dates are equal, compare times
+      const timeA = dateA.getTime();
+      const timeB = dateB.getTime();
+
+      return timeA - timeB;
     });
 
     const latestProgram = sortedPrograms?.[sortedPrograms.length - 1];
+
+    console.log(latestProgram);
 
     if (latestProgram && latestProgram.YoutubeLink) {
       let videoId, thumbnailUrl;
@@ -773,20 +786,20 @@ const Home = () => {
         </div>
       </Container>
 
-      <Container className={classes.containerDiv6}>
-        <div className={classes.podcastContainer}>
-          <div className={classes.podcastHeader}>
-            <Divider
-              orientation="horizontal"
-              flexItem
-              className={classes.podcastDivider}
-            />
-            <Link to={`/podcasts`}>
-              <Typography className={classes.podcastText}>بودكاست</Typography>
-            </Link>
-          </div>
-          <div className={classes.podcastMediaHeader}>
-            {podcastDataEpisodes?.length > 0 ? (
+      {podcastDataEpisodes?.length > 0 ? (
+        <Container className={classes.containerDiv6}>
+          <div className={classes.podcastContainer}>
+            <div className={classes.podcastHeader}>
+              <Divider
+                orientation="horizontal"
+                flexItem
+                className={classes.podcastDivider}
+              />
+              <Link to={`/podcasts`}>
+                <Typography className={classes.podcastText}>بودكاست</Typography>
+              </Link>
+            </div>
+            <div className={classes.podcastMediaHeader}>
               <div className={classes.podcastMediaItems}>
                 <Slider {...podcastSettings}>
                   {podcastDataEpisodes?.map((podcast, index) => (
@@ -800,14 +813,12 @@ const Home = () => {
                   ))}
                 </Slider>
               </div>
-            ) : (
-              <div className={classes.podcastContent}>
-                <Skeleton variant="rectangular" height="100px" />
-              </div>
-            )}
+            </div>
           </div>
-        </div>
-      </Container>
+        </Container>
+      ) : (
+        ""
+      )}
     </>
   );
 };
