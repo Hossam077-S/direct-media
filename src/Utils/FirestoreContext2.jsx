@@ -161,7 +161,7 @@ function processNewsData(snapshot) {
   newsItems.sort((a, b) => b.PublishDate.toDate() - a.PublishDate.toDate());
 
   // Filter news by categories using the limited array
-  const ImportantNews = newsItems.filter((m) => m.Category === "خبر عاجل");
+  const ImportantNews = newsItems.filter((m) => m.Category === "عاجل");
   const pressNews = newsItems.filter((m) => m.Category === "صحافة");
   const localNews = newsItems.filter((m) => m.Category === "محلي");
   const internationalNews = newsItems.filter((m) => m.Category === "دولي");

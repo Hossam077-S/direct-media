@@ -5,6 +5,7 @@ import { Typography } from "@mui/material";
 import useStyles from "./styles";
 import LazyImage from "../../Components/LazyImage/LazyImage";
 import TimeDifferenceComponent from "../../Components/TimeDifference/TimeDifferenceComponent";
+import { Link } from "react-router-dom";
 
 const ThreeSliderComponentItem = ({ index, item, id }) => {
   const classes = useStyles();
@@ -21,11 +22,11 @@ const ThreeSliderComponentItem = ({ index, item, id }) => {
         className={classes.threenewsImage}
       />
       <div className={classes.title_description_threeSlider}>
-        <a href={"news/" + id} className={classes.LinkInnerPages}>
+        <Link to={"news/" + id} className={classes.LinkInnerPages}>
           <Typography gutterBottom className={classes.sliderThreeTitle}>
             {truncate(item.Title, 35)}
           </Typography>
-        </a>
+        </Link>
         <Typography gutterBottom className={classes.sliderThreeDescription}>
           <span
             dangerouslySetInnerHTML={{

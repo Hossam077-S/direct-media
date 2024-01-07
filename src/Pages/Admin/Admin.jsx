@@ -37,7 +37,7 @@ const Admin = () => {
   } = useContext(FirestoreContext);
 
   const categories = [
-    { value: "خبر عاجل", label: "خبر عاجل" },
+    { value: "عاجل", label: "عاجل" },
     { value: "محلي", label: "محلي" },
     { value: "صحافة", label: "صحافة" },
     { value: "دولي", label: "دولي" },

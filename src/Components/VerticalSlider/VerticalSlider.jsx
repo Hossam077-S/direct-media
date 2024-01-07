@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import "./styles.css";
+import { Link } from "react-router-dom";
 
 const VerticalSlider = ({ newsItems, interval = 5000 }) => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -42,9 +43,9 @@ const VerticalSlider = ({ newsItems, interval = 5000 }) => {
     <div className="carousel-wrapper">
       <div className="title-and-controls">
         <div className="title">
-          <a href={`/news/${newsItems[activeIndex].id}`} key={activeIndex}>
+          <Link to={`/news/${newsItems[activeIndex].id}`} key={activeIndex}>
             {truncate(newsItems[activeIndex].Title, 70)}
-          </a>
+          </Link>
         </div>
         <div className="controls">
           <button
