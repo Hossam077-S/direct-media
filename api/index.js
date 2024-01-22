@@ -283,6 +283,28 @@ app.get("/article/:id", async (req, res) => {
   }
 });
 
+// here we serve the index.html page for programs
+app.get("/programs", async (req, res) => {
+  const fullUrl = req.protocol + "://" + req.get("host") + req.originalUrl;
+  try {
+    fs.readFile(indexPath, "utf8", (err, htmlData) => {
+      if (err) {
+        console.error("Error during file reading", err);
+        return res.status(404).end();
+      }
+      // inject meta tags
+      htmlData = htmlData
+        .replace("https://www.directmedialb.com", fullUrl)
+        .replace("__META_OG_URL_CANO__", fullUrl);
+
+      return res.send(htmlData);
+    });
+  } catch (error) {
+    console.error("Error fetching document: ", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
 app.get("*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "..", "build", "index.html"));
 });

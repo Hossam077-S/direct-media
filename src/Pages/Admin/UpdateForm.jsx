@@ -42,7 +42,7 @@ import { v4 } from "uuid";
 const UpdateForm = (insertFormProps) => {
   const classes = useStyles();
 
-  const { newsData, articlesData } = useContext(FirestoreContext);
+  const { newsData, articlesData, writersData } = useContext(FirestoreContext);
 
   const { convertedImage, convertImageToWebP } = ConvertImageWebp();
 
@@ -96,6 +96,12 @@ const UpdateForm = (insertFormProps) => {
     PublishDate: new Date(),
   });
 
+  const [formValuesWrt, setFormValuesWrt] = useState({
+    Name: "",
+    Description: "",
+    ProfileImage: "",
+  });
+
   const [loading, setLoading] = useState(false);
   const [selectedNews, setSelectedNews] = useState([]);
   const [selectedRelatedNews, setSelectedRelatedNews] = useState([]);
@@ -103,6 +109,7 @@ const UpdateForm = (insertFormProps) => {
   const [selectedCategory, setSelectedCategory] = useState("");
 
   const [selectedArticle, setSelectedArticle] = useState([]);
+  const [selectedWriter, setSelectedWriter] = useState([]);
 
   const [isAlreadySelected, setIsAlreadySelected] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -216,10 +223,10 @@ const UpdateForm = (insertFormProps) => {
 
         setOldImage(article.ImageURL);
       } else {
-        console.error("Error getting news data: Not Found");
+        console.error("Error getting article data: Not Found");
       }
     } catch (error) {
-      console.error("Error getting news data: ", error);
+      console.error("Error getting article data: ", error);
     }
   };
 
@@ -392,7 +399,7 @@ const UpdateForm = (insertFormProps) => {
               }
             }
 
-            console.log("Document updated successfully!:", selectedNews);
+            console.log("Document updated successfully!:", selectedArticle);
 
             setFormData({
               Text: "",
@@ -418,7 +425,7 @@ const UpdateForm = (insertFormProps) => {
           Content: editorContent, // Include editor content
         });
 
-        console.log("Document updated successfully!:", selectedNews);
+        console.log("Document updated successfully!:", selectedArticle);
 
         setFormData({
           Text: "",
@@ -428,6 +435,122 @@ const UpdateForm = (insertFormProps) => {
 
         setEditorContent("");
         setSelectedArticle(null);
+        setOldImage("");
+        setSnackbar(true);
+        setShowPopup(false);
+        setLoading(false);
+      }
+    } catch (error) {
+      console.error("Error updating document: ", error);
+      setLoading(false);
+    }
+  };
+
+  // Writer
+  const handleGetWriterSelected = async (value) => {
+    setSelectedWriter(value?.id);
+    formRef.current.wrName.value = "";
+    formRef.current.wrDescription.value = "";
+
+    try {
+      const writer = writersData?.find((writer) => writer.id === value.id);
+      // Check if any documents match the selected ArticleID
+      if (!writer.empty) {
+        // Use formRef to access form elements and set data
+        formRef.current.wrName.value = writer.Name || "";
+        formRef.current.wrDescription.value = writer.Description || "";
+
+        setOldImage(writer.ProfileImage);
+      } else {
+        console.error("Error getting writer data: Not Found");
+      }
+    } catch (error) {
+      console.error("Error getting writer data: ", error);
+    }
+  };
+
+  const handleSubmitWrt = async (event) => {
+    event.preventDefault();
+
+    setFormValuesWrt({
+      Name: formRef.current.wrName.value,
+      Description: formRef.current.wrDescription.value,
+    });
+
+    setShowPopup(true);
+  };
+
+  const handleUpdateWrt = async (event) => {
+    event.preventDefault();
+
+    try {
+      setLoading(true);
+
+      const timestamp = Date.now(); // Get the current timestamp
+      const storageRef = ref(
+        storage,
+        `Writers_Porfile_Images/${timestamp}` // Append the timestamp to the image name
+      );
+
+      const imageRef = ref(storage, oldImage);
+
+      if (convertedImage) {
+        const uploadTask = uploadBytesResumable(storageRef, convertedImage);
+
+        uploadTask
+          .then(async (snapshot) => {
+            const downloadURL = await getDownloadURL(snapshot.ref);
+
+            const docRef = doc(db, "Writers", selectedWriter);
+            await updateDoc(docRef, {
+              ...formValuesWrt,
+              ProfileImage: downloadURL,
+            });
+
+            // Optionally, you can delete the old image if needed
+            if (oldImage) {
+              try {
+                // Delete the image
+                await deleteObject(imageRef);
+                console.log("Image deleted successfully");
+              } catch (error) {
+                console.error("Error deleting image:", error);
+              }
+            }
+
+            console.log("Document updated successfully!:", selectedWriter);
+
+            setFormValuesWrt({
+              Name: "",
+              Description: "",
+              ProfileImage: "",
+            });
+
+            setSelectedWriter(null);
+            setOldImage("");
+            setSnackbar(true);
+            setShowPopup(false);
+            setLoading(false);
+          })
+          .catch((error) => {
+            console.error("Error adding document: ", error);
+            setLoading(false);
+          });
+      } else {
+        const docRef = doc(db, "Writers", selectedWriter);
+        await updateDoc(docRef, {
+          ...formValuesWrt,
+        });
+
+        console.log("Document updated successfully!:", selectedWriter);
+
+        setFormValuesWrt({
+          Name: "",
+          Description: "",
+          ProfileImage: "",
+        });
+
+        setSelectedWriter(null);
         setOldImage("");
         setSnackbar(true);
         setShowPopup(false);
@@ -787,6 +910,110 @@ const UpdateForm = (insertFormProps) => {
                           <Button
                             variant="contained"
                             onClick={handleUpdateArt}
+                            className={classes.saveButton}
+                          >
+                            نعم
+                          </Button>
+                          <Button
+                            variant="outlined"
+                            onClick={handleCancel}
+                            className={classes.cancelButton}
+                          >
+                            إلغاء
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+                </ThemeProvider>
+              </CacheProvider>
+            </form>
+          </div>
+          <SnackbarComponent
+            snackbar={snackbar}
+            setSnackbar={setSnackbar}
+            error={false}
+            Message={"تم التعديل المقال بنجاح"}
+          />
+        </React.Suspense>
+      )}
+
+      {insertFormProps.activeTab === 2 && (
+        <React.Suspense
+          fallback={<insertFormProps.SuspenseFallback cName="progress" />}
+        >
+          <div className={classes.TextFieldDiv}>
+            <form ref={formRef} onSubmit={handleSubmitWrt}>
+              <CacheProvider value={cacheRtl}>
+                <ThemeProvider theme={theme}>
+                  <Autocomplete
+                    className={classes.autocomplete}
+                    options={insertFormProps.WritersName}
+                    onChange={(event, writerValue) => {
+                      if (writerValue) {
+                        handleGetWriterSelected(writerValue);
+                      }
+                    }}
+                    getOptionLabel={(option) => option.title}
+                    required
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        name="Writer"
+                        label="الكاتب"
+                        variant="outlined"
+                        className={classes.textFieldSelect}
+                      />
+                    )}
+                  />
+                  <TextField
+                    label="إسم الكاتب"
+                    name="wrName"
+                    type="text"
+                    variant="outlined"
+                    className={classes.textField}
+                    required
+                  />
+                  <TextField
+                    label="وصف الكاتب"
+                    name="wrDescription"
+                    type="text"
+                    variant="outlined"
+                    className={classes.textField}
+                  />
+                  <div className={classes.imageFieldContainer}>
+                    <label
+                      htmlFor="image-upload"
+                      className={classes.imageFieldLabel2}
+                    >
+                      تعديل الصورة
+                    </label>
+                    <input
+                      id="image-upload"
+                      type="file"
+                      name="wrtImageURL"
+                      accept="image/*"
+                      onChange={handleImageChange}
+                      className={classes.imageField}
+                    />
+                  </div>
+                  <Button
+                    variant="contained"
+                    type="submit"
+                    className={classes.submitButton}
+                  >
+                    تحديث
+                  </Button>
+                  {showPopup && (
+                    <div className={classes.popup}>
+                      <div className={classes.popupContent}>
+                        <p className={classes.previewTitle}>
+                          هل أنت متأكد من التعديل؟
+                        </p>
+                        <div className={classes.popupButtons}>
+                          <Button
+                            variant="contained"
+                            onClick={handleUpdateWrt}
                             className={classes.saveButton}
                           >
                             نعم

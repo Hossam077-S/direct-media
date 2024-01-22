@@ -86,6 +86,7 @@ const ArticlesEntry = ({ distinctWritersName }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [showPopupWriter, setShowPopupWriter] = useState(false);
   const [editorContent, setEditorContent] = useState("");
+  const [imageUploaded, setImageUploaded] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [error, setError] = useState(false);
 
@@ -98,6 +99,10 @@ const ArticlesEntry = ({ distinctWritersName }) => {
   const handleImageChange = async (event) => {
     const file = event.target.files[0];
     await convertImageToWebP(file, "image");
+    if (file) {
+      // Set imageUploaded to true after successful upload
+      setImageUploaded(true);
+    } else setImageUploaded(true);
   };
 
   const handleSave = async (event) => {
@@ -170,6 +175,7 @@ const ArticlesEntry = ({ distinctWritersName }) => {
   const handleCancel = () => {
     setShowPopup(false);
     setShowPopupWriter(false);
+    setImageUploaded(false);
   };
 
   const handleAddNewWriter = () => {
@@ -230,10 +236,12 @@ const ArticlesEntry = ({ distinctWritersName }) => {
         setLoading(false);
         setSnackbar(true);
         setShowPopupWriter(false);
+        setImageUploaded(false); // Set imageUploaded to false in case of an error
       });
     } catch (error) {
       console.error("Error uploading image: ", error);
       setLoading(false);
+      setImageUploaded(false); // Set imageUploaded to false in case of an error
     }
 
     // Close the popup form after saving
@@ -467,6 +475,7 @@ const ArticlesEntry = ({ distinctWritersName }) => {
                         variant="contained"
                         onClick={handleSaveWriter}
                         className={classes.saveButton}
+                        disabled={!imageUploaded} // Disable the button if the image is not uploaded
                       >
                         حفظ
                       </Button>

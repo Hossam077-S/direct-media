@@ -173,6 +173,7 @@ const Admin = () => {
             >
               <Tab className={classes.Tab} label="خبر" />
               <Tab className={classes.Tab} label="مقال" />
+              <Tab className={classes.Tab} label="كاتب" />
             </Tabs>
           )}
 
