@@ -145,7 +145,7 @@ const Header = () => {
                 size="large"
                 onClick={() =>
                   window.open(
-                    "https://www.facebook.com/directmedialb?mibextid=LQQJ4d/"
+                    "https://www.facebook.com/profile.php?id=61558246953183"
                   )
                 }
               >
