@@ -176,11 +176,11 @@ function processNewsData(snapshot) {
 
   // Group news by categories with the specified number of items
   const groupedData = {
-    important: ImportantNews,
-    press: pressNews,
-    local: localNews,
-    inter: internationalNews,
-    weather: weather,
+    important: sliceItems(ImportantNews, 20),
+    press: sliceItems(pressNews, 20),
+    local: sliceItems(localNews, 20),
+    inter: sliceItems(internationalNews, 20),
+    weather: sliceItems(weather, 20),
     report: report,
     sport: sliceItems(sport, 20),
     limitedNews: sliceItems(newsItems, 20),
