@@ -19,8 +19,6 @@ import createCache from "@emotion/cache";
 import rtlPlugin from "stylis-plugin-rtl";
 import { prefixer } from "stylis";
 
-import { v4 } from "uuid";
-
 import useStyles from "./styles";
 
 import {
@@ -33,18 +31,18 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  Autocomplete,
+  List,
+  ListItem,
+  ListItemIcon,
+  Checkbox,
+  ListItemText,
 } from "@mui/material";
 
 import { SuspenseFallback } from "../../Components/SuspenseFallback/SuspenseFallback";
 import ConvertImageWebp from "./ConvertImageWebp";
 import SnackbarComponent from "../../Components/Snackbar/SnackbarComponent";
 
-const NewsEntry = ({
-  distinctNewsCategory,
-  categories,
-  relatedNewsOptions,
-}) => {
+const NewsEntry = ({ allNews, distinctNewsCategory, categories }) => {
   const classes = useStyles();
 
   const { convertedImage, convertImageToWebP } = ConvertImageWebp();
@@ -95,38 +93,47 @@ const NewsEntry = ({
 
   const [loading, setLoading] = useState(false);
   const [snackbar, setSnackbar] = useState(false);
-  const [selectedNews, setSelectedNews] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
-  const [isAlreadySelected, setIsAlreadySelected] = useState(false);
   const [editorContent, setEditorContent] = useState("");
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filteredNews, setFilteredNews] = useState([]);
+  const [selectedNews, setSelectedNews] = useState([]);
 
   const form = useRef();
   const editorRef = useRef(null);
 
-  const handleRelatedNewsSelect = (event, value) => {
-    const isAlreadySelected = selectedNews.some(
-      (news) => news?.NewsID === value?.NewsID
-    );
-
-    if (isAlreadySelected) {
-      setIsAlreadySelected(true);
-    } else {
-      setIsAlreadySelected(false);
-      if (value) {
-        setSelectedNews((prevSelectedNews) => [
-          ...prevSelectedNews,
-          { id: v4(), value: value.title, NewsID: value.id }, // Store both Title and NewsID
-        ]);
-      }
-    }
+  const handleSearchInputChange = (event) => {
+    const query = event.target.value.toLowerCase();
+    setSearchQuery(query);
   };
 
-  const handleRemoveSelectedNews = (index) => {
-    setSelectedNews((prevSelectedNews) => {
-      const updatedSelectedNews = [...prevSelectedNews];
-      updatedSelectedNews.splice(index, 1);
-      return updatedSelectedNews;
-    });
+  const handleSearchButtonClick = () => {
+    performSearch(searchQuery);
+  };
+
+  const performSearch = (query) => {
+    if (query.trim() === "") {
+      // Reset filtered news if search query is empty
+      setFilteredNews([]);
+      return;
+    }
+
+    // Perform Firestore query to filter news based on search query
+    const searchResults = allNews?.filter((news) =>
+      news?.Title?.toLowerCase().includes(query)
+    );
+
+    setFilteredNews(searchResults);
+  };
+
+  const handleToggleCheckbox = (news) => {
+    const newsIndex = selectedNews.findIndex((item) => item.id === news.id);
+    if (newsIndex === -1) {
+      setSelectedNews([...selectedNews, news]);
+    } else {
+      setSelectedNews(selectedNews.filter((item) => item.id !== news.id));
+    }
   };
 
   const handleImageChange = async (event) => {
@@ -307,42 +314,50 @@ const NewsEntry = ({
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <Autocomplete
-                  className={`${classes.autocomplete} ${
-                    isAlreadySelected ? classes.redAutocompleteInput : ""
-                  }`}
-                  options={relatedNewsOptions}
-                  onChange={handleRelatedNewsSelect}
-                  getOptionLabel={(option) => option.title} // Display the Title in the input
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      name="RelatedNews"
-                      label="البحث عن الأخبار المرتبطة"
-                      variant="outlined"
-                      className={classes.textFieldSelect}
-                    />
-                  )}
+                {/* Search input for filtering news */}
+                <TextField
+                  label="البحث عن الأخبار المرتبطة"
+                  name="SearchNews"
+                  type="text"
+                  variant="outlined"
+                  style={{ width: "95%" }}
+                  className={classes.textFieldSelect}
+                  value={searchQuery}
+                  onChange={handleSearchInputChange}
                 />
-                {selectedNews.length > 0 && (
-                  <div className={classes.selectedNewsContainer}>
-                    {selectedNews.map((news) => (
-                      <li
-                        key={news.id}
-                        className={`${classes.selectedNewsItem} ${classes.selectedNewsItemHover}`}
-                        onClick={() => handleRemoveSelectedNews(news.id)}
-                      >
-                        <div
-                          className={`${classes.selectedNewsItemContent} ${classes.selectedNewsItemFront}`}
-                        >
-                          <div className={classes.selectedNewsText}>
-                            {news.value} X
-                          </div>
-                        </div>
-                      </li>
-                    ))}
-                  </div>
-                )}
+
+                {/* Search button */}
+                <Button
+                  variant="contained"
+                  onClick={handleSearchButtonClick}
+                  className={classes.searchButton}
+                >
+                  بحث
+                </Button>
+                {/* Display filtered news */}
+                <List>
+                  {filteredNews.map((news) => (
+                    <ListItem
+                      key={news.id}
+                      dense
+                      button
+                      onClick={() => handleToggleCheckbox(news)}
+                    >
+                      <ListItemIcon>
+                        <Checkbox
+                          edge="start"
+                          checked={selectedNews.some(
+                            (item) => item.id === news.id
+                          )}
+                          tabIndex={-1}
+                          disableRipple
+                        />
+                      </ListItemIcon>
+                      <ListItemText primary={news.Title} />
+                    </ListItem>
+                  ))}
+                </List>
+
                 <TextField
                   label="رابط الفيديو"
                   name="YoutubeLink"

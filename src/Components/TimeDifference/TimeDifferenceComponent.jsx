@@ -3,8 +3,22 @@ import React from "react";
 const TimeDifferenceComponent = ({ publishDate }) => {
   const getTimeDifferenceString = (publishDate) => {
     const currentTime = new Date();
-    let publishDateObject =
-      publishDate instanceof Date ? publishDate : publishDate?.toDate(); // Convert to Date object if necessary
+    let publishDateObject;
+
+    if (publishDate && publishDate.seconds && publishDate.nanoseconds) {
+      // Convert Firestore Timestamp to JavaScript Date object
+      publishDateObject = new Date(
+        publishDate.seconds * 1000 + publishDate.nanoseconds / 1000000
+      );
+    } else if (publishDate instanceof Date) {
+      publishDateObject = publishDate;
+    } else if (typeof publishDate === "string") {
+      // Convert string to Date object
+      publishDateObject = new Date(publishDate);
+    } else {
+      // Handle other cases where publishDate cannot be converted to Date
+      return "Invalid Date";
+    }
 
     const timeDifference = currentTime - publishDateObject;
     const minutesDifference = Math.floor(timeDifference / (1000 * 60));

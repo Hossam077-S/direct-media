@@ -46,79 +46,64 @@ import { analytics, logEvent } from "../../Utils/firebase";
 
 const Home = () => {
   const classes = useStyles();
+
   const {
+    newsData,
     programsData,
     writersData,
     articlesData,
     podcastDataEpisodes,
     groupedData,
     groupedProgramsData,
+    loading,
   } = useContext(FirestoreContext);
+
+  // Limit groupedData to 20 items for each category
+  const limitedGroupedData = {};
+  Object.keys(groupedData).forEach((category) => {
+    limitedGroupedData[category] = groupedData[category].slice(0, 20);
+  });
 
   const [hoverIndex, setHoverIndex] = useState(-1);
   const [latestProgram, setLatestProgram] = useState(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (
-      programsData &&
-      writersData &&
-      articlesData &&
-      podcastDataEpisodes &&
-      groupedData &&
-      groupedProgramsData
-    ) {
-      setLoading(false);
-    } else {
-      console.log("Error getting data");
-    }
-  }, [
-    programsData,
-    writersData,
-    articlesData,
-    podcastDataEpisodes,
-    groupedData,
-    groupedProgramsData,
-  ]);
+    if (groupedProgramsData && groupedProgramsData.length > 0) {
+      const sortedPrograms = [...groupedProgramsData]?.sort((a, b) => {
+        const dateA = a.PublishDate.toDate();
+        const dateB = b.PublishDate.toDate();
 
-  useEffect(() => {
-    console.log(groupedProgramsData);
-    const sortedPrograms = [...groupedProgramsData]?.sort((a, b) => {
-      const dateA = a.PublishDate.toDate();
-      const dateB = b.PublishDate.toDate();
+        if (dateA < dateB) return -1;
+        if (dateA > dateB) return 1;
 
-      if (dateA < dateB) return -1;
-      if (dateA > dateB) return 1;
+        // If dates are equal, compare times
+        const timeA = dateA.getTime();
+        const timeB = dateB.getTime();
 
-      // If dates are equal, compare times
-      const timeA = dateA.getTime();
-      const timeB = dateB.getTime();
+        return timeA - timeB;
+      });
 
-      return timeA - timeB;
-    });
+      const latestProgram = sortedPrograms?.[sortedPrograms.length - 1];
 
-    const latestProgram = sortedPrograms?.[sortedPrograms.length - 1];
+      if (latestProgram && latestProgram.YoutubeLink) {
+        let videoId, thumbnailUrl;
+        const videoUrl = new URL(latestProgram?.YoutubeLink);
+        const isShortsVideo = videoUrl.pathname.includes("/shorts/");
 
-    console.log(latestProgram);
+        if (isShortsVideo) {
+          videoId = videoUrl.pathname.split("/shorts/")[1];
+        } else if (videoUrl.hostname === "youtu.be") {
+          videoId = videoUrl.pathname.split("/")[1];
+        } else {
+          videoId = videoUrl.searchParams.get("v");
+        }
 
-    if (latestProgram && latestProgram.YoutubeLink) {
-      let videoId, thumbnailUrl;
-      const videoUrl = new URL(latestProgram?.YoutubeLink);
-      const isShortsVideo = videoUrl.pathname.includes("/shorts/");
+        if (videoId) {
+          thumbnailUrl = `https://img.youtube.com/vi/${videoId}/sddefault.jpg`;
+        }
 
-      if (isShortsVideo) {
-        videoId = videoUrl.pathname.split("/shorts/")[1];
-      } else if (videoUrl.hostname === "youtu.be") {
-        videoId = videoUrl.pathname.split("/")[1];
-      } else {
-        videoId = videoUrl.searchParams.get("v");
+        setLatestProgram({ ...latestProgram, videoId, thumbnailUrl });
       }
-
-      if (videoId) {
-        thumbnailUrl = `https://img.youtube.com/vi/${videoId}/sddefault.jpg`;
-      }
-
-      setLatestProgram({ ...latestProgram, videoId, thumbnailUrl });
     }
   }, [groupedProgramsData]);
 
@@ -206,7 +191,7 @@ const Home = () => {
     infinite: true,
     autoplay: true,
     speed: 900,
-    slidesToShow: writersData.length > 4 ? 4 : writersData.length,
+    slidesToShow: writersData?.length > 4 ? 4 : writersData?.length || 0,
     slidesToScroll: 1,
     rtl: true,
     pauseOnHover: true,
@@ -291,17 +276,26 @@ const Home = () => {
               />
             </div>
             <div>
-              <VerticalSlider newsItems={groupedData?.important} />
+              {groupedData?.عاجل?.length > 0 ? (
+                <VerticalSlider newsItems={limitedGroupedData?.عاجل} />
+              ) : (
+                <div>
+                  <Skeleton
+                    className={classes.skeletonSlider2}
+                    variant="rectangular"
+                  />
+                </div>
+              )}
             </div>
           </Stack>
         </div>
         {/* First Slider */}
         <Stack direction="row" className={classes.gridSlidersContainer}>
           {/* Render the News images slider */}
-          {groupedData?.limitedNews ? (
+          {newsData?.length > 0 ? (
             <div className={classes.newsImageDiv}>
               <Slider {...allNewsSlider}>
-                {groupedData?.limitedNews?.map((newsItem, index) => (
+                {newsData?.slice(0, 20).map((newsItem, index) => (
                   <div key={index} className={classes.sliderItem}>
                     <>
                       <LazyImage
@@ -317,7 +311,7 @@ const Home = () => {
                         />
                         <div className={classes.sliderContent}>
                           <Link
-                            to={"news/" + newsItem.id}
+                            to={"news/" + newsItem.NewsID}
                             className={classes.LinkInnerPages}
                           >
                             <Typography
@@ -384,7 +378,8 @@ const Home = () => {
             </div>
 
             {/* Render the news Videos slider */}
-            {Object.keys(groupedProgramsData).length > 0 ? (
+            {groupedProgramsData &&
+            Object.keys(groupedProgramsData).length > 0 ? (
               <div>
                 <div className={classes.VideoDiv}>
                   <VideoComponent
@@ -459,8 +454,8 @@ const Home = () => {
                 </Link>
               </div>
               <div className={classes.newsTypeSlider}>
-                {groupedData?.local ? (
-                  <NewsSlider newsItems={groupedData?.local} />
+                {groupedData?.محلي ? (
+                  <NewsSlider newsItems={limitedGroupedData?.محلي} />
                 ) : (
                   <div>
                     <Skeleton variant="rectangular" height="100px" />
@@ -480,8 +475,8 @@ const Home = () => {
                 />
               </div>
               <div className={classes.newsTypeSlider}>
-                {groupedData?.press ? (
-                  <NewsSlider newsItems={groupedData?.press} />
+                {groupedData?.صحافة ? (
+                  <NewsSlider newsItems={limitedGroupedData?.صحافة} />
                 ) : (
                   <div>
                     <Skeleton variant="rectangular" height="100px" />
@@ -501,8 +496,8 @@ const Home = () => {
                 />
               </div>
               <div className={classes.newsTypeSlider}>
-                {groupedData?.inter ? (
-                  <NewsSlider newsItems={groupedData?.inter} />
+                {groupedData?.دولي ? (
+                  <NewsSlider newsItems={limitedGroupedData?.دولي} />
                 ) : (
                   <div>
                     <Skeleton variant="rectangular" height="100px" />
@@ -518,11 +513,11 @@ const Home = () => {
       <div className={classes.containerDiv2}>
         <Container className={classes.container2}>
           <Stack direction="row" spacing={4}>
-            {groupedData?.sport ? (
+            {groupedData?.رياضة ? (
               <div>
                 <div className={classes.articlImageDiv}>
                   <Slider {...allNewsSlider}>
-                    {groupedData?.sport?.map((newsItem, index) => (
+                    {limitedGroupedData?.رياضة?.map((newsItem, index) => (
                       <div key={index} className={classes.sliderItem}>
                         <>
                           <LazyImage
@@ -533,7 +528,7 @@ const Home = () => {
                           <div className={classes.sliderDetailsDiv2}>
                             <div className={classes.title_dividerArticl}>
                               <Link
-                                to={"news/" + newsItem.id}
+                                to={"news/" + newsItem.NewsID}
                                 className={classes.LinkInnerPages}
                               >
                                 <Typography
@@ -568,12 +563,12 @@ const Home = () => {
                 <div className={classes.threeNewsContainer}>
                   <div className={classes.newsThreeSlider}>
                     <Slider {...threeTypeSlider}>
-                      {groupedData?.weather?.map((newsItem, index) => (
+                      {limitedGroupedData?.طقس?.map((newsItem, index) => (
                         <div key={index}>
                           <ThreeSliderComponentItem
                             index={index}
                             item={newsItem}
-                            id={newsItem.id}
+                            id={newsItem.NewsID}
                           />
                         </div>
                       ))}
@@ -581,12 +576,12 @@ const Home = () => {
                   </div>
                   <div className={classes.newsThreeSlider}>
                     <Slider {...threeTypeSlider}>
-                      {groupedData?.report?.map((newsItem, index) => (
+                      {limitedGroupedData?.عالمية?.map((newsItem, index) => (
                         <div key={index}>
                           <ThreeSliderComponentItem
                             index={index}
                             item={newsItem}
-                            id={newsItem.id}
+                            id={newsItem.NewsID}
                           />
                         </div>
                       ))}
@@ -594,12 +589,12 @@ const Home = () => {
                   </div>
                   <div className={classes.newsThreeSlider}>
                     <Slider {...threeTypeSlider}>
-                      {groupedData?.inter?.map((newsItem, index) => (
+                      {limitedGroupedData?.دولي?.map((newsItem, index) => (
                         <div key={index}>
                           <ThreeSliderComponentItem
                             index={index}
                             item={newsItem}
-                            id={newsItem.id}
+                            id={newsItem.NewsID}
                           />
                         </div>
                       ))}

@@ -6,26 +6,20 @@ import {
   onSnapshot,
   query,
   where,
+  limit,
+  orderBy,
+  startAfter,
 } from "../Utils/firebase";
-
-import { SuspenseFallback2 } from "../Components/SuspenseFallback/SuspenseFallback2";
 
 const FirestoreContext = createContext();
 
 export const FirestoreProvider = ({ children }) => {
-  const [loading, setLoading] = useState({
-    news: true,
-    programs: true,
-    writers: true,
-    articles: true,
-    podcasts: true,
-    podcastsEpisodes: true,
-    programsEpisodes: true,
-    newsCategoreis: true,
-  });
+  const [loading, setLoading] = useState(true);
 
   const [data, setData] = useState({
+    allData: [],
     newsData: [],
+    relatedNews: [],
     programsData: [],
     writersData: [],
     articlesData: [],
@@ -37,107 +31,366 @@ export const FirestoreProvider = ({ children }) => {
     newsCategoreis: [],
   });
 
-  // Helper function to handle state updates for each data type
-  const updateData = (type, newData) => {
-    setData((prevData) => ({ ...prevData, [type]: newData }));
-  };
+  const [lastDocNews, setLastDocNews] = useState(null);
+  const [lastDocCategory, setLastDocCategory] = useState({});
 
   // Combine useEffects when possible to minimize subscriptions
   useEffect(() => {
-    const unsubscribeNews = subscribeToNews(updateData);
-    const unsubscribePrograms = subscribeToPrograms(updateData);
-    const unsubscribeWriters = subscribeToWriters(updateData);
-    const unsubscribeArticles = subscribeToArticles(updateData);
-    const unsubscribePodcast = subscribeToPodcasts(updateData);
-    const unsubscribePodcastEpisodes = subscribeToPodcastsEpisodes(updateData);
-    const unsubscribeProgramsEpisodes = subscribeToProgramsEpisodes(updateData);
-    const unsubscribeNewsCategory = subscribeToNewsCategory(updateData);
+    let unsubscribeNews;
+    let unsubscribePrograms;
+    let unsubscribeWriters;
+    let unsubscribeArticles;
+    let unsubscribePodcast;
+    let unsubscribePodcastEpisodes;
+    let unsubscribeProgramsEpisodes;
+    let unsubscribeNewsCategory;
+    let unsubscribeCategory;
+
+    const fetchData = async () => {
+      const categories = [
+        "عاجل",
+        "صحافة",
+        "محلي",
+        "دولي",
+        "رياضة",
+        "طقس",
+        "عالمية",
+      ];
+
+      // Subscribe to news collection
+      const newsQuery = query(
+        collection(db, "News"),
+        orderBy("PublishDate", "desc"),
+        limit(20)
+      );
+      unsubscribeNews = onSnapshot(newsQuery, (snapshot) => {
+        const processedData = processNewsData(snapshot);
+
+        // Update lastDocNews with the last visible document
+        const lastVisibleNews = snapshot.docs[snapshot.docs.length - 1];
+        setLastDocNews(lastVisibleNews);
+
+        setData((prevData) => ({
+          ...prevData,
+          newsData: processedData.newsData,
+        }));
+      });
+
+      // Getting latest 20 news by category
+      categories.forEach((category) => {
+        const newsbyCategoryQuery = query(
+          collection(db, "News"),
+          orderBy("PublishDate", "desc"),
+          where("Category", "==", category),
+          limit(20)
+        );
+
+        unsubscribeCategory = onSnapshot(newsbyCategoryQuery, (snapshot) => {
+          const processedData = processCategoryNews(snapshot, category);
+
+          // Update lastDocCategory with the last visible document
+          const lastVisibleCategory = snapshot.docs[snapshot.docs.length - 1];
+          setLastDocCategory((prevLastDocs) => ({
+            ...prevLastDocs,
+            [category]: lastVisibleCategory,
+          }));
+
+          setData((prevData) => ({
+            ...prevData,
+            groupedData: {
+              ...prevData.groupedData,
+              ...processedData.groupedData,
+            },
+          }));
+        });
+      });
+
+      // Subscribe to programs collection
+      const programsQuery = collection(db, "Programs");
+      unsubscribePrograms = onSnapshot(programsQuery, (snapshot) => {
+        processProgramsData(snapshot)
+          .then((processedData) => {
+            setData((prevData) => ({
+              ...prevData,
+              programsData: processedData.programsData,
+              groupedProgramsData: processedData.groupedProgramsData,
+            }));
+          })
+          .catch((error) => {
+            console.error("Error processing programs data:", error);
+          });
+      });
+
+      const writersQuery = collection(db, "Writers");
+      unsubscribeWriters = onSnapshot(writersQuery, (snapshot) => {
+        processWritersData(snapshot).then((processedData) => {
+          setData((prevData) => ({
+            ...prevData,
+            writersData: processedData,
+          }));
+        });
+      });
+
+      const articlesQuery = collection(db, "Articles");
+      unsubscribeArticles = onSnapshot(articlesQuery, (snapshot) => {
+        processArticlesData(snapshot).then((processedData) => {
+          setData((prevData) => ({
+            ...prevData,
+            articlesData: processedData,
+          }));
+        });
+      });
+
+      const podcastQuery = collection(db, "Podcast");
+      unsubscribePodcast = onSnapshot(podcastQuery, (snapshot) => {
+        processPodcastsData(snapshot).then((processedData) => {
+          setData((prevData) => ({
+            ...prevData,
+            podcastData: processedData,
+          }));
+        });
+      });
+
+      const podcastEpisodesQuery = collection(db, "PodcastEpisodes");
+      unsubscribePodcastEpisodes = onSnapshot(
+        podcastEpisodesQuery,
+        (snapshot) => {
+          processPodcastsDataEpisodes(snapshot).then((processedData) => {
+            setData((prevData) => ({
+              ...prevData,
+              podcastDataEpisodes: processedData,
+            }));
+          });
+        }
+      );
+
+      const programsEpisodesQuery = collection(db, "ProgramsEpisodes");
+      unsubscribeProgramsEpisodes = onSnapshot(
+        programsEpisodesQuery,
+        (snapshot) => {
+          processPorogramssDataEpisodes(snapshot).then((processedData) => {
+            setData((prevData) => ({
+              ...prevData,
+              programsDataEpisodes: processedData,
+            }));
+          });
+        }
+      );
+
+      const categoriesQuery = collection(db, "Categories");
+      unsubscribeNewsCategory = onSnapshot(categoriesQuery, (snapshot) => {
+        processCategoriesData(snapshot).then((processedData) => {
+          setData((prevData) => ({
+            ...prevData,
+            newsCategoreis: processedData,
+          }));
+        });
+      });
+
+      // Set loading to false once data is fetched
+      setLoading(false);
+    };
+
+    fetchData();
 
     // Cleanup function to unsubscribe from collections
     return () => {
-      unsubscribeNews();
-      unsubscribePrograms();
-      unsubscribeWriters();
-      unsubscribeArticles();
-      unsubscribePodcast();
-      unsubscribePodcastEpisodes();
-      unsubscribeProgramsEpisodes();
-      unsubscribeNewsCategory();
+      if (unsubscribeNews) unsubscribeNews();
+      if (unsubscribeCategory) unsubscribeCategory();
+      if (unsubscribePrograms) unsubscribePrograms();
+      if (unsubscribeWriters) unsubscribeWriters();
+      if (unsubscribeArticles) unsubscribeArticles();
+      if (unsubscribePodcast) unsubscribePodcast();
+      if (unsubscribePodcastEpisodes) unsubscribePodcastEpisodes();
+      if (unsubscribeProgramsEpisodes) unsubscribeProgramsEpisodes();
+      if (unsubscribeNewsCategory) unsubscribeNewsCategory();
     };
   }, []);
 
-  const allDataLoaded = !Object.values(loading).some((isLoading) => isLoading);
+  const fetchMoreNews = async (category) => {
+    try {
+      let queryRef;
+      let lastVisible;
 
-  // Modularized subscription functions for reuse and simplified useEffects
-  const subscribeToNews = (updateData) => {
-    return onSnapshot(collection(db, "News"), async (snapshot) => {
-      const processedData = await processNewsData(snapshot);
-      updateData("newsData", processedData.newsData); // Update the news data
-      updateData("groupedData", processedData.groupedData); // Update the grouped data
-      setLoading((prev) => ({ ...prev, news: false }));
-    });
+      // Construct the base query
+      let baseQuery = query(
+        collection(db, "News"),
+        orderBy("PublishDate", "desc")
+      );
+
+      // Adjust the query based on the category
+      if (category && category !== "كل الأخبار") {
+        baseQuery = query(baseQuery, where("Category", "==", category));
+        lastVisible = lastDocCategory[category];
+      } else {
+        lastVisible = lastDocNews;
+      }
+
+      // If there is a last visible document, start the query after it
+      if (lastVisible) {
+        baseQuery = query(baseQuery, startAfter(lastVisible));
+      }
+
+      // Limit the query to 10 documents
+      queryRef = query(baseQuery, limit(10));
+
+      // Execute the query
+      const additionalNewsSnapshot = await getDocs(queryRef);
+      const additionalNewsData = additionalNewsSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      // Update the last visible document
+      lastVisible =
+        additionalNewsSnapshot.docs[additionalNewsSnapshot.docs.length - 1];
+      if (category && category !== "كل الأخبار") {
+        setLastDocCategory((prevLastDocs) => ({
+          ...prevLastDocs,
+          [category]: lastVisible,
+        }));
+      } else {
+        setLastDocNews(lastVisible);
+      }
+
+      // Update the state with the fetched additional news data
+      setData((prevData) => ({
+        ...prevData,
+        ...(category && category !== "كل الأخبار"
+          ? {
+              groupedData: {
+                ...prevData.groupedData,
+                [category]: [
+                  ...(prevData.groupedData[category] || []),
+                  ...additionalNewsData.filter((newNewsItem) => {
+                    // Filter out news items that already exist in the state
+                    return !prevData.groupedData[category]?.some(
+                      (existingNewsItem) =>
+                        existingNewsItem.NewsID === newNewsItem.NewsID
+                    );
+                  }),
+                ],
+              },
+            }
+          : {
+              newsData: [
+                ...prevData.newsData,
+                ...additionalNewsData.filter((newNewsItem) => {
+                  // Filter out news items that already exist in the state
+                  return !prevData.newsData.some(
+                    (existingNewsItem) =>
+                      existingNewsItem.NewsID === newNewsItem.NewsID
+                  );
+                }),
+              ],
+            }),
+      }));
+    } catch (error) {
+      console.error("Error fetching additional news:", error);
+      // Handle the error (e.g., display an error message to the user)
+    }
   };
 
-  const subscribeToPrograms = (updateData) => {
-    return onSnapshot(collection(db, "Programs"), async (snapshot) => {
-      const processedData = await processProgramsData(snapshot);
-      updateData("programsData", processedData.programsData); // Update the programs data
-      updateData("groupedProgramsData", processedData.groupedProgramsData); // Update the grouped programs data
-      setLoading((prev) => ({ ...prev, programs: false }));
-    });
+  const fetchAllNews = () => {
+    try {
+      const NewsQuery = query(
+        collection(db, "News"),
+        orderBy("PublishDate", "desc")
+      );
+
+      // Create a promise to handle the subscription
+      return new Promise((resolve, reject) => {
+        const unsubscribe = onSnapshot(
+          NewsQuery,
+          (snapshot) => {
+            const NewsData = snapshot.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }));
+
+            setData((prevData) => ({
+              ...prevData,
+              allData: NewsData,
+            }));
+
+            resolve(unsubscribe); // Resolve the promise with the unsubscribe function
+          },
+          reject
+        ); // Reject the promise if there is an error
+      });
+    } catch (error) {
+      console.error("Error fetching additional news:", error);
+      // Handle error appropriately, e.g., show error message to the user
+      throw error; // Rethrow the error to propagate it to the caller
+    }
   };
 
-  const subscribeToWriters = (updateData) => {
-    return onSnapshot(collection(db, "Writers"), async (snapshot) => {
-      const processedWriters = await processWritersData(snapshot);
-      updateData("writersData", processedWriters);
-      setLoading((prev) => ({ ...prev, writers: false }));
-    });
-  };
+  const fetchRelatedNews = async (relatedNewsItems) => {
+    if (relatedNewsItems.length === 0) {
+      setData((prevData) => ({
+        ...prevData,
+        relatedNews: [],
+      }));
+    }
 
-  const subscribeToArticles = (updateData) => {
-    return onSnapshot(collection(db, "Articles"), async (snapshot) => {
-      const processedArticles = await processArticlesData(snapshot); // You would define processArticlesData
-      updateData("articlesData", processedArticles);
-      setLoading((prev) => ({ ...prev, articles: false }));
-    });
-  };
+    try {
+      let NewsQuery = query(
+        collection(db, "News"),
+        orderBy("NewsID"),
+        where("NewsID", "in", relatedNewsItems)
+      );
 
-  const subscribeToPodcasts = (updateData) => {
-    return onSnapshot(collection(db, "Podcast"), async (snapshot) => {
-      const processedPodcasts = await processPodcastsData(snapshot); // Wait for the data to be processed
-      updateData("podcastData", processedPodcasts);
-      setLoading((prev) => ({ ...prev, podcasts: false }));
-    });
-  };
+      // Fetch additional news
+      const NewsSnapshot = await getDocs(NewsQuery);
+      const NewsData = NewsSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
 
-  const subscribeToPodcastsEpisodes = (updateData) => {
-    return onSnapshot(collection(db, "PodcastEpisodes"), async (snapshot) => {
-      const processedPodcasts = await processPodcastsDataEpisodes(snapshot); // Wait for the data to be processed
-      updateData("podcastDataEpisodes", processedPodcasts);
-      setLoading((prev) => ({ ...prev, podcastsEpisodes: false }));
-    });
-  };
+      // Group the fetched NewsData by their categories
+      const groupedNewsData = NewsData.reduce((acc, newsItem) => {
+        const category = newsItem.Category;
+        acc[category] = [...(acc[category] || []), newsItem];
+        return acc;
+      }, {});
 
-  const subscribeToProgramsEpisodes = (updateData) => {
-    return onSnapshot(collection(db, "ProgramsEpisodes"), async (snapshot) => {
-      const processedPrograms = await processPorogramssDataEpisodes(snapshot); // Wait for the data to be processed
-      updateData("programsDataEpisodes", processedPrograms);
-      setLoading((prev) => ({ ...prev, programsEpisodes: false }));
-    });
-  };
-
-  const subscribeToNewsCategory = (updateData) => {
-    return onSnapshot(collection(db, "Categories"), async (snapshot) => {
-      const processedCategories = await processCategoriesData(snapshot); // You would define processArticlesData
-      updateData("newsCategoreis", processedCategories);
-      setLoading((prev) => ({ ...prev, newsCategoreis: false }));
-    });
+      setData((prevData) => ({
+        ...prevData,
+        groupedData: {
+          ...prevData.groupedData,
+          ...Object.keys(groupedNewsData).reduce((acc, category) => {
+            acc[category] = [
+              ...(prevData.groupedData[category] || []),
+              ...groupedNewsData[category].filter((newNewsItem) => {
+                // Filter out news items that already exist in the state
+                return !prevData.groupedData[category]?.some(
+                  (existingNewsItem) =>
+                    existingNewsItem.NewsID === newNewsItem.NewsID
+                );
+              }),
+            ];
+            return acc;
+          }, {}),
+        },
+        relatedNews: NewsData,
+      }));
+    } catch (error) {
+      console.error("Error fetching additional news:", error);
+      // Handle error appropriately, e.g., show error message to the user
+    }
   };
 
   return (
-    <FirestoreContext.Provider value={{ ...data, loading }}>
-      {allDataLoaded ? children : <SuspenseFallback2 cName="dots" />}
+    <FirestoreContext.Provider
+      value={{
+        ...data,
+        loading,
+        fetchMoreNews,
+        fetchAllNews,
+        fetchRelatedNews,
+      }}
+    >
+      {children}
     </FirestoreContext.Provider>
   );
 };
@@ -157,38 +410,32 @@ function processNewsData(snapshot) {
     });
   });
 
-  // Sort news items by publish date
-  newsItems.sort((a, b) => b.PublishDate.toDate() - a.PublishDate.toDate());
-
-  // Filter news by categories using the limited array
-  const ImportantNews = newsItems.filter((m) => m.Category === "عاجل");
-  const pressNews = newsItems.filter((m) => m.Category === "صحافة");
-  const localNews = newsItems.filter((m) => m.Category === "محلي");
-  const internationalNews = newsItems.filter((m) => m.Category === "دولي");
-  const sport = newsItems.filter((m) => m.Category === "رياضة");
-  const weather = newsItems.filter((m) => m.Category === "طقس");
-  const report = newsItems.filter((m) => m.Category === "عالمية");
-
-  // Function to slice the number of items in an array
-  const sliceItems = (newsArray, numberOfItems) => {
-    return newsArray.slice(0, numberOfItems);
+  // Prepare the data to be returned
+  const processedData = {
+    newsData: newsItems,
   };
 
-  // Group news by categories with the specified number of items
+  return processedData;
+}
+
+function processCategoryNews(snapshot, category) {
+  const newsItems = [];
+
+  // Loop over each document in the snapshot
+  snapshot.forEach((doc) => {
+    const data = doc.data();
+    newsItems.push({
+      id: doc.id,
+      ...data,
+    });
+  });
+
   const groupedData = {
-    important: sliceItems(ImportantNews, 20),
-    press: sliceItems(pressNews, 20),
-    local: sliceItems(localNews, 20),
-    inter: sliceItems(internationalNews, 20),
-    weather: sliceItems(weather, 20),
-    report: report,
-    sport: sliceItems(sport, 20),
-    limitedNews: sliceItems(newsItems, 20),
+    [category]: newsItems,
   };
 
   // Prepare the data to be returned
   const processedData = {
-    newsData: newsItems, // If you want the entire component to use only limited items
     groupedData: groupedData,
   };
 

@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import FirestoreContext from "../../Utils/FirestoreContext2";
 
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
@@ -10,50 +9,48 @@ import RTL from "../RTL/RTL";
 import useStyles from "./styles";
 import MetaTags from "../MetaTags/MetaTags";
 
-import { SuspenseFallback2 } from "../SuspenseFallback/SuspenseFallback2";
+import FirestoreContext from "../../Utils/FirestoreContext2";
 import LazyImage from "../LazyImage/LazyImage";
 
 const NewsPage = () => {
   const classes = useStyles();
-  const { newsData } = useContext(FirestoreContext);
+  const { newsData, groupedData, fetchMoreNews } = useContext(FirestoreContext);
   const { category } = useParams();
 
   const [currentPage, setCurrentPage] = useState(1);
   const [newsPerPage] = useState(10); // Number of news per page
-  const [sortedNewsData, setSortedNewsData] = useState();
-  const [loading, setLoading] = useState(true);
 
-  // Function to compare dates for sorting
-  const compareDates = (a, b) => {
-    const dateA = a.PublishDate.toDate();
-    const dateB = b.PublishDate.toDate();
-    return dateB - dateA;
-  };
+  const sortedNewsData = (newsData || [])
+    .slice()
+    .sort((a, b) => b.PublishDate - a.PublishDate);
 
-  useEffect(() => {
-    if (newsData) {
-      setSortedNewsData([...newsData].sort(compareDates));
-    } else {
-      console.log("There is no news yet");
-    }
+  const sortedGroupedData = {};
+  Object.keys(groupedData || {}).forEach((key) => {
+    sortedGroupedData[key] = (groupedData[key] || [])
+      .slice()
+      .sort((a, b) => b.PublishDate - a.PublishDate);
+  });
 
-    setLoading(false);
-  }, [newsData]);
-
-  // Filter news items based on the selected category
   const filteredNews =
     category === "كل الأخبار"
       ? sortedNewsData
-      : sortedNewsData?.filter((newsItem) => newsItem?.Category === category);
+      : sortedGroupedData?.[category] || [];
 
   useEffect(() => {
     // This will reset the page to 1 when the category changes
     setCurrentPage(1);
-  }, [category]); // <- This ensures the effect runs when 'category' changes
+  }, [category]); // <- This ensures the effect runs when 'category' or 'filteredNews' changes
 
   // Pagination handling
   const handleChangePage = (event, value) => {
     setCurrentPage(value);
+    // Scroll to the top of the page
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    // If the user is on the last page and there are more than 10 news items
+    if (value === count) {
+      fetchMoreNews(category);
+    }
   };
 
   const indexOfLastNews = currentPage * newsPerPage;
@@ -65,10 +62,6 @@ const NewsPage = () => {
 
   function truncate(source, size) {
     return source.length > size ? source.slice(0, size - 1) + "…" : source;
-  }
-
-  if (loading) {
-    return <SuspenseFallback2 cName="dots" />;
   }
 
   return (
@@ -89,11 +82,6 @@ const NewsPage = () => {
             <div className={classes.newsList}>
               {currentNews?.map((newsItem, index) => (
                 <div key={index} className={classes.newsItem}>
-                  {/* <img
-                    src={newsItem.ImageURL}
-                    alt={newsItem.Title}
-                    className={classes.newsImage}
-                  /> */}
                   <LazyImage
                     src={newsItem.ImageURL}
                     alt={newsItem.Title}
@@ -101,7 +89,7 @@ const NewsPage = () => {
                   />
                   <div className={classes.newsContent}>
                     <Link
-                      to={"/news/" + newsItem.id}
+                      to={"/news/" + newsItem.NewsID}
                       className={classes.LinkInnerPages}
                     >
                       <h2 className={classes.newsTitle}>
@@ -129,6 +117,8 @@ const NewsPage = () => {
                 page={currentPage}
                 onChange={handleChangePage}
                 color="primary"
+                hidePrevButton={currentPage === 1}
+                hideNextButton={currentPage === count}
               />
             </Stack>
           </>

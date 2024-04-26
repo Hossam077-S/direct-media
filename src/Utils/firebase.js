@@ -9,12 +9,17 @@ import {
   documentId,
   query,
   where,
+  startAfter,
   doc,
   updateDoc,
   arrayUnion,
   serverTimestamp,
   deleteDoc,
   arrayRemove,
+  limit,
+  orderBy,
+  startAt,
+  endAt,
 } from "firebase/firestore";
 import {
   getStorage,
@@ -79,4 +84,9 @@ export {
   auth,
   analytics,
   logEvent,
+  limit,
+  orderBy,
+  startAfter,
+  startAt,
+  endAt,
 };

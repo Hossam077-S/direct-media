@@ -21,19 +21,20 @@ const PodcastEntryLazy = React.lazy(() => import("./PodcastEntry"));
 const Admin = () => {
   const [login, setLogin] = useState(false);
 
-  const [NewsOptions, setNewsOptions] = useState([]);
   const [articlesOptions, setArticlesOptions] = useState([]);
   const [ProgramsName, setProgramsName] = useState([]);
   const [PodcastsName, setPodcastsName] = useState([]);
   const [WritersName, setWritersName] = useState([]);
 
   const {
+    allData,
     newsData,
     programsData,
     writersData,
     articlesData,
     podcastData,
     newsCategoreis,
+    fetchAllNews,
   } = useContext(FirestoreContext);
 
   const categories = [
@@ -48,16 +49,13 @@ const Admin = () => {
   const [selectedAction, setSelectedAction] = useState("إضافة");
 
   useEffect(() => {
-    // For news titles and distinct categories
-    if (newsData) {
-      const newsTitles = newsData.map((news) => ({
-        title: news.Title,
-        id: news.NewsID,
-      }));
-
-      setNewsOptions(newsTitles);
+    if (allData.length === 0) {
+      fetchAllNews();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
+  useEffect(() => {
     // For article titles
     if (articlesData) {
       const articleTitles = articlesData.map((article) => ({
@@ -116,8 +114,8 @@ const Admin = () => {
     ArticlesEntryLazy: ArticlesEntryLazy,
     ProgramsEntryLazy: ProgramsEntryLazy,
     PodcastEntryLazy: PodcastEntryLazy,
+    allNews: allData,
     NewsCategory: newsCategoreis,
-    NewsOptions: NewsOptions,
     articlesOptions: articlesOptions,
     categories: categories,
     WritersName: WritersName,

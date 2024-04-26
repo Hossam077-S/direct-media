@@ -42,7 +42,7 @@ const NewsSlider = ({ newsItems }) => {
             </div>
             <div className="news-content">
               <div className="news-title">
-                <Link to={"news/" + item.id} className="link-news-pages">
+                <Link to={"news/" + item.NewsID} className="link-news-pages">
                   {truncate(item.Title, 35)}
                 </Link>
               </div>

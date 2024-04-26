@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import "slick-carousel/slick/slick-theme.css";
 import "slick-carousel/slick/slick.css";
@@ -19,7 +19,8 @@ import { analytics, logEvent } from "../../Utils/firebase";
 const NewsDetails = () => {
   const classes = useStyles();
 
-  const { newsData } = useContext(FirestoreContext);
+  const { groupedData, fetchRelatedNews, relatedNews } =
+    useContext(FirestoreContext);
 
   const socialMedia = [
     { value: "facebook" },
@@ -29,9 +30,9 @@ const NewsDetails = () => {
   ];
   const { id } = useParams();
   const [newsItem, setNewsItem] = useState({});
-  const [relatedNews, setRelatedNews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [videoError, setVideoError] = useState(false);
+  const [relatedNewsItems, setRelatedNewsItems] = useState([]);
 
   const newsTypesSliderSettings = {
     dots: false,
@@ -62,31 +63,39 @@ const NewsDetails = () => {
   };
 
   useEffect(() => {
-    const news = newsData?.find((news) => news.id === id);
+    let tids = [];
+    // Iterate over each category in groupedData
+    Object.values(groupedData).forEach((newsCategory) => {
+      // Find the news item with the specified id in the current category
+      const news = newsCategory.find((newsItem) => newsItem.NewsID === id);
+      // If found, set the newsItem state and exit the loop
+      if (news) {
+        setNewsItem(news);
+        if (news?.Tadmin?.length > 0) {
+          news?.Tadmin?.forEach((ids) => {
+            if (ids !== " ") {
+              tids.push(ids);
+            }
+          });
+        }
+      }
+    });
 
-    if (news) {
-      setNewsItem(news);
-    } else {
-      console.log("News not found");
-    }
-
-    setLoading(false);
-  }, [id, newsData]);
+    setRelatedNewsItems(tids);
+    setLoading(false); // Set loading to false after fetching the news item
+  }, [groupedData, id]); // Depend on id and groupedData
 
   useEffect(() => {
-    if (newsItem?.Tadmin?.length > 0) {
-      // Get an array of IDs from the current newsItem's Tadmin field
-      const newsIDs = newsItem.Tadmin;
-
-      // Filter the newsData using the array of IDs from the current newsItem
-      const relatedNewsItems = newsData.filter((news) =>
-        newsIDs.includes(news.NewsID)
-      );
-
-      // Update the state with the filtered related news items
-      setRelatedNews(relatedNewsItems);
+    if (newsItem?.Tadmin?.length > 0 && relatedNewsItems?.length > 0) {
+      fetchRelatedNews(relatedNewsItems);
     }
-  }, [newsItem, newsData]); // Depend on newsItem and newsData
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [newsItem]);
+
+  useEffect(() => {
+    fetchRelatedNews([]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
 
   if (loading) {
     return <SuspenseFallback2 cName="dots" />;
@@ -120,8 +129,9 @@ const NewsDetails = () => {
               )}
             </div>
             <div className={classes.shareButtons}>
-              {socialMedia.map((category) => (
+              {socialMedia.map((category, index) => (
                 <ShareButton
+                  key={index}
                   socialMedia={category.value}
                   url={window.location.href}
                   Title={newsItem.Title}
@@ -183,18 +193,17 @@ const NewsDetails = () => {
                           />
                         </div>
                         <div className={classes.relatedNewsContent}>
-                          <a
-                            href={`/news/${relatedNewsItem.id}`}
+                          <Link
+                            to={`/news/${relatedNewsItem.NewsID}`}
                             className={classes.relatedNewsLink}
                             onClick={() => {
                               window.scrollTo(0, 0);
-                              setRelatedNews([]);
                             }}
                           >
                             <h3 className={classes.relatedTitle}>
                               {relatedNewsItem.Title}
                             </h3>
-                          </a>
+                          </Link>
                           <p className={classes.relatedDate}>
                             {relatedNewsItem.PublishDate instanceof Date ? (
                               <TimeDifferenceComponent

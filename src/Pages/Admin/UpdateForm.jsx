@@ -42,7 +42,7 @@ import { v4 } from "uuid";
 const UpdateForm = (insertFormProps) => {
   const classes = useStyles();
 
-  const { newsData, articlesData, writersData } = useContext(FirestoreContext);
+  const { articlesData, writersData } = useContext(FirestoreContext);
 
   const { convertedImage, convertImageToWebP } = ConvertImageWebp();
 
@@ -126,7 +126,7 @@ const UpdateForm = (insertFormProps) => {
 
   const handleRelatedNewsSelect = (event, value) => {
     const isAlreadySelected = selectedRelatedNews.some(
-      (news) => news?.NewsID === value?.NewsID
+      (news) => news?.NewsID === value?.id
     );
 
     if (isAlreadySelected) {
@@ -136,7 +136,7 @@ const UpdateForm = (insertFormProps) => {
       if (value) {
         setSelectedRelatedNews((prevSelectedNews) => [
           ...prevSelectedNews,
-          { id: v4(), value: value.title, NewsID: value.id }, // Store both Title and NewsID
+          { id: v4(), value: value.Title, NewsID: value.id }, // Store both Title and NewsID
         ]);
       }
     }
@@ -158,7 +158,9 @@ const UpdateForm = (insertFormProps) => {
 
     const relatedNewsPromises = relatedNewsIds.map(async (id) => {
       // Assuming newsData is an array of all news items
-      const relatedNewsItem = newsData?.find((item) => item.NewsID === id);
+      const relatedNewsItem = insertFormProps.allNews?.find(
+        (item) => item.NewsID === id
+      );
       return { id: v4(), value: relatedNewsItem?.Title, NewsID: id };
     });
 
@@ -174,7 +176,9 @@ const UpdateForm = (insertFormProps) => {
     formRef.current.Source.value = "";
 
     try {
-      const news = newsData?.find((news) => news.id === value.id);
+      const news = insertFormProps.allNews?.find(
+        (news) => news.NewsID === value.id
+      );
 
       // Check if any documents match the selected NewsID
       if (!news.empty) {
@@ -582,13 +586,13 @@ const UpdateForm = (insertFormProps) => {
                 <ThemeProvider theme={theme}>
                   <Autocomplete
                     className={classes.autocomplete}
-                    options={insertFormProps.NewsOptions}
+                    options={insertFormProps.allNews}
                     onChange={(event, newValue) => {
                       if (newValue) {
                         handleGetNewsSelected(newValue);
                       }
                     }}
-                    getOptionLabel={(option) => option.title}
+                    getOptionLabel={(option) => option.Title}
                     required
                     renderInput={(params) => (
                       <TextField
@@ -681,9 +685,9 @@ const UpdateForm = (insertFormProps) => {
                     className={`${classes.autocomplete} ${
                       isAlreadySelected ? classes.redAutocompleteInput : ""
                     }`}
-                    options={insertFormProps.NewsOptions}
+                    options={insertFormProps.allNews}
                     onChange={handleRelatedNewsSelect}
-                    getOptionLabel={(option) => option.title} // Display the Title in the input
+                    getOptionLabel={(option) => option.Title} // Display the Title in the input
                     renderInput={(params) => (
                       <TextField
                         {...params}

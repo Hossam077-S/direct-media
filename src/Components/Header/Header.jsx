@@ -212,9 +212,6 @@ const Header = () => {
             <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
               <DialogContent>
                 <Box className={classes.searchboxbigger} component="div">
-                  {/* <IconButton size="large">
-                    <SearchIcon className={classes.searchiconbigger} />
-                  </IconButton> */}
                   <CacheProvider value={cacheRtl}>
                     <ThemeProvider theme={theme}>
                       <Autocomplete

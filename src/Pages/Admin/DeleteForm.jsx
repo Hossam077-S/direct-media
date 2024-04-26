@@ -422,7 +422,6 @@ const DeleteForm = (insertFormProps) => {
   if (loading) {
     return <SuspenseFallback cName="progress" />;
   }
-
   return (
     <div className={classes.containerDiv}>
       {insertFormProps.activeTab === 0 && (
@@ -435,13 +434,13 @@ const DeleteForm = (insertFormProps) => {
                 <ThemeProvider theme={theme}>
                   <Autocomplete
                     className={classes.autocomplete}
-                    options={insertFormProps.NewsOptions}
+                    options={insertFormProps.allNews}
                     onChange={(event, newValue) => {
                       if (newValue) {
                         setSelectedListRemove(newValue?.id);
                       }
                     }}
-                    getOptionLabel={(option) => option.title}
+                    getOptionLabel={(option) => option.Title}
                     required
                     renderInput={(params) => (
                       <TextField

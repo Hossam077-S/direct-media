@@ -241,6 +241,19 @@ const useStyles = makeStyles(() => ({
       marginBottom: "4vw",
     },
   },
+  skeletonSlider2: {
+    marginTop: "3px",
+    display: "flex",
+    justifyContent: "center",
+    height: "35px !important",
+    width: "642px",
+
+    "@media (max-width: 768px)": {
+      height: "5vw !important",
+      width: "90vw",
+      marginBottom: "4vw",
+    },
+  },
 
   //ads
   // adsContainer: {

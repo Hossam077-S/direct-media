@@ -14,14 +14,14 @@ const VerticalSlider = ({ newsItems, interval = 5000 }) => {
   const startAutoplay = useCallback(() => {
     clearInterval(autoplayRef.current); // Clear any existing intervals
     autoplayRef.current = setInterval(() => {
-      setActiveIndex((prevIndex) => (prevIndex + 1) % newsItems.length);
+      setActiveIndex((prevIndex) => (prevIndex + 1) % newsItems?.length);
     }, interval);
   });
 
   useEffect(() => {
     startAutoplay(); // Start the autoplay when the component mounts
     return () => clearInterval(autoplayRef.current); // Cleanup the interval when the component unmounts
-  }, [newsItems.length, interval, startAutoplay]);
+  }, [newsItems?.length, interval, startAutoplay]);
 
   const handleClick = (direction) => {
     setActiveIndex((prevIndex) => {
@@ -36,15 +36,18 @@ const VerticalSlider = ({ newsItems, interval = 5000 }) => {
   };
 
   function truncate(source, size) {
-    return source.length > size ? source.slice(0, size - 1) + "…" : source;
+    return source?.length > size ? source.slice(0, size - 1) + "…" : source;
   }
 
   return (
     <div className="carousel-wrapper">
       <div className="title-and-controls">
         <div className="title">
-          <Link to={`/news/${newsItems[activeIndex].id}`} key={activeIndex}>
-            {truncate(newsItems[activeIndex].Title, 70)}
+          <Link
+            to={`/news/${newsItems[activeIndex]?.NewsID}`}
+            key={activeIndex}
+          >
+            {truncate(newsItems[activeIndex]?.Title, 70)}
           </Link>
         </div>
         <div className="controls">
@@ -78,6 +81,7 @@ VerticalSlider.propTypes = {
     })
   ).isRequired,
   interval: PropTypes.number, // you can specify the interval as a prop
+  // fetchMoreNews: PropTypes.func.isRequired, // function to fetch more news
 };
 
 export default VerticalSlider;
