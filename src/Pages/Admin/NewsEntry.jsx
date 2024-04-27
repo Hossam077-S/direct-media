@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 
 import { Editor } from "@tinymce/tinymce-react";
 
@@ -36,14 +36,18 @@ import {
   ListItemIcon,
   Checkbox,
   ListItemText,
+  Typography,
 } from "@mui/material";
 
 import { SuspenseFallback } from "../../Components/SuspenseFallback/SuspenseFallback";
 import ConvertImageWebp from "./ConvertImageWebp";
 import SnackbarComponent from "../../Components/Snackbar/SnackbarComponent";
+import FirestoreContext from "../../Utils/FirestoreContext2";
 
-const NewsEntry = ({ allNews, distinctNewsCategory, categories }) => {
+const NewsEntry = ({ distinctNewsCategory, categories }) => {
   const classes = useStyles();
+
+  const { handleSearch } = useContext(FirestoreContext);
 
   const { convertedImage, convertImageToWebP } = ConvertImageWebp();
 
@@ -96,45 +100,13 @@ const NewsEntry = ({ allNews, distinctNewsCategory, categories }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [editorContent, setEditorContent] = useState("");
 
-  const [searchQuery, setSearchQuery] = useState("");
-  const [filteredNews, setFilteredNews] = useState([]);
   const [selectedNews, setSelectedNews] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [showNoResults, setShowNoResults] = useState(false);
 
   const form = useRef();
   const editorRef = useRef(null);
-
-  const handleSearchInputChange = (event) => {
-    const query = event.target.value.toLowerCase();
-    setSearchQuery(query);
-  };
-
-  const handleSearchButtonClick = () => {
-    performSearch(searchQuery);
-  };
-
-  const performSearch = (query) => {
-    if (query.trim() === "") {
-      // Reset filtered news if search query is empty
-      setFilteredNews([]);
-      return;
-    }
-
-    // Perform Firestore query to filter news based on search query
-    const searchResults = allNews?.filter((news) =>
-      news?.Title?.toLowerCase().includes(query)
-    );
-
-    setFilteredNews(searchResults);
-  };
-
-  const handleToggleCheckbox = (news) => {
-    const newsIndex = selectedNews.findIndex((item) => item.id === news.id);
-    if (newsIndex === -1) {
-      setSelectedNews([...selectedNews, news]);
-    } else {
-      setSelectedNews(selectedNews.filter((item) => item.id !== news.id));
-    }
-  };
 
   const handleImageChange = async (event) => {
     const file = event.target.files[0];
@@ -221,6 +193,20 @@ const NewsEntry = ({ allNews, distinctNewsCategory, categories }) => {
   function truncate(source, size) {
     return source.length > size ? source.slice(0, size - 1) + "…" : source;
   }
+
+  const handleSearchInputChange = (event) => {
+    setSearchQuery(event.target.value);
+    setShowNoResults(false);
+  };
+
+  const handleToggleCheckbox = (news) => {
+    const newsIndex = selectedNews.findIndex((item) => item.id === news.id);
+    if (newsIndex === -1) {
+      setSelectedNews([...selectedNews, news]);
+    } else {
+      setSelectedNews(selectedNews.filter((item) => item.id !== news.id));
+    }
+  };
 
   if (loading) {
     return <SuspenseFallback cName="progress" />;
@@ -325,38 +311,49 @@ const NewsEntry = ({ allNews, distinctNewsCategory, categories }) => {
                   value={searchQuery}
                   onChange={handleSearchInputChange}
                 />
-
                 {/* Search button */}
                 <Button
                   variant="contained"
-                  onClick={handleSearchButtonClick}
+                  onClick={() =>
+                    handleSearch(
+                      searchQuery,
+                      setSearchResults,
+                      setShowNoResults
+                    )
+                  }
                   className={classes.searchButton}
                 >
                   بحث
                 </Button>
                 {/* Display filtered news */}
-                <List>
-                  {filteredNews.map((news) => (
-                    <ListItem
-                      key={news.id}
-                      dense
-                      button
-                      onClick={() => handleToggleCheckbox(news)}
-                    >
-                      <ListItemIcon>
-                        <Checkbox
-                          edge="start"
-                          checked={selectedNews.some(
-                            (item) => item.id === news.id
-                          )}
-                          tabIndex={-1}
-                          disableRipple
-                        />
-                      </ListItemIcon>
-                      <ListItemText primary={news.Title} />
-                    </ListItem>
-                  ))}
-                </List>
+                {showNoResults ? (
+                  <Typography variant="body1">
+                    ليس هناك نتائج لبحث: {searchQuery}
+                  </Typography>
+                ) : (
+                  <List>
+                    {searchResults.map((news) => (
+                      <ListItem
+                        key={news.id}
+                        dense
+                        button
+                        onClick={() => handleToggleCheckbox(news)}
+                      >
+                        <ListItemIcon>
+                          <Checkbox
+                            edge="start"
+                            checked={selectedNews.some(
+                              (item) => item.id === news.id
+                            )}
+                            tabIndex={-1}
+                            disableRipple
+                          />
+                        </ListItemIcon>
+                        <ListItemText primary={news.Title} />
+                      </ListItem>
+                    ))}
+                  </List>
+                )}
 
                 <TextField
                   label="رابط الفيديو"

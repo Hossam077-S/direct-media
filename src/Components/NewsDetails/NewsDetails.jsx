@@ -15,11 +15,12 @@ import TimeDifferenceComponent from "../TimeDifference/TimeDifferenceComponent";
 import { SuspenseFallback2 } from "../SuspenseFallback/SuspenseFallback2";
 import FirestoreContext from "../../Utils/FirestoreContext2";
 import { analytics, logEvent } from "../../Utils/firebase";
+import LazyImage from "../LazyImage/LazyImage";
 
 const NewsDetails = () => {
   const classes = useStyles();
 
-  const { groupedData, fetchRelatedNews, relatedNews } =
+  const { groupedData, fetchRelatedNews, relatedNews, getSpecificNews } =
     useContext(FirestoreContext);
 
   const socialMedia = [
@@ -31,6 +32,9 @@ const NewsDetails = () => {
   const { id } = useParams();
   const [newsItem, setNewsItem] = useState({});
   const [loading, setLoading] = useState(true);
+
+  const [exsitsNews, setExsitsNews] = useState(false);
+
   const [videoError, setVideoError] = useState(false);
   const [relatedNewsItems, setRelatedNewsItems] = useState([]);
 
@@ -78,6 +82,7 @@ const NewsDetails = () => {
             }
           });
         }
+        setExsitsNews(true);
       }
     });
 
@@ -88,6 +93,8 @@ const NewsDetails = () => {
   useEffect(() => {
     if (newsItem?.Tadmin?.length > 0 && relatedNewsItems?.length > 0) {
       fetchRelatedNews(relatedNewsItems);
+    } else {
+      getSpecificNews(id);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [newsItem]);
@@ -97,7 +104,7 @@ const NewsDetails = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
-  if (loading) {
+  if (loading || !exsitsNews) {
     return <SuspenseFallback2 cName="dots" />;
   }
 
@@ -112,7 +119,7 @@ const NewsDetails = () => {
         <div className={classes.Title}>{newsItem?.Title} </div>
         <div className={classes.ImageDiv}>
           <div className={classes.Content}>
-            <img
+            <LazyImage
               src={newsItem?.ImageURL}
               alt={newsItem?.Title}
               className={classes.newsDetailsImage}

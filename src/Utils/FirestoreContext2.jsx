@@ -9,6 +9,8 @@ import {
   limit,
   orderBy,
   startAfter,
+  doc,
+  getDoc,
 } from "../Utils/firebase";
 
 const FirestoreContext = createContext();
@@ -326,11 +328,12 @@ export const FirestoreProvider = ({ children }) => {
   };
 
   const fetchRelatedNews = async (relatedNewsItems) => {
-    if (relatedNewsItems.length === 0) {
+    if (!Array.isArray(relatedNewsItems) || relatedNewsItems.length === 0) {
       setData((prevData) => ({
         ...prevData,
         relatedNews: [],
       }));
+      return; // Exit early if relatedNewsItems is not an array or is empty
     }
 
     try {
@@ -380,6 +383,98 @@ export const FirestoreProvider = ({ children }) => {
     }
   };
 
+  const handleSearch = async (
+    searchQuery,
+    setSearchResults,
+    setShowNoResults
+  ) => {
+    if (searchQuery.trim() === "") {
+      // If search query is empty, reset searchResults and showNoResults
+      setSearchResults([]);
+      setShowNoResults(false);
+      return;
+    }
+    try {
+      const q = query(
+        collection(db, "News"), // Replace 'News' with your collection name
+        orderBy("Title"),
+        where("Title", ">=", searchQuery),
+        where("Title", "<=", searchQuery + "\uf8ff"),
+        orderBy("PublishDate", "desc"),
+        limit(5)
+      );
+
+      const snapshot = await getDocs(q);
+
+      const results = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      if (results.length === 0) {
+        setShowNoResults(true); // Show "No results" message if searchResults is empty
+      }
+
+      setSearchResults(results);
+    } catch (error) {
+      console.error("Error searching for news:", error);
+    }
+  };
+
+  const getSpecificNews = async (newsId) => {
+    try {
+      const newsRef = doc(db, "News", newsId);
+
+      const docSnapshot = await getDoc(newsRef);
+      if (docSnapshot.exists()) {
+        const data = docSnapshot.data();
+        const result = { id: docSnapshot.id, ...data };
+
+        // Update your state with the fetched news article
+        setData((prevData) => ({
+          ...prevData,
+          groupedData: {
+            ...prevData.groupedData,
+            [result.category]: [
+              ...(prevData.groupedData[result.category] || []),
+              result,
+            ],
+          },
+        }));
+      } else {
+        console.log("No such document!");
+      }
+    } catch (error) {
+      console.error("Error searching for news:", error);
+    }
+  };
+
+  const getRelatedNews = async (relatedNewsItems) => {
+    if (!Array.isArray(relatedNewsItems) || relatedNewsItems.length === 0) {
+      return;
+    }
+
+    try {
+      let NewsQuery = query(
+        collection(db, "News"),
+        orderBy("NewsID"),
+        where("NewsID", "in", relatedNewsItems)
+      );
+
+      // Fetch additional news
+      const NewsSnapshot = await getDocs(NewsQuery);
+      const NewsData = NewsSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      return NewsData;
+    } catch (error) {
+      console.error("Error fetching additional news:", error);
+      // Handle error appropriately, e.g., show error message to the user
+    }
+  };
+
   return (
     <FirestoreContext.Provider
       value={{
@@ -388,6 +483,9 @@ export const FirestoreProvider = ({ children }) => {
         fetchMoreNews,
         fetchAllNews,
         fetchRelatedNews,
+        handleSearch,
+        getSpecificNews,
+        getRelatedNews,
       }}
     >
       {children}

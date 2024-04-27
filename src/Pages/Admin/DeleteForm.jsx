@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext } from "react";
 import {
   arrayRemove,
   collection,
@@ -18,8 +18,14 @@ import {
 import {
   Autocomplete,
   Button,
+  Checkbox,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
   TextField,
   ThemeProvider,
+  Typography,
   createTheme,
 } from "@mui/material";
 
@@ -31,9 +37,12 @@ import { prefixer } from "stylis";
 import useStyles from "./styles";
 import SnackbarComponent from "../../Components/Snackbar/SnackbarComponent";
 import { SuspenseFallback } from "../../Components/SuspenseFallback/SuspenseFallback";
+import FirestoreContext from "../../Utils/FirestoreContext2";
 
 const DeleteForm = (insertFormProps) => {
   const classes = useStyles();
+
+  const { handleSearch } = useContext(FirestoreContext);
 
   const theme = createTheme({
     direction: "rtl", // Both here and <body dir="rtl">
@@ -71,6 +80,11 @@ const DeleteForm = (insertFormProps) => {
   const [selectedListRemoveWriters, setSelectedListRemoveWriters] = useState(
     []
   );
+
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [showNoResults, setShowNoResults] = useState(false);
+
   const [showPopup, setShowPopup] = useState(false);
   const [snackbar, setSnackbar] = useState(false);
 
@@ -81,63 +95,145 @@ const DeleteForm = (insertFormProps) => {
     setShowPopup(true);
   };
 
+  // const handleDeleteNews = async (event) => {
+  //   event.preventDefault();
+
+  //   try {
+  //     setLoading(true);
+
+  //     const querySnapshot = await getDocs(
+  //       query(collection(db, "News"), where("NewsID", "==", selectedListRemove))
+  //     );
+
+  //     if (!querySnapshot.empty) {
+  //       const selectedNewsDoc = querySnapshot.docs[0];
+
+  //       const selectedNewsData = querySnapshot.docs[0].data();
+
+  //       const imageRef = ref(storage, `${selectedNewsData.ImageURL}`);
+
+  //       await deleteDoc(selectedNewsDoc.ref);
+
+  //       if (imageRef) {
+  //         try {
+  //           await deleteObject(imageRef);
+  //           console.log("Image deleted successfully");
+  //         } catch (error) {
+  //           console.error("Error deleting image:", error);
+  //         }
+  //       }
+
+  //       // Need to fix, Remove the realted news
+  //       const referencingNewsQuerySnapshot = await getDocs(
+  //         query(
+  //           collection(db, "News"),
+  //           where("Tadmin", "array-contains", selectedListRemove)
+  //         )
+  //       );
+
+  //       referencingNewsQuerySnapshot.docs.forEach(async (docSnapshot) => {
+  //         const docRef = doc(db, "News", docSnapshot.id);
+
+  //         // Get the current value of relatedNews
+  //         const updatedRelatedNews = arrayRemove(selectedListRemove);
+
+  //         // Update relatedNews field
+  //         await updateDoc(docRef, { relatedNews: updatedRelatedNews });
+  //       });
+
+  //       console.log("News deleted successfully!");
+
+  //       setSnackbar(true);
+  //       setShowPopup(false);
+  //       setLoading(false);
+  //       setSelectedListRemove(null);
+  //     } else {
+  //       console.error("Error getting news data: Not Found");
+  //       setSnackbar(false);
+  //       setLoading(false);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error Deleting news data: ", error);
+  //     setLoading(false);
+  //   }
+  // };
+
   const handleDeleteNews = async (event) => {
     event.preventDefault();
 
     try {
       setLoading(true);
 
-      const querySnapshot = await getDocs(
-        query(collection(db, "News"), where("NewsID", "==", selectedListRemove))
+      console.log(selectedListRemove);
+      // Loop through each selected ID and delete its corresponding news
+      await Promise.all(
+        selectedListRemove.map(async (news) => {
+          const querySnapshot = await getDocs(
+            query(collection(db, "News"), where("NewsID", "==", news.id))
+          );
+
+          if (!querySnapshot.empty) {
+            const selectedNewsDoc = querySnapshot.docs[0];
+            const selectedNewsData = querySnapshot.docs[0].data();
+            const imageRef = ref(storage, `${selectedNewsData.ImageURL}`);
+
+            await deleteDoc(selectedNewsDoc.ref);
+
+            if (imageRef) {
+              try {
+                await deleteObject(imageRef);
+                console.log("Image deleted successfully");
+              } catch (error) {
+                console.error("Error deleting image:", error);
+              }
+            }
+
+            // Remove the selected ID from other news documents' relatedNews field
+            const referencingNewsQuerySnapshot = await getDocs(
+              query(
+                collection(db, "News"),
+                where("Tadmin", "array-contains", news.id)
+              )
+            );
+
+            await Promise.all(
+              referencingNewsQuerySnapshot.docs.map(async (docSnapshot) => {
+                const docRef = doc(db, "News", docSnapshot.id);
+                const docData = docSnapshot.data();
+
+                // Check if relatedNews exists and is an array
+                if (
+                  Array.isArray(docData.relatedNews) &&
+                  docData.relatedNews.length > 0
+                ) {
+                  // Remove the selected ID from relatedNews array
+                  const updatedRelatedNews = docData.relatedNews.filter(
+                    (relatedId) => relatedId !== news.id
+                  );
+
+                  // Update relatedNews field
+                  await updateDoc(docRef, { relatedNews: updatedRelatedNews });
+                }
+              })
+            );
+
+            console.log(`News with ID ${news.id} deleted successfully!`);
+          } else {
+            console.error(
+              `Error getting news data with ID ${news.id}: Not Found`
+            );
+          }
+        })
       );
 
-      if (!querySnapshot.empty) {
-        const selectedNewsDoc = querySnapshot.docs[0];
+      setSearchQuery("");
+      setSearchResults([]);
+      setShowNoResults(false);
 
-        const selectedNewsData = querySnapshot.docs[0].data();
-
-        const imageRef = ref(storage, `${selectedNewsData.ImageURL}`);
-
-        await deleteDoc(selectedNewsDoc.ref);
-
-        if (imageRef) {
-          try {
-            await deleteObject(imageRef);
-            console.log("Image deleted successfully");
-          } catch (error) {
-            console.error("Error deleting image:", error);
-          }
-        }
-
-        // Need to fix, Remove the realted news
-        const referencingNewsQuerySnapshot = await getDocs(
-          query(
-            collection(db, "News"),
-            where("Tadmin", "array-contains", selectedListRemove)
-          )
-        );
-
-        referencingNewsQuerySnapshot.docs.forEach(async (docSnapshot) => {
-          const docRef = doc(db, "News", docSnapshot.id);
-
-          // Get the current value of relatedNews
-          const updatedRelatedNews = arrayRemove(selectedListRemove);
-
-          // Update relatedNews field
-          await updateDoc(docRef, { relatedNews: updatedRelatedNews });
-        });
-
-        console.log("News deleted successfully!");
-
-        setSnackbar(true);
-        setShowPopup(false);
-        setLoading(false);
-        setSelectedListRemove(null);
-      } else {
-        console.error("Error getting news data: Not Found");
-        setSnackbar(false);
-        setLoading(false);
-      }
+      setSnackbar(true);
+      setShowPopup(false);
+      setLoading(false);
+      setSelectedListRemove([]); // Clear selectedListRemove after deletion
     } catch (error) {
       console.error("Error Deleting news data: ", error);
       setLoading(false);
@@ -419,6 +515,24 @@ const DeleteForm = (insertFormProps) => {
     setShowPopup(false);
   };
 
+  const handleSearchInputChange = (event) => {
+    setSearchQuery(event.target.value);
+    setShowNoResults(false);
+  };
+
+  const handleToggleCheckbox = (news) => {
+    const newsIndex = selectedListRemove.findIndex(
+      (item) => item.id === news.id
+    );
+    if (newsIndex === -1) {
+      setSelectedListRemove([...selectedListRemove, news]);
+    } else {
+      setSelectedListRemove(
+        selectedListRemove.filter((item) => item.id !== news.id)
+      );
+    }
+  };
+
   if (loading) {
     return <SuspenseFallback cName="progress" />;
   }
@@ -432,7 +546,7 @@ const DeleteForm = (insertFormProps) => {
             <form ref={formRef} onSubmit={handleSubmit}>
               <CacheProvider value={cacheRtl}>
                 <ThemeProvider theme={theme}>
-                  <Autocomplete
+                  {/* <Autocomplete
                     className={classes.autocomplete}
                     options={insertFormProps.allNews}
                     onChange={(event, newValue) => {
@@ -451,7 +565,62 @@ const DeleteForm = (insertFormProps) => {
                         className={classes.textFieldSelect}
                       />
                     )}
+                  /> */}
+                  {/* Search input for filtering news */}
+                  <TextField
+                    label="البحث عن الأخبار المرتبطة"
+                    name="SearchNews"
+                    type="text"
+                    variant="outlined"
+                    style={{ width: "95%" }}
+                    className={classes.textFieldSelect}
+                    value={searchQuery}
+                    onChange={handleSearchInputChange}
                   />
+                  {/* Search button */}
+                  <Button
+                    variant="contained"
+                    onClick={() =>
+                      handleSearch(
+                        searchQuery,
+                        setSearchResults,
+                        setShowNoResults
+                      )
+                    }
+                    className={classes.searchButton}
+                  >
+                    بحث
+                  </Button>
+                  {/* Display filtered news */}
+                  {showNoResults ? (
+                    <Typography variant="body1">
+                      ليس هناك نتائج لبحث: {searchQuery}
+                    </Typography>
+                  ) : (
+                    <List>
+                      {searchResults.map((news) => (
+                        <ListItem
+                          key={news.id}
+                          dense
+                          button
+                          onClick={() => handleToggleCheckbox(news)}
+                        >
+                          <ListItemIcon>
+                            <Checkbox
+                              edge="start"
+                              checked={selectedListRemove.some(
+                                (item) => item.id === news.id
+                              )}
+                              tabIndex={-1}
+                              disableRipple
+                            />
+                          </ListItemIcon>
+                          <ListItemText primary={news.Title} />
+                        </ListItem>
+                      ))}
+                    </List>
+                  )}
+
                   <Button
                     variant="contained"
                     type="submit"

@@ -15,9 +15,6 @@ const TimeDifferenceComponent = ({ publishDate }) => {
     } else if (typeof publishDate === "string") {
       // Convert string to Date object
       publishDateObject = new Date(publishDate);
-    } else {
-      // Handle other cases where publishDate cannot be converted to Date
-      return "Invalid Date";
     }
 
     const timeDifference = currentTime - publishDateObject;

@@ -15,10 +15,13 @@ import {
   Container,
   Dialog,
   DialogContent,
-  Autocomplete,
   TextField,
   ThemeProvider,
   createTheme,
+  Button,
+  ListItem,
+  List,
+  ListItemText,
 } from "@mui/material";
 
 import { Link, NavLink } from "react-router-dom";
@@ -33,16 +36,16 @@ import { BsFacebook, BsYoutube } from "react-icons/bs";
 import { FaXTwitter } from "react-icons/fa6";
 import { FaInstagram, FaTiktok } from "react-icons/fa";
 
+import FirestoreContext from "../../Utils/FirestoreContext2";
+
 import MenuIcon from "@mui/icons-material/Menu";
 
 import logo from "../../assests/logo.gif";
 
 import useStyles from "./styles";
 
-import FirestoreContext from "../../Utils/FirestoreContext2";
-
 const Header = () => {
-  const { newsData } = useContext(FirestoreContext);
+  const { handleSearch } = useContext(FirestoreContext);
 
   const menuItems = [
     { name: "كل الأخبار", to: "/newsPage/كل الأخبار" },
@@ -95,7 +98,10 @@ const Header = () => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
+
+  const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState([]);
+  const [showNoResults, setShowNoResults] = useState(false);
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -112,17 +118,18 @@ const Header = () => {
   const handleClose = () => {
     setOpen(false);
     setSearchResults([]);
+    setSearchQuery("");
   };
 
   const handleSearchResultClick = () => {
     setOpen(false);
     setSearchResults([]);
+    setSearchQuery("");
   };
 
-  const handleSearchInputChange = (_, newValue) => {
-    if (newValue) {
-      window.location.href = `/news/${newValue.id}`;
-    }
+  const handleSearchInputChange = (event) => {
+    setSearchQuery(event.target.value);
+    setShowNoResults(false);
   };
 
   return (
@@ -214,53 +221,55 @@ const Header = () => {
                 <Box className={classes.searchboxbigger} component="div">
                   <CacheProvider value={cacheRtl}>
                     <ThemeProvider theme={theme}>
-                      <Autocomplete
-                        className={classes.inputbasebigger}
-                        options={newsData}
-                        getOptionLabel={(news) => news.Title}
+                      <TextField
+                        label="البحث عن الأخبار المرتبطة"
+                        name="SearchNews"
+                        type="text"
+                        variant="outlined"
+                        className={classes.textFieldSelect}
+                        value={searchQuery}
                         onChange={handleSearchInputChange}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            name="RelatedNews"
-                            label="بحث"
-                            variant="outlined"
-                            className={classes.textFieldSelect}
-                          />
-                        )}
                       />
+                      <Button
+                        variant="contained"
+                        onClick={() =>
+                          handleSearch(
+                            searchQuery,
+                            setSearchResults,
+                            setShowNoResults
+                          )
+                        }
+                        className={classes.searchButton}
+                      >
+                        بحث
+                      </Button>
+                      {/* Conditional rendering based on searchResults */}
+                      {showNoResults ? (
+                        <Typography variant="body1">
+                          ليس هناك نتائج لبحث: {searchQuery}
+                        </Typography>
+                      ) : (
+                        <List>
+                          {/* Your list of search results */}
+                          {searchResults.map((news) => (
+                            <ListItem key={news.id} dense button>
+                              <ListItemText
+                                primary={
+                                  <Link
+                                    onClick={handleSearchResultClick}
+                                    to={`news/${news.id}`}
+                                    className={classes.searchResultItem}
+                                  >
+                                    {news.Title}
+                                  </Link>
+                                }
+                              />
+                            </ListItem>
+                          ))}
+                        </List>
+                      )}
                     </ThemeProvider>
                   </CacheProvider>
-                </Box>
-                <Box className={classes.searchResults}>
-                  {searchResults.map((result, index) => (
-                    <div key={index} className={classes.searchResultItem}>
-                      <Link
-                        to={`/${result.type}/${result.id}`}
-                        onClick={handleSearchResultClick}
-                        className={classes.searchResultLink}
-                      >
-                        {result.type === "news" && (
-                          <div>
-                            <span>خبر: </span>
-                            <span>{result.Title}</span>
-                          </div>
-                        )}
-                        {result.type === "article" && (
-                          <div>
-                            <span>مقال: </span>
-                            <span>{result.Text}</span>
-                          </div>
-                        )}
-                        {result.type === "program" && (
-                          <div>
-                            <span>برنامج: </span>
-                            <span>{result.Title}</span>
-                          </div>
-                        )}
-                      </Link>
-                    </div>
-                  ))}
                 </Box>
               </DialogContent>
             </Dialog>

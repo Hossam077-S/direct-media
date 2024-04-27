@@ -280,4 +280,13 @@ export default makeStyles(() => ({
       textUnderlineOffset: "15px",
     },
   },
+  searchButton: {
+    marginTop: "15px",
+  },
+  searchResultItem: {
+    textDecoration: "none",
+    fontFamily: `${secondFont}`,
+    fontSize: "16px",
+    color: "#2E3190",
+  },
 }));
