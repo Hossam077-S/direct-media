@@ -189,6 +189,9 @@ const UpdateForm = (insertFormProps) => {
           if (editorRef.current) {
             editorRef.current.setContent(news?.Description || "");
           }
+
+          if (news?.ImageURL) setImageConversionComplete(true);
+
           setOldImage(news?.ImageURL);
         } else {
           console.error("Error getting news data: Not Found");
@@ -771,6 +774,7 @@ const UpdateForm = (insertFormProps) => {
                         name="SearchNews"
                         type="text"
                         variant="outlined"
+                        style={{ width: "95%" }}
                         className={classes.textFieldSelect}
                         value={searchRelatedQuery}
                         onChange={handleSearchRelatedInputChange}

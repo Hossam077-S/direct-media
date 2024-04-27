@@ -8,7 +8,6 @@ const InsertForm = (insertFormProps) => {
           fallback={<insertFormProps.SuspenseFallback cName="progress" />}
         >
           <insertFormProps.NewsEntryLazy
-            allNews={insertFormProps.allNews}
             distinctNewsCategory={insertFormProps.NewsCategory}
             categories={insertFormProps.categories}
           />

@@ -20,21 +20,18 @@ const PodcastEntryLazy = React.lazy(() => import("./PodcastEntry"));
 
 const Admin = () => {
   const [login, setLogin] = useState(false);
-
   const [articlesOptions, setArticlesOptions] = useState([]);
   const [ProgramsName, setProgramsName] = useState([]);
   const [PodcastsName, setPodcastsName] = useState([]);
   const [WritersName, setWritersName] = useState([]);
 
   const {
-    allData,
     newsData,
     programsData,
     writersData,
     articlesData,
     podcastData,
     newsCategoreis,
-    fetchAllNews,
   } = useContext(FirestoreContext);
 
   const categories = [
@@ -47,13 +44,6 @@ const Admin = () => {
 
   const [activeTab, setActiveTab] = useState(0);
   const [selectedAction, setSelectedAction] = useState("إضافة");
-
-  useEffect(() => {
-    if (allData.length === 0) {
-      fetchAllNews();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   useEffect(() => {
     // For article titles
@@ -114,7 +104,6 @@ const Admin = () => {
     ArticlesEntryLazy: ArticlesEntryLazy,
     ProgramsEntryLazy: ProgramsEntryLazy,
     PodcastEntryLazy: PodcastEntryLazy,
-    allNews: allData,
     NewsCategory: newsCategoreis,
     articlesOptions: articlesOptions,
     categories: categories,

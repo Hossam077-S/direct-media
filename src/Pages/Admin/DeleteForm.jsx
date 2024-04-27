@@ -546,26 +546,6 @@ const DeleteForm = (insertFormProps) => {
             <form ref={formRef} onSubmit={handleSubmit}>
               <CacheProvider value={cacheRtl}>
                 <ThemeProvider theme={theme}>
-                  {/* <Autocomplete
-                    className={classes.autocomplete}
-                    options={insertFormProps.allNews}
-                    onChange={(event, newValue) => {
-                      if (newValue) {
-                        setSelectedListRemove(newValue?.id);
-                      }
-                    }}
-                    getOptionLabel={(option) => option.Title}
-                    required
-                    renderInput={(params) => (
-                      <TextField
-                        {...params}
-                        name="RelatedNews"
-                        label="الأخبار"
-                        variant="outlined"
-                        className={classes.textFieldSelect}
-                      />
-                    )}
-                  /> */}
                   {/* Search input for filtering news */}
                   <TextField
                     label="البحث عن الأخبار المرتبطة"
