@@ -136,7 +136,7 @@ const UpdateForm = (insertFormProps) => {
   const [imageConversionComplete, setImageConversionComplete] = useState(false);
 
   const formRef = useRef();
-  const editorRef = useRef(null);
+  const editorRef = useRef("");
 
   // useEffect hook to call handleGetNewsSelected when selectedNewsId changes
   useEffect(() => {
@@ -685,217 +685,213 @@ const UpdateForm = (insertFormProps) => {
                       ))}
                     </List>
                   )}
-                  {!openfield ? (
-                    ""
-                  ) : (
-                    <>
-                      <FormControl fullWidth required>
-                        <InputLabel
-                          id="category-label"
-                          className={classes.labelText}
-                        >
-                          تصنيف الخبر
-                        </InputLabel>
-                        <Select
-                          labelId="category-label"
-                          type="select"
-                          name="Category"
-                          className={classes.textFieldSelect}
-                          value={selectedCategory} // Controlled by state
-                          onChange={(e) => setSelectedCategory(e.target.value)} // Update state on change
-                        >
-                          {insertFormProps.NewsCategory.length > 0
-                            ? insertFormProps.NewsCategory.map((category) => (
-                                <MenuItem
-                                  key={category.id}
-                                  value={category.title}
-                                >
-                                  {category.title}
-                                </MenuItem>
-                              ))
-                            : insertFormProps.categories.map((category) => (
-                                <MenuItem
-                                  key={category.value}
-                                  value={category.value}
-                                >
-                                  {category.label}
-                                </MenuItem>
-                              ))}
-                        </Select>
-                      </FormControl>
-                      <TextField
-                        label="عنوان الخبر"
-                        name="Title"
-                        type="text"
-                        variant="outlined"
-                        className={classes.textField}
-                        required
-                      />
-                      <Editor
-                        apiKey="1thbepflowaqt327jgk300c6yn0xl54vbz0efjjicrirei9e"
-                        onInit={(evt, editor) => (editorRef.current = editor)}
-                        initialValue={editorRef.current}
-                        init={{
-                          height: 500,
-                          width: "95%",
-                          directionality: "rtl",
-                          menubar: false,
-                          plugins: [
-                            "advlist",
-                            "autolink",
-                            "lists",
-                            "link",
-                            "image",
-                            "charmap",
-                            "preview",
-                            "anchor",
-                            "searchreplace",
-                            "visualblocks",
-                            "code",
-                            "fullscreen",
-                            "insertdatetime",
-                            "media",
-                            "table",
-                            "help",
-                            "wordcount",
-                            "directionality",
-                          ],
-                          toolbar:
-                            "formatselect | undo redo | blocks | " +
-                            "bold italic forecolor | alignleft aligncenter " +
-                            "alignright alignjustify | bullist numlist outdent indent | " +
-                            "removeformat | image | ltr rtl | help",
-                          content_style:
-                            "body { font-family:AL_Jaz_Regular; font-size:14px }",
-                        }}
-                      />
-                      <TextField
-                        label="البحث عن الأخبار المرتبطة"
-                        name="SearchNews"
-                        type="text"
-                        variant="outlined"
-                        style={{ width: "95%" }}
+                  <div style={{ display: openfield ? "block" : "none" }}>
+                    <FormControl fullWidth required>
+                      <InputLabel
+                        id="category-label"
+                        className={classes.labelText}
+                      >
+                        تصنيف الخبر
+                      </InputLabel>
+                      <Select
+                        labelId="category-label"
+                        type="select"
+                        name="Category"
                         className={classes.textFieldSelect}
-                        value={searchRelatedQuery}
-                        onChange={handleSearchRelatedInputChange}
+                        value={selectedCategory} // Controlled by state
+                        onChange={(e) => setSelectedCategory(e.target.value)} // Update state on change
+                      >
+                        {insertFormProps.NewsCategory.length > 0
+                          ? insertFormProps.NewsCategory.map((category) => (
+                              <MenuItem
+                                key={category.id}
+                                value={category.title}
+                              >
+                                {category.title}
+                              </MenuItem>
+                            ))
+                          : insertFormProps.categories.map((category) => (
+                              <MenuItem
+                                key={category.value}
+                                value={category.value}
+                              >
+                                {category.label}
+                              </MenuItem>
+                            ))}
+                      </Select>
+                    </FormControl>
+                    <TextField
+                      label="عنوان الخبر"
+                      name="Title"
+                      type="text"
+                      variant="outlined"
+                      className={classes.textField}
+                      required
+                    />
+                    <Editor
+                      apiKey="1thbepflowaqt327jgk300c6yn0xl54vbz0efjjicrirei9e"
+                      onInit={(evt, editor) => (editorRef.current = editor)}
+                      initialValue={editorRef.current}
+                      init={{
+                        height: 500,
+                        width: "95%",
+                        directionality: "rtl",
+                        menubar: false,
+                        plugins: [
+                          "advlist",
+                          "autolink",
+                          "lists",
+                          "link",
+                          "image",
+                          "charmap",
+                          "preview",
+                          "anchor",
+                          "searchreplace",
+                          "visualblocks",
+                          "code",
+                          "fullscreen",
+                          "insertdatetime",
+                          "media",
+                          "table",
+                          "help",
+                          "wordcount",
+                          "directionality",
+                        ],
+                        toolbar:
+                          "formatselect | undo redo | blocks | " +
+                          "bold italic forecolor | alignleft aligncenter " +
+                          "alignright alignjustify | bullist numlist outdent indent | " +
+                          "removeformat | image | ltr rtl | help",
+                        content_style:
+                          "body { font-family:AL_Jaz_Regular; font-size:14px }",
+                      }}
+                    />
+                    <TextField
+                      label="البحث عن الأخبار المرتبطة"
+                      name="SearchNews"
+                      type="text"
+                      variant="outlined"
+                      style={{ width: "95%" }}
+                      className={classes.textFieldSelect}
+                      value={searchRelatedQuery}
+                      onChange={handleSearchRelatedInputChange}
+                    />
+                    <Button
+                      variant="contained"
+                      onClick={() =>
+                        handleSearch(
+                          searchRelatedQuery,
+                          setSearchRelatedResults,
+                          setShowNoRelatedResults
+                        )
+                      }
+                      className={classes.searchButton}
+                    >
+                      بحث
+                    </Button>
+                    {showNoRelatedResults ? (
+                      <Typography variant="body1">
+                        ليس هناك نتائج لبحث: {searchQuery}
+                      </Typography>
+                    ) : (
+                      <>
+                        <List>
+                          {/* Your list of search results */}
+                          {selectedRelatedNews.map((news) => (
+                            <ListItem
+                              key={news.id}
+                              dense
+                              button
+                              onClick={() => handleToggleCheckbox(news)}
+                            >
+                              <ListItemIcon>
+                                <Checkbox
+                                  edge="start"
+                                  checked={selectedRelatedNews.some(
+                                    (item) => item.id === news.id
+                                  )}
+                                  tabIndex={-1}
+                                  disableRipple
+                                />
+                              </ListItemIcon>
+                              <ListItemText primary={news.Title} />
+                            </ListItem>
+                          ))}
+                        </List>
+
+                        <Divider />
+
+                        <List>
+                          {searchRelatedResults.map((news) => (
+                            <ListItem
+                              key={news.id}
+                              dense
+                              button
+                              onClick={() => handleToggleCheckboxNew(news)}
+                            >
+                              <ListItemIcon>
+                                <Checkbox
+                                  edge="start"
+                                  checked={selectedRelatedNews.some(
+                                    (item) => item.id === news.id
+                                  )}
+                                  tabIndex={-1}
+                                  disableRipple
+                                />
+                              </ListItemIcon>
+                              <ListItemText primary={news.Title} />
+                            </ListItem>
+                          ))}
+                        </List>
+                      </>
+                    )}
+                    <TextField
+                      label="رابط الفيديو"
+                      name="YoutubeLink"
+                      type="text"
+                      variant="outlined"
+                      className={classes.textField}
+                    />
+                    <TextField
+                      label="الهاشتاغ"
+                      name="Hashtag"
+                      type="text"
+                      variant="outlined"
+                      className={classes.textField}
+                    />
+                    <TextField
+                      label="المصدر"
+                      name="Source"
+                      type="text"
+                      variant="outlined"
+                      className={classes.textField}
+                    />
+                    <div className={classes.imageFieldContainer}>
+                      <label
+                        htmlFor="image-upload"
+                        className={classes.imageFieldLabel2}
+                      >
+                        تعديل الصورة
+                      </label>
+                      <input
+                        id="image-upload"
+                        type="file"
+                        name="ImageURL"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className={classes.imageField}
                       />
+                    </div>
+                    {imageConversionComplete && (
                       <Button
                         variant="contained"
-                        onClick={() =>
-                          handleSearch(
-                            searchRelatedQuery,
-                            setSearchRelatedResults,
-                            setShowNoRelatedResults
-                          )
-                        }
-                        className={classes.searchButton}
+                        type="submit"
+                        className={classes.submitButton}
                       >
-                        بحث
+                        تحديث
                       </Button>
-                      {showNoRelatedResults ? (
-                        <Typography variant="body1">
-                          ليس هناك نتائج لبحث: {searchQuery}
-                        </Typography>
-                      ) : (
-                        <>
-                          <List>
-                            {/* Your list of search results */}
-                            {selectedRelatedNews.map((news) => (
-                              <ListItem
-                                key={news.id}
-                                dense
-                                button
-                                onClick={() => handleToggleCheckbox(news)}
-                              >
-                                <ListItemIcon>
-                                  <Checkbox
-                                    edge="start"
-                                    checked={selectedRelatedNews.some(
-                                      (item) => item.id === news.id
-                                    )}
-                                    tabIndex={-1}
-                                    disableRipple
-                                  />
-                                </ListItemIcon>
-                                <ListItemText primary={news.Title} />
-                              </ListItem>
-                            ))}
-                          </List>
-
-                          <Divider />
-
-                          <List>
-                            {searchRelatedResults.map((news) => (
-                              <ListItem
-                                key={news.id}
-                                dense
-                                button
-                                onClick={() => handleToggleCheckboxNew(news)}
-                              >
-                                <ListItemIcon>
-                                  <Checkbox
-                                    edge="start"
-                                    checked={selectedRelatedNews.some(
-                                      (item) => item.id === news.id
-                                    )}
-                                    tabIndex={-1}
-                                    disableRipple
-                                  />
-                                </ListItemIcon>
-                                <ListItemText primary={news.Title} />
-                              </ListItem>
-                            ))}
-                          </List>
-                        </>
-                      )}
-                      <TextField
-                        label="رابط الفيديو"
-                        name="YoutubeLink"
-                        type="text"
-                        variant="outlined"
-                        className={classes.textField}
-                      />
-                      <TextField
-                        label="الهاشتاغ"
-                        name="Hashtag"
-                        type="text"
-                        variant="outlined"
-                        className={classes.textField}
-                      />
-                      <TextField
-                        label="المصدر"
-                        name="Source"
-                        type="text"
-                        variant="outlined"
-                        className={classes.textField}
-                      />
-                      <div className={classes.imageFieldContainer}>
-                        <label
-                          htmlFor="image-upload"
-                          className={classes.imageFieldLabel2}
-                        >
-                          تعديل الصورة
-                        </label>
-                        <input
-                          id="image-upload"
-                          type="file"
-                          name="ImageURL"
-                          accept="image/*"
-                          onChange={handleImageChange}
-                          className={classes.imageField}
-                        />
-                      </div>
-                      {imageConversionComplete && (
-                        <Button
-                          variant="contained"
-                          type="submit"
-                          className={classes.submitButton}
-                        >
-                          تحديث
-                        </Button>
-                      )}
-                    </>
-                  )}
+                    )}
+                  </div>
                   {showPopup && (
                     <div className={classes.popup}>
                       <div className={classes.popupContent}>

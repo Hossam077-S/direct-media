@@ -601,13 +601,15 @@ const DeleteForm = (insertFormProps) => {
                     </List>
                   )}
 
-                  <Button
-                    variant="contained"
-                    type="submit"
-                    className={classes.submitButton}
-                  >
-                    حذف
-                  </Button>
+                  {selectedListRemove.length > 0 && (
+                    <Button
+                      variant="contained"
+                      type="submit"
+                      className={classes.submitButton}
+                    >
+                      حذف
+                    </Button>
+                  )}
                   {showPopup && (
                     <div className={classes.popup}>
                       <div className={classes.popupContent}>

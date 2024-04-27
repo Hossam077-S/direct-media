@@ -222,7 +222,7 @@ const Header = () => {
                   <CacheProvider value={cacheRtl}>
                     <ThemeProvider theme={theme}>
                       <TextField
-                        label="البحث عن الأخبار المرتبطة"
+                        label="بحث"
                         name="SearchNews"
                         type="text"
                         variant="outlined"
