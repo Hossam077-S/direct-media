@@ -136,6 +136,8 @@ const NewsDetails = () => {
               )}
             </div>
             <div className={classes.shareButtons}>
+              <p className={classes.shareText}>{newsItem && "مشاركة:"}</p>
+
               {socialMedia.map((category, index) => (
                 <ShareButton
                   key={index}

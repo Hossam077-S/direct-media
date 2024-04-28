@@ -56,6 +56,10 @@ const ArticleDetails = () => {
     setLoading(false);
   }, [id, articlesData, writersData]);
 
+  if (!articlesData || !writersData) {
+    setLoading(true);
+  }
+
   function truncate(source, size) {
     return source?.length > size ? source?.slice(0, size - 1) + "…" : source;
   }
@@ -98,7 +102,7 @@ const ArticleDetails = () => {
               )}
             </div>
             <div className={classes.shareButtons}>
-              <p className={classes.shareText}>مشاركة:</p>
+              <p className={classes.shareText}>{articleInfo && "مشاركة:"}</p>
               {socialMedia.map((category) => (
                 <ShareButton
                   socialMedia={category?.value}

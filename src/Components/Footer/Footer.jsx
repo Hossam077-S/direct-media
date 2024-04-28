@@ -164,7 +164,7 @@ const Footer = () => {
                   size="large"
                   onClick={() =>
                     window.open(
-                      "https://youtube.com/@directmedialb6728?si=W_PJ_wCQqcE0gjSD"
+                      "https://www.youtube.com/@DirectMediaLB?si=wrninKj8iqrNt2bl"
                     )
                   }
                 >
