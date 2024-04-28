@@ -3,6 +3,7 @@ import { Link, useParams } from "react-router-dom";
 
 import useStyles from "./style";
 import { Divider } from "@mui/material";
+
 import { SuspenseFallback2 } from "../SuspenseFallback/SuspenseFallback2";
 import FirestoreContext from "../../Utils/FirestoreContext2";
 import MetaTags from "../MetaTags/MetaTags";
@@ -78,10 +79,10 @@ const WriterDetails = () => {
             />
           </div>
           <div className={classes.descriptionContent}>
-            <p className={classes.description}>{writerItem.Description}</p>
+            <p className={classes.description}>{writerItem?.Description}</p>
           </div>
         </div>
-        {/* List of Episodes */}
+        {/* List of Article */}
         <div className={classes.EpisodesList}>
           <p className={classes.EpisodesHeaderTitle}>المقالات</p>
           {wrtierArticle?.length === 0 ? (
@@ -92,6 +93,7 @@ const WriterDetails = () => {
                 <Link
                   to={"/article/" + wArticle.ArticleID}
                   className={classes.LinkInnerPages}
+                  key={wArticle.ArticleID} // Move the key prop here
                 >
                   <li
                     key={wArticle.ArticleID}

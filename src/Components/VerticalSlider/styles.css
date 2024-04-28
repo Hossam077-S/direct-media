@@ -30,7 +30,7 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    height: 43px; /* Your specified height */
+    height: 37px; /* Your specified height */
   }
   
 /* Title with overflow hidden to manage varying content length */

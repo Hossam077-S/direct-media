@@ -40,6 +40,18 @@ const useStyles = makeStyles((theme) => ({
       fontSize: "12px",
     },
   },
+  shareText: {
+    fontFamily: `${mainFont}`,
+    fontSize: "15px",
+    padding: "5px 0",
+    "@media (max-width: 768px)": {
+      fontSize: "12px",
+      padding: "5px 0",
+    },
+    "@media (max-width: 320px)": {
+      padding: "12px 0",
+    },
+  },
   shareButtons: {
     display: "flex",
   },

@@ -259,8 +259,7 @@ const useStyles = makeStyles(() => ({
     width: "642px",
 
     "@media (max-width: 768px)": {
-      height: "5vw !important",
-      width: "90vw",
+      width: "52vw",
       marginBottom: "4vw",
     },
   },
