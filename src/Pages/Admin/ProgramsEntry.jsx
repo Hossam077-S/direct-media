@@ -192,6 +192,7 @@ const ProgramsEntry = ({ distinctProgram }) => {
 
         console.log("Document written with ID: ", docRef.id);
 
+        convertImageToWebP(null, "empty");
         setLoading(false);
         setSnackbar(true);
         setShowPopupProgram(false);

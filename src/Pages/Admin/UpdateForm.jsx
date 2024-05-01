@@ -311,6 +311,7 @@ const UpdateForm = (insertFormProps) => {
             setSelectedNewsId(null);
             setImageConversionComplete(false);
 
+            convertImageToWebP(null, "empty");
             setEditorContent("");
             setSelectedCategory("");
             setOldImage("");
@@ -356,6 +357,7 @@ const UpdateForm = (insertFormProps) => {
         setSelectedNewsId(null);
         setImageConversionComplete(false);
 
+        convertImageToWebP(null, "empty");
         setEditorContent("");
         setSelectedCategory("");
         setOldImage("");
@@ -428,6 +430,7 @@ const UpdateForm = (insertFormProps) => {
               Hashtag: "",
             });
 
+            convertImageToWebP(null, "empty");
             setEditorContent("");
             setSelectedArticle(null);
             setOldImage("");
@@ -454,6 +457,7 @@ const UpdateForm = (insertFormProps) => {
           Hashtag: "",
         });
 
+        convertImageToWebP(null, "empty");
         setEditorContent("");
         setSelectedArticle(null);
         setOldImage("");
@@ -478,10 +482,10 @@ const UpdateForm = (insertFormProps) => {
       // Check if any documents match the selected ArticleID
       if (!writer.empty) {
         // Use formRef to access form elements and set data
-        formRef.current.wrName.value = writer.Name || "";
-        formRef.current.wrDescription.value = writer.Description || "";
+        formRef.current.wrName.value = writer?.Name || "";
+        formRef.current.wrDescription.value = writer?.Description || "";
 
-        setOldImage(writer.ProfileImage);
+        setOldImage(writer?.ProfileImage);
       } else {
         console.error("Error getting writer data: Not Found");
       }
@@ -547,6 +551,7 @@ const UpdateForm = (insertFormProps) => {
               ProfileImage: "",
             });
 
+            convertImageToWebP(null, "empty");
             setSelectedWriter(null);
             setOldImage("");
             setSnackbar(true);
@@ -571,6 +576,7 @@ const UpdateForm = (insertFormProps) => {
           ProfileImage: "",
         });
 
+        convertImageToWebP(null, "empty");
         setSelectedWriter(null);
         setOldImage("");
         setSnackbar(true);

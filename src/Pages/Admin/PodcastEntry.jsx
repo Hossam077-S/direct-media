@@ -220,6 +220,8 @@ const PodcastEntry = ({ distinctPodcast }) => {
       });
 
       console.log("Document written with ID: ", docRef.id);
+
+      convertImageToWebP(null, "empty");
       setLoading(false);
       setSnackbar(true);
       setShowPopupPodcast(false);

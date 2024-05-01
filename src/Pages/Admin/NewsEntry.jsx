@@ -154,6 +154,7 @@ const NewsEntry = ({ distinctNewsCategory, categories }) => {
             PublishDate: new Date(),
           });
 
+          convertImageToWebP(null, "empty");
           setEditorContent("");
           setSelectedNews([]);
           setLoading(false);

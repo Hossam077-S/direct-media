@@ -95,69 +95,6 @@ const DeleteForm = (insertFormProps) => {
     setShowPopup(true);
   };
 
-  // const handleDeleteNews = async (event) => {
-  //   event.preventDefault();
-
-  //   try {
-  //     setLoading(true);
-
-  //     const querySnapshot = await getDocs(
-  //       query(collection(db, "News"), where("NewsID", "==", selectedListRemove))
-  //     );
-
-  //     if (!querySnapshot.empty) {
-  //       const selectedNewsDoc = querySnapshot.docs[0];
-
-  //       const selectedNewsData = querySnapshot.docs[0].data();
-
-  //       const imageRef = ref(storage, `${selectedNewsData.ImageURL}`);
-
-  //       await deleteDoc(selectedNewsDoc.ref);
-
-  //       if (imageRef) {
-  //         try {
-  //           await deleteObject(imageRef);
-  //           console.log("Image deleted successfully");
-  //         } catch (error) {
-  //           console.error("Error deleting image:", error);
-  //         }
-  //       }
-
-  //       // Need to fix, Remove the realted news
-  //       const referencingNewsQuerySnapshot = await getDocs(
-  //         query(
-  //           collection(db, "News"),
-  //           where("Tadmin", "array-contains", selectedListRemove)
-  //         )
-  //       );
-
-  //       referencingNewsQuerySnapshot.docs.forEach(async (docSnapshot) => {
-  //         const docRef = doc(db, "News", docSnapshot.id);
-
-  //         // Get the current value of relatedNews
-  //         const updatedRelatedNews = arrayRemove(selectedListRemove);
-
-  //         // Update relatedNews field
-  //         await updateDoc(docRef, { relatedNews: updatedRelatedNews });
-  //       });
-
-  //       console.log("News deleted successfully!");
-
-  //       setSnackbar(true);
-  //       setShowPopup(false);
-  //       setLoading(false);
-  //       setSelectedListRemove(null);
-  //     } else {
-  //       console.error("Error getting news data: Not Found");
-  //       setSnackbar(false);
-  //       setLoading(false);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error Deleting news data: ", error);
-  //     setLoading(false);
-  //   }
-  // };
-
   const handleDeleteNews = async (event) => {
     event.preventDefault();
 

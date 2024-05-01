@@ -148,6 +148,7 @@ const ArticlesEntry = ({ distinctWritersName }) => {
           Hashtag: "",
           PublishDate: new Date(),
         });
+        convertImageToWebP(null, "empty");
         setEditorContent("");
         setLoading(false);
         setSnackbar(true);
@@ -204,6 +205,7 @@ const ArticlesEntry = ({ distinctWritersName }) => {
         setSnackbar(true);
         setError(true);
         setShowPopupWriter(false);
+        convertImageToWebP(null, "empty");
 
         setLoading(false);
         return; // Exit the function
@@ -233,6 +235,7 @@ const ArticlesEntry = ({ distinctWritersName }) => {
 
         console.log("Document written with ID: ", docRef.id);
 
+        convertImageToWebP(null, "empty");
         setLoading(false);
         setSnackbar(true);
         setShowPopupWriter(false);

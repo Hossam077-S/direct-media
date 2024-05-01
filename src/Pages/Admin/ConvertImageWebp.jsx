@@ -5,7 +5,11 @@ const ConvertImageWebp = () => {
   const [convertedCover, setConvertedCover] = useState(null);
 
   const convertImageToWebP = async (file, image) => {
-    if (!file) return;
+    if (!file || image === "empty") {
+      setConvertedImage(null);
+      setConvertedCover(null);
+      return;
+    }
 
     if (file.type === "image/webp") {
       if (image === "image") {
