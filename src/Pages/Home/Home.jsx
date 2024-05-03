@@ -56,6 +56,7 @@ const Home = () => {
     groupedData,
     groupedProgramsData,
     loading,
+    getAds,
   } = useContext(FirestoreContext);
 
   // Limit groupedData to 20 items for each category
@@ -66,6 +67,18 @@ const Home = () => {
 
   const [hoverIndex, setHoverIndex] = useState(-1);
   const [latestProgram, setLatestProgram] = useState(null);
+  const [videoUrl, setVideoUrl] = useState("");
+
+  useEffect(() => {
+    // Initialize Firebase if not already initialized
+    if (!videoUrl) {
+      getAds(setVideoUrl);
+      console.log("Getting url");
+    } else {
+      console.log("Already exisits the url");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [videoUrl]); // Empty dependency array ensures the effect runs only once
 
   useEffect(() => {
     if (groupedProgramsData && groupedProgramsData.length > 0) {
@@ -398,11 +411,13 @@ const Home = () => {
         </Stack>
 
         {/* Ads */}
-        {/* <div className={classes.adsContainer}>
-          <Typography className={classes.adsText}>
-            إعــــــــــــــــــــــلان
-          </Typography>
-        </div> */}
+        {videoUrl && (
+          <div className={classes.adsContainer}>
+            <video controls width="100%" autoPlay muted loop>
+              <source src={videoUrl} type="video/webm" />
+            </video>
+          </div>
+        )}
 
         {/* Programs & ThreeSlider */}
         <div id="programs" className={classes.programContainer}>

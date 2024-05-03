@@ -30,7 +30,7 @@
     justify-content: center;
     align-items: flex-start;
     width: 233px;
-    animation: slide 2.5s ease forwards;
+    animation: slide 1s ease forwards;
 
   }
   
@@ -55,7 +55,7 @@
     width: 75px; /* Adjust as needed */
     height: 75px;
     object-fit: cover;
-    animation: re-slide 2.5s ease forwards;
+    animation: re-slide 1s ease forwards;
 
   }
   

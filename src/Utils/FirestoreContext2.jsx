@@ -11,6 +11,9 @@ import {
   startAfter,
   doc,
   getDoc,
+  storage,
+  ref,
+  getDownloadURL,
 } from "../Utils/firebase";
 
 const FirestoreContext = createContext();
@@ -475,6 +478,23 @@ export const FirestoreProvider = ({ children }) => {
     }
   };
 
+  const getAds = async (setVideoUrl) => {
+    const storageRef = ref(
+      storage,
+      // `gs://directmedia-6b77f.appspot.com/ads/Al Shark Promo.mp4` // Append the timestamp to the image name
+      `gs://directmedia-6b77f.appspot.com/ads/Al Shark Promo.webm`
+    );
+
+    try {
+      // Get the download URL for the video
+      const url = await getDownloadURL(storageRef);
+      setVideoUrl(url);
+    } catch (error) {
+      // Handle any errors
+      console.error("Error fetching video:", error);
+    }
+  };
+
   return (
     <FirestoreContext.Provider
       value={{
@@ -486,6 +506,7 @@ export const FirestoreProvider = ({ children }) => {
         handleSearch,
         getSpecificNews,
         getRelatedNews,
+        getAds,
       }}
     >
       {children}

@@ -260,26 +260,21 @@ const useStyles = makeStyles(() => ({
 
     "@media (max-width: 768px)": {
       width: "52vw",
+      height: "30px !important",
       marginBottom: "4vw",
     },
   },
 
   //ads
-  // adsContainer: {
-  //   display: "flex",
-  //   backgroundColor: "#F1F1F1",
-  //   marginTop: "33px",
-  //   width: "100%",
-  //   height: "102px",
-  //   alignItems: "center",
-  //   justifyContent: "center",
-  //   maxWidth: "874px",
-  // },
-  // adsText: {
-  //   fontSize: "40px !important",
-  //   fontFamily: `${mainFont} !important`,
-  //   color: "#2E3190",
-  // },
+  adsContainer: {
+    display: "flex",
+    marginTop: "33px",
+    width: "auto",
+    height: "auto",
+    alignItems: "center",
+    justifyContent: "center",
+    maxWidth: "874px",
+  },
 
   programContainer: {
     paddingTop: "38px",
@@ -610,7 +605,7 @@ const useStyles = makeStyles(() => ({
 
     "@media (max-width: 768px)": {
       width: "90vw",
-      height: "auto",
+      height: "90vw",
     },
   },
   title_dividerArticl: {
@@ -860,6 +855,11 @@ const useStyles = makeStyles(() => ({
     "&:hover": {
       transform: "scale(1.05)",
       transition: "transform .2s",
+    },
+
+    "@media (max-width: 768px)": {
+      width: "90vw",
+      height: "90vw",
     },
   },
   writerTitle: {
