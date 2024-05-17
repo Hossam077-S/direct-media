@@ -57,9 +57,9 @@ export const FirestoreProvider = ({ children }) => {
         "صحافة",
         "محلي",
         "دولي",
-        "رياضة",
         "طقس",
         "عالمية",
+        "منوعات", // Added new category
       ];
 
       // Subscribe to news collection
@@ -82,13 +82,55 @@ export const FirestoreProvider = ({ children }) => {
       });
 
       // Getting latest 20 news by category
+
+      // categories.forEach((category) => {
+      //   const newsbyCategoryQuery = query(
+      //     collection(db, "News"),
+      //     orderBy("PublishDate", "desc"),
+      //     where("Category", "==", category),
+      //     limit(20)
+      //   );
+
+      //   unsubscribeCategory = onSnapshot(newsbyCategoryQuery, (snapshot) => {
+      //     const processedData = processCategoryNews(snapshot, category);
+
+      //     // Update lastDocCategory with the last visible document
+      //     const lastVisibleCategory = snapshot.docs[snapshot.docs.length - 1];
+      //     setLastDocCategory((prevLastDocs) => ({
+      //       ...prevLastDocs,
+      //       [category]: lastVisibleCategory,
+      //     }));
+
+      //     setData((prevData) => ({
+      //       ...prevData,
+      //       groupedData: {
+      //         ...prevData.groupedData,
+      //         ...processedData.groupedData,
+      //       },
+      //     }));
+      //   });
+      // });
+
       categories.forEach((category) => {
-        const newsbyCategoryQuery = query(
-          collection(db, "News"),
-          orderBy("PublishDate", "desc"),
-          where("Category", "==", category),
-          limit(20)
-        );
+        let newsbyCategoryQuery;
+
+        if (category === "منوعات") {
+          // Combine news from both "رياضة" and "منوعات"
+          newsbyCategoryQuery = query(
+            collection(db, "News"),
+            orderBy("PublishDate", "desc"),
+            where("Category", "in", ["رياضة", "منوعات"]),
+            limit(20)
+          );
+        } else {
+          // Standard query for other categories
+          newsbyCategoryQuery = query(
+            collection(db, "News"),
+            orderBy("PublishDate", "desc"),
+            where("Category", "==", category),
+            limit(20)
+          );
+        }
 
         unsubscribeCategory = onSnapshot(newsbyCategoryQuery, (snapshot) => {
           const processedData = processCategoryNews(snapshot, category);

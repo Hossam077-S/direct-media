@@ -413,7 +413,7 @@ const Home = () => {
         {/* Ads */}
         {videoUrl && (
           <div className={classes.adsContainer}>
-            <video controls width="100%" autoPlay muted loop>
+            <video controls width="100%" autoPlay muted loop playsInline>
               <source src={videoUrl} type="video/webm" />
             </video>
           </div>
@@ -528,11 +528,11 @@ const Home = () => {
       <div className={classes.containerDiv2}>
         <Container className={classes.container2}>
           <Stack direction="row" spacing={4}>
-            {groupedData?.رياضة ? (
+            {groupedData?.منوعات ? (
               <div>
                 <div className={classes.articlImageDiv}>
                   <Slider {...allNewsSlider}>
-                    {limitedGroupedData?.رياضة?.map((newsItem, index) => (
+                    {limitedGroupedData?.منوعات?.map((newsItem, index) => (
                       <div key={index} className={classes.sliderItem}>
                         <>
                           <LazyImage
