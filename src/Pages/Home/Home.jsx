@@ -43,6 +43,7 @@ import TimeDifferenceComponent from "../../Components/TimeDifference/TimeDiffere
 import NewsSlider from "../../Components/NewsSlider/NewsSlider";
 import { SuspenseFallback2 } from "../../Components/SuspenseFallback/SuspenseFallback2";
 import { analytics, logEvent } from "../../Utils/firebase";
+import WhatsApp from "../../Components/WhatsAppComponent/WhatsApp";
 
 const Home = () => {
   const classes = useStyles();
@@ -418,6 +419,8 @@ const Home = () => {
             </video>
           </div>
         )}
+
+        <WhatsApp />
 
         {/* Programs & ThreeSlider */}
         <div id="programs" className={classes.programContainer}>
