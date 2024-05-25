@@ -22,7 +22,9 @@ import {
   ListItem,
   List,
   ListItemText,
+  Collapse,
 } from "@mui/material";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
 import { Link, NavLink } from "react-router-dom";
 
@@ -46,12 +48,20 @@ import useStyles from "./styles";
 
 const Header = () => {
   const { handleSearch } = useContext(FirestoreContext);
-
   const menuItems = [
-    { name: "كل الأخبار", to: "/newsPage/كل الأخبار" },
-    { name: "محلي", to: "/newsPage/محلي" },
-    { name: "صحافة", to: "/newsPage/صحافة" },
-    { name: "دولي", to: "/newsPage/دولي" },
+    {
+      name: "الأخبار",
+      subItems: [
+        { name: "كل الأخبار", to: "/newsPage/كل الأخبار" },
+        { name: "عاجل", to: "/newsPage/عاجل" },
+        { name: "محلي", to: "/newsPage/محلي" },
+        { name: "دولي", to: "/newsPage/دولي" },
+        { name: "عالمية", to: "/newsPage/عالمية" },
+        { name: "صحافة", to: "/newsPage/صحافة" },
+        { name: "تقرير", to: "/newsPage/تقرير" },
+        { name: "منوعات", to: "/newsPage/منوعات" },
+      ],
+    },
     { name: "الكتاب", to: "/writers" },
     { name: "برامج المنصة", to: "/programs" },
     { name: "بودكاست", to: "/podcasts" },
@@ -97,6 +107,7 @@ const Header = () => {
 
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
+  const [categoryEl, setCategoryEl] = useState(null);
   const [open, setOpen] = useState(false);
 
   const [searchQuery, setSearchQuery] = useState("");
@@ -109,6 +120,14 @@ const Header = () => {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  const handleCategoryOpen = (event) => {
+    setCategoryEl(event.currentTarget);
+  };
+
+  const handleCategoryClose = () => {
+    setCategoryEl(null);
   };
 
   const handleSearchClick = () => {
@@ -291,15 +310,47 @@ const Header = () => {
             />
             <Hidden mdDown>
               <div className={classes.menuItemsContainer}>
-                {menuItems.map((item, index) => (
-                  <NavLink
-                    key={index}
-                    className={classes.linkMenu}
-                    to={item.to}
-                  >
-                    {item.name}
-                  </NavLink>
-                ))}
+                {menuItems.map((item, index) =>
+                  item.subItems ? (
+                    <div key={index}>
+                      <div
+                        className={classes.linkMenu}
+                        onMouseEnter={handleCategoryOpen}
+                        onClick={handleCategoryOpen}
+                      >
+                        {item.name}
+                        <ExpandMoreIcon className={classes.expandMoreIcon} />
+                      </div>
+                      <Menu
+                        anchorEl={categoryEl}
+                        open={Boolean(categoryEl)}
+                        onClose={handleCategoryClose}
+                        MenuListProps={{
+                          onMouseLeave: handleCategoryClose,
+                        }}
+                      >
+                        {item.subItems.map((subItem, subIndex) => (
+                          <MenuItem key={subIndex}>
+                            <NavLink
+                              className={classes.linkMenu}
+                              to={subItem.to}
+                            >
+                              {subItem.name}
+                            </NavLink>
+                          </MenuItem>
+                        ))}
+                      </Menu>
+                    </div>
+                  ) : (
+                    <NavLink
+                      key={index}
+                      className={classes.linkMenu}
+                      to={item.to}
+                    >
+                      {item.name}
+                    </NavLink>
+                  )
+                )}
               </div>
             </Hidden>
             <Hidden mdUp>
@@ -317,17 +368,39 @@ const Header = () => {
               open={Boolean(anchorEl)}
               onClose={handleMenuClose}
             >
-              {menuItems.map((item) => (
-                <MenuItem key={item.name} onClick={handleMenuClose}>
-                  <Link
-                    className={classes.linkMenu}
-                    to={item.to}
-                    color="inherit"
-                  >
-                    {item.name}
-                  </Link>
-                </MenuItem>
-              ))}
+              {menuItems.map((item, index) =>
+                item.subItems ? (
+                  <div key={index}>
+                    <MenuItem onClick={handleCategoryOpen}>
+                      <span className={classes.linkMenu}>{item.name}</span>
+                    </MenuItem>
+                    <Collapse in={true} timeout="auto" unmountOnExit>
+                      <List
+                        component="div"
+                        disablePadding
+                        className={classes.ListContainer}
+                      >
+                        {item.subItems.map((subItem, subIndex) => (
+                          <MenuItem key={subIndex} onClick={handleMenuClose}>
+                            <NavLink
+                              className={classes.linkMenuMobile}
+                              to={subItem.to}
+                            >
+                              {subItem.name}
+                            </NavLink>
+                          </MenuItem>
+                        ))}
+                      </List>
+                    </Collapse>
+                  </div>
+                ) : (
+                  <MenuItem key={index} onClick={handleMenuClose}>
+                    <NavLink className={classes.linkMenu} to={item.to}>
+                      {item.name}
+                    </NavLink>
+                  </MenuItem>
+                )
+              )}
             </Menu>
           </Grid>
         </Grid>

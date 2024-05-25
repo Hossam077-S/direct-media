@@ -1,6 +1,5 @@
 import { makeStyles } from "@mui/styles";
 
-// Define the fonts
 const mainFont = "AL_Jaz_Bold";
 const secondFont = "AL_Jaz_Regular";
 
@@ -232,26 +231,12 @@ export default makeStyles(() => ({
       display: "block",
     },
   },
-
-  divider: {
-    backgroundColor: "#F9AE3B !important",
-    width: "2px !important",
-    height: "72px !important",
-    marginRight: "30px !important",
-    marginLeft: "30px !important",
-
-    "@media (max-width: 768px)": {
-      height: "60px !important",
-    },
+  categoryContainer: {
+    display: "flex",
+    alignItems: "center",
   },
-  logoHeader: {
-    width: "225px",
-    height: "50px",
-
-    "@media (max-width: 768px)": {
-      width: "150px",
-      height: "auto",
-    },
+  expandMoreIcon: {
+    verticalAlign: "middle",
   },
   linkMenu: {
     color: "#2E3190",
@@ -278,6 +263,51 @@ export default makeStyles(() => ({
       transition: "opacity 0.2s !important",
       textDecorationThickness: "2px",
       textUnderlineOffset: "15px",
+    },
+  },
+  ListContainer: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  linkMenuMobile: {
+    color: "#2E3190",
+    position: "relative",
+    fontSize: "16px !important",
+    fontFamily: `${mainFont} !important`,
+    textDecoration: "none",
+    transition: "transform 0.2s ease-in-out",
+    whiteSpace: "nowrap",
+
+    "&.active": {
+      // Use the .active class selector
+      textDecoration: "underline",
+      textDecorationColor: "#F9AE3B",
+      transition: "opacity 0.2s",
+      textDecorationThickness: "2px",
+      textUnderlineOffset: "15px",
+    },
+  },
+
+  divider: {
+    backgroundColor: "#F9AE3B !important",
+    width: "2px !important",
+    height: "72px !important",
+    marginRight: "30px !important",
+    marginLeft: "30px !important",
+
+    "@media (max-width: 768px)": {
+      height: "60px !important",
+    },
+  },
+  logoHeader: {
+    width: "225px",
+    height: "50px",
+
+    "@media (max-width: 768px)": {
+      width: "150px",
+      height: "auto",
     },
   },
   searchButton: {

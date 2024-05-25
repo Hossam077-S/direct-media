@@ -24,8 +24,8 @@ const menuItems = [
     url: "/podcasts",
   },
   {
-    title: "رياضة",
-    url: "/newsPage/رياضة",
+    title: "منوعات",
+    url: "/newsPage/منوعات",
   },
   {
     title: "طقس",

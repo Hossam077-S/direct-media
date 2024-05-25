@@ -59,7 +59,8 @@ export const FirestoreProvider = ({ children }) => {
         "دولي",
         "طقس",
         "عالمية",
-        "منوعات", // Added new category
+        "تقرير",
+        "منوعات",
       ];
 
       // Subscribe to news collection
