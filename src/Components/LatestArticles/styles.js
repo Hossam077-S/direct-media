@@ -87,6 +87,14 @@ const useStyles = makeStyles(() => ({
     "@media (max-width: 768px)": {
       fontSize: "14px !important",
     },
+
+    "&:hover": {
+      textDecoration: "underline",
+      textDecorationColor: "#F9AE3B",
+      transition: "transform .2s",
+      textDecorationThickness: "2px",
+      textUnderlineOffset: "2px",
+    },
   },
   newsItemDescription: {
     marginLeft: "21px !important",

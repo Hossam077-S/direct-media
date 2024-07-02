@@ -97,7 +97,8 @@ const useStyles = makeStyles((theme) => ({
   },
   writerName: {
     margin: 0,
-    fontSize: "14px", // Adjust the font size as needed
+    fontSize: "14px",
+    color: "#2E3190",
     fontFamily: `${mainFont} !important`,
     marginRight: "10PX",
     textDecoration: "none",
