@@ -30,30 +30,34 @@ const LatestArticles = ({ writersData, articlesData }) => {
 
   const getLatestArticles = (writersData, articlesData, topN) => {
     // Combine articles with writers
-    const combinedData = articlesData.map((article) => {
-      const writer = writersData.find((writer) =>
-        writer.ArticleID.includes(article.ArticleID)
+    const combinedData = articlesData?.map((article) => {
+      const writer = writersData?.find((writer) =>
+        writer?.ArticleID?.includes(article?.ArticleID)
       );
       return { ...article, writer };
     });
 
     // Sort by date
-    const sortedData = combinedData.sort(
-      (a, b) => new Date(b.Date) - new Date(a.Date)
-    );
+    const sortedData = combinedData.sort((a, b) => {
+      const dateA = a?.PublishDate?.toDate(); // Convert Firebase Timestamp to JavaScript Date
+      const dateB = b?.PublishDate?.toDate(); // Convert Firebase Timestamp to JavaScript Date
+      return dateB - dateA; // Sort in descending order
+    });
 
     // Get the top N latest articles
     return sortedData.slice(0, topN).map((article) => ({
-      writer: article.writer,
+      writer: article?.writer,
       article: {
-        ArticleID: article.ArticleID,
-        Date: article.Date,
-        Text: article.Text,
+        ArticleID: article?.ArticleID,
+        Date: article?.PublishDate,
+        Text: article?.Text,
       },
     }));
   };
 
   const latestArticles = getLatestArticles(writersData, articlesData, 4);
+
+  console.log(latestArticles);
 
   return writersData?.length > 0 ? (
     <div className={classes.articlContentDiv}>
@@ -81,11 +85,13 @@ const LatestArticles = ({ writersData, articlesData }) => {
                   <div className={classes.descriptionContent}>
                     <div className={classes.newsItemTitle}>
                       <Link
-                        to={`article/${articleItem.article.ArticleID}`}
+                        to={`article/${articleItem?.article?.ArticleID}`}
                         className={classes.LinkInnerPages}
                       >
                         <Typography className={classes.articleContent}>
-                          <span>{truncate(articleItem.article.Text, 65)}</span>
+                          <span>
+                            {truncate(articleItem?.article?.Text, 65)}
+                          </span>
                         </Typography>
                       </Link>
                     </div>
@@ -98,14 +104,14 @@ const LatestArticles = ({ writersData, articlesData }) => {
                       >
                         ,,
                       </span>
-                      <span>{articleItem.writer.Name}</span>
+                      <span>{articleItem?.writer?.Name}</span>
                     </div>
                   </div>
 
                   <ListItemAvatar>
                     <LazyImage
-                      alt={articleItem.writer.Name}
-                      src={articleItem.writer.ProfileImage}
+                      alt={articleItem?.writer?.Name}
+                      src={articleItem?.writer?.ProfileImage}
                       className={classes.newsAvatar}
                     />
                   </ListItemAvatar>
