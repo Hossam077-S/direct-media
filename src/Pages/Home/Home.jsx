@@ -5,16 +5,7 @@ import { Link } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import {
-  Container,
-  Stack,
-  Typography,
-  Skeleton,
-  ListItemAvatar,
-  Divider,
-  List,
-  ListItem,
-} from "@mui/material";
+import { Container, Stack, Typography, Skeleton, Divider } from "@mui/material";
 
 import rectangleShape from "../../assests/rect-tri.gif";
 import rectangle2Shape from "../../assests/reactangle.gif";
@@ -44,6 +35,7 @@ import NewsSlider from "../../Components/NewsSlider/NewsSlider";
 import { SuspenseFallback2 } from "../../Components/SuspenseFallback/SuspenseFallback2";
 import { analytics, logEvent } from "../../Utils/firebase";
 import WhatsApp from "../../Components/WhatsAppComponent/WhatsApp";
+import LatestArticles from "../../Components/LatestArticles/LatestArticles";
 
 const Home = () => {
   const classes = useStyles();
@@ -66,7 +58,6 @@ const Home = () => {
     limitedGroupedData[category] = groupedData[category].slice(0, 20);
   });
 
-  const [hoverIndex, setHoverIndex] = useState(-1);
   const [latestProgram, setLatestProgram] = useState(null);
   const [videoUrl, setVideoUrl] = useState("");
 
@@ -252,14 +243,6 @@ const Home = () => {
         },
       },
     ],
-  };
-
-  const handleMouseEnter = (index) => {
-    setHoverIndex(index);
-  };
-
-  const handleMouseLeave = () => {
-    setHoverIndex(-1);
   };
 
   function truncate(source, size) {
@@ -641,91 +624,10 @@ const Home = () => {
                   كتّاب المنصّة
                 </Typography>
               </div>
-              {writersData?.length > 0 ? (
-                <div className={classes.articlContentDiv}>
-                  <div className={classes.articlImage_Divider}>
-                    <List className={classes.newsList}>
-                      {writersData?.slice(0, 4).map((writerItem, index) => (
-                        <React.Fragment key={index}>
-                          <ListItem
-                            className={`${classes.newsListItem} ${
-                              index === hoverIndex ? classes.activeListItem : ""
-                            }`}
-                            onMouseEnter={() => handleMouseEnter(index)}
-                            onMouseLeave={handleMouseLeave}
-                          >
-                            <div className={classes.newsItemContent}>
-                              {index >= 0 && (
-                                <Divider
-                                  orientation="vertical"
-                                  flexItem
-                                  className={`${classes.articlDivider} ${
-                                    index === hoverIndex
-                                      ? classes.activeDivider
-                                      : ""
-                                  }`}
-                                />
-                              )}
-                              <div className={classes.descriptionContent}>
-                                <div className={classes.newsItemTitle}>
-                                  {articlesData?.map((articleItem, index) => {
-                                    const articleID =
-                                      writerItem.ArticleID[
-                                        writerItem.ArticleID.length - 1
-                                      ];
-                                    if (articleItem.ArticleID === articleID) {
-                                      return (
-                                        <Link
-                                          to={"article/" + articleItem.id}
-                                          className={classes.LinkInnerPages}
-                                          key={index}
-                                        >
-                                          <Typography
-                                            key={index}
-                                            className={classes.articleContent}
-                                          >
-                                            <span>
-                                              {truncate(articleItem.Text, 65)}
-                                            </span>
-                                          </Typography>
-                                        </Link>
-                                      );
-                                    }
-                                    return null;
-                                  })}
-                                </div>
-                                <div className={classes.newsItemDescription}>
-                                  <span
-                                    style={{
-                                      fontSize: "30px",
-                                      paddingLeft: "  5px",
-                                    }}
-                                  >
-                                    ,,
-                                  </span>
-                                  <span>{writerItem.Name}</span>
-                                </div>
-                              </div>
-
-                              <ListItemAvatar>
-                                <LazyImage
-                                  alt={writerItem.Title}
-                                  src={writerItem.ProfileImage}
-                                  className={classes.newsAvatar}
-                                />
-                              </ListItemAvatar>
-                            </div>
-                          </ListItem>
-                        </React.Fragment>
-                      ))}
-                    </List>
-                  </div>
-                </div>
-              ) : (
-                <div>
-                  <Skeleton variant="rectangular" height="364px" />
-                </div>
-              )}
+              <LatestArticles
+                writersData={writersData}
+                articlesData={articlesData}
+              />
             </Stack>
           </Stack>
         </Container>

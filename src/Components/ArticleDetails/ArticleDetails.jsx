@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 import useStyles from "./style";
 import TimeDifferenceComponent from "../TimeDifference/TimeDifferenceComponent";
@@ -129,7 +129,13 @@ const ArticleDetails = () => {
                   alt={writerItem?.Name}
                   className={classes.profileWriter}
                 />
-                <p className={classes.writerName}>{writerItem?.Name}</p>
+                <Link
+                  to={"/writer/" + writerItem.id}
+                  className={classes.writerName}
+                  key={writerItem.id}
+                >
+                  {writerItem?.Name}
+                </Link>
               </>
             ) : (
               ""

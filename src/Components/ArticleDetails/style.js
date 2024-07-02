@@ -100,6 +100,7 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "14px", // Adjust the font size as needed
     fontFamily: `${mainFont} !important`,
     marginRight: "10PX",
+    textDecoration: "none",
   },
 }));
 
