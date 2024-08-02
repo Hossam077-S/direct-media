@@ -50,6 +50,7 @@ const Home = () => {
     groupedProgramsData,
     loading,
     getAds,
+    getIPTLogo,
   } = useContext(FirestoreContext);
 
   // Limit groupedData to 20 items for each category
@@ -60,6 +61,7 @@ const Home = () => {
 
   const [latestProgram, setLatestProgram] = useState(null);
   const [videoUrl, setVideoUrl] = useState("");
+  const [IPTLogo, setIPTLogo] = useState("");
 
   useEffect(() => {
     // Initialize Firebase if not already initialized
@@ -71,6 +73,17 @@ const Home = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [videoUrl]); // Empty dependency array ensures the effect runs only once
+
+  useEffect(() => {
+    // Initialize Firebase if not already initialized
+    if (!IPTLogo) {
+      getIPTLogo(setIPTLogo);
+      console.log("Getting url");
+    } else {
+      console.log("Already exisits the url");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [IPTLogo]); // Empty dependency array ensures the effect runs only once
 
   useEffect(() => {
     if (groupedProgramsData && groupedProgramsData.length > 0) {
@@ -400,8 +413,12 @@ const Home = () => {
             <video controls width="100%" autoPlay muted loop playsInline>
               <source src={videoUrl} type="video/webm" />
             </video>
+            <div className={classes.adsIPT}>
+              <img src={IPTLogo} alt="IPT" className={classes.IPT} />
+            </div>
           </div>
         )}
+        {/* || IPTLogo */}
 
         <WhatsApp />
 

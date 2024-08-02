@@ -538,6 +538,22 @@ export const FirestoreProvider = ({ children }) => {
     }
   };
 
+  const getIPTLogo = async (setIPTLogo) => {
+    const storageRef = ref(
+      storage,
+      // `gs://directmedia-6b77f.appspot.com/ads/Al Shark Promo.mp4` // Append the timestamp to the image name
+      `gs://directmedia-6b77f.appspot.com/ads/IPT Logo.png`
+    );
+
+    try {
+      // Get the download URL for the video
+      const url = await getDownloadURL(storageRef);
+      setIPTLogo(url);
+    } catch (error) {
+      // Handle any errors
+      console.error("Error fetching video:", error);
+    }
+  };
   return (
     <FirestoreContext.Provider
       value={{
@@ -550,6 +566,7 @@ export const FirestoreProvider = ({ children }) => {
         getSpecificNews,
         getRelatedNews,
         getAds,
+        getIPTLogo,
       }}
     >
       {children}

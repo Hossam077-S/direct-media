@@ -268,12 +268,29 @@ const useStyles = makeStyles(() => ({
   //ads
   adsContainer: {
     display: "flex",
+    flexDirection: "column",
     marginTop: "33px",
     width: "auto",
     height: "auto",
     alignItems: "center",
     justifyContent: "center",
     maxWidth: "874px",
+  },
+
+  adsIPT: {
+    display: "flex",
+    marginTop: "33px",
+    padding: "20px 0px",
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    height: "auto",
+    background: "black",
+  },
+  IPT: {
+    "@media (max-width: 768px)": {
+      width: "50%",
+    },
   },
 
   programContainer: {
