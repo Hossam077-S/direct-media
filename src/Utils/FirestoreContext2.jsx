@@ -542,7 +542,7 @@ export const FirestoreProvider = ({ children }) => {
     const storageRef = ref(
       storage,
       // `gs://directmedia-6b77f.appspot.com/ads/Al Shark Promo.mp4` // Append the timestamp to the image name
-      `gs://directmedia-6b77f.appspot.com/ads/IPT Logo.png`
+      `gs://directmedia-6b77f.appspot.com/ads/IPT-01.jpg`
     );
 
     try {

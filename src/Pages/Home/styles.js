@@ -280,17 +280,13 @@ const useStyles = makeStyles(() => ({
   adsIPT: {
     display: "flex",
     marginTop: "33px",
-    padding: "20px 0px",
     alignItems: "center",
     justifyContent: "center",
     width: "100%",
     height: "auto",
-    background: "black",
   },
   IPT: {
-    "@media (max-width: 768px)": {
-      width: "50%",
-    },
+    width: "100%",
   },
 
   programContainer: {
