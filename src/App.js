@@ -34,7 +34,7 @@ const PodcastDetails = lazy(() =>
 const Programs = lazy(() => import(`./Components/Programs/Programs`));
 const Podcast = lazy(() => import(`./Components/Podcast/Podcast`));
 
-const TestingPage = lazy(() => import(`./Components/MyEditor/RichTextEditor`));
+const TestingPage = lazy(() => import(`./Components/TextEditor/TextEditor`));
 
 const NotFoundPage = lazy(() =>
   import(`./Components/NotFoundPage/NotFoundPage`)

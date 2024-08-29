@@ -43,6 +43,7 @@ import { SuspenseFallback } from "../../Components/SuspenseFallback/SuspenseFall
 import ConvertImageWebp from "./ConvertImageWebp";
 import SnackbarComponent from "../../Components/Snackbar/SnackbarComponent";
 import FirestoreContext from "../../Utils/FirestoreContext2";
+import TextEditor from "../../Components/TextEditor/TextEditor";
 
 const NewsEntry = ({ distinctNewsCategory, categories }) => {
   const classes = useStyles();
@@ -260,7 +261,7 @@ const NewsEntry = ({ distinctNewsCategory, categories }) => {
                   className={classes.textField}
                   required
                 />
-                <Editor
+                {/* <Editor
                   apiKey="1thbepflowaqt327jgk300c6yn0xl54vbz0efjjicrirei9e"
                   onInit={(evt, editor) => (editorRef.current = editor)}
                   initialValue="<p>أدخل النص الوصفي هنا.</p>"
@@ -298,7 +299,8 @@ const NewsEntry = ({ distinctNewsCategory, categories }) => {
                     content_style:
                       "body { font-family:AL_Jaz_Regular; font-size:14px }",
                   }}
-                />
+                /> */}
+                <TextEditor editorRef={editorRef} />
               </Grid>
               <Grid item xs={12} sm={6}>
                 {/* Search input for filtering news */}
