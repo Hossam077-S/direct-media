@@ -1,6 +1,6 @@
 import React, { useState, useRef, useContext } from "react";
 
-import { Editor } from "@tinymce/tinymce-react";
+//import { Editor } from "@tinymce/tinymce-react";
 
 import {
   storage,

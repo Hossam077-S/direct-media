@@ -34,7 +34,7 @@ const PodcastDetails = lazy(() =>
 const Programs = lazy(() => import(`./Components/Programs/Programs`));
 const Podcast = lazy(() => import(`./Components/Podcast/Podcast`));
 
-const TestingPage = lazy(() => import(`./Components/TextEditor/TextEditor`));
+//const TestingPage = lazy(() => import(`./Components/TextEditor/TextEditor`));
 
 const NotFoundPage = lazy(() =>
   import(`./Components/NotFoundPage/NotFoundPage`)
@@ -73,7 +73,7 @@ const App = () => {
           <Route path="/article/:id" element={<ArticleDetails />} />
           <Route path="/podcast/:id" element={<PodcastDetails />} />
           <Route path="/podcasts" element={<Podcast />} />
-          <Route path="/testing-page" element={<TestingPage />} />
+          {/* <Route path="/testing-page" element={<TestingPage />} /> */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
         <Footer />

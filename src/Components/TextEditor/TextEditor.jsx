@@ -15,6 +15,12 @@ export default function TextEditor({ editorRef }) {
     setEditorState(editorState);
   };
 
+  React.useImperativeHandle(editorRef, () => ({
+    getContent() {
+      return draftToHtml(convertToRaw(editorState.getCurrentContent()));
+    },
+  }));
+
   return (
     <div className={classes.container}>
       <div className={classes.editorWrapper}>
@@ -25,19 +31,6 @@ export default function TextEditor({ editorRef }) {
           editorClassName={classes.editor}
           placeholder={"أدخل النص الوصفي هنا."}
           onEditorStateChange={onEditorStateChange}
-          // toolbar={{
-          //   image: {
-          //     uploadEnabled: true, // Enable image upload
-          //     urlEnabled: true, // Enable inserting images via URL
-          //     uploadCallback: uploadImageCallBack, // Callback function for image upload
-          //     previewImage: true, // Enable image preview
-          //     alt: { present: true, mandatory: false }, // Alt attribute settings
-          //   },
-          //   emoji: {
-          //     className: "demo-option-custom",
-          //     popupClassName: "demo-popup-custom",
-          //   },
-          // }}
           toolbar={{
             options: [
               "inline",
@@ -50,8 +43,6 @@ export default function TextEditor({ editorRef }) {
               "link",
               "embedded",
               "image",
-              "emoji",
-              "remove",
               "history",
             ],
             blockType: {
@@ -68,12 +59,13 @@ export default function TextEditor({ editorRef }) {
               urlEnabled: true, // Enable inserting images via URL
               uploadCallback: uploadImageCallBack, // Callback function for image upload
               previewImage: true, // Enable image preview
-              alt: { present: true, mandatory: false }, // Alt attribute settings
+              alignmentEnabled: true, // Ensure this is enabled
+              alt: { present: true, mandatory: true }, // Alt attribute settings
             },
           }}
         />
         عرض مسبق:
-        <div
+        <p
           dangerouslySetInnerHTML={{
             __html: draftToHtml(convertToRaw(editorState.getCurrentContent())),
           }}

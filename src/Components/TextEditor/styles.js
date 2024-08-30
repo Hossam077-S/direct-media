@@ -14,8 +14,6 @@ const useStyles = makeStyles(() => ({
     borderRadius: "8px",
     backgroundColor: "#fafafa",
     minHeight: "400px",
-    direction: "rtl",
-
     "@media screen and (max-width: 500px)": {
       width: "auto",
       padding: "0 15px",
